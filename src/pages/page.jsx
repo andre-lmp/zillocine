@@ -7,11 +7,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Page() {
   const { id } = useParams();
-  console.log(id)
   const [moviesDetails, setMoviesDetails] = useState([]);
   const apiKey = "df087968ddf338b4ac0f9876af17f739";
   const apiURL = 'https://api.themoviedb.org/3/';
   const [autorizado, setAutorizado] = useState(false);
+  const [ativo, setAtivo] = useState('desativado');
+  const [ativo2, setAtivo2] = useState('desativado');
+  const handleClick = () => {
+    setAtivo('ativo');
+    setAtivo2('ativo2')
+    console.log(ativo)
+  }
 
   useEffect(() => {
 
@@ -21,7 +27,7 @@ function Page() {
 
     const fetchMovies = async () => {
       try {
-        const movieDetail = await fetch(`${apiURL}/movie/${id}?api_key=${apiKey}&language=pt-BR&page=1&language=pt-BR&include_image_language=pt`)
+        const movieDetail = await fetch(`${apiURL}/movie/${id}?api_key=${apiKey}&language=pt-BR&page=1&language=pt-BR&include_image_language=pt&append_to_response=videos`);
         const data = await movieDetail.json();
         setMoviesDetails(data);
         console.log(data);
@@ -63,14 +69,24 @@ function Page() {
 
         <div className='header-images'>
           <div className="carrosel-header">
-                <div className='carrosel-img'>
+                <div className='carrosel-img' id={ativo}>
                   <img src={`https://image.tmdb.org/t/p/original/${moviesDetails.backdrop_path}`}/>
                   <div className="movieDetails">
                     <h1 id="h1-page">{moviesDetails.title}</h1>
                     <p>{moviesDetails.tagline}</p>
-                    <button className="btn" id="btn-play"><FontAwesomeIcon className="btn-icon-page" id="icon" icon={faPlay}/></button>
+                    <button className="btn" id="btn-play" onClick={handleClick}><FontAwesomeIcon className="btn-icon-page" id="icon" icon={faPlay}/></button>
                   </div>
                   <div className='header-fim'></div>
+                </div>
+                <div id={ativo2} className='player-page'>
+                <iframe
+                    width="100%"
+                    height="500"
+                    src={`https://www.youtube.com/embed/${moviesDetails.videos.results[0].key}`}
+                    frameBorder="0"
+                    allow=" autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
                 </div>
           </div>
         </div>
