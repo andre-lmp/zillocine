@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useState, useEffect} from "react";
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import {FaSearch} from "react-icons/fa";
@@ -6,15 +6,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 function Page() {
-  const movieId = 346698;
+  const { id } = useParams();
+  console.log(id)
   const [moviesDetails, setMoviesDetails] = useState([]);
   const apiKey = "df087968ddf338b4ac0f9876af17f739";
   const apiURL = 'https://api.themoviedb.org/3/';
+  const [autorizado, setAutorizado] = useState(false);
 
   useEffect(() => {
+
+    const delay = setTimeout(() => {
+      setAutorizado(true);
+    }, 2000);
+
     const fetchMovies = async () => {
       try {
-        const movieDetail = await fetch(`${apiURL}/movie/${movieId}?api_key=${apiKey}&language=pt-BR&page=1&language=pt-BR&include_image_language=pt`)
+        const movieDetail = await fetch(`${apiURL}/movie/${id}?api_key=${apiKey}&language=pt-BR&page=1&language=pt-BR&include_image_language=pt`)
         const data = await movieDetail.json();
         setMoviesDetails(data);
         console.log(data);
@@ -28,7 +35,7 @@ function Page() {
 
   },[]);
   
-  return(
+  return autorizado ?(
     <main className='page-container'>
       <header>
         <div className="header-links">
@@ -57,11 +64,11 @@ function Page() {
         <div className='header-images'>
           <div className="carrosel-header">
                 <div className='carrosel-img'>
-                  <img src={`https://image.tmdb.org/t/p/original/${moviesDetails.poster_path}`}/>
+                  <img src={`https://image.tmdb.org/t/p/original/${moviesDetails.backdrop_path}`}/>
                   <div className="movieDetails">
                     <h1 id="h1-page">{moviesDetails.title}</h1>
                     <p>{moviesDetails.tagline}</p>
-                    <Link to="/"><button className="btn-play-page" id="btn-play"><FontAwesomeIcon id="icon" icon={faPlay}/></button></Link>
+                    <button className="btn" id="btn-play"><FontAwesomeIcon className="btn-icon-page" id="icon" icon={faPlay}/></button>
                   </div>
                   <div className='header-fim'></div>
                 </div>
@@ -78,7 +85,7 @@ function Page() {
         </div>
       </div>
     </main>
-  ) 
+  ) : null
 }
 
 export default Page;

@@ -13,13 +13,13 @@ const  Lançamentos = () => {
   const [autorizado, setAutorizado] = useState(false);
   const navigate = useNavigate();
   
-  const handleClick = () => {
-    navigate('/Page');
+  const handleClick = (e) => {
+    const valor = e.target.attributes.value.value;
+    navigate(`/Page/${valor}`);
   }
   
   useEffect(() => {
     const delay = setTimeout(() => {
-      console.log("ola");
       setAutorizado(true);
     }, 2000);
 
@@ -51,7 +51,7 @@ const  Lançamentos = () => {
 
             {moviesDetails.map((movie) => (
               <div className="movies-container" >
-                <div className="movies-img" onClick={handleClick}><img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/></div>
+                <div className="movies-img"  onClick={handleClick}><img value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/></div>
                 <div className="movies-details">
                   <div className="details">
                     <h2>{movie.title}</h2>

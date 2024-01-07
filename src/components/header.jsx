@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { Link } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import {FaSearch} from "react-icons/fa";
@@ -18,8 +17,13 @@ function Header() {
   const carrosel = useRef();
   const [telaWidth, setTelaWidth] = useState(0);
   const [autorizado, setAutorizado] = useState(false);
+  const navigate = useNavigate();
 
-  
+  const handleClick = (e) => {
+    const valor = e.target.attributes.value.value;
+    navigate(`/Page/${valor}`);
+  }
+
   useEffect(() => {
     const delay = setTimeout(() => {
       setAutorizado(true);
@@ -52,8 +56,8 @@ function Header() {
           <div className='links-content'>
             <div id="btn-filmes-series" className="link-icons">
               <button id="btn-menu">|||</button>
-              <a href="#">Filmes</a>
-              <a href="#">Séries</a>
+              <a className="btn-header" href="#">Filmes</a>
+              <a className="btn-header" href="#">Séries</a>
             </div>
 
             <div className="links-titulo">
@@ -79,7 +83,7 @@ function Header() {
                 <div className="movieDetails">
                   <h1>{movie.title}</h1>
                   <p>{movie.tagline}</p>
-                  <Link to="/Page"><button id="btn-play"><FontAwesomeIcon id="icon" icon={faPlay}/></button></Link>
+                  <button onClick={handleClick} value={movie.id} id="btn-play"><FontAwesomeIcon id="icon" icon={faPlay}/></button>
                 </div>
                 <div className='header-fim'></div>
               </div>
