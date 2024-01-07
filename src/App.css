@@ -1,0 +1,442 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600&family=Roboto:ital,wght@0,300;0,400;0,500;1,500&display=swap');
+
+
+:root{
+  --color-black: black;
+  --color-blue: #0F0F1A;
+  --color-red: red;
+  --color-white: white;
+  --color-gary: gray;
+  --color-purple: #8956f0;
+}
+
+*{
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+}
+
+body{
+  background-color: var(--color-black);
+}
+
+::-webkit-scrollbar{
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb{
+  background-color: var(--color-red);
+}
+
+header{
+  position: relative;
+  width: 100%;
+  height: 500px;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.header-links{
+  width: 100%;
+  padding-bottom: 30px;
+  box-sizing: border-box;
+  background-image: linear-gradient(to bottom, rgb(0,0,0,.7), rgb(0,0,0,.7), rgb(0,0,0,.5), transparent);
+  display: flex;
+  flex-direction: row;
+}
+
+.links-content{
+  width: 90%;
+  padding: 30px 20px;
+  display: flex;
+  box-sizing: border-box;
+  margin: auto;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header button{
+  cursor: pointer;
+}
+
+.links-titulo h1{
+  font: 700 2.8em "Raleway", sans-serif;
+  color: var(--color-white);
+}
+
+#icon-titulo{
+  margin-left: 5px;
+}
+
+.links-titulo p{
+  font-size: 3em;
+  color: var(--color-white);
+}
+
+.link-icons{
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+#btn-menu{
+  border: none;
+  color: var(--color-white);
+  font-weight: 400;
+  font-size: 1.7em;
+  background-color: transparent;
+  transform: rotate(90deg);
+}
+
+.link-icons a{
+  font: 500 1.3em "Roboto", sans-serif;
+  color: rgb(255,255,255,.7);
+  text-decoration: none;
+}
+
+.link-icons a:hover{
+  color: var(--color-white);
+}
+
+.button-header-div button{
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  color: var(--color-white);
+  border: 2px solid var(--color-red);
+  background-color: var(--color-black);
+  font: 600 1.2em "Roboto", sans-serif;
+  transition: all .2s ease-in-out;
+  box-shadow: 1px 1px 45px var(--color-black);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.link-icons h3{
+  color: rgb(255,255,255,.9);
+  font: 500 1.2em "Roboto", sans-serif;
+}
+
+.button-header-div{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.lupa-icon{
+  font-size: 1.2em;
+  cursor: pointer;
+  color: rgb(255,255,255,.7);
+}
+
+.lupa-icon:hover{
+  color: var(--color-white);
+}
+
+.header-images{
+  position: absolute;
+  width: 100%;
+  height: 500px;
+  top: 0;
+  z-index: -1;
+  opacity: .9;
+}
+
+.carrosel-header{
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.carrosel-img{
+  min-width: 100%;
+  height: 500px;
+  position: relative;
+}
+
+.carrosel-img img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.movieDetails{
+  position: absolute;
+  margin-left: 80px;
+  bottom: 0px;
+  display: flex;
+  flex-direction: column;
+  z-index: 55;
+  row-gap: 1rem;
+  padding: 10px 10px 10px 0px;
+}
+
+.movieDetails #btn-play{
+  color: var(--color-white);
+  background-color: var(--color-black);
+  border: 3px solid var(--color-white);
+  border-radius: 500px;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#icon{
+  font-size: 2em;
+  border-radius: 100%;
+  color: var(--color-white);
+}
+
+.movieDetails #btn-play:hover{
+  border: 3px solid var(--color-red);
+}
+
+.movieDetails h1{
+  font: 600 2em "Raleway", sans-serif;
+  color: var(--color-white);
+}
+
+#h1-page{
+  font-size: 3.5em;
+}
+
+.btn-play-page{
+  width: 150px;
+  height: 50px;
+}
+
+.movieDetails p{
+  color: var(--color-white);
+  line-height: 150%;
+  font: 500 1.2em "Roboto",sans-serif;
+}
+
+.header-fim{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 50%;
+  background-image: linear-gradient(to top, var(--color-black), transparent);
+}
+
+hr{
+  width: 100%;
+  background-image: linear-gradient(to right, var(--color-red), transparent);
+  border: none;
+  height: 2px;
+  margin-bottom: 20px;
+}
+
+.movies-container-main .container-movies button{
+  padding: 5px 30px;
+  outline: none;
+  background-color: transparent;
+  color: var(--color-white);
+  font: 600 1.1em arial, sans-serif;
+  border: 2px solid var(--color-red);
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.movies-container-main{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 4rem;
+}
+
+.app-main{
+  display: flex;
+  flex-direction: column;
+  row-gap: 6rem;
+}
+
+.movies-container-main .container-movies{
+  width: 90%;
+  margin: auto;
+  overflow: hidden;
+}
+
+.movies-container-main .container-movies h1{
+  color: var(--color-white);
+  font: 500 1.7em "Roboto", sans-serif;
+  margin-bottom: 10px;
+}
+
+.img-carrosel{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+}
+
+.movies-container{
+  min-width: 200px;
+  cursor: pointer;
+}
+
+.movies-container:hover .movies-img{
+  border: 3px solid var(--color-red);
+  opacity: 1;
+}
+
+.movies-img{
+  width: 100%;
+  height: 250px;
+  border: 3px solid transparent;
+  opacity: .9;
+  transition: all .1s ease-in;
+}
+
+.movies-img img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.movies-details{
+  height: 100px;
+  display: flex;
+  align-items: center;
+  opacity: .9;
+}
+
+.details{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  row-gap: 0.3rem;
+}
+
+.movies-details p{
+  color: rgb(255,255,255,.5);
+  font: 500 .9em "Roboto", sans-serif;
+}
+
+.movies-details h2{
+  color: var(--color-white);
+  font: 600 1em arial, sans-serif;
+}
+
+.page-container{
+  display: flex;
+  flex-direction: column;
+  row-gap: 5rem;
+}
+
+.about-movie{
+  padding: 0px 30px 100px 50px;
+  opacity: .8
+}
+
+.about-movie-text{
+  width: 100%;
+  min-width: 50%;
+}
+
+.about-movie-text h1{
+  font: 500 1.5em "Roboto", sans-serif;
+  color: var(--color-white);
+  margin-bottom: 20px;
+}
+
+.about-movie-text p{
+  font: 400 1.2em "Roboto", sans-serif;
+  color: var(--color-white);
+  max-width: 800px;
+  line-height: 120%;
+}
+
+
+
+@media screen and (max-width: 800px) {
+  .link-icons h3{
+    display: none;
+  }
+  .links-titulo h1{
+    font-size: 2.5em;
+  }
+  .movieDetails h1{
+    font-size: 1.7em;
+  }
+  .movieDetails #btn-play{
+    width: 60px;
+    height: 60px;
+  }
+  .app-main{
+    display: flex;
+    flex-direction: column;
+    row-gap: 5rem;
+  }
+  
+}
+
+
+@media screen and (max-width: 700px) {
+  .header-links{
+    background-image: linear-gradient(to bottom, rgb(0,0,0,.9), rgb(0,0,0,.8), rgb(0,0,0,.6), transparent);
+  }
+  .links-content{
+    width: 100%;
+  }
+  .link-icons h3{
+    display: none;
+  }
+  .links-titulo h1{
+    font-size: 2.3em;
+    font-weight: 600;
+  }
+  .movieDetails h1{
+    font-size: 1.6em;
+  }
+  .movieDetails #btn-play{
+    display: none;
+  }
+  .lupa-icon{
+    display: none;
+  }
+  #btn-filmes-series{
+    display: none;
+  }
+
+  .movieDetails{
+    position: absolute;
+    margin-left: 50px;
+    bottom: 0;
+  }
+  .header-fim{
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .link-icons h3{
+    display: none;
+  }
+  .links-titulo h1{
+    font-size: 1.8em;
+  }
+  .movieDetails h1{
+    font-size: 1.5em;
+  }
+  .movieDetails #btn-play{
+    width: 45px;
+    height: 45px;
+  }
+  #icon{
+    font-size: 1em;
+  }
+  .movieDetails{
+    margin-left: 30px;
+  }
+  
+}
+
+
