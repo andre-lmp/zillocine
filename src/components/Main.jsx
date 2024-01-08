@@ -1,13 +1,15 @@
 import Lançamentos from "/src/components/lançamentos";
 import Populares from "/src/components/populares";
-import Sucessos from "/src/components/Sucessos";
+import Terror from "/src/components/Terror";
+import Ação from "/src/components/Açao";
 
 function Main() {
   return(
-    <div className="movies-container-main">
+    <div id="movies-container-main">
       <Lançamentos/>
+      <Ação/>
+      <Terror/>
       <Populares/>
-      <Sucessos/>
     </div>
   )
 }

@@ -35,6 +35,12 @@ header{
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
+  transition: height 1s ease-in-out;
+}
+
+.HeaderAtivado{
+  background-color: black;
+  height: 0px;
 }
 
 .header-links{
@@ -44,6 +50,9 @@ header{
   background-image: linear-gradient(to bottom, rgb(0,0,0,.7), rgb(0,0,0,.7), rgb(0,0,0,.5), transparent);
   display: flex;
   flex-direction: row;
+  position: fixed;
+  top: 0;
+  z-index: 100;
 }
 
 .links-content{
@@ -88,6 +97,7 @@ header button{
   font-size: 1.7em;
   background-color: transparent;
   transform: rotate(90deg);
+  outline: none;
 }
 
 .link-icons a{
@@ -231,7 +241,7 @@ hr{
   margin-bottom: 20px;
 }
 
-.movies-container-main .container-movies button{
+#movies-container-main .container-movies button{
   padding: 5px 30px;
   outline: none;
   background-color: transparent;
@@ -242,7 +252,7 @@ hr{
   margin-bottom: 20px;
 }
 
-.movies-container-main{
+#movies-container-main{
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -255,13 +265,13 @@ hr{
   row-gap: 6rem;
 }
 
-.movies-container-main .container-movies{
+#movies-container-main .container-movies{
   width: 90%;
   margin: auto;
   overflow: hidden;
 }
 
-.movies-container-main .container-movies h1{
+#movies-container-main .container-movies h1{
   color: var(--color-white);
   font: 500 1.7em "Roboto", sans-serif;
   margin-bottom: 10px;
@@ -328,8 +338,10 @@ hr{
   row-gap: 5rem;
 }
 
-.btn{
-  color: red;
+.btn-play-page{
+  min-width: 60px;
+  min-height: 60px;
+  font-size: 1em;
 }
 
 .about-movie{
@@ -381,6 +393,11 @@ hr{
   z-index: 1;
 }
 
+.pageTitle{
+  font: 600 2.2em "Raleway", sans-serif;
+  color: var(--color-white);
+}
+
 @media screen and (max-width: 800px) {
   .link-icons h3{
     display: none;
@@ -421,8 +438,6 @@ hr{
   .movieDetails h1{
     font-size: 1.6em;
   }
-  .movieDetails #btn-play{
-  }
   .lupa-icon{
     display: none;
   }
@@ -435,7 +450,16 @@ hr{
     margin-left: 50px;
     bottom: 0;
   }
-  .header-fim{
+  .about-movie{
+    padding-left: 20px;
+  }
+
+}
+
+@media screen and (max-width: 600px) {
+  .pageTitle{
+    font: 600 1.5em "Raleway", sans-serif;
+    color: var(--color-white);
   }
 }
 

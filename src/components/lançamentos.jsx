@@ -21,7 +21,7 @@ const  Lançamentos = () => {
   useEffect(() => {
     const delay = setTimeout(() => {
       setAutorizado(true);
-    }, 2000);
+    }, 1000);
 
     const setwidth = setTimeout(() => {
       setTelaWidth(widthCarrosel.current?.scrollWidth - widthApp.current?.offsetWidth);

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import '/src/App.css';
 import {FaSearch} from "react-icons/fa";
 
 function Header() {
@@ -18,6 +19,16 @@ function Header() {
   const [telaWidth, setTelaWidth] = useState(0);
   const [autorizado, setAutorizado] = useState(false);
   const navigate = useNavigate();
+  const [headerAtivo, setHeaderAtivo] = useState('desativado');
+
+  const btnMovies = () => {
+    console.log("botao filmes clicado");
+    if (headerAtivo === 'desativado'){
+      setHeaderAtivo('HeaderAtivado')
+    }else{
+      setHeaderAtivo('desativado')
+    }
+  }
 
   const handleClick = (e) => {
     const valor = e.target.attributes.value.value;
@@ -27,7 +38,7 @@ function Header() {
   useEffect(() => {
     const delay = setTimeout(() => {
       setAutorizado(true);
-    }, 2000);
+    }, 1000);
 
     const setwidth = setTimeout(() => {
       setTelaWidth(carrosel.current?.scrollWidth - carrosel.current?.offsetWidth);
@@ -51,48 +62,50 @@ function Header() {
   },[])
   
   return autorizado ? (
-    <header>
-      <div className="header-links">
-          <div className='links-content'>
-            <div id="btn-filmes-series" className="link-icons">
-              <button id="btn-menu">|||</button>
-              <a className="btn-header" href="#">Filmes</a>
-              <a className="btn-header" href="#">Séries</a>
-            </div>
-
-            <div className="links-titulo">
-              <h1>MovieZilla</h1>
-            </div>
-
-            <div className='link-icons'>
-              <FaSearch className='lupa-icon'/>
-              <div className="button-header-div">
-                <button id="icon-conta">V</button>
-                <h3>Conta</h3>
+    <main id="header-main">
+          <div className="header-links">
+            <div className='links-content'>
+              <div id="btn-filmes-series" className="link-icons">
+                <button id="btn-menu">|||</button>
+                <a className="btn-header" href="#" onClick={btnMovies}>Filmes</a>
+                <a className="btn-header" href="#">Séries</a>
               </div>
-            </div>
-            
-          </div>
-      </div>
 
-      <div className='header-images' ref={app}>
-        <motion.div className="carrosel-header" ref={carrosel} drag="x" dragConstraints={{ right: 0, left: -telaWidth}}>
-            {moviesDetails.map((movie) => (
-              <div className='carrosel-img'>
-                <img src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}/>
-                <div className="movieDetails">
-                  <h1>{movie.title}</h1>
-                  <p>{movie.tagline}</p>
-                  <button onClick={handleClick} value={movie.id} id="btn-play"><FontAwesomeIcon id="icon" icon={faPlay}/></button>
+              <div className="links-titulo">
+                <h1>MovieZilla</h1>
+              </div>
+
+              <div className='link-icons'>
+                <FaSearch className='lupa-icon'/>
+                <div className="button-header-div">
+                  <button id="icon-conta">V</button>
+                  <h3>Conta</h3>
                 </div>
-                <div className='header-fim'></div>
               </div>
-            ))};
-        </motion.div>
+              
+            </div>
+        </div>
+        <header className={headerAtivo}>
+          <div className='header-images' ref={app}>
+            <motion.div className="carrosel-header" ref={carrosel} drag="x" dragConstraints={{ right: 0, left: -telaWidth}}>
+                {moviesDetails.map((movie) => (
+                  <div className='carrosel-img'>
+                      <img src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}/>
+                        <div className="movieDetails">
+                          <h1>{movie.title}</h1>
+                          <p>{movie.tagline}</p>
+                          <button onClick={handleClick} value={movie.id} id="btn-play"><FontAwesomeIcon onClick={handleClick} value={movie.id} id="icon" icon={faPlay}/></button>
+                        </div>
+                        <div className='header-fim'></div>
+                  </div>
+                ))};
+            </motion.div>
 
-      </div>
-    </header>
+          </div>
+        </header>
+    </main>
   ) : null;
 }
+
 
 export default Header;

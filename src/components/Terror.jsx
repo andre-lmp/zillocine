@@ -3,10 +3,12 @@ import { motion } from "framer-motion";
 import { useNavigate } from 'react-router-dom';
 
 
-const  Populares = () => {
+const  Terror = () => {
   const [moviesDetails, setMoviesDetails] = useState([]);
   const newDate = new Date().toISOString().split('T')[0];
   const apiKey = "df087968ddf338b4ac0f9876af17f739";
+  const apiUrl = "https://api.themoviedb.org/3/discover/movie";
+  const generoterror = 27;
   const [telaWidth, setTelaWidth] = useState();
   const widthCarrosel = useRef();
   const widthApp = useRef();
@@ -16,20 +18,22 @@ const  Populares = () => {
   const handleClick = (e) => {
     const valor = e.target.attributes.value.value;
     navigate(`/Page/${valor}`);
+    console.log(valor);
   }
-  
+
   useEffect(() => {
     const delay = setTimeout(() => {
+      console.log("ola");
       setAutorizado(true);
     }, 1000);
 
     const setwidth = setTimeout(() => {
       setTelaWidth(widthCarrosel.current?.scrollWidth - widthApp.current?.offsetWidth);
     }, 3500);
-    
+
     const fetchMovies = async () => {
       try{
-        const lançamentos = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR&include_image_language=pt`);
+        const lançamentos = await fetch(`${apiUrl}?api_key=${apiKey}&with_genres=${generoterror}&language=pt-BR&include_image_language=pt`);
         const data = await lançamentos.json();
         setMoviesDetails(data.results);
       } catch (error) {
@@ -37,14 +41,14 @@ const  Populares = () => {
       }
        
     }
-    
     fetchMovies();
+    
   },[])
-  
+
   return autorizado ?(
     <div>
         <div className="container-movies" ref={widthApp}>
-          <h1>Populares</h1>
+          <h1>Terror</h1>
           <hr className="linha-titulo"></hr>
           <button>Filmes</button>
           <motion.div className="img-carrosel" drag="x" dragConstraints={{ right: 0, left: -telaWidth }} ref={widthCarrosel}>
@@ -69,4 +73,4 @@ const  Populares = () => {
 
 
 
-export default Populares;
+export default Terror;

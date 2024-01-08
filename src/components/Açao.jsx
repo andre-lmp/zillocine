@@ -3,10 +3,12 @@ import { motion } from "framer-motion";
 import { useNavigate } from 'react-router-dom';
 
 
-const  Sucessos = () => {
+const  Ação = () => {
   const [moviesDetails, setMoviesDetails] = useState([]);
   const newDate = new Date().toISOString().split('T')[0];
   const apiKey = "df087968ddf338b4ac0f9876af17f739";
+  const apiUrl = "https://api.themoviedb.org/3/discover/movie";
+  const generoterror = 28;
   const [telaWidth, setTelaWidth] = useState();
   const widthCarrosel = useRef();
   const widthApp = useRef();
@@ -23,7 +25,7 @@ const  Sucessos = () => {
     const delay = setTimeout(() => {
       console.log("ola");
       setAutorizado(true);
-    }, 2000);
+    }, 1000);
 
     const setwidth = setTimeout(() => {
       setTelaWidth(widthCarrosel.current?.scrollWidth - widthApp.current?.offsetWidth);
@@ -31,7 +33,7 @@ const  Sucessos = () => {
 
     const fetchMovies = async () => {
       try{
-        const lançamentos = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR&include_image_language=pt`);
+        const lançamentos = await fetch(`${apiUrl}?api_key=${apiKey}&with_genres=${generoterror}&language=pt-BR&include_image_language=pt&page=2`);
         const data = await lançamentos.json();
         setMoviesDetails(data.results);
       } catch (error) {
@@ -46,7 +48,7 @@ const  Sucessos = () => {
   return autorizado ?(
     <div>
         <div className="container-movies" ref={widthApp}>
-          <h1>Maiores Bilheterias</h1>
+          <h1>Ação</h1>
           <hr className="linha-titulo"></hr>
           <button>Filmes</button>
           <motion.div className="img-carrosel" drag="x" dragConstraints={{ right: 0, left: -telaWidth }} ref={widthCarrosel}>
@@ -71,4 +73,4 @@ const  Sucessos = () => {
 
 
 
-export default Sucessos;
+export default Ação;
