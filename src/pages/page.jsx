@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
-import { useState, useEffect} from "react";
+import { useState, useEffect, useRef} from "react";
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import {FaSearch} from "react-icons/fa";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,7 +14,9 @@ function Page() {
   const [autorizado, setAutorizado] = useState(false);
   const navigate = useNavigate();
   const [ativo, setAtivo] = useState('desativado');
+  const headerContainer = useRef();
   const [ativo2, setAtivo2] = useState('desativado');
+  const [imgUrl, setImgUrl] = useState("https://image.tmdb.org/t/p/original");
   const handleClick = () => {
     setAtivo('ativo');
     setAtivo2('ativo2')
@@ -25,7 +27,6 @@ function Page() {
   }
 
   useEffect(() => {
-
     const delay = setTimeout(() => {
       setAutorizado(true);
     }, 1000);
@@ -35,19 +36,18 @@ function Page() {
         const movieDetail = await fetch(`${apiURL}/movie/${id}?api_key=${apiKey}&language=pt-BR&page=1&language=pt-BR&include_image_language=pt&append_to_response=videos`);
         const data = await movieDetail.json();
         setMoviesDetails(data);
+        console.log(data);
       } catch (error) {
         console.log(error);
       }
 
     }
-
     fetchMovies();
-
   },[]);
   
   return autorizado ?(
     <main className='page-container'>
-      <header>
+      <header ref={headerContainer}>
         <div className="header-links">
             <div className='links-content'>
               <div id="btn-filmes-series" className="link-icons">
@@ -74,7 +74,13 @@ function Page() {
         <div className='header-images'>
           <div className="carrosel-header">
                 <div className='carrosel-img' id={ativo}>
-                  <img src={`https://image.tmdb.org/t/p/original/${moviesDetails.backdrop_path}`}/>
+
+                  {moviesDetails.backdrop_path !== null ? (
+                    <img src={`${imgUrl}${moviesDetails.backdrop_path}`}/>
+                  ) : (
+                    <img src={`${imgUrl}${moviesDetails.poster_path}`}/>
+                  )}
+
                   <div className="movieDetails">
                     <h2 className="pageTitle" >{moviesDetails.title}</h2>
                     <p>{moviesDetails.tagline}</p>
@@ -83,7 +89,8 @@ function Page() {
                   <div className='header-fim'></div>
                 </div>
                 <div id={ativo2} className='player-page'>
-                <iframe
+                  {moviesDetails.videos.results.length !== 0 ? (
+                    <iframe
                     width="100%"
                     height="500"
                     src={`https://www.youtube.com/embed/${moviesDetails.videos.results[0].key}`}
@@ -91,6 +98,12 @@ function Page() {
                     allow=" autoplay; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                   ></iframe>
+                  ) : (
+                    <div className='iframe-error'>
+                      <h1>Desculpe</h1>
+                      <h2>Video indisponivel</h2>
+                    </div>
+                  )}
                 </div>
           </div>
         </div>

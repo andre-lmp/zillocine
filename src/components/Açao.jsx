@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from 'react-router-dom';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 const  Ação = () => {
@@ -14,6 +16,27 @@ const  Ação = () => {
   const widthApp = useRef();
   const [autorizado, setAutorizado] = useState(false);
   const navigate = useNavigate();
+  const moviesGenres = {
+    28: 'Ação',
+    12: 'Aventura',
+    16: 'Animação',
+    35: 'Comédia',
+    80: 'Crime',
+    99: 'Documentário',
+    18: 'Drama',
+    10751: 'Família',
+    14: 'Fantasia',
+    36: 'História',
+    27: 'Terror',
+    10402: 'Música',
+    9648: 'Mistério',
+    10749: 'Romance',
+    878: 'Ficção Científica',
+    10770: 'Filme de TV',
+    53: 'Thriller',
+    10752: 'Guerra',
+    37: 'Faroeste'
+  };
 
   const handleClick = (e) => {
     const valor = e.target.attributes.value.value;
@@ -29,13 +52,14 @@ const  Ação = () => {
 
     const setwidth = setTimeout(() => {
       setTelaWidth(widthCarrosel.current?.scrollWidth - widthApp.current?.offsetWidth);
-    }, 3500);
+    }, 2000);
 
     const fetchMovies = async () => {
       try{
         const lançamentos = await fetch(`${apiUrl}?api_key=${apiKey}&with_genres=${generoterror}&language=pt-BR&include_image_language=pt&page=2`);
         const data = await lançamentos.json();
         setMoviesDetails(data.results);
+        console.log(data);
       } catch (error) {
         console.log(error);
       }
@@ -59,7 +83,11 @@ const  Ação = () => {
                 <div className="movies-details">
                   <div className="details">
                     <h2>{movie.title}</h2>
-                    <p>{movie.release_date}</p>
+                    <div className="generos">
+                      <p>{moviesGenres[movie.genre_ids[0]]}</p>
+                      <p>|</p>
+                      <p>{movie.vote_average.toFixed(1)}<FontAwesomeIcon className="starIcon" icon={faStar}/></p>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -7,7 +7,7 @@ import '/src/App.css';
 import {FaSearch} from "react-icons/fa";
 
 function Header() {
-  const movieIds = [299534, 346698, 507089];
+  const movieIds = [603692, 346698, 507089];
   const [moviesDetails, setMoviesDetails] = useState([]);
   const newDate = new Date().toISOString().split('T')[0];
   const apiKey = "df087968ddf338b4ac0f9876af17f739";
@@ -42,7 +42,7 @@ function Header() {
 
     const setwidth = setTimeout(() => {
       setTelaWidth(carrosel.current?.scrollWidth - carrosel.current?.offsetWidth);
-    }, 3500);
+    }, 2000);
     
     const fetchMovies = async () => {
       try {
@@ -90,7 +90,7 @@ function Header() {
             <motion.div className="carrosel-header" ref={carrosel} drag="x" dragConstraints={{ right: 0, left: -telaWidth}}>
                 {moviesDetails.map((movie) => (
                   <div className='carrosel-img'>
-                      <img src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}/>
+                      <img src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}/>
                         <div className="movieDetails">
                           <h1>{movie.title}</h1>
                           <p>{movie.tagline}</p>
