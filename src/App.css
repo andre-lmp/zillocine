@@ -35,12 +35,80 @@ header{
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
-  transition: height 1s ease-in-out;
+  transition: height .8s linear;
 }
 
 .HeaderAtivado{
   background-color: black;
   height: 0px;
+  transition: height .8s ease-out;
+}
+
+.div-menu{
+  width: 300px;
+  height: 100vh;
+  padding: 30px 20px;
+  background-color: var(--color-black);
+  position: fixed;
+  z-index: -5;
+  transform: translateX(-100%);
+  transition: all .3s ease-out;
+}
+
+#btnAtivo{
+  z-index: 105;
+  transform: translateX(0);
+}
+
+.div-menu ul{
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  row-gap: 2rem;
+}
+
+.div-menu ul li p{
+  font: 400 1.5em "Roboto", sans-serif;
+  color: rgb(255,255,255,.7);
+  cursor: pointer;
+}
+
+.div-menu ul li p:hover{
+  color: var(--color-white);
+  font-weight: 500;
+  transform: scale(1.01);
+}
+
+.div-menu ul li button{
+  border: none;
+  font: 300 1.3em "Roboto", sans-serif;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  padding: 0px 0px 50px 8px;
+  transform: rotate(18deg);
+  background-color: transparent;
+  cursor: pointer;
+  outline: none;
+}
+
+.div-menu ul li button:hover h1{
+  color: var(--color-white);
+}
+
+.div-menu ul li button h1{
+  position: absolute;
+  color: rgb(255,255,255,.7);
+}
+
+#p-1{
+  transform: rotate(5deg);
+  font-weight: 400;
+}
+
+#p-2{
+  transform: rotate(-40deg);
+  font-weight: 400;
 }
 
 .header-links{
@@ -98,12 +166,14 @@ header button{
   background-color: transparent;
   transform: rotate(90deg);
   outline: none;
+  cursor: pointer;
 }
 
 .link-icons a{
   font: 500 1.3em "Roboto", sans-serif;
   color: rgb(255,255,255,.7);
   text-decoration: none;
+  cursor: pointer;
 }
 
 .link-icons a:hover{
@@ -129,6 +199,7 @@ header button{
 .link-icons h3{
   color: rgb(255,255,255,.9);
   font: 500 1.2em "Roboto", sans-serif;
+  cursor: pointer;
 }
 
 .button-header-div{
@@ -213,10 +284,6 @@ header button{
 .movieDetails h1{
   font: 600 2em "Raleway", sans-serif;
   color: var(--color-white);
-}
-
-#h1-page{
-  font-size: 2.2em;
 }
 
 .movieDetails p{
@@ -398,7 +465,7 @@ hr{
   left: 0;
   z-index: 1;
   background-color: var(--color-black);
-  transition: transform 1s ease-out;
+  transition: transform .8s ease-out;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -501,6 +568,17 @@ hr{
     font: 600 1.5em "Raleway", sans-serif;
     color: var(--color-white);
   }
+  .div-menu{
+    width: 200px;
+  }
+  .div-menu ul li p{
+    font-size: 1.3em;
+  }
+  .div-menu ul li button{
+    font-size: 1.1em;
+  }
+
+
 }
 
 @media screen and (max-width: 500px) {

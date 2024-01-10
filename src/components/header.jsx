@@ -20,9 +20,9 @@ function Header() {
   const [autorizado, setAutorizado] = useState(false);
   const navigate = useNavigate();
   const [headerAtivo, setHeaderAtivo] = useState('desativado');
+  const [btnAtivo, setBtnAtivo] = useState('btnDesativado');
 
   const btnMovies = () => {
-    console.log("botao filmes clicado");
     if (headerAtivo === 'desativado'){
       setHeaderAtivo('HeaderAtivado')
     }else{
@@ -33,6 +33,28 @@ function Header() {
   const handleClick = (e) => {
     const valor = e.target.attributes.value.value;
     navigate(`/Page/${valor}`);
+  }
+
+  const btnInicio = () => {
+    navigate('/');
+    setBtnAtivo('btnDesativado');
+  }
+
+  const btnClick = () => {
+    if (btnAtivo === 'btnDesativado'){
+      setBtnAtivo('btnAtivo')
+    }else{
+      setBtnAtivo('btnDesativado')
+    }
+  }
+
+  const btnMenuMovies = () => {
+    if (headerAtivo === 'desativado'){
+      setHeaderAtivo('HeaderAtivado')
+    }else{
+      setHeaderAtivo('desativado')
+    }
+    setBtnAtivo('btnDesativado');
   }
 
   useEffect(() => {
@@ -66,9 +88,9 @@ function Header() {
           <div className="header-links">
             <div className='links-content'>
               <div id="btn-filmes-series" className="link-icons">
-                <button id="btn-menu">|||</button>
-                <a className="btn-header" href="#" onClick={btnMovies}>Filmes</a>
-                <a className="btn-header" href="#">Séries</a>
+                <button onClick={btnClick} id="btn-menu">|||</button>
+                <a className="btn-header"  onClick={btnMovies}>Filmes</a>
+                <a className="btn-header" >Séries</a>
               </div>
 
               <div className="links-titulo">
@@ -85,6 +107,17 @@ function Header() {
               
             </div>
         </div>
+
+        <div className="div-menu" id={btnAtivo}>
+          <ul>
+            <li><button onClick={btnClick}><h1 id="p-1">/</h1><h1 id="p-2">\</h1></button></li>
+            <li><p onClick={btnInicio}>Inicio</p></li>
+            <li><p onClick={btnMenuMovies}>Filmes</p></li>
+            <li><p>Series</p></li>
+            <li><p>Conta</p></li>
+          </ul>
+        </div>
+
         <header className={headerAtivo}>
           <div className='header-images' ref={app}>
             <motion.div className="carrosel-header" ref={carrosel} drag="x" dragConstraints={{ right: 0, left: -telaWidth}}>

@@ -17,6 +17,7 @@ function Page() {
   const headerContainer = useRef();
   const [ativo2, setAtivo2] = useState('desativado');
   const [imgUrl, setImgUrl] = useState("https://image.tmdb.org/t/p/original");
+  const [btnAtivo, setBtnAtivo] = useState('btnDesativado');
   const handleClick = () => {
     setAtivo('ativo');
     setAtivo2('ativo2')
@@ -24,6 +25,19 @@ function Page() {
 
   const handleURL = () => {
     navigate("/");
+  }
+
+  const btnInicio = () => {
+    navigate('/');
+    setBtnAtivo('btnDesativado');
+  }
+
+  const btnClick = () => {
+    if (btnAtivo === 'btnDesativado'){
+      setBtnAtivo('btnAtivo')
+    }else{
+      setBtnAtivo('btnDesativado')
+    }
   }
 
   useEffect(() => {
@@ -47,11 +61,20 @@ function Page() {
   
   return autorizado ?(
     <main className='page-container'>
+
+      <div className="div-menu" id={btnAtivo}>
+          <ul>
+            <li><button onClick={btnClick}><h1 id="p-1">/</h1><h1 id="p-2">\</h1></button></li>
+            <li><p onClick={btnInicio}>Inicio</p></li>
+            <li><p>Conta</p></li>
+          </ul>
+        </div>
+
       <header ref={headerContainer}>
         <div className="header-links">
             <div className='links-content'>
               <div id="btn-filmes-series" className="link-icons">
-                <button id="btn-menu">|||</button>
+                <button onClick={btnClick} id="btn-menu">|||</button>
                 <a onClick={handleURL} className='btn-header'>Home</a>
                 <a className='btn-header'>Filmes</a>
               </div>
