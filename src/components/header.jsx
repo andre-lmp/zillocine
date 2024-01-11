@@ -23,11 +23,7 @@ function Header() {
   const [btnAtivo, setBtnAtivo] = useState('btnDesativado');
 
   const btnMovies = () => {
-    if (headerAtivo === 'desativado'){
-      setHeaderAtivo('HeaderAtivado')
-    }else{
-      setHeaderAtivo('desativado')
-    }
+    navigate('/Filmes')
   }
 
   const handleClick = (e) => {
@@ -49,12 +45,8 @@ function Header() {
   }
 
   const btnMenuMovies = () => {
-    if (headerAtivo === 'desativado'){
-      setHeaderAtivo('HeaderAtivado')
-    }else{
-      setHeaderAtivo('desativado')
-    }
     setBtnAtivo('btnDesativado');
+    navigate('/Filmes');
   }
 
   useEffect(() => {

@@ -4,8 +4,11 @@ import { motion } from "framer-motion";
 import { useNavigate } from 'react-router-dom';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import '/src/App.css';
 
-const  Lançamentos = () => {
+const  Lançamentos = ({page,titulo, btn}) => {
+  const [pagina, setPagina] = useState(page);
+  
   const [moviesDetails, setMoviesDetails] = useState([]);
   const newDate = new Date().toISOString().split('T')[0];
   const apiKey = "df087968ddf338b4ac0f9876af17f739";
@@ -52,7 +55,7 @@ const  Lançamentos = () => {
     
     const fetchMovies = async () => {
       try {
-        const lançamentos = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&primary_release_date.gte=${newDate}&sort=primary_release_date.desc&language=pt-BR&include_image_language=pt`);
+        const lançamentos = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&primary_release_date.gte=${newDate}&sort=primary_release_date.desc&language=pt-BR&include_image_language=pt&page=${pagina}`);
         const data = await lançamentos.json();
         setMoviesDetails(data.results);
       } catch (error) {
@@ -65,11 +68,16 @@ const  Lançamentos = () => {
   },[])
 
   return autorizado ? (
-    <div>
+    <div className="lançamentosDiv">
         <div className="container-movies" ref={widthApp}>
-          <h1>Lançamentos</h1>
+          {titulo === 'true' ? (
+            <h1>Lançamentos</h1>
+          ): null}
+
           <hr></hr>
-          <button>Filmes</button>
+          {btn === 'true' ? (
+              <button>Filmes</button>
+          ) : null}
           <motion.div className="img-carrosel" drag="x" dragConstraints={{ right: 0, left: -telaWidth }} ref={widthCarrosel}>
 
             {moviesDetails.map((movie) => (

@@ -6,10 +6,10 @@ import Ação from "/src/components/Açao";
 function Main() {
   return(
     <div id="movies-container-main">
-      <Lançamentos/>
-      <Ação/>
-      <Terror/>
-      <Populares/>
+      <Lançamentos page='1' titulo='true' btn='true'/>
+      <Ação page='1' titulo='true' btn='true'/>
+      <Terror page='1' titulo='true' btn='true'/>
+      <Populares page='1' titulo='true' btn='true'/>
     </div>
   )
 }

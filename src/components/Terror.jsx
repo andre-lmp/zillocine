@@ -5,7 +5,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
-const  Terror = () => {
+const  Terror = ({page,titulo, btn}) => {
   const [moviesDetails, setMoviesDetails] = useState([]);
   const newDate = new Date().toISOString().split('T')[0];
   const apiKey = "df087968ddf338b4ac0f9876af17f739";
@@ -54,7 +54,7 @@ const  Terror = () => {
 
     const fetchMovies = async () => {
       try{
-        const lançamentos = await fetch(`${apiUrl}?api_key=${apiKey}&with_genres=${generoterror}&language=pt-BR&include_image_language=pt`);
+        const lançamentos = await fetch(`${apiUrl}?api_key=${apiKey}&with_genres=${generoterror}&language=pt-BR&include_image_language=pt&page=${page}`);
         const data = await lançamentos.json();
         setMoviesDetails(data.results);
       } catch (error) {
@@ -69,9 +69,15 @@ const  Terror = () => {
   return autorizado ?(
     <div>
         <div className="container-movies" ref={widthApp}>
-          <h1>Terror</h1>
+
+          {titulo === 'true' ? (
+            <h1>terror</h1>
+          ): null}
           <hr className="linha-titulo"></hr>
-          <button>Filmes</button>
+          {btn === 'true' ? (
+              <button>Filmes</button>
+          ) : null}
+
           <motion.div className="img-carrosel" drag="x" dragConstraints={{ right: 0, left: -telaWidth }} ref={widthCarrosel}>
 
             {moviesDetails.map((movie) => (
