@@ -1,5 +1,5 @@
-import Lançamentos from '/src/components/Lançamentos';
-import Populares from '/src/components/Populares';
+import Lançamentos from '/src/components/lançamentos';
+import Populares from '/src/components/populares';
 import Terror from '/src/components/Terror';
 import Ação from '/src/components/Açao';
 import { useNavigate } from 'react-router-dom';
