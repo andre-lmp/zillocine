@@ -21,6 +21,8 @@ function Header() {
   const navigate = useNavigate();
   const [headerAtivo, setHeaderAtivo] = useState('desativado');
   const [btnAtivo, setBtnAtivo] = useState('btnDesativado');
+  const [type, setType] = useState('filme');
+
 
   const btnMovies = () => {
     navigate('/Filmes')
@@ -28,13 +30,14 @@ function Header() {
 
   const handleClick = (e) => {
     const valor = e.target.attributes.value.value;
-    navigate(`/Page/${valor}`);
+    navigate(`/Page/${valor}/${type}`);
   }
 
   const btnInicio = () => {
     navigate('/');
     setBtnAtivo('btnDesativado');
   }
+  
 
   const btnClick = () => {
     if (btnAtivo === 'btnDesativado'){
@@ -47,6 +50,10 @@ function Header() {
   const btnMenuMovies = () => {
     setBtnAtivo('btnDesativado');
     navigate('/Filmes');
+  }
+
+  const btnSeriesMenu = () => {
+    navigate('/Series');
   }
 
   useEffect(() => {
@@ -82,7 +89,7 @@ function Header() {
               <div id="btn-filmes-series" className="link-icons">
                 <button onClick={btnClick} id="btn-menu">|||</button>
                 <a className="btn-header"  onClick={btnMovies}>Filmes</a>
-                <a className="btn-header" >Séries</a>
+                <a className="btn-header" onClick={btnSeriesMenu}>Séries</a>
               </div>
 
               <div className="links-titulo">
@@ -105,7 +112,7 @@ function Header() {
             <li><button onClick={btnClick}><h1 id="p-1">/</h1><h1 id="p-2">\</h1></button></li>
             <li><p onClick={btnInicio}>Inicio</p></li>
             <li><p onClick={btnMenuMovies}>Filmes</p></li>
-            <li><p>Series</p></li>
+            <li><p onClick={btnSeriesMenu}>Series</p></li>
             <li><p>Conta</p></li>
           </ul>
         </div>

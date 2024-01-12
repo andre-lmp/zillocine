@@ -5,7 +5,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
-const  Terror = ({page,titulo, btn}) => {
+const  Terror = ({page,titulo, btn, tipo}) => {
   const [moviesDetails, setMoviesDetails] = useState([]);
   const newDate = new Date().toISOString().split('T')[0];
   const apiKey = "df087968ddf338b4ac0f9876af17f739";
@@ -16,6 +16,7 @@ const  Terror = ({page,titulo, btn}) => {
   const widthApp = useRef();
   const [autorizado, setAutorizado] = useState(false);
   const navigate = useNavigate();
+  const [type, setType] = useState();
   const moviesGenres = {
     28: 'Ação',
     12: 'Aventura',
@@ -40,7 +41,7 @@ const  Terror = ({page,titulo, btn}) => {
 
   const handleClick = (e) => {
     const valor = e.target.attributes.value.value;
-    navigate(`/Page/${valor}`);
+    navigate(`/Page/${valor}/${type}`);
   }
 
   useEffect(() => {
@@ -53,14 +54,25 @@ const  Terror = ({page,titulo, btn}) => {
     }, 2000);
 
     const fetchMovies = async () => {
-      try{
-        const lançamentos = await fetch(`${apiUrl}?api_key=${apiKey}&with_genres=${generoterror}&language=pt-BR&include_image_language=pt&page=${page}`);
-        const data = await lançamentos.json();
-        setMoviesDetails(data.results);
-      } catch (error) {
-        console.log(error);
+      if (tipo === 'filme') {
+        try{
+          const lançamentos = await fetch(`${apiUrl}?api_key=${apiKey}&with_genres=${generoterror}&language=pt-BR&include_image_language=pt&page=${page}`);
+          const data = await lançamentos.json();
+          setMoviesDetails(data.results);
+          setType('filme');
+        } catch (error) {
+          console.log(error);
+        }
+      } else{
+        try{
+          const lançamentos = await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&with_genres=9648&page=${page}`);
+          const data = await lançamentos.json();
+          setMoviesDetails(data.results);
+          setType('serie');
+        } catch (error) {
+          console.log(error);
+        }
       }
-       
     }
     fetchMovies();
     
@@ -85,7 +97,11 @@ const  Terror = ({page,titulo, btn}) => {
                 <div className="movies-img" onClick={handleClick}><img value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/></div>
                 <div className="movies-details">
                   <div className="details">
-                    <h2>{movie.title}</h2>
+                  {movie.title ? (
+                      <h2>{movie.title}</h2>
+                    ): (
+                      <h2>{movie.name}</h2>
+                    )}
                     <div className="generos">
                       <p>{moviesGenres[movie.genre_ids[0]]}</p>
                       <p>|</p>

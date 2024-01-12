@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Home from "./pages/Home";
 import Page from "./pages/page";
 import Movies from './pages/Filmes';
+import Series from './pages/Series';
 import './App.css';
 
 
@@ -15,8 +16,9 @@ export default function App() {
     <Router>
       <Routes>
         <Route path='/' Component={Home}/>
-        <Route path='/Page/:id' Component={Page}/>
+        <Route path='/Page/:id/:type' Component={Page}/>
         <Route path='/Filmes' Component={Movies}/>
+        <Route path='/Series' Component={Series}/>
       </Routes>
     </Router>
   )

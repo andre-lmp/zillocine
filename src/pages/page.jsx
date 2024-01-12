@@ -1,5 +1,5 @@
-import { Link, useParams } from 'react-router-dom';
 import { useState, useEffect, useRef} from "react";
+import { useParams } from "react-router-dom";
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import {FaSearch} from "react-icons/fa";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import '/src/App.css';
 
 function Page() {
-  const { id } = useParams();
+  const {id, type} = useParams();
   const [moviesDetails, setMoviesDetails] = useState([]);
   const apiKey = "df087968ddf338b4ac0f9876af17f739";
   const apiURL = 'https://api.themoviedb.org/3/';
@@ -40,21 +40,37 @@ function Page() {
     }
   }
 
+  const btnFilmes = () => {
+    navigate('/Filmes');
+  }
+
+  const btnSeries = () => {
+    navigate('/Series');
+  }
+
   useEffect(() => {
     const delay = setTimeout(() => {
       setAutorizado(true);
     }, 1000);
 
     const fetchMovies = async () => {
-      try {
-        const movieDetail = await fetch(`${apiURL}/movie/${id}?api_key=${apiKey}&language=pt-BR&page=1&language=pt-BR&include_image_language=pt&append_to_response=videos`);
-        const data = await movieDetail.json();
-        setMoviesDetails(data);
-        console.log(data);
-      } catch (error) {
-        console.log(error);
+      if (type === 'filme') {
+        try {
+          const movieDetail = await fetch(`${apiURL}/movie/${id}?api_key=${apiKey}&language=pt-BR&page=1&language=pt-BR&include_image_language=pt&append_to_response=videos`);
+          const data = await movieDetail.json();
+          setMoviesDetails(data);
+        } catch (error) {
+          console.log(error);
+        }
+      }else{
+        try {
+          const movieDetail = await fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}&language=pt-BR&page=1&language=pt-BR&include_image_language=pt&append_to_response=videos`);
+          const data = await movieDetail.json();
+          setMoviesDetails(data);
+        } catch (error) {
+          console.log(error);
+        }
       }
-
     }
     fetchMovies();
   },[]);
@@ -67,6 +83,8 @@ function Page() {
             <li><button onClick={btnClick}><h1 id="p-1">/</h1><h1 id="p-2">\</h1></button></li>
             <li><p onClick={btnInicio}>Inicio</p></li>
             <li><p>Conta</p></li>
+            <li><p onClick={btnFilmes}>Filmes</p></li>
+            <li><p onClick={btnSeries}>Series</p></li>
           </ul>
         </div>
 
@@ -76,7 +94,7 @@ function Page() {
               <div id="btn-filmes-series" className="link-icons">
                 <button onClick={btnClick} id="btn-menu">|||</button>
                 <a onClick={handleURL} className='btn-header'>Home</a>
-                <a className='btn-header'>Filmes</a>
+                <a className='btn-header' onClick={btnFilmes}>Filmes</a>
               </div>
 
               <div className="links-titulo">
@@ -136,7 +154,12 @@ function Page() {
       <div className='about-movie'>
         <hr></hr>
         <div className='about-movie-text'>
-          <h1>Sobre o filme</h1>
+          {type === 'filme' ? (
+            <h1>Sobre o filme</h1>
+          ) : (
+            <h1>Sobre a Serie</h1>
+          )}
+
           <p>{moviesDetails.overview}</p>
         </div>
       </div>

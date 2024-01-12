@@ -5,7 +5,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
-const  Populares = ({page,titulo, btn}) => {
+const  Populares = ({page,titulo, btn, tipo}) => {
   const [moviesDetails, setMoviesDetails] = useState([]);
   const newDate = new Date().toISOString().split('T')[0];
   const apiKey = "df087968ddf338b4ac0f9876af17f739";
@@ -14,6 +14,7 @@ const  Populares = ({page,titulo, btn}) => {
   const widthApp = useRef();
   const [autorizado, setAutorizado] = useState(false);
   const navigate = useNavigate();
+  const [type, setType] = useState('filme');
   const moviesGenres = {
     28: 'Ação',
     12: 'Aventura',
@@ -38,7 +39,7 @@ const  Populares = ({page,titulo, btn}) => {
 
   const handleClick = (e) => {
     const valor = e.target.attributes.value.value;
-    navigate(`/Page/${valor}`);
+    navigate(`/Page/${valor}/${type}`);
   }
   
   useEffect(() => {
@@ -51,14 +52,23 @@ const  Populares = ({page,titulo, btn}) => {
     }, 2000);
     
     const fetchMovies = async () => {
-      try{
-        const lançamentos = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR&include_image_language=pt&page=${page}`);
-        const data = await lançamentos.json();
-        setMoviesDetails(data.results);
-      } catch (error) {
-        console.log(error);
-      }
-       
+      if (tipo === 'filme') {
+        try{
+          const lançamentos = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR&include_image_language=pt&page=${page}`);
+          const data = await lançamentos.json();
+          setMoviesDetails(data.results);
+        } catch (error) {
+          console.log(error);
+        }
+      }else{
+        try{
+          const lançamentos = await fetch(`https://api.themoviedb.org/3/tv/popular?api_key=${apiKey}`);
+          const data = await lançamentos.json();
+          setMoviesDetails(data.results);
+        } catch (error) {
+          console.log(error);
+        }
+      }    
     }
     
     fetchMovies();

@@ -7,7 +7,7 @@ import { useState, useEffect, useRef} from "react";
 import {FaSearch} from "react-icons/fa";
 import '/src/App.css';
 
-function Movies() {
+function Series() {
     const [btnAtivo, setBtnAtivo] = useState('btnDesativado');
     const navigate = useNavigate();
     const [autorizado, setAutorizado] = useState(false);
@@ -65,7 +65,7 @@ function Movies() {
                     <div id="btn-filmes-series" className="link-icons">
                         <button onClick={btnClick} id="btn-menu">|||</button>
                         <a onClick={handleURL} className='btn-header'>Home</a>
-                        <a className='btn-header' onClick={btnSeriesMenu}>Series</a>
+                        <a className='btn-header' onClick={btnFilmes}>Filmes</a>
                     </div>
 
                     <div className="links-titulo">
@@ -88,7 +88,6 @@ function Movies() {
                             <li><button value='lançamentos' onClick={clickBtnDef}>Lançamentos</button></li>
                             <li><button value='terror' onClick={clickBtnDef}>Terror</button></li>
                             <li><button value='ação' onClick={clickBtnDef}>Ação</button></li>
-                            <li><button value='popular' onClick={clickBtnDef}>Populares</button></li>
                         </ul>
                     </div>
                 ) : null
@@ -96,41 +95,31 @@ function Movies() {
 
             {component === 'lançamentos' ? (
                 <div className='moviesPageLançamentos'>
-                    <Lançamentos titulo='true' btn='false' page='1' tipo='filme'/>
-                    <Lançamentos  page='2' tipo='filme'/>
-                    <Lançamentos  page='3' tipo='filme'/>
-                    <Lançamentos  page='4' tipo='filme'/>
-                    <Lançamentos  page='5' tipo='filme'/>
+                    <Lançamentos titulo='true' btn='false' page='1' tipo='serie'/>
+                    <Lançamentos  page='2' tipo='serie'/>
+                    <Lançamentos  page='3' tipo='serie'/>
+                    <Lançamentos  page='4' tipo='serie'/>
+                    <Lançamentos  page='5' tipo='serie'/>
                 </div>
             ): null}
 
             {component === 'terror' ? (
                 <div className='moviesPageLançamentos'>
-                    <Terror titulo='true' btn='false' page='1' tipo='filme'/>
-                    <Terror page='2' tipo='filme'/>
-                    <Terror page='3' tipo='filme'/>
-                    <Terror page='4' tipo='filme'/>
-                    <Terror page='5' tipo='filme'/>
+                    <Terror titulo='true' btn='false' page='1' tipo='serie'/>
+                    <Terror page='2' tipo='serie'/>
+                    <Terror page='3' tipo='serie'/>
+                    <Terror page='4' tipo='serie'/>
+                    <Terror page='5' tipo='serie'/>
                 </div>
             ):null}
 
             {component === 'ação' ? (
                 <div className='moviesPageLançamentos'>
-                    <Ação titulo='true' btn='false' page='1' tipo='filme'/>
-                    <Ação page='2' tipo='filme'/>
-                    <Ação page='3' tipo='filme'/>
-                    <Ação page='4' tipo='filme'/>
-                    <Ação page='5' tipo='filme'/>    
-                </div>
-            ):null}
-
-            {component === 'popular' ? (
-                <div className='moviesPageLançamentos'>
-                    <Populares titulo='true' btn='false' page='1' tipo='filme'/>
-                    <Populares page='2' tipo='filme'/>
-                    <Populares page='3' tipo='filme'/>
-                    <Populares page='4' tipo='filme'/>
-                    <Populares page='5' tipo='filme'/>
+                    <Ação titulo='true' btn='false' page='1' tipo='serie'/>
+                    <Ação page='2' tipo='serie'/>
+                    <Ação page='3' tipo='serie'/>
+                    <Ação page='4' tipo='serie'/>
+                    <Ação page='5' tipo='serie'/>    
                 </div>
             ):null}
 
@@ -138,4 +127,4 @@ function Movies() {
     )
 }
 
-export default Movies;
+export default Series;
