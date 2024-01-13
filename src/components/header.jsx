@@ -7,7 +7,7 @@ import '/src/App.css';
 import {FaSearch} from "react-icons/fa";
 
 function Header() {
-  const movieIds = [603692, 346698, 507089];
+  const movieIds = [603692, 346698, 298618, 507089];
   const [moviesDetails, setMoviesDetails] = useState([]);
   const newDate = new Date().toISOString().split('T')[0];
   const apiKey = "df087968ddf338b4ac0f9876af17f739";

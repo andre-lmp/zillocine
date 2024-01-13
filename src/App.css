@@ -14,6 +14,7 @@
   font-family: "Roboto", sans-serif;
 }
 
+
 body{
   background-color: var(--color-black);
 }
@@ -524,7 +525,7 @@ hr{
   list-style: none;
   padding: 0px;
   gap: 1rem;
-
+  flex-wrap: wrap;
 }
 
 .barraGeneros ul li button{
@@ -594,11 +595,36 @@ hr{
     display: none;
   }
 
+  .movies-container{
+    min-width: 180px;
+  }
+
+  .movies-img{
+    height: 225px;
+  }
+
   .movieDetails{
     position: absolute;
     margin-left: 50px;
     bottom: 0;
   }
+
+  .movies-details h2{
+    font-size: .9em;
+  }
+
+  .movies-details p {
+    font-size: .9em;
+  }
+
+  .container-movies h1{
+    font-size: 1.5em;
+  }
+
+  .container-movies button{
+    font-size: 1em;
+  }
+
   .about-movie{
     padding-left: 20px;
     margin-top: -30px;

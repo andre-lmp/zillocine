@@ -54,9 +54,9 @@ function Movies() {
                 <ul>
                     <li><button onClick={btnClick}><h1 id="p-1">/</h1><h1 id="p-2">\</h1></button></li>
                     <li><p onClick={btnInicio}>Inicio</p></li>
-                    <li><p>Conta</p></li>
                     <li><p onClick={btnSeriesMenu}>Series</p></li>
                     <li><p onClick={btnFilmes}>Filmes</p></li>
+                    <li><p>Conta</p></li>
                 </ul>
             </div>
 
