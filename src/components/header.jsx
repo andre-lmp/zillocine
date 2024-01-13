@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import '/src/App.css';
 import {FaSearch} from "react-icons/fa";
+import { transform } from "typescript";
 
 function Header() {
   const movieIds = [603692, 346698, 298618, 507089];
@@ -12,7 +13,6 @@ function Header() {
   const newDate = new Date().toISOString().split('T')[0];
   const apiKey = "df087968ddf338b4ac0f9876af17f739";
   const apiURL = 'https://api.themoviedb.org/3/';
-  const count = movieIds.length;
   const [move, setMove] = useState(0);
   const app = useRef();
   const carrosel = useRef();
@@ -22,6 +22,10 @@ function Header() {
   const [headerAtivo, setHeaderAtivo] = useState('desativado');
   const [btnAtivo, setBtnAtivo] = useState('btnDesativado');
   const [type, setType] = useState('filme');
+  const [translate, setTranslate] = useState(0);
+  const countImgs = movieIds.length;
+  const [count, setCount] = useState(1);
+  const [delay, setDelay] = useState(3000);
 
 
   const btnMovies = () => {
@@ -56,6 +60,20 @@ function Header() {
     navigate('/Series');
   }
 
+  const netxCarrosel = () => {
+    setCount(count + 1);
+    if (count !== countImgs) {
+      console.log(count);
+      setTranslate(count * -100);
+    }else{
+      console.log('Chegou');
+      setCount(0);
+      setDelay(0);
+    };
+    setDelay(5000);
+  }
+
+  setTimeout(netxCarrosel, delay);
   useEffect(() => {
     const delay = setTimeout(() => {
       setAutorizado(true);
@@ -119,7 +137,7 @@ function Header() {
 
         <header className={headerAtivo}>
           <div className='header-images' ref={app}>
-            <motion.div className="carrosel-header" ref={carrosel} drag="x" dragConstraints={{ right: 0, left: -telaWidth}}>
+            <motion.div style={{transform:`translateX(${translate}%)`}} className="carrosel-header" ref={carrosel}  dragConstraints={{ right: 0, left: -telaWidth}}>
                 {moviesDetails.map((movie) => (
                   <div className='carrosel-img'>
                       <img src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}/>
