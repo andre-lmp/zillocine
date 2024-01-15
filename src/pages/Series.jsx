@@ -42,6 +42,10 @@ function Series() {
         navigate('/Series');
     }
 
+    const btnPerfil = () => {
+        navigate('/Perfil');
+    }
+
     useEffect(() => {
         const delay = setTimeout(() => {
             setAutorizado(true);
@@ -56,7 +60,7 @@ function Series() {
                     <li><p onClick={btnInicio}>Inicio</p></li>
                     <li><p onClick={btnSeriesMenu}>Series</p></li>
                     <li><p onClick={btnFilmes}>Filmes</p></li>
-                    <li><p>Conta</p></li>
+                    <li><p onClick={btnPerfil}>Conta</p></li>
                 </ul>
             </div>
 
@@ -75,7 +79,7 @@ function Series() {
                     <div className='link-icons'>
                         <FaSearch className='lupa-icon'/>
                         <div className="button-header-div">
-                        <button>V</button>
+                        <button>C</button>
                         <h3>Conta</h3>
                         </div>
                     </div>

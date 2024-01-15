@@ -25,7 +25,11 @@ function Header() {
   const [translate, setTranslate] = useState(0);
   const countImgs = movieIds.length;
   const [count, setCount] = useState(1);
-  const [delay, setDelay] = useState(3000);
+  const [delay, setDelay] = useState(5000);
+  const [indexImg1, setIndexImg1] = useState('indexAtivo');
+  const [indexImg2, setIndexImg2] = useState();
+  const [indexImg3, setIndexImg3] = useState();
+  const [indexImg4, setIndexImg4] = useState();
 
 
   const btnMovies = () => {
@@ -60,17 +64,43 @@ function Header() {
     navigate('/Series');
   }
 
+  const btnPerfil = () => {
+    navigate('/Perfil');
+  }
+
+  const Condição = (count) => {
+    if (count === 0) {
+      setIndexImg1('indexAtivo');
+      setIndexImg4('indexDesativado');
+    }
+
+    if (count === 1) {
+      setIndexImg2('indexAtivo');
+      setIndexImg1('indexDesativado');
+    } 
+
+    if (count === 2) {
+      setIndexImg3('indexAtivo');
+      setIndexImg2('indexDesativado');
+    }
+
+    if (count === 3) {
+      setIndexImg4('indexAtivo');
+      setIndexImg3('indexDesativado');
+    }
+  }
+
   const netxCarrosel = () => {
     setCount(count + 1);
     if (count !== countImgs) {
-      console.log(count);
       setTranslate(count * -100);
     }else{
-      console.log('Chegou');
       setCount(0);
       setDelay(0);
     };
-    setDelay(5000);
+    
+    Condição(count);
+    setDelay(6000); 
   }
 
   setTimeout(netxCarrosel, delay);
@@ -117,7 +147,7 @@ function Header() {
               <div className='link-icons'>
                 <FaSearch className='lupa-icon'/>
                 <div className="button-header-div">
-                  <button id="icon-conta">V</button>
+                  <button id="icon-conta">C</button>
                   <h3>Conta</h3>
                 </div>
               </div>
@@ -131,11 +161,19 @@ function Header() {
             <li><p onClick={btnInicio}>Inicio</p></li>
             <li><p onClick={btnMenuMovies}>Filmes</p></li>
             <li><p onClick={btnSeriesMenu}>Series</p></li>
-            <li><p>Conta</p></li>
+            <li><p onClick={btnPerfil}>Conta</p></li>
           </ul>
         </div>
 
         <header className={headerAtivo}>
+          <div className="imgIndex">
+            <ul>
+              <li id={0} className={indexImg1}></li>
+              <li id={1} className={indexImg2}></li>
+              <li id={2} className={indexImg3}></li>
+              <li id={3} className={indexImg4}></li>
+            </ul>
+          </div>
           <div className='header-images' ref={app}>
             <motion.div style={{transform:`translateX(${translate}%)`}} className="carrosel-header" ref={carrosel}  dragConstraints={{ right: 0, left: -telaWidth}}>
                 {moviesDetails.map((movie) => (

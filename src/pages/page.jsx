@@ -48,6 +48,10 @@ function Page() {
     navigate('/Series');
   }
 
+  const btnPerfil = () => {
+    navigate('/Perfil');
+  }
+
   useEffect(() => {
     const delay = setTimeout(() => {
       setAutorizado(true);
@@ -84,7 +88,7 @@ function Page() {
             <li><p onClick={btnInicio}>Inicio</p></li>
             <li><p onClick={btnFilmes}>Filmes</p></li>
             <li><p onClick={btnSeries}>Series</p></li>
-            <li><p>Conta</p></li>
+            <li><p onClick={btnPerfil}>Conta</p></li>
           </ul>
         </div>
 
@@ -104,7 +108,7 @@ function Page() {
               <div className='link-icons'>
                 <FaSearch className='lupa-icon'/>
                 <div className="button-header-div">
-                  <button>V</button>
+                  <button>C</button>
                   <h3>Conta</h3>
                 </div>
               </div>

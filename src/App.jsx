@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Page from "./pages/page";
 import Movies from './pages/Filmes';
 import Series from './pages/Series';
+import Perfil from './pages/Perfil';
 import './App.css';
 
 
@@ -19,6 +20,7 @@ export default function App() {
         <Route path='/Page/:id/:type' Component={Page}/>
         <Route path='/Filmes' Component={Movies}/>
         <Route path='/Series' Component={Series}/>
+        <Route path='/Perfil' Component={Perfil}/>
       </Routes>
     </Router>
   )
