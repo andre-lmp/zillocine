@@ -226,7 +226,7 @@ header button{
   display: flex;
   justify-content: center;
   align-items: center;
-  
+  cursor: pointer;  
 }
 
 .link-icons h3{
@@ -644,7 +644,7 @@ hr{
 }
 
 .perfilIMG #userIcon{
-  font-size: 5em;
+  font-size: 4.5em;
   transform: rotate(45deg);
   color: var(--color-white);
 }

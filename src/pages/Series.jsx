@@ -79,8 +79,8 @@ function Series() {
                     <div className='link-icons'>
                         <FaSearch className='lupa-icon'/>
                         <div className="button-header-div">
-                        <button>C</button>
-                        <h3>Conta</h3>
+                        <button onClick={btnPerfil}>C</button>
+                        <h3 onClick={btnPerfil}>Conta</h3>
                         </div>
                     </div>
                 </div>

@@ -147,8 +147,8 @@ function Header() {
               <div className='link-icons'>
                 <FaSearch className='lupa-icon'/>
                 <div className="button-header-div">
-                  <button id="icon-conta">C</button>
-                  <h3>Conta</h3>
+                  <button id="icon-conta" onClick={btnPerfil}>C</button>
+                  <h3 onClick={btnPerfil}>Conta</h3>
                 </div>
               </div>
               
