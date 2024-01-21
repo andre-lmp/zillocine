@@ -2,6 +2,8 @@ import Lançamentos from '/src/components/lançamentos';
 import Populares from '/src/components/populares';
 import Terror from '/src/components/Terror';
 import Ação from '/src/components/Açao';
+import Documentarios from '/src/components/Documentarios';
+import Comedia from '/src/components/Comedia';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef} from "react";
 import {FaSearch} from "react-icons/fa";
@@ -93,6 +95,8 @@ function Movies() {
                             <li><button value='terror' onClick={clickBtnDef}>Terror</button></li>
                             <li><button value='ação' onClick={clickBtnDef}>Ação</button></li>
                             <li><button value='popular' onClick={clickBtnDef}>Populares</button></li>
+                            <li><button value='comedia' onClick={clickBtnDef}>Comedia</button></li>
+                            <li><button value='documentario' onClick={clickBtnDef}>Documentarios</button></li>
                         </ul>
                     </div>
                 ) : null
@@ -135,6 +139,26 @@ function Movies() {
                     <Populares page='3' tipo='filme'/>
                     <Populares page='4' tipo='filme'/>
                     <Populares page='5' tipo='filme'/>
+                </div>
+            ):null}
+
+            {component === 'documentario' ? (
+                <div className='moviesPageLançamentos'>
+                    <Documentarios titulo='true' btn='false' page='1' tipo='filme'/>
+                    <Documentarios page='2' tipo='filme'/>
+                    <Documentarios page='3' tipo='filme'/>
+                    <Documentarios page='4' tipo='filme'/>
+                    <Documentarios page='5' tipo='filme'/>
+                </div>
+            ):null}
+
+            {component === 'comedia' ? (
+                <div className='moviesPageLançamentos'>
+                    <Comedia titulo='true' btn='false' page='1' tipo='filme'/>
+                    <Comedia page='2' tipo='filme'/>
+                    <Comedia page='3' tipo='filme'/>
+                    <Comedia page='4' tipo='filme'/>
+                    <Comedia page='5' tipo='filme'/>
                 </div>
             ):null}
 

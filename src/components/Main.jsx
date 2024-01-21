@@ -2,6 +2,8 @@ import Lançamentos from "/src/components/lançamentos";
 import Populares from "/src/components/populares";
 import Terror from "/src/components/Terror";
 import Ação from "/src/components/Açao";
+import Comedia from "/src/components/Comedia";
+import Documentarios from "/src/components/Documentarios";
 
 function Main() {
   return(
@@ -10,6 +12,8 @@ function Main() {
       <Ação page='1' titulo='true' btn='true' tipo='filme'/>
       <Terror page='1' titulo='true' btn='true' tipo='filme'/>
       <Populares page='1' titulo='true' btn='true' tipo='filme'/>
+      <Comedia page='1' titulo='true' btn='true' tipo='filme'/>
+      <Documentarios page='1' titulo='true' btn='true' tipo='filme'/>
     </div>
   )
 }

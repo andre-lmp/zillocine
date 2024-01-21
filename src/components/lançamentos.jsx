@@ -17,7 +17,7 @@ const  Lançamentos = ({page,titulo, btn, tipo}) => {
   const widthApp = useRef();
   const [autorizado, setAutorizado] = useState(false);
   const navigate = useNavigate();
-  const [type, setType] = useState();
+  const [type, setType] = useState(tipo);
   const moviesGenres = {
     28: 'Ação',
     12: 'Aventura',
@@ -44,6 +44,10 @@ const  Lançamentos = ({page,titulo, btn, tipo}) => {
     const valor = e.target.attributes.value.value;
     navigate(`/Page/${valor}/${type}`);
   }
+
+  const defTipo = (e) => {
+    setType(e.target.value);
+  }
   
   useEffect(() => {
     const delay = setTimeout(() => {
@@ -55,7 +59,7 @@ const  Lançamentos = ({page,titulo, btn, tipo}) => {
     }, 2000);
     
     const fetchMovies = async () => {
-      if (tipo === 'filme') {
+      if (type === 'filme') {
         try {
           const lançamentos = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&primary_release_date.gte=${newDate}&sort=primary_release_date.desc&language=pt-BR&include_image_language=pt&page=${pagina}`);
           const data = await lançamentos.json();
@@ -69,7 +73,6 @@ const  Lançamentos = ({page,titulo, btn, tipo}) => {
           const lançamentos = await fetch(`https://api.themoviedb.org/3/tv/on_the_air?api_key=${apiKey}&language=pt-BR&page=${page}`);
           const data = await lançamentos.json();
           setMoviesDetails(data.results);
-          console.log(data);
           setType('serie')
         } catch (error) {
           console.log(error);
@@ -79,7 +82,7 @@ const  Lançamentos = ({page,titulo, btn, tipo}) => {
        
     fetchMovies();
 
-  },[])
+  },[type])
 
   return autorizado ? (
     <div className="lançamentosDiv">
@@ -90,7 +93,10 @@ const  Lançamentos = ({page,titulo, btn, tipo}) => {
 
           <hr></hr>
           {btn === 'true' ? (
-              <button>Filmes</button>
+              <div className="btns-movie-serie">
+                <button value='filme' onClick={defTipo}>Filmes</button>
+                <button value='serie' onClick={defTipo}>Series</button>
+            </div>
           ) : null}
           <motion.div className="img-carrosel" drag="x" dragConstraints={{ right: 0, left: -telaWidth }} ref={widthCarrosel}>
 

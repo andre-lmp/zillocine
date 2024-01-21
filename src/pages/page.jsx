@@ -71,6 +71,7 @@ function Page() {
           const movieDetail = await fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}&language=pt-BR&page=1&language=pt-BR&include_image_language=pt&append_to_response=videos`);
           const data = await movieDetail.json();
           setMoviesDetails(data);
+          console.log(data);
         } catch (error) {
           console.log(error);
         }
@@ -119,7 +120,6 @@ function Page() {
         <div className='header-images'>
           <div className="carrosel-header">
                 <div className='carrosel-img' id={ativo}>
-
                   {moviesDetails.backdrop_path !== null ? (
                     <img src={`${imgUrl}${moviesDetails.backdrop_path}`}/>
                   ) : (
@@ -127,8 +127,18 @@ function Page() {
                   )}
 
                   <div className="movieDetails">
-                    <h2 className="pageTitle" >{moviesDetails.title}</h2>
-                    <p>{moviesDetails.tagline}</p>
+                    {moviesDetails.title ? (
+                      <h2 className="pageTitle" >{moviesDetails.title}</h2>
+                    ):(
+                      <h2 className="pageTitle">{moviesDetails.name}</h2>
+                    )}
+
+                    {moviesDetails.tagline ? (
+                      <p>{moviesDetails.tagline}</p>
+                    ):(
+                      <p>Subtitulo indisponivel</p>
+                    )}
+
                     <button className="btn-play-page" id="btn-play" onClick={handleClick}><FontAwesomeIcon className="btn-icon-page" id="icon" icon={faPlay}/></button>
                   </div>
                   <div className='header-fim'></div>
@@ -149,6 +159,7 @@ function Page() {
                       <h2>Video indisponivel</h2>
                     </div>
                   )}
+                  <div className="fundoPlayer"></div>
                 </div>
           </div>
         </div>
@@ -164,7 +175,11 @@ function Page() {
             <h1>Sobre a Serie</h1>
           )}
 
-          <p>{moviesDetails.overview}</p>
+          {moviesDetails.overview ? (
+            <p>{moviesDetails.overview}</p>
+          ):(
+            <p>Descrição indisponivel</p>
+          )}
         </div>
       </div>
     </main>

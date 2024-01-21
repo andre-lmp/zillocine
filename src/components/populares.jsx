@@ -14,7 +14,7 @@ const  Populares = ({page,titulo, btn, tipo}) => {
   const widthApp = useRef();
   const [autorizado, setAutorizado] = useState(false);
   const navigate = useNavigate();
-  const [type, setType] = useState('filme');
+  const [type, setType] = useState(tipo);
   const moviesGenres = {
     28: 'Ação',
     12: 'Aventura',
@@ -41,6 +41,10 @@ const  Populares = ({page,titulo, btn, tipo}) => {
     const valor = e.target.attributes.value.value;
     navigate(`/Page/${valor}/${type}`);
   }
+
+  const defTipo = (e) => {
+    setType(e.target.value);
+  }
   
   useEffect(() => {
     const delay = setTimeout(() => {
@@ -52,7 +56,7 @@ const  Populares = ({page,titulo, btn, tipo}) => {
     }, 2000);
     
     const fetchMovies = async () => {
-      if (tipo === 'filme') {
+      if (type === 'filme') {
         try{
           const lançamentos = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR&include_image_language=pt&page=${page}`);
           const data = await lançamentos.json();
@@ -72,7 +76,7 @@ const  Populares = ({page,titulo, btn, tipo}) => {
     }
     
     fetchMovies();
-  },[])
+  },[type])
   
   return autorizado ?(
     <div>
@@ -83,7 +87,10 @@ const  Populares = ({page,titulo, btn, tipo}) => {
           ): null}
           <hr className="linha-titulo"></hr>
           {btn === 'true' ? (
-              <button>Filmes</button>
+              <div className="btns-movie-serie">
+                <button value='filme' onClick={defTipo}>Filmes</button>
+                <button value='serie' onClick={defTipo}>Series</button>
+            </div>
           ) : null}
 
           <motion.div className="img-carrosel" drag="x" dragConstraints={{ right: 0, left: -telaWidth }} ref={widthCarrosel}>

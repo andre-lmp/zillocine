@@ -2,6 +2,8 @@ import Lançamentos from '/src/components/lançamentos';
 import Populares from '/src/components/populares';
 import Terror from '/src/components/Terror';
 import Ação from '/src/components/Açao';
+import Documentarios from '/src/components/Documentarios';
+import Comedia from '/src/components/Comedia';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef} from "react";
 import {FaSearch} from "react-icons/fa";
@@ -92,6 +94,8 @@ function Series() {
                             <li><button value='lançamentos' onClick={clickBtnDef}>Lançamentos</button></li>
                             <li><button value='terror' onClick={clickBtnDef}>Terror</button></li>
                             <li><button value='ação' onClick={clickBtnDef}>Ação</button></li>
+                            <li><button value='comedia' onClick={clickBtnDef}>Comedia</button></li>
+                            <li><button value='documentario' onClick={clickBtnDef}>Documentarios</button></li>
                         </ul>
                     </div>
                 ) : null
@@ -124,6 +128,26 @@ function Series() {
                     <Ação page='3' tipo='serie'/>
                     <Ação page='4' tipo='serie'/>
                     <Ação page='5' tipo='serie'/>    
+                </div>
+            ):null}
+
+            {component === 'documentario' ? (
+                <div className='moviesPageLançamentos'>
+                    <Documentarios titulo='true' btn='false' page='1' tipo='serie'/>
+                    <Documentarios page='2' tipo='serie'/>
+                    <Documentarios page='3' tipo='serie'/>
+                    <Documentarios page='4' tipo='serie'/>
+                    <Documentarios page='5' tipo='serie'/>
+                </div>
+            ):null}
+
+            {component === 'comedia' ? (
+                <div className='moviesPageLançamentos'>
+                    <Comedia titulo='true' btn='false' page='1' tipo='serie'/>
+                    <Comedia page='2' tipo='serie'/>
+                    <Comedia page='3' tipo='serie'/>
+                    <Comedia page='4' tipo='serie'/>
+                    <Comedia page='5' tipo='serie'/>
                 </div>
             ):null}
 
