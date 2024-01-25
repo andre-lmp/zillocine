@@ -10,7 +10,6 @@ import { transform } from "typescript";
 function Header() {
   const movieIds = [603692, 346698, 298618, 507089];
   const [moviesDetails, setMoviesDetails] = useState([]);
-  const newDate = new Date().toISOString().split('T')[0];
   const apiKey = "df087968ddf338b4ac0f9876af17f739";
   const apiURL = 'https://api.themoviedb.org/3/';
   const [move, setMove] = useState(0);
@@ -31,9 +30,12 @@ function Header() {
   const [indexImg3, setIndexImg3] = useState();
   const [indexImg4, setIndexImg4] = useState();
 
-
-  const btnMovies = () => {
-    navigate('/Filmes')
+  const btnNavigate = (e) => {
+    console.log(e);
+    navigate(`/${e.target.id}`)
+    if (e.target.id === '') {
+      setBtnAtivo('btnDesativado');
+    }
   }
 
   const handleClick = (e) => {
@@ -41,31 +43,12 @@ function Header() {
     navigate(`/Page/${valor}/${type}`);
   }
 
-  const btnInicio = () => {
-    navigate('/');
-    setBtnAtivo('btnDesativado');
-  }
-  
-
   const btnClick = () => {
     if (btnAtivo === 'btnDesativado'){
       setBtnAtivo('btnAtivo')
     }else{
       setBtnAtivo('btnDesativado')
     }
-  }
-
-  const btnMenuMovies = () => {
-    setBtnAtivo('btnDesativado');
-    navigate('/Filmes');
-  }
-
-  const btnSeriesMenu = () => {
-    navigate('/Series');
-  }
-
-  const btnPerfil = () => {
-    navigate('/Perfil');
   }
 
   const Condição = (count) => {
@@ -135,9 +118,9 @@ function Header() {
           <div className="header-links">
             <div className='links-content'>
               <div id="btn-filmes-series" className="link-icons">
-                <button onClick={btnClick} id="btn-menu">|||</button>
-                <a className="btn-header"  onClick={btnMovies}>Filmes</a>
-                <a className="btn-header" onClick={btnSeriesMenu}>Séries</a>
+                <button onClick={btnClick} className="btn-menu">|||</button>
+                <a className="btn-header" id="Filmes" onClick={btnNavigate}>Filmes</a>
+                <a className="btn-header" id="Series" onClick={btnNavigate}>Séries</a>
               </div>
 
               <div className="links-titulo">
@@ -147,8 +130,8 @@ function Header() {
               <div className='link-icons'>
                 <FaSearch className='lupa-icon'/>
                 <div className="button-header-div">
-                  <button id="icon-conta" onClick={btnPerfil}>C</button>
-                  <h3 onClick={btnPerfil}>Conta</h3>
+                  <button className="icon-conta" id='Perfil' onClick={btnNavigate}>C</button>
+                  <h3 id="Perfil" onClick={btnNavigate}>Conta</h3>
                 </div>
               </div>
               
@@ -158,10 +141,10 @@ function Header() {
         <div className="div-menu" id={btnAtivo}>
           <ul>
             <li><button onClick={btnClick}><h1 id="p-1">/</h1><h1 id="p-2">\</h1></button></li>
-            <li><p onClick={btnInicio}>Inicio</p></li>
-            <li><p onClick={btnMenuMovies}>Filmes</p></li>
-            <li><p onClick={btnSeriesMenu}>Series</p></li>
-            <li><p onClick={btnPerfil}>Conta</p></li>
+            <li><p id="" onClick={btnNavigate}>Inicio</p></li>
+            <li><p id="Filmes" onClick={btnNavigate}>Filmes</p></li>
+            <li><p id="Series" onClick={btnNavigate}>Series</p></li>
+            <li><p id="Perfil" onClick={btnNavigate}>Conta</p></li>
           </ul>
         </div>
 

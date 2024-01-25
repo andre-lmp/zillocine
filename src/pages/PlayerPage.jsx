@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import '/src/App.css';
 
-function Page() {
+function PlayerPage() {
   const {id, type} = useParams();
   const [moviesDetails, setMoviesDetails] = useState([]);
   const apiKey = "df087968ddf338b4ac0f9876af17f739";
@@ -23,15 +23,6 @@ function Page() {
     setAtivo2('ativo2')
   }
 
-  const handleURL = () => {
-    navigate("/");
-  }
-
-  const btnInicio = () => {
-    navigate('/');
-    setBtnAtivo('btnDesativado');
-  }
-
   const btnClick = () => {
     if (btnAtivo === 'btnDesativado'){
       setBtnAtivo('btnAtivo')
@@ -40,17 +31,10 @@ function Page() {
     }
   }
 
-  const btnFilmes = () => {
-    navigate('/Filmes');
-  }
-
-  const btnSeries = () => {
-    navigate('/Series');
-  }
-
-  const btnPerfil = () => {
-    navigate('/Perfil');
-  }
+  const btnNavigate = (e) => {
+    console.log(e);
+    navigate(`/${e.target.id}`)
+}
 
   useEffect(() => {
     const delay = setTimeout(() => {
@@ -86,10 +70,10 @@ function Page() {
       <div className="div-menu" id={btnAtivo}>
           <ul>
             <li><button onClick={btnClick}><h1 id="p-1">/</h1><h1 id="p-2">\</h1></button></li>
-            <li><p onClick={btnInicio}>Inicio</p></li>
-            <li><p onClick={btnFilmes}>Filmes</p></li>
-            <li><p onClick={btnSeries}>Series</p></li>
-            <li><p onClick={btnPerfil}>Conta</p></li>
+            <li><p id="" onClick={btnNavigate}>Inicio</p></li>
+            <li><p id="Filmes" onClick={btnNavigate}>Filmes</p></li>
+            <li><p id="Series" onClick={btnNavigate}>Series</p></li>
+            <li><p id="Perfil" onClick={btnNavigate}>Conta</p></li>
           </ul>
         </div>
 
@@ -97,9 +81,9 @@ function Page() {
         <div className="header-links">
             <div className='links-content'>
               <div id="btn-filmes-series" className="link-icons">
-                <button onClick={btnClick} id="btn-menu">|||</button>
-                <a onClick={handleURL} className='btn-header'>Home</a>
-                <a className='btn-header' onClick={btnFilmes}>Filmes</a>
+                <button onClick={btnClick} className="btn-menu">|||</button>
+                <a id="" onClick={btnNavigate} className='btn-header'>Home</a>
+                <a id="Filmes" className='btn-header' onClick={btnNavigate}>Filmes</a>
               </div>
 
               <div className="links-titulo">
@@ -109,8 +93,8 @@ function Page() {
               <div className='link-icons'>
                 <FaSearch className='lupa-icon'/>
                 <div className="button-header-div">
-                  <button onClick={btnPerfil}>C</button>
-                  <h3 onClick={btnPerfil}>Conta</h3>
+                  <button id="Perfil" onClick={btnNavigate}>C</button>
+                  <h3 id="Perfil" onClick={btnNavigate}>Conta</h3>
                 </div>
               </div>
 
@@ -186,4 +170,4 @@ function Page() {
   ) : null
 }
 
-export default Page;
+export default PlayerPage;

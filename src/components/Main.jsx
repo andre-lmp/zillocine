@@ -1,19 +1,19 @@
-import Lançamentos from "/src/components/lançamentos";
-import Populares from "/src/components/populares";
-import Terror from "/src/components/Terror";
-import Ação from "/src/components/Açao";
-import Comedia from "/src/components/Comedia";
-import Documentarios from "/src/components/Documentarios";
+import PopularMovies from "/src/components/PopularMovies";
+import LatestMovies from "/src/components/LatestMovies";
+import HorrorMovies from "/src/components/HorrorMovies";
+import ActionMovies from "/src/components/ActionMovies";
+import ComedyMovies from "/src/components/ComedyMovies";
+import Documentaries from "/src/components/Documentaries";
 
 function Main() {
   return(
     <div id="movies-container-main">
-      <Lançamentos page='1' titulo='true' btn='true' tipo='filme'/>
-      <Ação page='1' titulo='true' btn='true' tipo='filme'/>
-      <Terror page='1' titulo='true' btn='true' tipo='filme'/>
-      <Populares page='1' titulo='true' btn='true' tipo='filme'/>
-      <Comedia page='1' titulo='true' btn='true' tipo='filme'/>
-      <Documentarios page='1' titulo='true' btn='true' tipo='filme'/>
+      <LatestMovies page='1' titulo='true' btn='true' tipo='filme'/>
+      <ActionMovies page='1' titulo='true' btn='true' tipo='filme'/>
+      <HorrorMovies page='1' titulo='true' btn='true' tipo='filme'/>
+      <PopularMovies page='1' titulo='true' btn='true' tipo='filme'/>
+      <ComedyMovies page='1' titulo='true' btn='true' tipo='filme'/>
+      <Documentaries page='1' titulo='true' btn='true' tipo='filme'/>
     </div>
   )
 }

@@ -3,9 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from "react-router-dom";
 import {FaSearch} from "react-icons/fa";
-import imgFundo from '/src/images/fundo.png';
+import BackgroundProfile from '/src/images/BackgroundProfile.png';
 
-function Perfil() {
+function ProfilePage() {
     const [autorizado, setAutorizado] = useState(false);
     const navigate = useNavigate();
     const [btnAtivo, setBtnAtivo] = useState('btnDesativado');
@@ -22,21 +22,9 @@ function Perfil() {
         }
     }
 
-    const btnFilmes = () => {
-        navigate('/Filmes');
-    }
-    
-      const btnSeries = () => {
-        navigate('/Series');
-    }
-
-    const btnInicio = () => {
-        navigate('/');
-        setBtnAtivo('btnDesativado');
-    }
-
-    const handleURL = () => {
-        navigate("/");
+    const btnNavigate = (e) => {
+        console.log(e);
+        navigate(`/${e.target.id}`)
     }
 
     return autorizado ?(
@@ -44,19 +32,19 @@ function Perfil() {
             <div className="div-menu" id={btnAtivo}>
                 <ul>
                     <li><button onClick={btnClick}><h1 id="p-1">/</h1><h1 id="p-2">\</h1></button></li>
-                    <li><p onClick={btnInicio}>Inicio</p></li>
-                    <li><p onClick={btnFilmes}>Filmes</p></li>
-                    <li><p onClick={btnSeries}>Series</p></li>
-                    <li><p>Conta</p></li>
+                    <li><p id="" onClick={btnNavigate}>Inicio</p></li>
+                    <li><p id="Filmes" onClick={btnNavigate}>Filmes</p></li>
+                    <li><p id='Series' onClick={btnNavigate}>Series</p></li>
+                    <li><p id="Perfil" onClick={btnNavigate}>Conta</p></li>
                 </ul>
             </div>
 
             <div className="header-links">
                 <div className='links-content'>
                     <div id="btn-filmes-series" className="link-icons">
-                        <button onClick={btnClick} id="btn-menu">|||</button>
-                        <a onClick={handleURL} className='btn-header'>Home</a>
-                        <a className='btn-header' onClick={btnFilmes}>Filmes</a>
+                        <button onClick={btnClick} className="btn-menu">|||</button>
+                        <a onClick={btnNavigate} id="" className='btn-header'>Home</a>
+                        <a className='btn-header' id="Filmes" onClick={btnNavigate}>Filmes</a>
                     </div>
 
                     <div className="links-titulo">
@@ -76,7 +64,7 @@ function Perfil() {
 
             <div className="fundoContainerPerfil">
                 <div className="fundoImageContainer">
-                    <img src={imgFundo}/>
+                    <img src={BackgroundProfile}/>
                 </div>
                 <div className="basePerfil"><div className="perfilIMG"><FontAwesomeIcon id='userIcon' icon={faUser}/></div></div>
                 <div className="perfilLinear"></div>
@@ -91,4 +79,4 @@ function Perfil() {
     ) : null;
 }
 
-export default Perfil;
+export default ProfilePage;

@@ -192,7 +192,7 @@ header button{
   gap: 2rem;
 }
 
-#btn-menu{
+.btn-menu{
   border: none;
   color: var(--color-white);
   font-weight: 400;
@@ -358,7 +358,7 @@ hr{
 
 .container-movies button:focus{
   border: 2px solid var(--color-white);
-  color: rgb(255, 0, 0, .8);
+  color: var(--color-white);
 }
 
 .btns-movie-serie{

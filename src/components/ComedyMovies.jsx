@@ -1,16 +1,17 @@
+import React from "react";
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from 'react-router-dom';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import '/src/App.css';
 
-
-const  Terror = ({page,titulo, btn, tipo}) => {
+const  ComedyMovies = ({page,titulo, btn, tipo}) => {
+  const [pagina, setPagina] = useState(page);
+  
   const [moviesDetails, setMoviesDetails] = useState([]);
   const newDate = new Date().toISOString().split('T')[0];
   const apiKey = "df087968ddf338b4ac0f9876af17f739";
-  const apiUrl = "https://api.themoviedb.org/3/discover/movie";
-  const generoterror = 27;
   const [telaWidth, setTelaWidth] = useState();
   const widthCarrosel = useRef();
   const widthApp = useRef();
@@ -38,7 +39,7 @@ const  Terror = ({page,titulo, btn, tipo}) => {
     10752: 'Guerra',
     37: 'Faroeste'
   };
-
+  
   const handleClick = (e) => {
     const valor = e.target.attributes.value.value;
     navigate(`/Page/${valor}/${type}`);
@@ -47,7 +48,7 @@ const  Terror = ({page,titulo, btn, tipo}) => {
   const defTipo = (e) => {
     setType(e.target.value);
   }
-
+  
   useEffect(() => {
     const delay = setTimeout(() => {
       setAutorizado(true);
@@ -56,56 +57,56 @@ const  Terror = ({page,titulo, btn, tipo}) => {
     const setwidth = setTimeout(() => {
       setTelaWidth(widthCarrosel.current?.scrollWidth - widthApp.current?.offsetWidth);
     }, 2000);
-
+    
     const fetchMovies = async () => {
       if (type === 'filme') {
-        try{
-          const lançamentos = await fetch(`${apiUrl}?api_key=${apiKey}&with_genres=${generoterror}&language=pt-BR&include_image_language=pt&page=${page}`);
+        try {
+          const lançamentos = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_genres=35&language=pt-BR&page=${page}`);
           const data = await lançamentos.json();
           setMoviesDetails(data.results);
-          setType('filme');
+          setType('filme')
         } catch (error) {
           console.log(error);
         }
-      } else{
-          try{
-            const lançamentos = await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&with_genres=9648&page=${page}`);
-            const data = await lançamentos.json();
-            setMoviesDetails(data.results);
-            setType('serie');
-          } catch (error) {
-            console.log(error);
-          }
+      }else{
+        try {
+          const lançamentos = await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&with_genres=35&language=pt-BR&page=${page}`);
+          const data = await lançamentos.json();
+          setMoviesDetails(data.results);
+          console.log(data);
+          setType('serie')
+        } catch (error) {
+          console.log(error);
         }
+      }
     }
+       
     fetchMovies();
-    
-    
+
   },[type])
 
-  return autorizado ?(
-    <div>
+  return autorizado ? (
+    <div className="lançamentosDiv">
         <div className="container-movies" ref={widthApp}>
-
           {titulo === 'true' ? (
-            <h1>terror</h1>
+            <h1>Comedia</h1>
           ): null}
-          <hr className="linha-titulo"></hr>
+
+          <hr></hr>
           {btn === 'true' ? (
               <div className="btns-movie-serie">
                 <button value='filme' onClick={defTipo}>Filmes</button>
                 <button value='serie' onClick={defTipo}>Series</button>
             </div>
           ) : null}
-
           <motion.div className="img-carrosel" drag="x" dragConstraints={{ right: 0, left: -telaWidth }} ref={widthCarrosel}>
 
             {moviesDetails.map((movie) => (
               <div className="movies-container" >
-                <div className="movies-img" onClick={handleClick}><img value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/></div>
+                <div className="movies-img"  onClick={handleClick}><img value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/></div>
                 <div className="movies-details">
                   <div className="details">
-                  {movie.title ? (
+                    {movie.title ? (
                       <h2>{movie.title}</h2>
                     ): (
                       <h2>{movie.name}</h2>
@@ -123,9 +124,9 @@ const  Terror = ({page,titulo, btn, tipo}) => {
           </motion.div>
         </div>
       </div>
-  ) : null;
+  ): null;
 }
 
 
 
-export default Terror;
+export default ComedyMovies;

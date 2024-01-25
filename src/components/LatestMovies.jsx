@@ -6,7 +6,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import '/src/App.css';
 
-const  Documentarios = ({page,titulo, btn, tipo}) => {
+const  LatestMovies = ({page,titulo, btn, tipo}) => {
   const [pagina, setPagina] = useState(page);
   
   const [moviesDetails, setMoviesDetails] = useState([]);
@@ -61,7 +61,7 @@ const  Documentarios = ({page,titulo, btn, tipo}) => {
     const fetchMovies = async () => {
       if (type === 'filme') {
         try {
-          const lançamentos = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_genres=99&language=pt-BR&page=${page}`);
+          const lançamentos = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&primary_release_date.gte=${newDate}&sort=primary_release_date.desc&language=pt-BR&include_image_language=pt&page=${pagina}`);
           const data = await lançamentos.json();
           setMoviesDetails(data.results);
           setType('filme')
@@ -70,7 +70,7 @@ const  Documentarios = ({page,titulo, btn, tipo}) => {
         }
       }else{
         try {
-          const lançamentos = await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&with_genres=99&language=pt-BR&page=${page}`);
+          const lançamentos = await fetch(`https://api.themoviedb.org/3/tv/on_the_air?api_key=${apiKey}&language=pt-BR&page=${page}`);
           const data = await lançamentos.json();
           setMoviesDetails(data.results);
           setType('serie')
@@ -88,7 +88,7 @@ const  Documentarios = ({page,titulo, btn, tipo}) => {
     <div className="lançamentosDiv">
         <div className="container-movies" ref={widthApp}>
           {titulo === 'true' ? (
-            <h1>Documentarios</h1>
+            <h1>Lançamentos</h1>
           ): null}
 
           <hr></hr>
@@ -128,4 +128,4 @@ const  Documentarios = ({page,titulo, btn, tipo}) => {
 
 
 
-export default Documentarios;
+export default LatestMovies;

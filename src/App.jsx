@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import { useState } from 'react';
 import Home from "./pages/Home";
-import Page from "./pages/page";
-import Movies from './pages/Filmes';
+import PlayerPage from './pages/PlayerPage';
+import Movies from './pages/Movies';
 import Series from './pages/Series';
-import Perfil from './pages/Perfil';
+import ProfilePage from './pages/Profile';
 import './App.css';
 
 
@@ -17,10 +17,10 @@ export default function App() {
     <Router>
       <Routes>
         <Route path='/' Component={Home}/>
-        <Route path='/Page/:id/:type' Component={Page}/>
+        <Route path='/Page/:id/:type' Component={PlayerPage}/>
         <Route path='/Filmes' Component={Movies}/>
         <Route path='/Series' Component={Series}/>
-        <Route path='/Perfil' Component={Perfil}/>
+        <Route path='/Perfil' Component={ProfilePage}/>
       </Routes>
     </Router>
   )

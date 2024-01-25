@@ -1,4 +1,5 @@
 import LatestMovies from '/src/components/LatestMovies';
+import PopularMovies from '/src/components/PopularMovies';
 import HorrorMovies from '/src/components/HorrorMovies';
 import ActionMovies from '/src/components/ActionMovies';
 import Documentaries from '/src/components/Documentaries';
@@ -8,7 +9,7 @@ import { useState, useEffect, useRef} from "react";
 import {FaSearch} from "react-icons/fa";
 import '/src/App.css';
 
-function Series() {
+function Movies() {
     const [btnAtivo, setBtnAtivo] = useState('btnDesativado');
     const navigate = useNavigate();
     const [autorizado, setAutorizado] = useState(false);
@@ -21,8 +22,8 @@ function Series() {
           setBtnAtivo('btnDesativado')
         }
     }
-    
-    const clickBtnDef = (e) => {
+
+    const DefComponent = (e) => {
         const valor = e.target.value
         setComponent(valor);
     }
@@ -55,7 +56,7 @@ function Series() {
                     <div id="btn-filmes-series" className="link-icons">
                         <button onClick={btnClick} className="btn-menu">|||</button>
                         <a onClick={btnNavigate} id='' className='btn-header'>Home</a>
-                        <a className='btn-header' id='Filmes' onClick={btnNavigate}>Filmes</a>
+                        <a className='btn-header' id='Series' onClick={btnNavigate}>Series</a>
                     </div>
 
                     <div className="links-titulo">
@@ -65,7 +66,7 @@ function Series() {
                     <div className='link-icons'>
                         <FaSearch className='lupa-icon'/>
                         <div className="button-header-div">
-                        <button  id='Perfil' onClick={btnNavigate}>C</button>
+                        <button id='Perfil' onClick={btnNavigate}>C</button>
                         <h3 id='Perfil' onClick={btnNavigate}>Conta</h3>
                         </div>
                     </div>
@@ -75,11 +76,12 @@ function Series() {
             {autorizado === true ? (
                     <div className='barraGeneros'>
                         <ul>
-                            <li><button value='LatestMovies' onClick={clickBtnDef}>Lançamentos</button></li>
-                            <li><button value='HorrorMovies' onClick={clickBtnDef}>Suspense</button></li>
-                            <li><button value='ActionMovies' onClick={clickBtnDef}>Ação</button></li>
-                            <li><button value='ComedyMovies' onClick={clickBtnDef}>Comedia</button></li>
-                            <li><button value='Documentaries' onClick={clickBtnDef}>Documentarios</button></li>
+                            <li><button value='LatestMovies' onClick={DefComponent}>Lançamentos</button></li>
+                            <li><button value='HorrorMovies' onClick={DefComponent}>Suspense</button></li>
+                            <li><button value='ActionMovies' onClick={DefComponent}>Ação</button></li>
+                            <li><button value='PopularMovies' onClick={DefComponent}>Populares</button></li>
+                            <li><button value='ComedyMovies' onClick={DefComponent}>Comedia</button></li>
+                            <li><button value='Documentaries' onClick={DefComponent}>Documentarios</button></li>
                         </ul>
                     </div>
                 ) : null
@@ -87,51 +89,61 @@ function Series() {
 
             {component === 'LatestMovies' ? (
                 <div className='moviesPageLatestMovies'>
-                    <LatestMovies titulo='true' btn='false' page='1' tipo='serie'/>
-                    <LatestMovies  page='2' tipo='serie'/>
-                    <LatestMovies  page='3' tipo='serie'/>
-                    <LatestMovies  page='4' tipo='serie'/>
-                    <LatestMovies  page='5' tipo='serie'/>
+                    <LatestMovies titulo='true' btn='false' page='1' tipo='filme'/>
+                    <LatestMovies  page='2' tipo='filme'/>
+                    <LatestMovies  page='3' tipo='filme'/>
+                    <LatestMovies  page='4' tipo='filme'/>
+                    <LatestMovies  page='5' tipo='filme'/>
                 </div>
             ): null}
 
             {component === 'HorrorMovies' ? (
                 <div className='moviesPageLatestMovies'>
-                    <HorrorMovies titulo='true' btn='false' page='1' tipo='serie'/>
-                    <HorrorMovies page='2' tipo='serie'/>
-                    <HorrorMovies page='3' tipo='serie'/>
-                    <HorrorMovies page='4' tipo='serie'/>
-                    <HorrorMovies page='5' tipo='serie'/>
+                    <HorrorMovies titulo='true' btn='false' page='1' tipo='filme'/>
+                    <HorrorMovies page='2' tipo='filme'/>
+                    <HorrorMovies page='3' tipo='filme'/>
+                    <HorrorMovies page='4' tipo='filme'/>
+                    <HorrorMovies page='5' tipo='filme'/>
                 </div>
             ):null}
 
             {component === 'ActionMovies' ? (
                 <div className='moviesPageLatestMovies'>
-                    <ActionMovies titulo='true' btn='false' page='1' tipo='serie'/>
-                    <ActionMovies page='2' tipo='serie'/>
-                    <ActionMovies page='3' tipo='serie'/>
-                    <ActionMovies page='4' tipo='serie'/>
-                    <ActionMovies page='5' tipo='serie'/>    
+                    <ActionMovies titulo='true' btn='false' page='1' tipo='filme'/>
+                    <ActionMovies page='2' tipo='filme'/>
+                    <ActionMovies page='3' tipo='filme'/>
+                    <ActionMovies page='4' tipo='filme'/>
+                    <ActionMovies page='5' tipo='filme'/>    
+                </div>
+            ):null}
+
+            {component === 'PopularMovies' ? (
+                <div className='moviesPageLatestMovies'>
+                    <PopularMovies titulo='true' btn='false' page='1' tipo='filme'/>
+                    <PopularMovies page='2' tipo='filme'/>
+                    <PopularMovies page='3' tipo='filme'/>
+                    <PopularMovies page='4' tipo='filme'/>
+                    <PopularMovies page='5' tipo='filme'/>
                 </div>
             ):null}
 
             {component === 'Documentaries' ? (
                 <div className='moviesPageLatestMovies'>
-                    <Documentaries titulo='true' btn='false' page='1' tipo='serie'/>
-                    <Documentaries page='2' tipo='serie'/>
-                    <Documentaries page='3' tipo='serie'/>
-                    <Documentaries page='4' tipo='serie'/>
-                    <Documentaries page='5' tipo='serie'/>
+                    <Documentaries titulo='true' btn='false' page='1' tipo='filme'/>
+                    <Documentaries page='2' tipo='filme'/>
+                    <Documentaries page='3' tipo='filme'/>
+                    <Documentaries page='4' tipo='filme'/>
+                    <Documentaries page='5' tipo='filme'/>
                 </div>
             ):null}
 
             {component === 'ComedyMovies' ? (
                 <div className='moviesPageLatestMovies'>
-                    <ComedyMovies titulo='true' btn='false' page='1' tipo='serie'/>
-                    <ComedyMovies page='2' tipo='serie'/>
-                    <ComedyMovies page='3' tipo='serie'/>
-                    <ComedyMovies page='4' tipo='serie'/>
-                    <ComedyMovies page='5' tipo='serie'/>
+                    <ComedyMovies titulo='true' btn='false' page='1' tipo='filme'/>
+                    <ComedyMovies page='2' tipo='filme'/>
+                    <ComedyMovies page='3' tipo='filme'/>
+                    <ComedyMovies page='4' tipo='filme'/>
+                    <ComedyMovies page='5' tipo='filme'/>
                 </div>
             ):null}
 
@@ -139,4 +151,4 @@ function Series() {
     )
 }
 
-export default Series;
+export default Movies;

@@ -1,14 +1,11 @@
-import React from "react";
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from 'react-router-dom';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import '/src/App.css';
 
-const  Lançamentos = ({page,titulo, btn, tipo}) => {
-  const [pagina, setPagina] = useState(page);
-  
+
+const  PopularMovies = ({page,titulo, btn, tipo}) => {
   const [moviesDetails, setMoviesDetails] = useState([]);
   const newDate = new Date().toISOString().split('T')[0];
   const apiKey = "df087968ddf338b4ac0f9876af17f739";
@@ -39,7 +36,7 @@ const  Lançamentos = ({page,titulo, btn, tipo}) => {
     10752: 'Guerra',
     37: 'Faroeste'
   };
-  
+
   const handleClick = (e) => {
     const valor = e.target.attributes.value.value;
     navigate(`/Page/${valor}/${type}`);
@@ -60,56 +57,50 @@ const  Lançamentos = ({page,titulo, btn, tipo}) => {
     
     const fetchMovies = async () => {
       if (type === 'filme') {
-        try {
-          const lançamentos = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&primary_release_date.gte=${newDate}&sort=primary_release_date.desc&language=pt-BR&include_image_language=pt&page=${pagina}`);
+        try{
+          const lançamentos = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR&include_image_language=pt&page=${page}`);
           const data = await lançamentos.json();
           setMoviesDetails(data.results);
-          setType('filme')
         } catch (error) {
           console.log(error);
         }
       }else{
-        try {
-          const lançamentos = await fetch(`https://api.themoviedb.org/3/tv/on_the_air?api_key=${apiKey}&language=pt-BR&page=${page}`);
+        try{
+          const lançamentos = await fetch(`https://api.themoviedb.org/3/tv/popular?api_key=${apiKey}`);
           const data = await lançamentos.json();
           setMoviesDetails(data.results);
-          setType('serie')
         } catch (error) {
           console.log(error);
         }
-      }
+      }    
     }
-       
+    
     fetchMovies();
-
   },[type])
-
-  return autorizado ? (
-    <div className="lançamentosDiv">
+  
+  return autorizado ?(
+    <div>
         <div className="container-movies" ref={widthApp}>
+        
           {titulo === 'true' ? (
-            <h1>Lançamentos</h1>
+            <h1>Populares</h1>
           ): null}
-
-          <hr></hr>
+          <hr className="linha-titulo"></hr>
           {btn === 'true' ? (
               <div className="btns-movie-serie">
                 <button value='filme' onClick={defTipo}>Filmes</button>
                 <button value='serie' onClick={defTipo}>Series</button>
             </div>
           ) : null}
+
           <motion.div className="img-carrosel" drag="x" dragConstraints={{ right: 0, left: -telaWidth }} ref={widthCarrosel}>
 
             {moviesDetails.map((movie) => (
               <div className="movies-container" >
-                <div className="movies-img"  onClick={handleClick}><img value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/></div>
+                <div className="movies-img" onClick={handleClick}><img value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/></div>
                 <div className="movies-details">
                   <div className="details">
-                    {movie.title ? (
-                      <h2>{movie.title}</h2>
-                    ): (
-                      <h2>{movie.name}</h2>
-                    )}
+                    <h2>{movie.title}</h2>
                     <div className="generos">
                       <p>{moviesGenres[movie.genre_ids[0]]}</p>
                       <p>|</p>
@@ -123,9 +114,9 @@ const  Lançamentos = ({page,titulo, btn, tipo}) => {
           </motion.div>
         </div>
       </div>
-  ): null;
+  ) : null;
 }
 
 
 
-export default Lançamentos;
+export default PopularMovies;

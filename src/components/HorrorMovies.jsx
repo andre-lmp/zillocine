@@ -5,10 +5,12 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
-const  Populares = ({page,titulo, btn, tipo}) => {
+const  HorrorMovies = ({page,titulo, btn, tipo}) => {
   const [moviesDetails, setMoviesDetails] = useState([]);
   const newDate = new Date().toISOString().split('T')[0];
   const apiKey = "df087968ddf338b4ac0f9876af17f739";
+  const apiUrl = "https://api.themoviedb.org/3/discover/movie";
+  const generoterror = 27;
   const [telaWidth, setTelaWidth] = useState();
   const widthCarrosel = useRef();
   const widthApp = useRef();
@@ -45,7 +47,7 @@ const  Populares = ({page,titulo, btn, tipo}) => {
   const defTipo = (e) => {
     setType(e.target.value);
   }
-  
+
   useEffect(() => {
     const delay = setTimeout(() => {
       setAutorizado(true);
@@ -54,36 +56,39 @@ const  Populares = ({page,titulo, btn, tipo}) => {
     const setwidth = setTimeout(() => {
       setTelaWidth(widthCarrosel.current?.scrollWidth - widthApp.current?.offsetWidth);
     }, 2000);
-    
+
     const fetchMovies = async () => {
       if (type === 'filme') {
         try{
-          const lançamentos = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR&include_image_language=pt&page=${page}`);
+          const lançamentos = await fetch(`${apiUrl}?api_key=${apiKey}&with_genres=${generoterror}&language=pt-BR&include_image_language=pt&page=${page}`);
           const data = await lançamentos.json();
           setMoviesDetails(data.results);
+          setType('filme');
         } catch (error) {
           console.log(error);
         }
-      }else{
-        try{
-          const lançamentos = await fetch(`https://api.themoviedb.org/3/tv/popular?api_key=${apiKey}`);
-          const data = await lançamentos.json();
-          setMoviesDetails(data.results);
-        } catch (error) {
-          console.log(error);
+      } else{
+          try{
+            const lançamentos = await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&with_genres=9648&page=${page}`);
+            const data = await lançamentos.json();
+            setMoviesDetails(data.results);
+            setType('serie');
+          } catch (error) {
+            console.log(error);
+          }
         }
-      }    
     }
-    
     fetchMovies();
+    
+    
   },[type])
-  
+
   return autorizado ?(
     <div>
         <div className="container-movies" ref={widthApp}>
-        
+
           {titulo === 'true' ? (
-            <h1>Populares</h1>
+            <h1>terror</h1>
           ): null}
           <hr className="linha-titulo"></hr>
           {btn === 'true' ? (
@@ -100,7 +105,11 @@ const  Populares = ({page,titulo, btn, tipo}) => {
                 <div className="movies-img" onClick={handleClick}><img value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/></div>
                 <div className="movies-details">
                   <div className="details">
-                    <h2>{movie.title}</h2>
+                  {movie.title ? (
+                      <h2>{movie.title}</h2>
+                    ): (
+                      <h2>{movie.name}</h2>
+                    )}
                     <div className="generos">
                       <p>{moviesGenres[movie.genre_ids[0]]}</p>
                       <p>|</p>
@@ -119,4 +128,4 @@ const  Populares = ({page,titulo, btn, tipo}) => {
 
 
 
-export default Populares;
+export default HorrorMovies;
