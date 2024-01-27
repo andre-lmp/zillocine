@@ -42,7 +42,7 @@ header{
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
-  transition: height .8s linear;
+  transition: opacity .2s linear;
 }
 
 .div-menu{
@@ -145,6 +145,65 @@ header{
   background-color: transparent;
 }
 
+.search-bar-container{
+  width: 100%;
+  height: 150px;
+  background-image: linear-gradient(to bottom, var(--color-black), var(--color-black), transparent);
+  position: fixed;
+  top: 0;
+  transform: translateY(-100%);
+  transition: transform .3s ease-in-out;
+  z-index: 150;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.opacity-div{
+  position: absolute;
+  width: 100%;
+  min-height: 100vh;
+  background-color: black;
+  opacity: 0;
+  z-index: -200;
+  transition: opacity .3s ease-in-out;
+}
+
+.inputSearch{
+  width: 100%;
+  padding: 5px;
+  font: 400 14pt 'Noto Sans', sans-serif;
+  box-sizing: border-box;
+  background-color: transparent;
+  border: none;
+  color: var(--color-white);
+}
+
+.inputSearch::placeholder{
+  color: rgb(255,255,255,.7);
+  font-weight: 400;
+}
+
+.Search-input-container{
+  width: 70%;
+  border: 1pt solid var(--color-red);
+  border-radius: 40px;
+  padding: 5px 20px;
+  display: flex;
+  gap: 1rem;
+  flex-direction: row;
+  align-items: center;
+}
+
+.xmark-icon-input{
+  color: rgb(255,255,255,.7);
+  font-size: 2.2em;
+}
+
+.xmark-icon-input:hover{
+  color: var(--color-white);
+}
+
 .header-links{
   width: 100%;
   padding-bottom: 30px;
@@ -244,7 +303,7 @@ header button{
 }
 
 .lupa-icon{
-  font-size: 1.2em;
+  font-size: 1.5em;
   cursor: pointer;
   color: rgb(255,255,255,.7);
 }
@@ -309,7 +368,7 @@ header button{
 }
 
 #icon{
-  font-size: 1.5em;
+  font-size: 1.8em;
   border-radius: 100%;
   color: var(--color-white);
 }
@@ -478,7 +537,6 @@ hr{
 .btn-play-page{
   min-width: 60px;
   min-height: 60px;
-  font-size: 1em;
 }
 
 .about-movie{
@@ -567,7 +625,7 @@ hr{
   padding-top: 200px;
   display: flex;
   flex-direction: column;
-  row-gap: 3rem;
+  row-gap: 2rem;
 }
 
 .moviesPageLançamentos{
@@ -579,6 +637,7 @@ hr{
 .barraGeneros{
   width: 90%;
   margin: auto;
+  z-index: 20;
 }
 
 .barraGeneros ul{
@@ -762,6 +821,11 @@ hr{
   .lupa-icon{
     display: none;
   }
+
+  #search-icon-bar{
+    display: block;
+  }
+
   .btn-header{
     display: none;
   }
@@ -803,6 +867,16 @@ hr{
   .about-movie-text p{
     font-size: 1.15em;
     line-height: 150%;
+  }
+  .movieDetails #btn-play{
+    border: 2px solid var(--color-white);
+  }
+  .inputSearch{
+    font-size: 12pt;
+  }
+  .imgIndex ul li{
+    width: 7px;
+    height: 7px;
   }
 
 }
@@ -854,7 +928,10 @@ hr{
     font-size: 1.5em;
   }
   #icon{
-    font-size: 1em;
+    font-size: 1.7em;
+  }
+  .movieDetails #btn-play{
+    border: 1.4pt solid var(--color-white);
   }
   .movieDetails{
     margin-left: 30px;

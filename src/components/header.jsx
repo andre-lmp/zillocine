@@ -1,11 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import '/src/App.css';
-import {FaSearch} from "react-icons/fa";
+import { LuPlay, LuSearch } from "react-icons/lu";
 import { transform } from "typescript";
+import Search from "/src/components/SearchBar";
 
 function Header() {
   const movieIds = [603692, 346698, 298618, 507089];
@@ -29,6 +28,8 @@ function Header() {
   const [indexImg2, setIndexImg2] = useState();
   const [indexImg3, setIndexImg3] = useState();
   const [indexImg4, setIndexImg4] = useState();
+  const AppRef = useRef();
+  const [hideBar, setHideBar] = useState(true);
 
   const btnNavigate = (e) => {
     console.log(e);
@@ -48,6 +49,21 @@ function Header() {
       setBtnAtivo('btnAtivo')
     }else{
       setBtnAtivo('btnDesativado')
+    }
+  }
+
+  const HandleHideChange = (newValue) => {
+    setHideBar(newValue);
+    AppRef.current.style.opacity = '0';
+    AppRef.current.style.zIndex = '0';
+  }
+
+  const hideBarSearch = () => {
+    if (hideBar === true) {
+      setBtnAtivo('desativado');
+      setHideBar(false);
+      AppRef.current.style.opacity = '.5';
+      AppRef.current.style.zIndex = '100';
     }
   }
 
@@ -115,7 +131,9 @@ function Header() {
   
   return autorizado ? (
     <main id="header-main">
+      <   div ref={AppRef} className="opacity-div"></div>
           <div className="header-links">
+            <Search onValueChange={HandleHideChange} hide={hideBar}/>
             <div className='links-content'>
               <div id="btn-filmes-series" className="link-icons">
                 <button onClick={btnClick} className="btn-menu">|||</button>
@@ -128,7 +146,7 @@ function Header() {
               </div>
 
               <div className='link-icons'>
-                <FaSearch className='lupa-icon'/>
+                <LuSearch onClick={hideBarSearch} className='lupa-icon'/>
                 <div className="button-header-div">
                   <button className="icon-conta" id='Perfil' onClick={btnNavigate}>C</button>
                   <h3 id="Perfil" onClick={btnNavigate}>Conta</h3>
@@ -145,6 +163,7 @@ function Header() {
             <li><p id="Filmes" onClick={btnNavigate}>Filmes</p></li>
             <li><p id="Series" onClick={btnNavigate}>Series</p></li>
             <li><p id="Perfil" onClick={btnNavigate}>Conta</p></li>
+            <li><p onClick={hideBarSearch}>Pesquisar</p></li>
           </ul>
         </div>
 
@@ -165,7 +184,7 @@ function Header() {
                         <div className="movieDetails">
                           <h1>{movie.title}</h1>
                           <p>{movie.tagline}</p>
-                          <button onClick={handleClick} value={movie.id} id="btn-play"><FontAwesomeIcon onClick={handleClick} value={movie.id} id="icon" icon={faPlay}/></button>
+                          <button onClick={handleClick} value={movie.id} id="btn-play"><LuPlay onClick={handleClick} value={movie.id} id="icon" /></button>
                         </div>
                         <div className='header-fim'></div>
                   </div>

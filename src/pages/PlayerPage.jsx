@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef} from "react";
 import { useParams } from "react-router-dom";
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
-import {FaSearch} from "react-icons/fa";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import '/src/App.css';
+import { LuPlay, LuSearch } from "react-icons/lu";
+import Search from "/src/components/SearchBar";
 
 function PlayerPage() {
   const {id, type} = useParams();
@@ -18,6 +17,8 @@ function PlayerPage() {
   const [ativo2, setAtivo2] = useState('desativado');
   const [imgUrl, setImgUrl] = useState("https://image.tmdb.org/t/p/original");
   const [btnAtivo, setBtnAtivo] = useState('btnDesativado');
+  const [hideBar, setHideBar] = useState(true);
+  const AppRef = useRef();
   const handleClick = () => {
     setAtivo('ativo');
     setAtivo2('ativo2')
@@ -34,12 +35,27 @@ function PlayerPage() {
   const btnNavigate = (e) => {
     console.log(e);
     navigate(`/${e.target.id}`)
-}
+  }
+
+  const HandleHideChange = (newValue) => {
+    setHideBar(newValue);
+    AppRef.current.style.opacity = '0';
+    AppRef.current.style.zIndex = '-200';
+  }
+
+  const hideBarSearch = () => {
+    if (hideBar === true) {
+      setBtnAtivo('desativado');
+      setHideBar(false);
+    AppRef.current.style.opacity = '.5';
+    AppRef.current.style.zIndex = '100';
+    }
+  }
 
   useEffect(() => {
     const delay = setTimeout(() => {
       setAutorizado(true);
-    }, 1000);
+    }, 2000);
 
     const fetchMovies = async () => {
       if (type === 'filme') {
@@ -74,10 +90,15 @@ function PlayerPage() {
             <li><p id="Filmes" onClick={btnNavigate}>Filmes</p></li>
             <li><p id="Series" onClick={btnNavigate}>Series</p></li>
             <li><p id="Perfil" onClick={btnNavigate}>Conta</p></li>
+            <li><p onClick={hideBarSearch}>Pesquisar</p></li>
           </ul>
-        </div>
+      </div>
+
+      <Search onValueChange={HandleHideChange} hide={hideBar}/>
+    
 
       <header ref={headerContainer}>
+        <div ref={AppRef} className='opacity-div'></div>
         <div className="header-links">
             <div className='links-content'>
               <div id="btn-filmes-series" className="link-icons">
@@ -91,7 +112,7 @@ function PlayerPage() {
               </div>
 
               <div className='link-icons'>
-                <FaSearch className='lupa-icon'/>
+                <LuSearch onClick={hideBarSearch} className='lupa-icon'/>
                 <div className="button-header-div">
                   <button id="Perfil" onClick={btnNavigate}>C</button>
                   <h3 id="Perfil" onClick={btnNavigate}>Conta</h3>
@@ -123,7 +144,7 @@ function PlayerPage() {
                       <p>Subtitulo indisponivel</p>
                     )}
 
-                    <button className="btn-play-page" id="btn-play" onClick={handleClick}><FontAwesomeIcon className="btn-icon-page" id="icon" icon={faPlay}/></button>
+                    <button className="btn-play-page" id="btn-play" onClick={handleClick}><LuPlay className="btn-icon-page" id="icon"/></button>
                   </div>
                   <div className='header-fim'></div>
                 </div>

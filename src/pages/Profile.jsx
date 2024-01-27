@@ -1,14 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from "react-router-dom";
-import {FaSearch} from "react-icons/fa";
+import { LuSearch } from "react-icons/lu";
 import BackgroundProfile from '/src/images/BackgroundProfile.png';
+import Search from "/src/components/SearchBar";
 
 function ProfilePage() {
     const [autorizado, setAutorizado] = useState(false);
     const navigate = useNavigate();
     const [btnAtivo, setBtnAtivo] = useState('btnDesativado');
+    const [hideBar, setHideBar] = useState(true);
+    const AppRef = useRef();
 
     const delay = setTimeout(() => {
         setAutorizado(true);
@@ -27,8 +30,24 @@ function ProfilePage() {
         navigate(`/${e.target.id}`)
     }
 
+    const HandleHideChange = (newValue) => {
+        setHideBar(newValue);
+        AppRef.current.style.opacity = '0';
+        AppRef.current.style.zIndex = '-200';
+    }
+    
+    const hideBarSearch = () => {
+        if (hideBar === true) {
+          setBtnAtivo('desativado');
+          setHideBar(false);
+        AppRef.current.style.opacity = '.5';
+        AppRef.current.style.zIndex = '100';
+        }
+    }
+
     return autorizado ?(
         <main className="perfilContainer">
+            <div ref={AppRef} className='opacity-div'></div>
             <div className="div-menu" id={btnAtivo}>
                 <ul>
                     <li><button onClick={btnClick}><h1 id="p-1">/</h1><h1 id="p-2">\</h1></button></li>
@@ -36,8 +55,11 @@ function ProfilePage() {
                     <li><p id="Filmes" onClick={btnNavigate}>Filmes</p></li>
                     <li><p id='Series' onClick={btnNavigate}>Series</p></li>
                     <li><p id="Perfil" onClick={btnNavigate}>Conta</p></li>
+                    <li><p onClick={hideBarSearch}>Pesquisar</p></li>
                 </ul>
             </div>
+
+            <Search onValueChange={HandleHideChange} hide={hideBar}/>
 
             <div className="header-links">
                 <div className='links-content'>
@@ -52,7 +74,7 @@ function ProfilePage() {
                     </div>
 
                     <div className='link-icons'>
-                        <FaSearch className='lupa-icon'/>
+                        <LuSearch onClick={hideBarSearch} className='lupa-icon'/>
                         <div className="button-header-div">
                         <button>C</button>
                         <h3>Conta</h3>

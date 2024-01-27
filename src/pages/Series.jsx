@@ -5,7 +5,8 @@ import Documentaries from '/src/components/Documentaries';
 import ComedyMovies from '/src/components/ComedyMovies';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef} from "react";
-import {FaSearch} from "react-icons/fa";
+import { LuSearch } from "react-icons/lu";
+import Search from "/src/components/SearchBar";
 import '/src/App.css';
 
 function Series() {
@@ -13,6 +14,8 @@ function Series() {
     const navigate = useNavigate();
     const [autorizado, setAutorizado] = useState(false);
     const [component, setComponent] = useState('LatestMovies');
+    const [hideBar, setHideBar] = useState(true);
+    const AppRef = useRef();
 
     const btnClick = () => {
         if (btnAtivo === 'btnDesativado'){
@@ -32,6 +35,21 @@ function Series() {
         navigate(`/${e.target.id}`)
     }
 
+    const HandleHideChange = (newValue) => {
+        setHideBar(newValue);
+        AppRef.current.style.opacity = '0';
+        AppRef.current.style.zIndex = '-200';
+    }
+
+    const hideBarSearch = () => {
+        if (hideBar === true) {
+          setBtnAtivo('desativado');
+          setHideBar(false);
+        AppRef.current.style.opacity = '.5';
+        AppRef.current.style.zIndex = '100';
+        }
+    }
+
     useEffect(() => {
         const delay = setTimeout(() => {
             setAutorizado(true);
@@ -40,6 +58,7 @@ function Series() {
 
     return(
         <main className="moviesPageContainer">
+            <div ref={AppRef} className='opacity-div'></div>
             <div className="div-menu" id={btnAtivo}>
                 <ul>
                     <li><button onClick={btnClick}><h1 id="p-1">/</h1><h1 id="p-2">\</h1></button></li>
@@ -47,8 +66,11 @@ function Series() {
                     <li><p id='Series' onClick={btnNavigate}>Series</p></li>
                     <li><p id='Filmes' onClick={btnNavigate}>Filmes</p></li>
                     <li><p id='Perfil' onClick={btnNavigate}>Conta</p></li>
+                    <li><p onClick={hideBarSearch}>Pesquisar</p></li>
                 </ul>
             </div>
+
+            <Search onValueChange={HandleHideChange} hide={hideBar}/>
 
             <div className="header-links">
                 <div className='links-content'>
@@ -63,7 +85,7 @@ function Series() {
                     </div>
 
                     <div className='link-icons'>
-                        <FaSearch className='lupa-icon'/>
+                        <LuSearch onClick={hideBarSearch} className='lupa-icon'/>
                         <div className="button-header-div">
                         <button  id='Perfil' onClick={btnNavigate}>C</button>
                         <h3 id='Perfil' onClick={btnNavigate}>Conta</h3>
