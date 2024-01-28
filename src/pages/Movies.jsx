@@ -17,6 +17,8 @@ function Movies() {
     const [component, setComponent] = useState('LatestMovies');
     const [hideBar, setHideBar] = useState(true);
     const AppRef = useRef();
+    const HeightMovies = useRef();
+    const [heightPageMovies, setHeightPageMovies] = useState(); 
 
     const btnClick = () => {
         if (btnAtivo === 'btnDesativado'){
@@ -39,26 +41,32 @@ function Movies() {
     const HandleHideChange = (newValue) => {
         setHideBar(newValue);
         AppRef.current.style.opacity = '0';
-        AppRef.current.style.zIndex = '0';
+        AppRef.current.style.zIndex = '-200';
     }
 
     const hideBarSearch = () => {
         if (hideBar === true) {
           setBtnAtivo('desativado');
           setHideBar(false);
-          AppRef.current.style.opacity = '.5';
+          AppRef.current.style.opacity = '.9';
           AppRef.current.style.zIndex = '100';
+          AppRef.current.style.height = `${heightPageMovies}px`;
         }
     }
+
+    const GetHeight = setTimeout(() => {
+        setHeightPageMovies(HeightMovies.current?.scrollHeight);
+    }, 2000);
 
     useEffect(() => {
         const delay = setTimeout(() => {
             setAutorizado(true);
-          }, 1000);
+        }, 1000);
+        
     },[]);
 
     return(
-        <main className="moviesPageContainer">
+        <main ref={HeightMovies} className="moviesPageContainer">
             <div ref={AppRef} className='opacity-div'></div>
             <div className="div-menu" id={btnAtivo}>
                 <ul>

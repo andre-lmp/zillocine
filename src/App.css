@@ -25,7 +25,7 @@ body{
 }
 
 ::-webkit-scrollbar{
-  width: 10px;
+  width: 9px;
 }
 
 ::-webkit-scrollbar-thumb{
@@ -145,6 +145,10 @@ header{
   background-color: transparent;
 }
 
+.search-container-main{
+  overflow-y: auto;
+}
+
 .search-bar-container{
   width: 100%;
   height: 150px;
@@ -153,14 +157,115 @@ header{
   top: 0;
   transform: translateY(-100%);
   transition: transform .3s ease-in-out;
-  z-index: 150;
   display: flex;
   justify-content: center;
+  align-items: center;
+  z-index: 240;
+}
+
+.container-result{
+  width: 80%;
+  left: 50%;
+  position: absolute;
+  display: flex;
+  top: 150px;
+  flex-direction: column;
+  row-gap: 3rem;
+  z-index: -200;
+  transform: translateX(-50%);
+  overflow-y: scroll;
+}
+
+.container-result::-webkit-scrollbar{
+  width: 6px;
+}
+
+.container-result h1{
+  color: var(--color-white);
+  font: 500 1.5em "Raleway", sans-serif;
+}
+
+#line-result-titulo{
+  background-color: var(--color-white);
+}
+
+.result-container-movies{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.img-result-container{
+  min-width: 130px;
+  height: 160px;
+}
+
+.img-result-container img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.result-movies-info{
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  row-gap: .5rem;
+  justify-content: space-between;
+  padding: 2px 0px;
+}
+
+.result-info-avaliação{
+  display: flex;
+  flex-direction: column;
+  row-gap: .3rem;
+}
+
+.result-movies-info h2{
+  font: 500 1.5em "Raleway", sans-serif;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+}
+
+.result-info-avaliação h3{
+  color: var(--color-red);
+  font: 500 1.2em 'Raleway', sans-serif;
+}
+
+.info-avaliação-div{
+  display: flex;
+  flex-direction: row;
+  gap: .5rem;
+}
+
+.star-icon-avaliação{
+  font-size: 1em;
+}
+
+.descrição-movies-result{
+  font: 400 1em 'Noto Sans', sans-serif;
+  color: rgb(255,255,255,.8);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+}
+
+.info-avaliação-div p{
+  color: rgb(255,255,255,.9);
+  font: 400 .9em 'Roboto', sans-serif;
+  display: flex;
   align-items: center;
 }
 
 .opacity-div{
-  position: absolute;
+  position: fixed;
+  top: 0;
   width: 100%;
   min-height: 100vh;
   background-color: black;
@@ -396,7 +501,7 @@ header button{
   background-image: linear-gradient(to top, var(--color-black), transparent);
 }
 
-hr{
+.container-movies hr, .about-movie hr{
   width: 100%;
   background-image: linear-gradient(to right, var(--color-red), transparent);
   border: none;
@@ -473,7 +578,7 @@ hr{
   width: 100%;
   height: 250px;
   border: 3px solid transparent;
-  opacity: .9;
+  opacity: .8;
   transition: all .1s ease-in;
 }
 
@@ -520,7 +625,7 @@ hr{
 }
 
 .p{
-  color: red;
+  color: var(--color-red)
 }
 
 .movies-details h2{
@@ -531,7 +636,7 @@ hr{
 .page-container{
   display: flex;
   flex-direction: column;
-  row-gap: 5rem;
+  row-gap: 0rem;
 }
 
 .btn-play-page{
@@ -540,7 +645,7 @@ hr{
 }
 
 .about-movie{
-  margin-top: -10px;
+  margin-top: 100px;
   padding: 0px 30px 100px 50px;
 }
 
@@ -793,13 +898,16 @@ hr{
     flex-direction: column;
     row-gap: 5rem;
   }
-
   .carrosel-header{
     transition: transform 1s ease-in-out;
   }
-  
+  .descrição-movies-result{
+    -webkit-line-clamp: 2;
+  }
+  .about-movie{
+    margin-top: 80px;
+  }
 }
-
 
 @media screen and (max-width: 700px) {
   .header-links{
@@ -862,7 +970,7 @@ hr{
 
   .about-movie{
     padding-left: 20px;
-    margin-top: -30px;
+    margin-top: 70px;
   }
   .about-movie-text p{
     font-size: 1.15em;
@@ -877,6 +985,12 @@ hr{
   .imgIndex ul li{
     width: 7px;
     height: 7px;
+  }
+  .result-movies-info h2{
+    font-size: 1.3em;
+  }
+  .descrição-movies-result{
+    -webkit-line-clamp: 1;
   }
 
 }
@@ -915,6 +1029,13 @@ hr{
   .dadosCadastroContainer{
     margin: 90px auto 50px auto;
   }
+  .container-result::-webkit-scrollbar{
+    display: none;
+  }
+  .about-movie{
+    margin-top: 60px;
+  }
+  
 }
 
 @media screen and (max-width: 500px) {
@@ -936,7 +1057,13 @@ hr{
   .movieDetails{
     margin-left: 30px;
   }
-  
+  .result-movies-info h2{
+    font-size: 1.1em;
+    -webkit-line-clamp: 2;
+  } 
+  .about-movie{
+    margin-top: 50px;
+  }
 }
 
 

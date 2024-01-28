@@ -6,6 +6,7 @@ import ComedyMovies from "/src/components/ComedyMovies";
 import Documentaries from "/src/components/Documentaries";
 
 function Main() {
+
   return(
     <div id="movies-container-main">
       <LatestMovies page='1' titulo='true' btn='true' tipo='filme'/>

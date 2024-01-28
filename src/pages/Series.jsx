@@ -45,7 +45,7 @@ function Series() {
         if (hideBar === true) {
           setBtnAtivo('desativado');
           setHideBar(false);
-        AppRef.current.style.opacity = '.5';
+        AppRef.current.style.opacity = '.9';
         AppRef.current.style.zIndex = '100';
         }
     }

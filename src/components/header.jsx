@@ -6,7 +6,7 @@ import { LuPlay, LuSearch } from "react-icons/lu";
 import { transform } from "typescript";
 import Search from "/src/components/SearchBar";
 
-function Header() {
+function Header({HeightScroll}) {
   const movieIds = [603692, 346698, 298618, 507089];
   const [moviesDetails, setMoviesDetails] = useState([]);
   const apiKey = "df087968ddf338b4ac0f9876af17f739";
@@ -30,6 +30,7 @@ function Header() {
   const [indexImg4, setIndexImg4] = useState();
   const AppRef = useRef();
   const [hideBar, setHideBar] = useState(true);
+  const ContainerHeader = useRef();
 
   const btnNavigate = (e) => {
     console.log(e);
@@ -55,15 +56,16 @@ function Header() {
   const HandleHideChange = (newValue) => {
     setHideBar(newValue);
     AppRef.current.style.opacity = '0';
-    AppRef.current.style.zIndex = '0';
+    AppRef.current.style.zIndex = '-200';
   }
 
   const hideBarSearch = () => {
     if (hideBar === true) {
       setBtnAtivo('desativado');
       setHideBar(false);
-      AppRef.current.style.opacity = '.5';
+      AppRef.current.style.opacity = '.9';
       AppRef.current.style.zIndex = '100';
+      AppRef.current.style.height = `${HeightScroll}px`;
     }
   }
 
@@ -130,7 +132,7 @@ function Header() {
   },[])
   
   return autorizado ? (
-    <main id="header-main">
+    <main ref={ContainerHeader} id="header-main">
       <   div ref={AppRef} className="opacity-div"></div>
           <div className="header-links">
             <Search onValueChange={HandleHideChange} hide={hideBar}/>

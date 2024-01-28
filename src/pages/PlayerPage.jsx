@@ -47,15 +47,15 @@ function PlayerPage() {
     if (hideBar === true) {
       setBtnAtivo('desativado');
       setHideBar(false);
-    AppRef.current.style.opacity = '.5';
+    AppRef.current.style.opacity = '.9';
     AppRef.current.style.zIndex = '100';
     }
   }
 
   useEffect(() => {
-    const delay = setTimeout(() => {
+    const Delay = setTimeout(() => {
       setAutorizado(true);
-    }, 2000);
+    }, 2000)
 
     const fetchMovies = async () => {
       if (type === 'filme') {
@@ -71,12 +71,12 @@ function PlayerPage() {
           const movieDetail = await fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}&language=pt-BR&page=1&language=pt-BR&include_image_language=pt&append_to_response=videos`);
           const data = await movieDetail.json();
           setMoviesDetails(data);
-          console.log(data);
         } catch (error) {
           console.log(error);
         }
       }
     }
+
     fetchMovies();
   },[]);
   
@@ -95,7 +95,6 @@ function PlayerPage() {
       </div>
 
       <Search onValueChange={HandleHideChange} hide={hideBar}/>
-    
 
       <header ref={headerContainer}>
         <div ref={AppRef} className='opacity-div'></div>
@@ -124,8 +123,8 @@ function PlayerPage() {
 
         <div className='header-images'>
           <div className="carrosel-header">
-                <div className='carrosel-img' id={ativo}>
-                  {moviesDetails.backdrop_path !== null ? (
+                <div className="carrosel-img" id={ativo}>
+                  { moviesDetails.backdrop_path !== null ? (
                     <img src={`${imgUrl}${moviesDetails.backdrop_path}`}/>
                   ) : (
                     <img src={`${imgUrl}${moviesDetails.poster_path}`}/>
