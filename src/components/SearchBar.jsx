@@ -13,6 +13,10 @@ function Search({hide, onValueChange}) {
     const main = useRef();
     const SearchBar = useRef();
     const Navigate = useNavigate();
+    const btnMovies = useRef();
+    const btnSeries = useRef();
+    const [type, setType] = useState('filme');
+    const [typeContent, setTypeContent] = useState('filme');
 
     const handleInputChange = (e) => {
         let value = e.target.value;
@@ -32,31 +36,69 @@ function Search({hide, onValueChange}) {
     const SearchNavigate = (e) => {
         const idMovie = e.target.id;
         console.log(e);
-        Navigate(`/Page/${idMovie}/filme`);
+        Navigate(`/Page/${idMovie}/${typeContent}`);
+        onValueChange(true);
     }
 
+    const btnClickMovies = () => {
+        setType('filme');
+        btnMovies.current.style.border = '1pt solid white';
+        btnSeries.current.style.border = '1pt solid red';
+    };
+
+    const btnClickSeries = () => {
+        setType('serie');
+        btnSeries.current.style.border = '1pt solid white';
+        btnMovies.current.style.border = '1pt solid red';
+    }
 
     useEffect(() => {
-
-        const fetchMovies = async () => {
-            try{
-                const response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=pt-BR&query=${searchTerm}`);
-                const data = await response.json();
-                if (Search) {
-                    setSearchResult(data.results);
-                }else{
-                    setSearchResult([]);
+        if (type === 'filme') {
+            const fetchMovies = async () => {
+                try{
+                    const response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=pt-BR&query=${searchTerm}`);
+                    const data = await response.json();
+                    if (Search) {
+                        setSearchResult(data.results);
+                    }else{
+                        setSearchResult([]);
+                    }
+                }catch (error) {
+                    console.log(error);
                 }
-            }catch (error) {
-                console.log(error);
             }
+
+            if (searchTerm.length > 2) {
+                fetchMovies();
+                Search = true;
+                resultContainer.current.style.height = `450%`;
+            }
+
+            setTypeContent('filme');
+        }else{
+            const fetchMovies = async () => {
+                try{
+                    const response = await fetch(`https://api.themoviedb.org/3/search/tv?api_key=${apiKey}&language=pt-BR&query=${searchTerm}`);
+                    const data = await response.json();
+                    if (Search) {
+                        setSearchResult(data.results);
+                    }else{
+                        setSearchResult([]);
+                    }
+                }catch (error) {
+                    console.log(error);
+                }
+            }
+
+            if (searchTerm.length > 2) {
+                fetchMovies();
+                Search = true;
+                resultContainer.current.style.height = `450%`;
+            }
+
+            setTypeContent('serie');
         }
 
-        if (searchTerm.length > 2) {
-            fetchMovies();
-            Search = true;
-            resultContainer.current.style.height = `450%`;
-        }
 
         if (hide === true) {
             setSearchTerm('');
@@ -69,7 +111,7 @@ function Search({hide, onValueChange}) {
             setSearchResult([]);
         }
 
-    },[searchTerm, hide]);
+    },[searchTerm, hide, type]);
 
     return(
         <main ref={main} className="search-container-main">
@@ -78,6 +120,15 @@ function Search({hide, onValueChange}) {
                     <LuSearch id="search-icon-bar" className="lupa-icon"/>
                     <input value={searchTerm} onChange={handleInputChange} type="text" className="inputSearch" placeholder="O que voce está procurando ?"></input>
                     <HiXMark onClick={() => onValueChange(true)} className="xmark-icon-input"/>
+                </div>
+                <div className="Search-options">
+                    <label>
+                        <button ref={btnMovies} onClick={btnClickMovies}>Filmes</button>
+                    </label>
+
+                    <label>
+                        <button ref={btnSeries} onClick={btnClickSeries} >Series</button>
+                    </label>
                 </div>
             </div>
 

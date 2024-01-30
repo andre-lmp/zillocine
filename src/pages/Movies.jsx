@@ -74,8 +74,8 @@ function Movies() {
                     <li><p id='' onClick={btnNavigate}>Inicio</p></li>
                     <li><p id='Series' onClick={btnNavigate}>Series</p></li>
                     <li><p id='Filmes' onClick={btnNavigate}>Filmes</p></li>
-                    <li><p id='Perfil' onClick={btnNavigate}>Conta</p></li>
                     <li><p onClick={hideBarSearch}>Pesquisar</p></li>
+                    <li><p id='Perfil' onClick={btnNavigate}>Conta</p></li>
                 </ul>
             </div>
 

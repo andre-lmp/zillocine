@@ -53,7 +53,7 @@ function Series() {
     useEffect(() => {
         const delay = setTimeout(() => {
             setAutorizado(true);
-          }, 1000);
+        }, 1000);
     },[]);
 
     return(
@@ -65,8 +65,8 @@ function Series() {
                     <li><p id='' onClick={btnNavigate}>Inicio</p></li>
                     <li><p id='Series' onClick={btnNavigate}>Series</p></li>
                     <li><p id='Filmes' onClick={btnNavigate}>Filmes</p></li>
-                    <li><p id='Perfil' onClick={btnNavigate}>Conta</p></li>
                     <li><p onClick={hideBarSearch}>Pesquisar</p></li>
+                    <li><p id='Perfil' onClick={btnNavigate}>Conta</p></li>
                 </ul>
             </div>
 

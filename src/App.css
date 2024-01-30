@@ -161,6 +161,30 @@ header{
   justify-content: center;
   align-items: center;
   z-index: 240;
+  flex-direction: column;
+}
+
+.Search-options{
+  width: 70%;
+  padding: 20px 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.Search-options label{
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.Search-options label button{
+  font: 400 1.1em 'Roboto', sans-serif;
+  color: rgb(255,255,255,.8);
+  background-color: transparent;
+  border: 1pt solid var(--color-red);
+  border-radius: 20px;
+  padding: 1px 20px;
 }
 
 .container-result{
@@ -298,6 +322,7 @@ header{
   padding: 5px 20px;
   display: flex;
   gap: 1rem;
+  margin-top: 20px;
   flex-direction: row;
   align-items: center;
 }
@@ -490,9 +515,9 @@ header button{
 }
 
 .movieDetails p{
-  color: var(--color-white);
+  color: rgb(255,255,255,.95);
   line-height: 150%;
-  font: 500 1.2em "Roboto",sans-serif;
+  font: 400 1.2em "Noto Sans",sans-serif;
 }
 
 .header-fim{
@@ -612,7 +637,7 @@ header button{
 .generos{
   display: flex;
   flex-direction: row;
-  gap: 1rem;
+  gap: .7rem;
 }
 
 .generos p{
@@ -766,7 +791,7 @@ header button{
   outline: none;
 }
 
-.barraGeneros ul li button:hover{
+.barraGeneros ul li button:hover, .barraGeneros ul li button:focus{
   color: var(--color-white);
 }
 
@@ -954,9 +979,9 @@ header button{
     bottom: 0;
   }
 
-.movieDetails p{
-  font-size: 1.1em;
-}
+  .movieDetails p{
+    font-size: 1.1em;
+  }
 
   .movies-details h2{
     font-size: .9em;
@@ -1040,6 +1065,9 @@ header button{
   }
   .about-movie{
     margin-top: 60px;
+  }
+  .about-movie-text p{
+    font-size: 1.1em;
   }
   
 }
