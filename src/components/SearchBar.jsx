@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { LuSearch } from "react-icons/lu";
 import { HiXMark } from "react-icons/hi2";
 import { IoStar } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 function Search({hide, onValueChange}) {
     const [searchTerm, setSearchTerm] = useState('');
@@ -11,6 +12,7 @@ function Search({hide, onValueChange}) {
     let Search = false;
     const main = useRef();
     const SearchBar = useRef();
+    const Navigate = useNavigate();
 
     const handleInputChange = (e) => {
         let value = e.target.value;
@@ -26,6 +28,13 @@ function Search({hide, onValueChange}) {
             SearchBar.current.style.transform = 'translateY(-100%)';
         }
     }
+
+    const SearchNavigate = (e) => {
+        const idMovie = e.target.id;
+        console.log(e);
+        Navigate(`/Page/${idMovie}/filme`);
+    }
+
 
     useEffect(() => {
 
@@ -81,19 +90,19 @@ function Search({hide, onValueChange}) {
                 ):null}
                 {searchResult.map((movie) => (
                     <div className="result-container-movies">
-                        <div className="img-result-container">
+                        <div  className="img-result-container">
                             {movie.poster_path !== null ? (
-                                <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
+                                <img id={movie.id} onClick={SearchNavigate} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
                             ):(
-                                <img src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}/>
+                                <img id={movie.id} onClick={SearchNavigate} src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}/>
                             )}
                         </div>
 
                         <div className="result-movies-info">
                             {movie.title ? (
-                                <h2 className="pageTitle" >{movie.title}</h2>
+                                <h2 className="pageTitle" id={movie.id} onClick={SearchNavigate} >{movie.title}</h2>
                             ):(
-                                <h2 className="pageTitle">{movie.name}</h2>
+                                <h2 className="pageTitle" id={movie.id} onClick={SearchNavigate}>{movie.name}</h2>
                             )}
 
                             <div className="result-info-avaliação">

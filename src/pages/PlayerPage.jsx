@@ -138,9 +138,9 @@ function PlayerPage() {
                     )}
 
                     {moviesDetails.tagline ? (
-                      <p>{moviesDetails.tagline}</p>
+                      <p className="page-tagline">{moviesDetails.tagline}</p>
                     ):(
-                      <p>Subtitulo indisponivel</p>
+                      <p className="page-tagline">Subtitulo indisponivel</p>
                     )}
 
                     <button className="btn-play-page" id="btn-play" onClick={handleClick}><LuPlay className="btn-icon-page" id="icon"/></button>

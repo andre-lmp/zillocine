@@ -102,7 +102,13 @@ const  HorrorMovies = ({page,titulo, btn, tipo}) => {
 
             {moviesDetails.map((movie) => (
               <div className="movies-container" >
-                <div className="movies-img" onClick={handleClick}><img value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/></div>
+                <div className="movies-img" onClick={handleClick}>
+                  {movie.poster_path ? (
+                      <img value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
+                  ):(
+                      <img value={movie.id} src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}/>
+                  )}
+                </div>
                 <div className="movies-details">
                   <div className="details">
                   {movie.title ? (

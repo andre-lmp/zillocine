@@ -58,7 +58,7 @@ header{
 }
 
 #btnAtivo{
-  z-index: 105;
+  z-index: 195;
   transform: translateX(0);
 }
 
@@ -199,6 +199,7 @@ header{
 .img-result-container{
   min-width: 130px;
   height: 160px;
+  cursor: pointer;
 }
 
 .img-result-container img{
@@ -229,6 +230,7 @@ header{
   text-overflow: ellipsis;
   overflow: hidden;
   -webkit-box-orient: vertical;
+  cursor: pointer;
 }
 
 .result-info-avaliação h3{
@@ -257,7 +259,7 @@ header{
 }
 
 .info-avaliação-div p{
-  color: rgb(255,255,255,.9);
+  color: rgb(255,255,255,.8);
   font: 400 .9em 'Roboto', sans-serif;
   display: flex;
   align-items: center;
@@ -645,7 +647,7 @@ header button{
 }
 
 .about-movie{
-  margin-top: 100px;
+  margin-top: 80px;
   padding: 0px 30px 100px 50px;
 }
 
@@ -655,17 +657,17 @@ header button{
 }
 
 .about-movie-text h1{
-  font: 500 1.6em "Roboto", sans-serif;
+  font: 500 1.7em "Roboto", sans-serif;
   color: var(--color-white);
   margin-bottom: 20px;
   opacity: .9
 }
 
 .about-movie-text p{
-  font: 400 1.2em "Noto Sans", sans-serif;
+  font: 400 1.15em "Noto Sans", sans-serif;
   color: var(--color-white);
   max-width: 800px;
-  line-height: 130%;
+  line-height: 150%;
   opacity: .8
 }
 
@@ -678,7 +680,7 @@ header button{
   left: 0;
   z-index: 1;
   background-color: var(--color-black);
-  transition: transform .8s ease-out;
+  transition: transform .6s ease-out;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -694,7 +696,7 @@ header button{
 
 .player-page h1{
   color: var(--color-white);
-  font: 500 2.5em "Raleway", sans-serif;
+  font: 500 2.3em "Raleway", sans-serif;
   text-align: center;
   margin-bottom: 10px;
   opacity: .8;
@@ -702,7 +704,7 @@ header button{
 
 .player-page h2{
   color: var(--color-white);
-  font: 500 1.8em "Open Sans", sans-serif;
+  font: 400 1.6em "Open Sans", sans-serif;
   opacity: .8;
 }
 
@@ -721,7 +723,7 @@ header button{
 }
 
 .pageTitle{
-  font: 600 2.2em "Raleway", sans-serif;
+  font: 600 2.15em "Raleway", sans-serif;
   color: var(--color-white);
 }
 
@@ -832,7 +834,7 @@ header button{
 }
 
 .perfilIMG #userIcon{
-  font-size: 4em;
+  font-size: 3.5em;
   transform: rotate(45deg);
   color: var(--color-white);
 }
@@ -952,6 +954,10 @@ header button{
     bottom: 0;
   }
 
+.movieDetails p{
+  font-size: 1.1em;
+}
+
   .movies-details h2{
     font-size: .9em;
   }
@@ -1024,7 +1030,7 @@ header button{
     left: calc(50% - 75px);
   }
   .perfilIMG #userIcon{
-    font-size: 4em;
+    font-size: 3.3em;
   }
   .dadosCadastroContainer{
     margin: 90px auto 50px auto;
