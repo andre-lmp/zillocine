@@ -6,6 +6,13 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import '/src/App.css';
 
+import Swiper from 'swiper';
+import { Navigation, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination'
+import '/src/App.css';
+
 const  ComedyMovies = ({page,titulo, btn, tipo}) => {
   const [pagina, setPagina] = useState(page);
   
@@ -18,6 +25,7 @@ const  ComedyMovies = ({page,titulo, btn, tipo}) => {
   const [autorizado, setAutorizado] = useState(false);
   const navigate = useNavigate();
   const [type, setType] = useState(tipo);
+  const [widthScreen, setWidthScreen] = useState(window.innerWidth);
   const moviesGenres = {
     28: 'Ação',
     12: 'Aventura',
@@ -48,6 +56,46 @@ const  ComedyMovies = ({page,titulo, btn, tipo}) => {
   const defTipo = (e) => {
     setType(e.target.value);
   }
+
+  const swiper = new Swiper('.swiper', {
+    direction: 'horizontal',
+    modules: [Navigation, Pagination],
+    breakpoints: {
+      1590: {
+        slidesPerGroup: 7,
+        slidesPerView: 7,
+      },
+
+      1380: {
+        slidesPerGroup: 6,
+        slidesPerView: 6,
+      },
+
+      1170: {
+        slidesPerGroup: 5,
+        slidesPerView: 5,
+      },
+
+      960: {
+        slidesPerGroup: 4,
+        slidesPerView: 4,
+      },
+
+      630: {
+        slidesPerGroup: 3,
+        slidesPerView: 3,
+      }
+    },
+
+    effect: 'fade',
+      fadeEffect: {
+        crossFade: true,
+      },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    }  
+  });
   
   useEffect(() => {
     const delay = setTimeout(() => {
@@ -83,7 +131,7 @@ const  ComedyMovies = ({page,titulo, btn, tipo}) => {
        
     fetchMovies();
 
-  },[type])
+  },[type, widthScreen])
 
   return autorizado ? (
     <div className="lançamentosDiv">
@@ -99,29 +147,60 @@ const  ComedyMovies = ({page,titulo, btn, tipo}) => {
                 <button value='serie' onClick={defTipo}>Series</button>
             </div>
           ) : null}
-          <motion.div className="img-carrosel" drag="x" dragConstraints={{ right: 0, left: -telaWidth }} ref={widthCarrosel}>
 
-            {moviesDetails.map((movie) => (
-              <div className="movies-container" >
-                <div className="movies-img"  onClick={handleClick}><img value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/></div>
-                <div className="movies-details">
-                  <div className="details">
-                    {movie.title ? (
-                      <h2>{movie.title}</h2>
-                    ): (
-                      <h2>{movie.name}</h2>
-                    )}
-                    <div className="generos">
-                      <p>{moviesGenres[movie.genre_ids[0]]}</p>
-                      <p>|</p>
-                      <p>{movie.vote_average.toFixed(1)}<FontAwesomeIcon className="starIcon" icon={faStar}/></p>
+          {widthScreen > 750 ? (
+              <div className="swiper">
+                  <div className="swiper-wrapper">
+                      {moviesDetails.map((movie) => (
+                          <div className="swiper-slide" >
+                            <div id="swiper-img" className="movies-img" onClick={handleClick}><img value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/></div>
+                            <div className="movies-details">
+                              <div className="details">
+                              {movie.title ? (
+                                  <h2>{movie.title}</h2>
+                                ): (
+                                  <h2>{movie.name}</h2>
+                                )}
+                                <div className="generos">
+                                  <p>{moviesGenres[movie.genre_ids[0]]}</p>
+                                  <p>|</p>
+                                  <p>{movie.vote_average.toFixed(1)}<FontAwesomeIcon className="starIcon" icon={faStar}/></p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                  </div>
+
+                  <div className="swiper-pagination"></div>
+                  <div className="swiper-button-next"></div>
+                  <div className="swiper-scrollbar"></div>
+                  <div className="swiper-button-prev"></div>
+            </div>
+          ): (
+            <motion.div className="img-carrosel" drag="x" dragConstraints={{ right: 0, left: -telaWidth }} ref={widthCarrosel}>
+                {moviesDetails.map((movie) => (
+                  <div className="movies-container" >
+                    <div className="movies-img"  onClick={handleClick}><img value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/></div>
+                    <div className="movies-details">
+                      <div className="details">
+                        {movie.title ? (
+                          <h2>{movie.title}</h2>
+                        ): (
+                          <h2>{movie.name}</h2>
+                        )}
+                        <div className="generos">
+                          <p>{moviesGenres[movie.genre_ids[0]]}</p>
+                          <p>|</p>
+                          <p>{movie.vote_average.toFixed(1)}<FontAwesomeIcon className="starIcon" icon={faStar}/></p>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            ))}
-            
+                ))}
           </motion.div>
+          )}
+          
         </div>
       </div>
   ): null;

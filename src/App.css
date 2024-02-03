@@ -573,7 +573,7 @@ header button{
 }
 
 .container-movies{
-  width: 90%;
+  width: 93%;
   margin: auto;
   overflow: hidden;
 }
@@ -582,6 +582,67 @@ header button{
   color: var(--color-white);
   font: 500 1.7em "Roboto", sans-serif;
   margin-bottom: 10px;
+}
+
+.swiper{
+  width: 100%;
+  margin: auto;
+}
+
+.swiper-wrapper{
+  display: flex;
+  flex-direction: row;
+}
+
+.swiper-slide{
+  cursor: pointer;
+  min-width: 210px;
+  padding: 0px 13px;
+  box-sizing: border-box;
+}
+
+#swiper-img{
+  border: 3px solid transparent !important;
+  transition: all .1s ease-in !important;
+}
+
+.swiper-slide:hover #swiper-img{
+  border: 3px solid var(--color-red) !important;
+  opacity: 1;
+}
+
+.swiper-button-next, .swiper-button-prev{
+  padding: 40px 20px;
+  margin-top: -100px;
+  color: var(--color-white) !important;
+  margin-top: -100px !important;
+  transform: scale(.6);
+}
+
+.swiper-button-next{
+  margin-right: -35px;
+}
+
+.swiper-button-next::before{
+  content: '';
+  width: 150px;
+  min-height: 100vh;
+  position: absolute;
+  background-image: linear-gradient(to left, var(--color-black), rgb(0,0,0,.9) ,transparent);
+  z-index: -1;
+}
+
+.swiper-button-prev{
+  margin-left: -35px;
+}
+
+.swiper-button-prev::before{
+  content: '';
+  width: 150px;
+  min-height: 100vh;
+  position: absolute;
+  background-image: linear-gradient(to right, var(--color-black), rgb(0,0,0,.9), transparent);
+  z-index: -1;
 }
 
 .img-carrosel{
@@ -989,6 +1050,10 @@ header button{
 
   .movies-details p {
     font-size: .9em;
+  }
+
+  .container-movies{
+    width: 90%;
   }
 
   .container-movies h1{
