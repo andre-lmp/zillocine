@@ -179,12 +179,12 @@ header{
 }
 
 .Search-options label button{
-  font: 400 1.1em 'Roboto', sans-serif;
+  font: 500 1em 'Roboto', sans-serif;
   color: rgb(255,255,255,.8);
   background-color: transparent;
   border: 1pt solid var(--color-red);
   border-radius: 20px;
-  padding: 1px 20px;
+  padding: 3px 30px;
 }
 
 .container-result{
@@ -537,18 +537,18 @@ header button{
 }
 
 .container-movies button{
-  padding: 5px 30px;
+  padding: 4px 30px;
   outline: none;
   background-color: transparent;
   color: var(--color-white);
-  font: 600 1em arial, sans-serif;
-  border: 2px solid var(--color-red);
+  font: 500 1em 'Roboto', sans-serif;
+  border: 1.4pt solid var(--color-red);
   border-radius: 20px;
   transition: all .1s ease-in;
 }
 
 .container-movies button:focus{
-  border: 2px solid var(--color-white);
+  border: 1.4pt solid var(--color-white);
   color: var(--color-white);
 }
 
