@@ -60,15 +60,16 @@ function PlayerPage() {
     const fetchMovies = async () => {
       if (type === 'filme') {
         try {
-          const movieDetail = await fetch(`${apiURL}/movie/${id}?api_key=${apiKey}&language=pt-BR&page=1&language=pt-BR&include_image_language=pt&append_to_response=videos`);
+          const movieDetail = await fetch(`${apiURL}/movie/${id}?api_key=${apiKey}&language=pt-BR&page=1&include_image_language=pt&append_to_response=videos`);
           const data = await movieDetail.json();
           setMoviesDetails(data);
+          console.log(data);
         } catch (error) {
           console.log(error);
         }
       }else{
         try {
-          const movieDetail = await fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}&language=pt-BR&page=1&language=pt-BR&include_image_language=pt&append_to_response=videos`);
+          const movieDetail = await fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}&language=pt-BR&page=1&include_image_language=pt&append_to_response=videos`);
           const data = await movieDetail.json();
           setMoviesDetails(data);
         } catch (error) {

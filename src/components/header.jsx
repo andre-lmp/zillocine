@@ -7,7 +7,7 @@ import { transform } from "typescript";
 import Search from "/src/components/SearchBar";
 
 function Header({HeightScroll}) {
-  const movieIds = [603692, 346698, 298618, 507089];
+  const movieIds = [458156, 346698, 298618, 507089];
   const [moviesDetails, setMoviesDetails] = useState([]);
   const apiKey = "df087968ddf338b4ac0f9876af17f739";
   const apiURL = 'https://api.themoviedb.org/3/';
@@ -117,7 +117,7 @@ function Header({HeightScroll}) {
     const fetchMovies = async () => {
       try {
         const moviePromises = movieIds.map(async (movieId) => {
-           const bilheteria = await fetch(`${apiURL}/movie/${movieId}?api_key=${apiKey}&language=pt-BR&page=1&language=pt-BR&include_image_language=pt`)
+           const bilheteria = await fetch(`${apiURL}/movie/${movieId}?api_key=${apiKey}&language=pt-BR&page=1&include_image_language=pt`)
            return bilheteria.json();
         });
          const data = await Promise.all(moviePromises);
