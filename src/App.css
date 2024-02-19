@@ -961,6 +961,80 @@ header button{
   color: rgb(255,255,255,.6);
 }
 
+footer{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border-top: 2pt solid rgb(255, 0, 0, .7);
+}
+
+.footer-links{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 20px;
+  background-color: rgb(255,255,255,.05);
+  box-sizing: border-box;
+}
+
+.about-project{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 30px 40px;
+  box-sizing: border-box;
+  align-items: center;
+  background-color: rgb(255,255,255,.1);
+}
+
+.about-project h1{
+  font: 600 1.5em 'Raleway', sans-serif;
+  color: rgb(255,255,255,.8);
+}
+
+.about-project h2{
+  color: rgb(255,255,255,.8);
+  font: 400 1.35em 'Raleway', sans-serif; 
+}
+
+.about-project h2 span{
+  font-weight: 500;
+}
+
+.social-icons{
+  display: flex;
+  gap: 2rem;
+  flex-direction: row;
+}
+
+.social-icons .icons{
+  font-size: 1.5em;
+  color: rgb(255,255,255,.8);
+  transition: transform .1s ease-in-out;
+}
+
+.social-icons .icons:hover{
+  color: var(--color-white);
+  transform: scale(1.2);
+}
+
+.footer-links a{
+  color: rgb(255,255,255,.8);
+  text-decoration: none;
+  font: 300 1.2em 'Roboto', sans-serif;
+  cursor: pointer;
+  border-bottom: 1.5pt solid transparent;
+  padding-bottom: 5px;
+}
+
+.footer-links a:hover{
+  color: var(--color-white);
+  border-bottom: 1.5pt solid var(--color-white);
+}
+
 @media screen and (min-width: 2000px) {
   .movies-container{
     min-width: 15%;
@@ -971,10 +1045,18 @@ header button{
   }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 950px){
   .link-icons h3{
     display: none;
   }
+
+  .lupa-icon{
+    display: none;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  
   .links-titulo h1{
     font-size: 2.5em;
   }
@@ -1008,18 +1090,13 @@ header button{
   .links-content{
     width: 100%;
   }
-  .link-icons h3{
-    display: none;
-  }
+ 
   .links-titulo h1{
     font-size: 2.3em;
     font-weight: 600;
   }
   .movieDetails h1{
     font-size: 1.6em;
-  }
-  .lupa-icon{
-    display: none;
   }
 
   #search-icon-bar{
@@ -1138,6 +1215,12 @@ header button{
   .about-movie-text p{
     font-size: 1.1em;
   }
+
+  .about-project{
+    display: flex;
+    flex-direction: column;
+    row-gap: 2rem;
+  }
   
 }
 
@@ -1164,8 +1247,33 @@ header button{
     font-size: 1.1em;
     -webkit-line-clamp: 2;
   } 
+
+  .container-movies button{
+    border: 1pt solid var(--color-red);
+  }
+
   .about-movie{
     margin-top: 50px;
+  }
+
+  .movies-container{
+    min-width: 170px;
+  }
+
+  .movies-img{
+    height: 220px;
+  }
+
+  footer{
+    border-top: 1pt solid rgb(255, 0, 0, .8);
+  }
+
+  .about-project h1{
+    font-size: 1.3em;
+  }
+
+  .about-project h2{
+    font-size: 1.2em;
   }
 }
 

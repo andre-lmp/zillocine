@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { LuSearch } from "react-icons/lu";
 import BackgroundProfile from '/src/images/BackgroundProfile.png';
 import Search from "/src/components/SearchBar";
+import Footer from '/src/components/footer';
+
 
 function ProfilePage() {
     const [autorizado, setAutorizado] = useState(false);
@@ -97,6 +99,8 @@ function ProfilePage() {
                 <div className="cadastroDados"><h1>Endereço de Email</h1><h2>Usuariotest43@gmail.com</h2></div>
                 <div className="cadastroDados"><h1>Senha</h1><h2>********</h2></div>
             </div>
+            
+            <Footer/>
         </main>
     ) : null;
 }

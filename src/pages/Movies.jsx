@@ -9,6 +9,7 @@ import { useState, useEffect, useRef} from "react";
 import { LuSearch, LuServer } from "react-icons/lu";
 import Search from "/src/components/SearchBar";
 import '/src/App.css';
+import Footer from '/src/components/footer';
 
 function Movies() {
     const [btnAtivo, setBtnAtivo] = useState('btnDesativado');
@@ -107,7 +108,7 @@ function Movies() {
                     <div className='barraGeneros'>
                         <ul>
                             <li><button value='LatestMovies' onClick={DefComponent}>Lançamentos</button></li>
-                            <li><button value='HorrorMovies' onClick={DefComponent}>Suspense</button></li>
+                            <li><button value='HorrorMovies' onClick={DefComponent}>Terror</button></li>
                             <li><button value='ActionMovies' onClick={DefComponent}>Ação</button></li>
                             <li><button value='PopularMovies' onClick={DefComponent}>Populares</button></li>
                             <li><button value='ComedyMovies' onClick={DefComponent}>Comedia</button></li>
@@ -177,6 +178,7 @@ function Movies() {
                 </div>
             ):null}
 
+            <Footer/>
         </main>
     )
 }

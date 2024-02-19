@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import '/src/App.css';
 import { LuPlay, LuSearch } from "react-icons/lu";
 import Search from "/src/components/SearchBar";
+import Footer from '/src/components/footer';
 
 function PlayerPage() {
   const {id, type} = useParams();
@@ -187,6 +188,8 @@ function PlayerPage() {
           )}
         </div>
       </div>
+
+      <Footer/>
     </main>
   ) : null
 }

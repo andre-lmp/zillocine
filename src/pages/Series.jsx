@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef} from "react";
 import { LuSearch } from "react-icons/lu";
 import Search from "/src/components/SearchBar";
+import Footer from '/src/components/footer';
 import '/src/App.css';
 
 function Series() {
@@ -156,7 +157,8 @@ function Series() {
                     <ComedyMovies page='5' tipo='serie'/>
                 </div>
             ):null}
-
+            
+            <Footer/>
         </main>
     )
 }
