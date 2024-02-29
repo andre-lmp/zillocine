@@ -109,7 +109,7 @@ function Series() {
             }
 
             {component === 'LatestMovies' ? (
-                <div className='moviesPageLatestMovies'>
+                <div className='box-series'>
                     <LatestMovies titulo='true' btn='false' page='1' tipo='serie'/>
                     <LatestMovies  page='2' tipo='serie'/>
                     <LatestMovies  page='3' tipo='serie'/>
@@ -119,7 +119,7 @@ function Series() {
             ): null}
 
             {component === 'HorrorMovies' ? (
-                <div className='moviesPageLatestMovies'>
+                <div className='box-series'>
                     <HorrorMovies titulo='true' btn='false' page='1' tipo='serie'/>
                     <HorrorMovies page='2' tipo='serie'/>
                     <HorrorMovies page='3' tipo='serie'/>
@@ -129,7 +129,7 @@ function Series() {
             ):null}
 
             {component === 'ActionMovies' ? (
-                <div className='moviesPageLatestMovies'>
+                <div className='box-series'>
                     <ActionMovies titulo='true' btn='false' page='1' tipo='serie'/>
                     <ActionMovies page='2' tipo='serie'/>
                     <ActionMovies page='3' tipo='serie'/>
@@ -139,7 +139,7 @@ function Series() {
             ):null}
 
             {component === 'Documentaries' ? (
-                <div className='moviesPageLatestMovies'>
+                <div className='box-series'>
                     <Documentaries titulo='true' btn='false' page='1' tipo='serie'/>
                     <Documentaries page='2' tipo='serie'/>
                     <Documentaries page='3' tipo='serie'/>
@@ -149,7 +149,7 @@ function Series() {
             ):null}
 
             {component === 'ComedyMovies' ? (
-                <div className='moviesPageLatestMovies'>
+                <div className='box-series'>
                     <ComedyMovies titulo='true' btn='false' page='1' tipo='serie'/>
                     <ComedyMovies page='2' tipo='serie'/>
                     <ComedyMovies page='3' tipo='serie'/>

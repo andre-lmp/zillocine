@@ -49,6 +49,25 @@ const  ActionMovies = ({page,titulo, btn, tipo}) => {
     37: 'Faroeste'
   };
 
+  const seriesGenres = {
+    10759: "Ação",
+    16: "Animação",
+    35: "Comédia",
+    80: "Crime",
+    99: "Documentário",
+    18: "Drama",
+    10751: "Família",
+    10764: "Kids",
+    9648: "Mistério",
+    10767: "Nova Temporada",
+    878: "Ficção científica",
+    10763: "Reality",
+    10762: "Soap",
+    10766: "Talk Show",
+    10768: "Guerra",
+    37: "Faroeste"
+  };
+
   const handleClick = (e) => {
     const valor = e.target.attributes.value.value;
     navigate(`/Page/${valor}/${type}`);
@@ -162,7 +181,11 @@ const  ActionMovies = ({page,titulo, btn, tipo}) => {
                               <h2>{movie.name}</h2>
                             )}
                             <div className="generos">
-                              <p>{moviesGenres[movie.genre_ids[0]]}</p>
+                              {tipo === 'filme' ? (
+                                <p>{moviesGenres[movie.genre_ids[0]]}</p>
+                              ): (
+                                <p>{seriesGenres[movie.genre_ids[0]]}</p>
+                              )}
                               <p>|</p>
                               <p>{movie.vote_average.toFixed(1)}<FontAwesomeIcon className="starIcon" icon={faStar}/></p>
                             </div>
@@ -185,13 +208,17 @@ const  ActionMovies = ({page,titulo, btn, tipo}) => {
                     <div className="movies-img" onClick={handleClick}><img value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/></div>
                     <div className="movies-details">
                       <div className="details">
-                      {movie.title ? (
+                        {movie.title ? (
                           <h2>{movie.title}</h2>
                         ): (
                           <h2>{movie.name}</h2>
                         )}
                         <div className="generos">
-                          <p>{moviesGenres[movie.genre_ids[0]]}</p>
+                          {tipo === 'filme' ? (
+                            <p>{moviesGenres[movie.genre_ids[0]]}</p>
+                          ): (
+                            <p>{seriesGenres[movie.genre_ids[0]]}</p>
+                          )}
                           <p>|</p>
                           <p>{movie.vote_average.toFixed(1)}<FontAwesomeIcon className="starIcon" icon={faStar}/></p>
                         </div>

@@ -26,6 +26,7 @@ const  Documentaries = ({page,titulo, btn, tipo}) => {
   const navigate = useNavigate();
   const [type, setType] = useState(tipo);
   const [widthScreen, setWidthScreen] = useState(window.innerWidth);
+
   const moviesGenres = {
     28: 'Ação',
     12: 'Aventura',
@@ -46,6 +47,25 @@ const  Documentaries = ({page,titulo, btn, tipo}) => {
     53: 'Thriller',
     10752: 'Guerra',
     37: 'Faroeste'
+  };
+
+  const seriesGenres = {
+    10759: "Ação",
+    16: "Animação",
+    35: "Comédia",
+    80: "Crime",
+    99: "Documentário",
+    18: "Drama",
+    10751: "Família",
+    10764: "Kids",
+    9648: "Mistério",
+    10767: "Nova Temporada",
+    878: "Ficção científica",
+    10763: "Reality",
+    10762: "Soap",
+    10766: "Talk Show",
+    10768: "Guerra",
+    37: "Faroeste"
   };
   
   const handleClick = (e) => {
@@ -161,7 +181,11 @@ const  Documentaries = ({page,titulo, btn, tipo}) => {
                                   <h2>{movie.name}</h2>
                                 )}
                                 <div className="generos">
-                                  <p>{moviesGenres[movie.genre_ids[0]]}</p>
+                                  {tipo === 'filme' ? (
+                                    <p>{moviesGenres[movie.genre_ids[0]]}</p>
+                                  ): (
+                                    <p>{seriesGenres[movie.genre_ids[0]]}</p>
+                                  )}
                                   <p>|</p>
                                   <p>{movie.vote_average.toFixed(1)}<FontAwesomeIcon className="starIcon" icon={faStar}/></p>
                                 </div>
@@ -189,7 +213,11 @@ const  Documentaries = ({page,titulo, btn, tipo}) => {
                           <h2>{movie.name}</h2>
                         )}
                         <div className="generos">
-                          <p>{moviesGenres[movie.genre_ids[0]]}</p>
+                          {tipo === 'filme' ? (
+                            <p>{moviesGenres[movie.genre_ids[0]]}</p>
+                          ): (
+                            <p>{seriesGenres[movie.genre_ids[0]]}</p>
+                          )}
                           <p>|</p>
                           <p>{movie.vote_average.toFixed(1)}<FontAwesomeIcon className="starIcon" icon={faStar}/></p>
                         </div>

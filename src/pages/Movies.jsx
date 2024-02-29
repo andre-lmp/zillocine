@@ -119,7 +119,7 @@ function Movies() {
             }
 
             {component === 'LatestMovies' ? (
-                <div className='moviesPageLatestMovies'>
+                <div className='box-movies'>
                     <LatestMovies titulo='true' btn='false' page='1' tipo='filme'/>
                     <LatestMovies  page='2' tipo='filme'/>
                     <LatestMovies  page='3' tipo='filme'/>
@@ -129,7 +129,7 @@ function Movies() {
             ): null}
 
             {component === 'HorrorMovies' ? (
-                <div className='moviesPageLatestMovies'>
+                <div className='box-movies'>
                     <HorrorMovies titulo='true' btn='false' page='1' tipo='filme'/>
                     <HorrorMovies page='2' tipo='filme'/>
                     <HorrorMovies page='3' tipo='filme'/>
@@ -139,7 +139,7 @@ function Movies() {
             ):null}
 
             {component === 'ActionMovies' ? (
-                <div className='moviesPageLatestMovies'>
+                <div className='box-movies'>
                     <ActionMovies titulo='true' btn='false' page='1' tipo='filme'/>
                     <ActionMovies page='2' tipo='filme'/>
                     <ActionMovies page='3' tipo='filme'/>
@@ -149,7 +149,7 @@ function Movies() {
             ):null}
 
             {component === 'PopularMovies' ? (
-                <div className='moviesPageLatestMovies'>
+                <div className='box-movies'>
                     <PopularMovies titulo='true' btn='false' page='1' tipo='filme'/>
                     <PopularMovies page='2' tipo='filme'/>
                     <PopularMovies page='3' tipo='filme'/>
@@ -159,7 +159,7 @@ function Movies() {
             ):null}
 
             {component === 'Documentaries' ? (
-                <div className='moviesPageLatestMovies'>
+                <div className='box-movies'>
                     <Documentaries titulo='true' btn='false' page='1' tipo='filme'/>
                     <Documentaries page='2' tipo='filme'/>
                     <Documentaries page='3' tipo='filme'/>
@@ -169,7 +169,7 @@ function Movies() {
             ):null}
 
             {component === 'ComedyMovies' ? (
-                <div className='moviesPageLatestMovies'>
+                <div className='box-movies'>
                     <ComedyMovies titulo='true' btn='false' page='1' tipo='filme'/>
                     <ComedyMovies page='2' tipo='filme'/>
                     <ComedyMovies page='3' tipo='filme'/>

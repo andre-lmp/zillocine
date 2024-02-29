@@ -490,7 +490,19 @@ header button{
   padding: 10px 10px 10px 0px;
 }
 
-.movieDetails #btn-play{
+.background-filter{
+  width: 100%;
+  height: 200px;
+  position: absolute;
+  left: -30;
+  background-color: var(--color-black);
+  bottom: 0;
+  z-index: -1;
+  margin-left: -80px;
+  filter: blur(50px);
+}
+
+.movieDetails  #btn-play{
   color: var(--color-white);
   background-color: var(--color-black);
   border: 3px solid var(--color-white);
@@ -518,7 +530,7 @@ header button{
   color: var(--color-white);
 }
 
-.movieDetails p{
+.movieDetails{
   color: rgb(255,255,255,.95);
   line-height: 150%;
   font: 400 1.2em "Noto Sans",sans-serif;
@@ -829,7 +841,18 @@ header button{
   width: 100%;
   margin: auto;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  row-gap: 3rem;
 }
+
+.box-movies, .box-series{
+  display: flex;
+  flex-direction: column;
+  row-gap: 3rem;
+  padding: 0rem 0rem 1rem 0rem;
+}
+
 
 .barraGeneros{
   width: 90%;
@@ -858,12 +881,6 @@ header button{
 
 .barraGeneros ul li button:hover, .barraGeneros ul li button:focus{
   color: var(--color-white);
-}
-
-.moviesPageLançamentos {
-  display: flex;
-  flex-direction: column;
-  row-gap: 3rem;
 }
 
 .perfilContainer{

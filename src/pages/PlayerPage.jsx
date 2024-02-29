@@ -132,7 +132,7 @@ function PlayerPage() {
                     <img src={`${imgUrl}${moviesDetails.poster_path}`}/>
                   )}
 
-                  <div className="movieDetails">
+                  <div id="movie-details-player" className="movieDetails">
                     {moviesDetails.title ? (
                       <h2 className="pageTitle" >{moviesDetails.title}</h2>
                     ):(
@@ -146,6 +146,8 @@ function PlayerPage() {
                     )}
 
                     <button className="btn-play-page" id="btn-play" onClick={handleClick}><LuPlay className="btn-icon-page" id="icon"/></button>
+                    <div className="background-filter"></div>
+                      
                   </div>
                   <div className='header-fim'></div>
                 </div>
