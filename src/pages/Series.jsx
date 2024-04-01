@@ -1,8 +1,4 @@
-import LatestMovies from '/src/components/LatestMovies';
-import HorrorMovies from '/src/components/HorrorMovies';
-import ActionMovies from '/src/components/ActionMovies';
-import Documentaries from '/src/components/Documentaries';
-import ComedyMovies from '/src/components/ComedyMovies';
+import FetchMovies from '/src/components/ContainerMovies';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef} from "react";
 import { LuSearch } from "react-icons/lu";
@@ -14,9 +10,10 @@ function Series() {
     const [btnAtivo, setBtnAtivo] = useState('btnDesativado');
     const navigate = useNavigate();
     const [autorizado, setAutorizado] = useState(false);
-    const [component, setComponent] = useState('LatestMovies');
+    const [genreMovie, setGenreMovie] = useState('lançamentos');
     const [hideBar, setHideBar] = useState(true);
     const AppRef = useRef();
+    const genreBtns = useRef();
 
     const btnClick = () => {
         if (btnAtivo === 'btnDesativado'){
@@ -26,9 +23,10 @@ function Series() {
         }
     }
     
-    const clickBtnDef = (e) => {
+    const handleGenres = (e) => {
         const valor = e.target.value
-        setComponent(valor);
+        setGenreMovie(valor);
+        handleColorBtn(e.target.value);
     }
 
     const btnNavigate = (e) => {
@@ -48,6 +46,19 @@ function Series() {
           setHideBar(false);
         AppRef.current.style.opacity = '.9';
         AppRef.current.style.zIndex = '100';
+        }
+    }
+
+    const handleColorBtn = (genre) => {
+        if (genreBtns.current){
+            const children = genreBtns.current.children;
+            for (let child in children){
+                if (children[child].childNodes[0].value === genre){
+                    children[child].childNodes[0].style.color = 'white';
+                }else{
+                    children[child].childNodes[0].style.color = 'rgba(255, 255, 255, 0.7)';
+                }
+            }
         }
     }
 
@@ -97,66 +108,24 @@ function Series() {
 
             {autorizado === true ? (
                     <div className='barraGeneros'>
-                        <ul>
-                            <li><button value='LatestMovies' onClick={clickBtnDef}>Lançamentos</button></li>
-                            <li><button value='HorrorMovies' onClick={clickBtnDef}>Suspense</button></li>
-                            <li><button value='ActionMovies' onClick={clickBtnDef}>Ação</button></li>
-                            <li><button value='ComedyMovies' onClick={clickBtnDef}>Comedia</button></li>
-                            <li><button value='Documentaries' onClick={clickBtnDef}>Documentarios</button></li>
+                        <ul ref={genreBtns}>
+                            <li><button value='Lançamentos' onClick={handleGenres}>Lançamentos</button></li>
+                            <li><button value='Terror' onClick={handleGenres}>Suspense</button></li>
+                            <li><button value='Ação' onClick={handleGenres}>Ação</button></li>
+                            <li><button value='Comedia' onClick={handleGenres}>Comedia</button></li>
+                            <li><button value='Documentario' onClick={handleGenres}>Documentarios</button></li>
                         </ul>
                     </div>
                 ) : null
             }
 
-            {component === 'LatestMovies' ? (
                 <div className='box-series'>
-                    <LatestMovies titulo='true' btn='false' page='1' tipo='serie'/>
-                    <LatestMovies  page='2' tipo='serie'/>
-                    <LatestMovies  page='3' tipo='serie'/>
-                    <LatestMovies  page='4' tipo='serie'/>
-                    <LatestMovies  page='5' tipo='serie'/>
+                    <FetchMovies titulo={genreMovie} btn='false' page='1' tipo='serie' genre={genreMovie}/>
+                    <FetchMovies  page='2' tipo='serie' genre={genreMovie}/>
+                    <FetchMovies  page='3' tipo='serie' genre={genreMovie}/>
+                    <FetchMovies  page='4' tipo='serie' genre={genreMovie}/>
+                    <FetchMovies  page='5' tipo='serie' genre={genreMovie}/>
                 </div>
-            ): null}
-
-            {component === 'HorrorMovies' ? (
-                <div className='box-series'>
-                    <HorrorMovies titulo='true' btn='false' page='1' tipo='serie'/>
-                    <HorrorMovies page='2' tipo='serie'/>
-                    <HorrorMovies page='3' tipo='serie'/>
-                    <HorrorMovies page='4' tipo='serie'/>
-                    <HorrorMovies page='5' tipo='serie'/>
-                </div>
-            ):null}
-
-            {component === 'ActionMovies' ? (
-                <div className='box-series'>
-                    <ActionMovies titulo='true' btn='false' page='1' tipo='serie'/>
-                    <ActionMovies page='2' tipo='serie'/>
-                    <ActionMovies page='3' tipo='serie'/>
-                    <ActionMovies page='4' tipo='serie'/>
-                    <ActionMovies page='5' tipo='serie'/>    
-                </div>
-            ):null}
-
-            {component === 'Documentaries' ? (
-                <div className='box-series'>
-                    <Documentaries titulo='true' btn='false' page='1' tipo='serie'/>
-                    <Documentaries page='2' tipo='serie'/>
-                    <Documentaries page='3' tipo='serie'/>
-                    <Documentaries page='4' tipo='serie'/>
-                    <Documentaries page='5' tipo='serie'/>
-                </div>
-            ):null}
-
-            {component === 'ComedyMovies' ? (
-                <div className='box-series'>
-                    <ComedyMovies titulo='true' btn='false' page='1' tipo='serie'/>
-                    <ComedyMovies page='2' tipo='serie'/>
-                    <ComedyMovies page='3' tipo='serie'/>
-                    <ComedyMovies page='4' tipo='serie'/>
-                    <ComedyMovies page='5' tipo='serie'/>
-                </div>
-            ):null}
             
             <Footer/>
         </main>

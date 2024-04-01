@@ -1,39 +1,29 @@
 import { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
 import { useNavigate } from 'react-router-dom';
-import '/src/App.css';
 import { LuPlay, LuSearch } from "react-icons/lu";
-import { transform } from "typescript";
 import Search from "/src/components/SearchBar";
+import { Swiper, SwiperSlide } from '/src/components/swiper/Swiper.jsx';
+import { Pagination } from 'swiper/modules';
+import '/src/App.css';
+import 'swiper/css';
+import 'swiper/element/css/pagination';
+import '/src/App.css';
 
 function Header({HeightScroll}) {
   const movieIds = [458156, 346698, 298618, 507089];
   const [moviesDetails, setMoviesDetails] = useState([]);
   const apiKey = "df087968ddf338b4ac0f9876af17f739";
   const apiURL = 'https://api.themoviedb.org/3/';
-  const [move, setMove] = useState(0);
   const app = useRef();
-  const carrosel = useRef();
-  const [telaWidth, setTelaWidth] = useState(0);
   const [autorizado, setAutorizado] = useState(false);
   const navigate = useNavigate();
-  const [headerAtivo, setHeaderAtivo] = useState('desativado');
   const [btnAtivo, setBtnAtivo] = useState('btnDesativado');
   const [type, setType] = useState('filme');
-  const [translate, setTranslate] = useState(0);
-  const countImgs = movieIds.length;
-  const [count, setCount] = useState(1);
-  const [delay, setDelay] = useState(5000);
-  const [indexImg1, setIndexImg1] = useState('indexAtivo');
-  const [indexImg2, setIndexImg2] = useState();
-  const [indexImg3, setIndexImg3] = useState();
-  const [indexImg4, setIndexImg4] = useState();
   const AppRef = useRef();
   const [hideBar, setHideBar] = useState(true);
   const ContainerHeader = useRef();
 
   const btnNavigate = (e) => {
-    console.log(e);
     navigate(`/${e.target.id}`)
     if (e.target.id === '') {
       setBtnAtivo('btnDesativado');
@@ -69,51 +59,11 @@ function Header({HeightScroll}) {
     }
   }
 
-  const Condição = (count) => {
-    if (count === 0) {
-      setIndexImg1('indexAtivo');
-      setIndexImg4('indexDesativado');
-    }
-
-    if (count === 1) {
-      setIndexImg2('indexAtivo');
-      setIndexImg1('indexDesativado');
-    } 
-
-    if (count === 2) {
-      setIndexImg3('indexAtivo');
-      setIndexImg2('indexDesativado');
-    }
-
-    if (count === 3) {
-      setIndexImg4('indexAtivo');
-      setIndexImg3('indexDesativado');
-    }
-  }
-
-  const netxCarrosel = () => {
-    setCount(count + 1);
-    if (count !== countImgs) {
-      setTranslate(count * -100);
-    }else{
-      setCount(0);
-      setDelay(0);
-    };
-    
-    Condição(count);
-    setDelay(6000); 
-  }
-
-  setTimeout(netxCarrosel, delay);
   useEffect(() => {
     const delay = setTimeout(() => {
       setAutorizado(true);
     }, 1000);
 
-    const setwidth = setTimeout(() => {
-      setTelaWidth(carrosel.current?.scrollWidth - carrosel.current?.offsetWidth);
-    }, 2000);
-    
     const fetchMovies = async () => {
       try {
         const moviePromises = movieIds.map(async (movieId) => {
@@ -133,7 +83,7 @@ function Header({HeightScroll}) {
   
   return autorizado ? (
     <main ref={ContainerHeader} id="header-main">
-      <   div ref={AppRef} className="opacity-div"></div>
+      <div ref={AppRef} className="opacity-div"></div>
           <div className="header-links">
             <Search onValueChange={HandleHideChange} hide={hideBar}/>
             <div className='links-content'>
@@ -168,33 +118,24 @@ function Header({HeightScroll}) {
             <li><p id="Perfil" onClick={btnNavigate}>Conta</p></li>
           </ul>
         </div>
-
-        <header className={headerAtivo}>
-          <div className="imgIndex">
-            <ul>
-              <li id={0} className={indexImg1}></li>
-              <li id={1} className={indexImg2}></li>
-              <li id={2} className={indexImg3}></li>
-              <li id={3} className={indexImg4}></li>
-            </ul>
-          </div>
-          <div className='header-images' ref={app}>
-            <motion.div style={{transform:`translateX(${translate}%)`}} className="carrosel-header" ref={carrosel}  dragConstraints={{ right: 0, left: -telaWidth}}>
-                {moviesDetails.map((movie) => (
-                  <div className='carrosel-img'>
-                      <img src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}/>
-                        <div className="movieDetails">
-                          <h1>{movie.title}</h1>
-                          <p>{movie.tagline}</p>
-                          <button onClick={handleClick} value={movie.id} id="btn-play"><LuPlay onClick={handleClick} value={movie.id} id="icon" /></button>
-                        </div>
-                        <div className='header-fim'></div>
+      <header>
+        <div className='header-images' ref={app}>
+          <Swiper className='swiper' slidesPerView={1} autoplay={{delay: 5000}} speed='800' loop='true' pagination={{clickable: true}} modules={[Pagination]}>
+              {moviesDetails.map((movie) => (
+                <SwiperSlide className='slide'>
+                  <img src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`} className="slide-image"/>
+                  <div className="header-slide-details">
+                    <h1>{movie.title}</h1>
+                    <p>{movie.tagline}</p>
+                    <button onClick={handleClick} value={movie.id} id="btn-play"><LuPlay onClick={handleClick} value={movie.id} id="icon" /></button>
                   </div>
-                ))};
-            </motion.div>
+                  <div className='end-header'></div>
+                </SwiperSlide>
+              ))};
+          </Swiper>
 
-          </div>
-        </header>
+        </div>
+      </header>
     </main>
   ) : null;
 }

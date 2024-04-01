@@ -14,7 +14,7 @@ function Home() {
   setTimeout(GetHeight, 2000);
 
   return (
-    <main ref={AppHeight} className="app-main">
+    <main ref={AppHeight} className="container-home">
       <Header HeightScroll={height}/>
       <Main/>
       <Footer/>

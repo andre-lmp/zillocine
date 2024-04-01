@@ -21,9 +21,19 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+@keyframes startFetch {
+  from{
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to{
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 
 body{
-  background-color: var(--color-black);
+  background-color: rgb(23, 21, 34);
 }
 
 ::-webkit-scrollbar{
@@ -115,38 +125,6 @@ header{
   font-weight: 400;
 }
 
-.imgIndex{
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.imgIndex ul{
-  display: flex;
-  list-style: none;
-  gap: 1rem;
-  position: relative;
-  padding: 0;
-}
-
-.imgIndex ul li{
-  border: 1.5pt solid var(--color-white);
-  border-radius: 100%;
-  color: transparent;
-  width: 8px;
-  height: 8px;
-  cursor: pointer;
-}
-
-.indexAtivo{
-  background-color: white;
-}
-
-.indexDesativado{
-  background-color: transparent;
-}
-
 .search-container-main{
   overflow-y: auto;
 }
@@ -154,7 +132,7 @@ header{
 .search-bar-container{
   width: 100%;
   height: 150px;
-  background-image: linear-gradient(to bottom, var(--color-black), var(--color-black), transparent);
+  background-image: linear-gradient(to bottom, rgb(23, 21, 34), rgb(23, 21, 34), transparent);
   position: fixed;
   top: 0;
   transform: translateY(-100%);
@@ -215,7 +193,7 @@ header{
   background-color: var(--color-white);
 }
 
-.result-container-movies{
+.result-container .container-content{
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -342,7 +320,7 @@ header{
   width: 100%;
   padding-bottom: 30px;
   box-sizing: border-box;
-  background-image: linear-gradient(to bottom, rgb(0,0,0,.9), rgb(0,0,0,.7), rgb(0,0,0,.5), transparent);
+  background-image: linear-gradient(to bottom, rgb(23, 21, 34, 1), rgb(23, 21, 34, .5), rgb(23, 21, 34, 0));
   display: flex;
   flex-direction: row;
   position: fixed;
@@ -456,27 +434,25 @@ header button{
   opacity: .9;
 }
 
-.carrosel-header{
+.swiper{
   width: 100%;
   height: 100%;
-  display: flex;
-  transition: transform 1s ease-in-out;
+  --swiper-pagination-color: var(--color-white);
+  --swiper-pagination-bullet-size: 0.6em;
+  --swiper-pagination-bullet-inactive-color: rgba(255, 255, 255, 0.7);;
+
 }
 
-.carrosel-img{
-  min-width: 100%;
-  height: 100vh;
-  max-height: 550px;
-  position: relative;
-  z-index: 2;
-}
-
-.carrosel-img img{
+.slide{
   width: 100%;
+  height: 100%;
+}
+
+.slide-image{
   height: 100%;
   object-fit: cover;
-  opacity: .9;
-  object-position: center top;
+  width: 100%;
+  opacity: 0.8;
 }
 
 .movieDetails{
@@ -536,15 +512,15 @@ header button{
   font: 400 1.2em "Noto Sans",sans-serif;
 }
 
-.header-fim{
+.end-header{
   position: absolute;
   bottom: 0;
   width: 100%;
   height: 50%;
-  background-image: linear-gradient(to top, var(--color-black), transparent);
+  background-image: linear-gradient(to top, #171522, transparent);
 }
 
-.container-movies hr, .about-movie hr{
+.container-content hr, .about-movie hr{
   width: 100%;
   background-image: linear-gradient(to right, var(--color-red), transparent);
   border: none;
@@ -552,7 +528,7 @@ header button{
   margin-bottom: 20px;
 }
 
-.container-movies button{
+.container-content button{
   padding: 4px 30px;
   outline: none;
   background-color: transparent;
@@ -560,105 +536,79 @@ header button{
   font: 500 1em 'Roboto', sans-serif;
   border: 1.4pt solid var(--color-red);
   border-radius: 20px;
+  cursor: pointer;
   transition: all .1s ease-in;
 }
 
-.container-movies button:focus{
-  border: 1.4pt solid var(--color-white);
-  color: var(--color-white);
+.container-content button:nth-child(1){
+  border: 1pt solid white;
 }
 
 .btns-movie-serie{
   display: flex;
   flex-direction: row;
   gap: 1rem;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
-#movies-container-main{
+.home-movies-container{
   width: 100%;
   display: flex;
   flex-direction: column;
-  row-gap: 4rem;
+  row-gap: 3rem;
 }
 
-.app-main{
+.container-home{
   display: flex;
   flex-direction: column;
   row-gap: 6rem;
 }
 
-.container-movies{
+.container-content{
   width: 93%;
   margin: auto;
   overflow: hidden;
+  background-color: rgb(23, 21, 34);
+  padding: 10px 20px;
+  border-radius: 5px;
 }
 
-.container-movies h1{
+.container-content .title-box{
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.container-content h1{
   color: var(--color-white);
   font: 500 1.7em "Roboto", sans-serif;
-  margin-bottom: 10px;
+  animation: startFetch .3s ease-in-out;
 }
 
-.swiper{
+.fetchMovies-container{
+  animation: startFetch 5s ease-in-out;
+  position: absolute;
+}
+
+.swiper-container{
   width: 100%;
   margin: auto;
-}
-
-.swiper-wrapper{
-  display: flex;
-  flex-direction: row;
-}
-
-.swiper-slide{
-  cursor: pointer;
-  min-width: 210px;
-  padding: 0px 13px;
-  box-sizing: border-box;
+  padding: 0;
 }
 
 #swiper-img{
-  border: 3px solid transparent !important;
+  border: 1.5pt solid transparent !important;
   transition: all .1s ease-in !important;
+  cursor: pointer;
+  opacity: 0.8;
+  border-radius: 4px;
+  margin: 0px 10px;
 }
 
-.swiper-slide:hover #swiper-img{
-  border: 3px solid var(--color-red) !important;
+#swiper-img:hover{
   opacity: 1;
-}
-
-.swiper-button-next, .swiper-button-prev{
-  padding: 40px 20px;
-  margin-top: -100px;
-  color: var(--color-white) !important;
-  margin-top: -100px !important;
-  transform: scale(.6);
-}
-
-.swiper-button-next{
-  margin-right: -35px;
-}
-
-.swiper-button-next::before{
-  content: '';
-  width: 150px;
-  min-height: 100vh;
-  position: absolute;
-  background-image: linear-gradient(to left, var(--color-black), rgb(0,0,0,.9) ,transparent);
-  z-index: -1;
-}
-
-.swiper-button-prev{
-  margin-left: -35px;
-}
-
-.swiper-button-prev::before{
-  content: '';
-  width: 150px;
-  min-height: 100vh;
-  position: absolute;
-  background-image: linear-gradient(to right, var(--color-black), rgb(0,0,0,.9), transparent);
-  z-index: -1;
+  border-radius: 4px;
+  border: 1.5pt solid var(--color-red) !important;
 }
 
 .img-carrosel{
@@ -668,19 +618,14 @@ header button{
   gap: 1.5rem;
 }
 
-.movies-container{
-  min-width: 200px;
-  cursor: pointer;
-}
-
-.movies-container:hover .movies-img{
+.container-content:hover .movies-img{
   border: 3px solid var(--color-red);
   opacity: 1;
 }
 
 .movies-img{
-  width: 100%;
-  height: 250px;
+  min-width: 170px;
+  height: 270px;
   border: 3px solid transparent;
   opacity: .8;
   transition: all .1s ease-in;
@@ -689,6 +634,7 @@ header button{
 .movies-img img{
   width: 100%;
   height: 100%;
+  border-radius: 4px;
   object-fit: cover;
 }
 
@@ -700,36 +646,7 @@ header button{
 }
 
 .details{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  row-gap: 0.3rem;
-}
-
-.movies-details p{
-  color: rgb(255,255,255,.6);
-  font: 500 1em "Open Sans", sans-serif;
-}
-
-.generos{
-  display: flex;
-  flex-direction: row;
-  gap: .7rem;
-}
-
-.generos p{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.starIcon{
-  margin-left: 5px;
-  font-size: .7em;
-}
-
-.p{
-  color: var(--color-red)
+  display: none;
 }
 
 .movies-details h2{
@@ -849,7 +766,7 @@ header button{
 .box-movies, .box-series{
   display: flex;
   flex-direction: column;
-  row-gap: 3rem;
+  row-gap: 1rem;
   padding: 0rem 0rem 1rem 0rem;
 }
 
@@ -879,8 +796,8 @@ header button{
   outline: none;
 }
 
-.barraGeneros ul li button:hover, .barraGeneros ul li button:focus{
-  color: var(--color-white);
+.barraGeneros ul li:nth-child(1) button{
+  color: white;
 }
 
 .perfilContainer{
@@ -1053,9 +970,6 @@ footer{
 }
 
 @media screen and (min-width: 2000px) {
-  .movies-container{
-    min-width: 15%;
-  }
 
   .movies-img{
     min-height: 400px;
@@ -1124,41 +1038,19 @@ footer{
     display: none;
   }
 
-  .movies-container{
-    min-width: 180px;
-  }
-
   .movies-img{
     height: 225px;
   }
 
-  .movieDetails{
-    position: absolute;
-    margin-left: 50px;
-    bottom: 0;
-  }
-
-  .movieDetails p{
-    font-size: 1.1em;
-  }
-
-  .movies-details h2{
-    font-size: .9em;
-  }
-
-  .movies-details p {
-    font-size: .9em;
-  }
-
-  .container-movies{
+  .container-content{
     width: 90%;
   }
 
-  .container-movies h1{
+  .container-content h1{
     font-size: 1.5em;
   }
 
-  .container-movies button{
+  .container-content button{
     font-size: .9em;
   }
 
@@ -1265,16 +1157,12 @@ footer{
     -webkit-line-clamp: 2;
   } 
 
-  .container-movies button{
+  .container-content button{
     border: 1pt solid var(--color-red);
   }
 
   .about-movie{
     margin-top: 50px;
-  }
-
-  .movies-container{
-    min-width: 170px;
   }
 
   .movies-img{

@@ -1,9 +1,5 @@
-import LatestMovies from '/src/components/LatestMovies';
-import PopularMovies from '/src/components/PopularMovies';
-import HorrorMovies from '/src/components/HorrorMovies';
-import ActionMovies from '/src/components/ActionMovies';
-import Documentaries from '/src/components/Documentaries';
-import ComedyMovies from '/src/components/ComedyMovies';
+import React from 'react';
+import FetchMovies from '/src/components/ContainerMovies';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef} from "react";
 import { LuSearch, LuServer } from "react-icons/lu";
@@ -15,11 +11,13 @@ function Movies() {
     const [btnAtivo, setBtnAtivo] = useState('btnDesativado');
     const navigate = useNavigate();
     const [autorizado, setAutorizado] = useState(false);
-    const [component, setComponent] = useState('LatestMovies');
+    const [genreMovie, setGenreMovie] = useState('Lançamentos');
     const [hideBar, setHideBar] = useState(true);
     const AppRef = useRef();
     const HeightMovies = useRef();
-    const [heightPageMovies, setHeightPageMovies] = useState(); 
+    const [heightPageMovies, setHeightPageMovies] = useState();
+    const [key, setKey] = useState(0); 
+    const genreBtns = useRef();
 
     const btnClick = () => {
         if (btnAtivo === 'btnDesativado'){
@@ -29,9 +27,12 @@ function Movies() {
         }
     }
 
-    const DefComponent = (e) => {
+    const handleGenres = (e) => {
         const valor = e.target.value
-        setComponent(valor);
+        setGenreMovie(valor);
+        setKey(prevKey => prevKey + 1);
+        handleColorBtn(valor);
+        console.log(genreMovie);
     }
 
     const btnNavigate = (e) => {
@@ -58,6 +59,19 @@ function Movies() {
     const GetHeight = setTimeout(() => {
         setHeightPageMovies(HeightMovies.current?.scrollHeight);
     }, 2000);
+
+    const handleColorBtn = (genre) => {
+        if (genreBtns.current){
+            const children = genreBtns.current.children;
+            for (let child in children){
+                if (children[child].childNodes[0].value === genre){
+                    children[child].childNodes[0].style.color = 'white';
+                }else{
+                    children[child].childNodes[0].style.color = 'rgba(255, 255, 255, 0.7)';
+                }
+            }
+        }
+    }
 
     useEffect(() => {
         const delay = setTimeout(() => {
@@ -106,77 +120,23 @@ function Movies() {
 
             {autorizado === true ? (
                     <div className='barraGeneros'>
-                        <ul>
-                            <li><button value='LatestMovies' onClick={DefComponent}>Lançamentos</button></li>
-                            <li><button value='HorrorMovies' onClick={DefComponent}>Terror</button></li>
-                            <li><button value='ActionMovies' onClick={DefComponent}>Ação</button></li>
-                            <li><button value='PopularMovies' onClick={DefComponent}>Populares</button></li>
-                            <li><button value='ComedyMovies' onClick={DefComponent}>Comedia</button></li>
-                            <li><button value='Documentaries' onClick={DefComponent}>Documentarios</button></li>
+                        <ul ref={genreBtns}>
+                            <li><button value='Lançamentos' onClick={handleGenres}>Lançamentos</button></li>
+                            <li><button value='Terror' onClick={handleGenres}>Terror</button></li>
+                            <li><button value='Ação' onClick={handleGenres}>Ação</button></li>
+                            <li><button value='Comedia' onClick={handleGenres}>Comedia</button></li>
+                            <li><button value='Documentario' onClick={handleGenres}>Documentarios</button></li>
                         </ul>
                     </div>
                 ) : null
             }
-
-            {component === 'LatestMovies' ? (
-                <div className='box-movies'>
-                    <LatestMovies titulo='true' btn='false' page='1' tipo='filme'/>
-                    <LatestMovies  page='2' tipo='filme'/>
-                    <LatestMovies  page='3' tipo='filme'/>
-                    <LatestMovies  page='4' tipo='filme'/>
-                    <LatestMovies  page='5' tipo='filme'/>
-                </div>
-            ): null}
-
-            {component === 'HorrorMovies' ? (
-                <div className='box-movies'>
-                    <HorrorMovies titulo='true' btn='false' page='1' tipo='filme'/>
-                    <HorrorMovies page='2' tipo='filme'/>
-                    <HorrorMovies page='3' tipo='filme'/>
-                    <HorrorMovies page='4' tipo='filme'/>
-                    <HorrorMovies page='5' tipo='filme'/>
-                </div>
-            ):null}
-
-            {component === 'ActionMovies' ? (
-                <div className='box-movies'>
-                    <ActionMovies titulo='true' btn='false' page='1' tipo='filme'/>
-                    <ActionMovies page='2' tipo='filme'/>
-                    <ActionMovies page='3' tipo='filme'/>
-                    <ActionMovies page='4' tipo='filme'/>
-                    <ActionMovies page='5' tipo='filme'/>    
-                </div>
-            ):null}
-
-            {component === 'PopularMovies' ? (
-                <div className='box-movies'>
-                    <PopularMovies titulo='true' btn='false' page='1' tipo='filme'/>
-                    <PopularMovies page='2' tipo='filme'/>
-                    <PopularMovies page='3' tipo='filme'/>
-                    <PopularMovies page='4' tipo='filme'/>
-                    <PopularMovies page='5' tipo='filme'/>
-                </div>
-            ):null}
-
-            {component === 'Documentaries' ? (
-                <div className='box-movies'>
-                    <Documentaries titulo='true' btn='false' page='1' tipo='filme'/>
-                    <Documentaries page='2' tipo='filme'/>
-                    <Documentaries page='3' tipo='filme'/>
-                    <Documentaries page='4' tipo='filme'/>
-                    <Documentaries page='5' tipo='filme'/>
-                </div>
-            ):null}
-
-            {component === 'ComedyMovies' ? (
-                <div className='box-movies'>
-                    <ComedyMovies titulo='true' btn='false' page='1' tipo='filme'/>
-                    <ComedyMovies page='2' tipo='filme'/>
-                    <ComedyMovies page='3' tipo='filme'/>
-                    <ComedyMovies page='4' tipo='filme'/>
-                    <ComedyMovies page='5' tipo='filme'/>
-                </div>
-            ):null}
+            <div className='box-movies'>
+                <FetchMovies titulo={genreMovie} btn='false' page='1' tipo='filme' genre={genreMovie}/>
+                <FetchMovies page='2' tipo='filme' genre={genreMovie}/>
+                <FetchMovies page='3' tipo='filme' genre={genreMovie}/>
+                <FetchMovies page='4' tipo='filme' genre={genreMovie}/>
+                <FetchMovies page='5' tipo='filme' genre={genreMovie}/>
+            </div>
 
             <Footer/>
         </main>

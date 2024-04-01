@@ -1,20 +1,14 @@
-import PopularMovies from "/src/components/PopularMovies";
-import LatestMovies from "/src/components/LatestMovies";
-import HorrorMovies from "/src/components/HorrorMovies";
-import ActionMovies from "/src/components/ActionMovies";
-import ComedyMovies from "/src/components/ComedyMovies";
-import Documentaries from "/src/components/Documentaries";
+import FetchMovies from "/src/components/ContainerMovies";
 
 function Main() {
 
   return(
-    <div id="movies-container-main">
-      <LatestMovies page='1' titulo='true' btn='true' tipo='filme'/>
-      <ActionMovies page='1' titulo='true' btn='true' tipo='filme'/>
-      <HorrorMovies page='1' titulo='true' btn='true' tipo='filme'/>
-      <PopularMovies page='1' titulo='true' btn='true' tipo='filme'/>
-      <ComedyMovies page='1' titulo='true' btn='true' tipo='filme'/>
-      <Documentaries page='1' titulo='true' btn='true' tipo='filme'/>
+    <div className="home-movies-container">
+      <FetchMovies page='1' titulo='Laçamentos' btn='true' tipo='filme' genre='Lançamentos'/>
+      <FetchMovies page='1' titulo='Terror' btn='true' tipo='filme' genre='Terror'/>
+      <FetchMovies page='1' titulo='Ação' btn='true' tipo='filme' genre='Ação'/>
+      <FetchMovies page='1' titulo='Ficção' btn='true' tipo='filme' genre='Ficção Cientifica'/>
+      <FetchMovies page='1' titulo='Documentarios' btn='true' tipo='filme' genre='Documentario'/>
     </div>
   )
 }
