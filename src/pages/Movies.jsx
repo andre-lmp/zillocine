@@ -6,6 +6,7 @@ import { LuSearch, LuServer } from "react-icons/lu";
 import Search from "/src/components/SearchBar";
 import '/src/App.css';
 import Footer from '/src/components/footer';
+import { CgClose } from "react-icons/cg";
 
 function Movies() {
     const [btnAtivo, setBtnAtivo] = useState('btnDesativado');
@@ -85,7 +86,7 @@ function Movies() {
             <div ref={AppRef} className='opacity-div'></div>
             <div className="div-menu" id={btnAtivo}>
                 <ul>
-                    <li><button onClick={btnClick}><h1 id="p-1">/</h1><h1 id="p-2">\</h1></button></li>
+                    <li><button><CgClose onClick={btnClick} className="close-icon"/></button></li>
                     <li><p id='' onClick={btnNavigate}>Inicio</p></li>
                     <li><p id='Series' onClick={btnNavigate}>Series</p></li>
                     <li><p id='Filmes' onClick={btnNavigate}>Filmes</p></li>

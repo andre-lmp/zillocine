@@ -4,6 +4,7 @@ import { LuPlay, LuSearch } from "react-icons/lu";
 import Search from "/src/components/SearchBar";
 import { Swiper, SwiperSlide } from '/src/components/swiper/Swiper.jsx';
 import { Pagination } from 'swiper/modules';
+import { CgClose } from "react-icons/cg";
 import '/src/App.css';
 import 'swiper/css';
 import 'swiper/element/css/pagination';
@@ -19,7 +20,7 @@ function Header({HeightScroll}) {
   const navigate = useNavigate();
   const [btnAtivo, setBtnAtivo] = useState('btnDesativado');
   const [type, setType] = useState('filme');
-  const AppRef = useRef();
+  const divOpacity = useRef();
   const [hideBar, setHideBar] = useState(true);
   const ContainerHeader = useRef();
 
@@ -45,17 +46,19 @@ function Header({HeightScroll}) {
 
   const HandleHideChange = (newValue) => {
     setHideBar(newValue);
-    AppRef.current.style.opacity = '0';
-    AppRef.current.style.zIndex = '-200';
+    divOpacity.current.style.opacity = '0';
+    setTimeout(() => {
+      divOpacity.current.style.zIndex = '-200';
+    }, 300);
   }
 
   const hideBarSearch = () => {
     if (hideBar === true) {
       setBtnAtivo('desativado');
       setHideBar(false);
-      AppRef.current.style.opacity = '.9';
-      AppRef.current.style.zIndex = '100';
-      AppRef.current.style.height = `${HeightScroll}px`;
+      divOpacity.current.style.opacity = '.9';
+      divOpacity.current.style.zIndex = '100';
+      divOpacity.current.style.height = `${HeightScroll}px`;
     }
   }
 
@@ -83,7 +86,7 @@ function Header({HeightScroll}) {
   
   return autorizado ? (
     <main ref={ContainerHeader} id="header-main">
-      <div ref={AppRef} className="opacity-div"></div>
+      <div ref={divOpacity} className="opacity-div"></div>
           <div className="header-links">
             <Search onValueChange={HandleHideChange} hide={hideBar}/>
             <div className='links-content'>
@@ -110,7 +113,7 @@ function Header({HeightScroll}) {
 
         <div className="div-menu" id={btnAtivo}>
           <ul>
-            <li><button onClick={btnClick}><h1 id="p-1">/</h1><h1 id="p-2">\</h1></button></li>
+            <li><button><CgClose onClick={btnClick} className="close-icon"/></button></li>
             <li><p id="" onClick={btnNavigate}>Inicio</p></li>
             <li><p id="Filmes" onClick={btnNavigate}>Filmes</p></li>
             <li><p id="Series" onClick={btnNavigate}>Series</p></li>

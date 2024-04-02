@@ -21,7 +21,7 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-@keyframes startFetch {
+@keyframes fadeIN {
   from{
     transform: translateY(100%);
     opacity: 0;
@@ -79,6 +79,7 @@ header{
   flex-direction: column;
   list-style: none;
   row-gap: 2rem;
+  position: relative;
 }
 
 .div-menu ul li p{
@@ -95,34 +96,20 @@ header{
 
 .div-menu ul li button{
   border: none;
-  font: 300 1.2em "Roboto", sans-serif;
+  font: 300 2em "Roboto", sans-serif;
   display: flex;
+  width: 60px;
+  height: 60px;  
   flex-direction: row;
-  position: relative;
-  padding: 0px 0px 50px 8px;
-  transform: rotate(18deg);
+  justify-content: center;
   background-color: transparent;
+  align-items: center;
   cursor: pointer;
   outline: none;
 }
 
-.div-menu ul li button:hover h1{
-  color: var(--color-white);
-}
-
-.div-menu ul li button h1{
-  position: absolute;
-  color: rgb(255,255,255,.7);
-}
-
-#p-1{
-  transform: rotate(5deg);
-  font-weight: 400;
-}
-
-#p-2{
-  transform: rotate(-40deg);
-  font-weight: 400;
+.div-menu ul li button .close-icon{
+  color:var(--color-white);
 }
 
 .search-container-main{
@@ -132,7 +119,7 @@ header{
 .search-bar-container{
   width: 100%;
   height: 150px;
-  background-image: linear-gradient(to bottom, rgb(23, 21, 34), rgb(23, 21, 34), transparent);
+  background-image: linear-gradient(to bottom, black, black, rgb(0, 0, 0, 0.0));
   position: fixed;
   top: 0;
   transform: translateY(-100%);
@@ -167,7 +154,7 @@ header{
   padding: 3px 30px;
 }
 
-.container-result{
+.fetch-result{
   width: 80%;
   left: 50%;
   position: absolute;
@@ -180,39 +167,44 @@ header{
   overflow-y: scroll;
 }
 
-.container-result::-webkit-scrollbar{
+.fetch-result::-webkit-scrollbar{
   width: 6px;
 }
 
-.container-result h1{
+.fetch-result::-webkit-scrollbar-thumb{
+  cursor: pointer;
+}
+
+.fetch-result .section-title h1{
   color: var(--color-white);
   font: 500 1.5em "Raleway", sans-serif;
 }
 
-#line-result-titulo{
+.fetch-result .section-title #line{
   background-color: var(--color-white);
 }
 
-.result-container .container-content{
+.fetch-result .movies-box{
   width: 100%;
   display: flex;
   flex-direction: row;
   gap: 1rem;
 }
 
-.img-result-container{
+.fetch-result .movies-box .image-box{
   min-width: 130px;
   height: 160px;
   cursor: pointer;
 }
 
-.img-result-container img{
+.fetch-result .movies-box .image-box img{
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 3px;
 }
 
-.result-movies-info{
+.fetch-result .info-section{
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -221,42 +213,38 @@ header{
   padding: 2px 0px;
 }
 
-.result-info-avaliação{
-  display: flex;
-  flex-direction: column;
-  row-gap: .3rem;
-}
-
-.result-movies-info h2{
+.fetch-result .info-section h2{
   font: 500 1.5em "Raleway", sans-serif;
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  color: var(--color-white);
   text-overflow: ellipsis;
   overflow: hidden;
   -webkit-box-orient: vertical;
   cursor: pointer;
 }
 
-.result-info-avaliação h3{
+.fetch-result .info-section .review-section h3{
   color: var(--color-red);
-  font: 500 1.2em 'Raleway', sans-serif;
+  font: 400 1.2em 'Roboto', sans-serif;
 }
 
-.info-avaliação-div{
+.fetch-result .info-section .review-section .review-stars{
   display: flex;
   flex-direction: row;
   gap: .5rem;
 }
 
-.star-icon-avaliação{
+.fetch-result .info-section .review-section .review-stars .star-icon{
   font-size: 1em;
+  color: orange;
 }
 
-.descrição-movies-result{
+.fetch-result .info-section  p{
   font: 400 1em 'Noto Sans', sans-serif;
   color: rgb(255,255,255,.8);
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   text-overflow: ellipsis;
   overflow: hidden;
   -webkit-box-orient: vertical;
@@ -307,12 +295,13 @@ header{
   align-items: center;
 }
 
-.xmark-icon-input{
+.close-bar-icon{
   color: rgb(255,255,255,.7);
-  font-size: 2.2em;
+  font-size: 1.9em;
+  cursor: pointer;
 }
 
-.xmark-icon-input:hover{
+.close-bar-icon:hover{
   color: var(--color-white);
 }
 
@@ -320,7 +309,7 @@ header{
   width: 100%;
   padding-bottom: 30px;
   box-sizing: border-box;
-  background-image: linear-gradient(to bottom, rgb(23, 21, 34, 1), rgb(23, 21, 34, .5), rgb(23, 21, 34, 0));
+  background-image: linear-gradient(to bottom, rgb(23, 21, 34), rgb(23, 21, 34, 0.5), rgb(23, 21, 34, 0.0));
   display: flex;
   flex-direction: row;
   position: fixed;
@@ -368,8 +357,8 @@ header button{
   color: var(--color-white);
   font-weight: 400;
   font-size: 1.7em;
-  background-color: transparent;
   transform: rotate(90deg);
+  background-color: transparent;
   outline: none;
   cursor: pointer;
 }
@@ -443,12 +432,12 @@ header button{
 
 }
 
-.slide{
+.header-images .slide{
   width: 100%;
   height: 100%;
 }
 
-.slide-image{
+.header-images .slide-image{
   height: 100%;
   object-fit: cover;
   width: 100%;
@@ -565,12 +554,10 @@ header button{
 }
 
 .container-content{
-  width: 93%;
+  width: 95%;
   margin: auto;
   overflow: hidden;
-  background-color: rgb(23, 21, 34);
   padding: 10px 20px;
-  border-radius: 5px;
 }
 
 .container-content .title-box{
@@ -582,11 +569,11 @@ header button{
 .container-content h1{
   color: var(--color-white);
   font: 500 1.7em "Roboto", sans-serif;
-  animation: startFetch .3s ease-in-out;
+  animation: fadeIN .3s ease-in-out;
 }
 
 .fetchMovies-container{
-  animation: startFetch 5s ease-in-out;
+  animation: fadeIN 5s ease-in-out;
   position: absolute;
 }
 
@@ -603,6 +590,7 @@ header button{
   opacity: 0.8;
   border-radius: 4px;
   margin: 0px 10px;
+  animation: fadeIN .4s ease-out;
 }
 
 #swiper-img:hover{
@@ -611,7 +599,7 @@ header button{
   border: 1.5pt solid var(--color-red) !important;
 }
 
-.img-carrosel{
+.motion-slides{
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -1115,7 +1103,7 @@ footer{
   .dadosCadastroContainer{
     margin: 90px auto 50px auto;
   }
-  .container-result::-webkit-scrollbar{
+  .fetch-result::-webkit-scrollbar{
     display: none;
   }
   .about-movie{

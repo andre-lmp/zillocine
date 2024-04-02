@@ -159,7 +159,7 @@ const  fetchMovies = (props) => {
         <div className="container-content" ref={widthApp}>
           <div className="title-box">
             {props.titulo ? (
-              <h1>{props.titulo}</h1>
+              <h1 key={props.titulo}>{props.titulo}</h1>
             ): null}
           </div>
             <hr/>
@@ -171,15 +171,15 @@ const  fetchMovies = (props) => {
           ) : null}
 
           {widthSize > 750 ? (
-              <Swiper ref={swiper} className="swiper-container" style={{width: '100%', height: 'auto'}} slidesPerView={5}>
+              <Swiper ref={swiper} className="swiper-container" style={{width: '100%', height: 'auto'}} slidesPerView={6}>
                       {moviesDetails.map((movie) => (
                           <SwiperSlide className="swiper-slide" >
-                            <div id="swiper-img" className="movies-img" onClick={handleClick}><img value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/></div>
+                            <div key={movie.id} id="swiper-img" className="movies-img" onClick={handleClick}><img value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/></div>
                           </SwiperSlide>
                       ))}
               </Swiper>
           ): (
-            <motion.div className="img-carrosel" drag="x" dragConstraints={{ right: 0, left: -telaWidth }} ref={widthCarrosel}>
+            <motion.div className="motion-slides" drag="x" dragConstraints={{ right: 0, left: -telaWidth }} ref={widthCarrosel}>
               {moviesDetails.map((movie) => (
                 <div className="container-content" >
                   <div className="movies-img"  onClick={handleClick}>

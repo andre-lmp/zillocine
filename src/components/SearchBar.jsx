@@ -3,6 +3,7 @@ import { LuSearch } from "react-icons/lu";
 import { HiXMark } from "react-icons/hi2";
 import { IoStar } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 function Search({hide, onValueChange}) {
     const [searchTerm, setSearchTerm] = useState('');
@@ -91,6 +92,7 @@ function Search({hide, onValueChange}) {
             }
 
             if (searchTerm.length > 2) {
+                setSearchResult([]);
                 fetchMovies();
                 Search = true;
                 resultContainer.current.style.height = `450%`;
@@ -119,7 +121,7 @@ function Search({hide, onValueChange}) {
                 <div className="Search-input-container">
                     <LuSearch id="search-icon-bar" className="lupa-icon"/>
                     <input value={searchTerm} onChange={handleInputChange} type="text" className="inputSearch" placeholder="O que voce está procurando ?"></input>
-                    <HiXMark onClick={() => onValueChange(true)} className="xmark-icon-input"/>
+                    <HiXMark onClick={() => onValueChange(true)} className="close-bar-icon"/>
                 </div>
                 <div className="Search-options">
                     <label>
@@ -132,16 +134,16 @@ function Search({hide, onValueChange}) {
                 </div>
             </div>
 
-            <div ref={resultContainer} className="container-result">
+            <div ref={resultContainer} className="fetch-result">
                 {searchResult.length > 0 ? (
-                    <div className="titulo-result-container">
+                    <div className="section-title">
                         <h1>Resultados ({searchResult.length})</h1>
-                        <hr id="line-result-titulo"></hr>
+                        <hr id="line"></hr>
                     </div>
                 ):null}
                 {searchResult.map((movie) => (
-                    <div className="result-container-movies">
-                        <div  className="img-result-container">
+                    <motion.div key={movie.id} initial={{y: 100, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{ease: 'easeOut',duration: 0.5}} className="movies-box" >
+                        <div  className="image-box">
                             {movie.poster_path !== null ? (
                                 <img id={movie.id} onClick={SearchNavigate} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
                             ):(
@@ -149,29 +151,29 @@ function Search({hide, onValueChange}) {
                             )}
                         </div>
 
-                        <div className="result-movies-info">
+                        <div className="info-section">
                             {movie.title ? (
-                                <h2 className="pageTitle" id={movie.id} onClick={SearchNavigate} >{movie.title}</h2>
+                                <h2 className="movie-title" id={movie.id} onClick={SearchNavigate} >{movie.title}</h2>
                             ):(
-                                <h2 className="pageTitle" id={movie.id} onClick={SearchNavigate}>{movie.name}</h2>
+                                <h2 className="movie-title" id={movie.id} onClick={SearchNavigate}>{movie.name}</h2>
                             )}
 
-                            <div className="result-info-avaliação">
+                            <div className="review-section">
                                 <h3>Avaliação</h3>
-                                <div className="info-avaliação-div">
+                                <div className="review-stars">
                                     <p>{movie.vote_average.toFixed(1)}</p>
                                     <p>/</p>
-                                    <p><IoStar className="star-icon-avaliação"/></p>
+                                    <p><IoStar className="star-icon"/></p>
                                 </div>
                             </div>
 
                             {movie.overview ? (
-                                <p id="descrição-result-id" className="descrição-movies-result">{movie.overview}</p>
+                                <p id="review-description" className="review-description">{movie.overview}</p>
                             ):(
-                                <p className="descrição-movies-result">Descrição indisponivel</p>
+                                <p className="review-description">Descrição indisponivel</p>
                             )}
                         </div>
-                    </div>
+                    </motion.div>
                 ))}
             </div>
         </main>
