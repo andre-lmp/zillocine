@@ -11,7 +11,6 @@ import 'swiper/element/css/pagination';
 import '/src/App.css';
 
 function Header({HeightScroll}) {
-  const movieIds = [458156, 346698, 298618, 507089];
   const [moviesDetails, setMoviesDetails] = useState([]);
   const apiKey = "df087968ddf338b4ac0f9876af17f739";
   const apiURL = 'https://api.themoviedb.org/3/';
@@ -23,6 +22,7 @@ function Header({HeightScroll}) {
   const divOpacity = useRef();
   const [hideBar, setHideBar] = useState(true);
   const ContainerHeader = useRef();
+  const newDate = new Date().toISOString().split('T')[0];
 
   const btnNavigate = (e) => {
     navigate(`/${e.target.id}`)
@@ -52,6 +52,14 @@ function Header({HeightScroll}) {
     }, 300);
   }
 
+  const handleSlides = (movies) => {
+    const movieIds = [];
+    for (let i = 0; i<=4; i++){
+        movieIds.push(movies[i]);
+    }
+    setMoviesDetails(movieIds);
+  }
+
   const hideBarSearch = () => {
     if (hideBar === true) {
       setBtnAtivo('desativado');
@@ -69,16 +77,13 @@ function Header({HeightScroll}) {
 
     const fetchMovies = async () => {
       try {
-        const moviePromises = movieIds.map(async (movieId) => {
-           const bilheteria = await fetch(`${apiURL}/movie/${movieId}?api_key=${apiKey}&language=pt-BR&page=1&include_image_language=pt`)
-           return bilheteria.json();
-        });
-         const data = await Promise.all(moviePromises);
-         setMoviesDetails(data);
-      } catch (error) {
+        const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&primary_release_date.gte=${newDate}&sort=primary_release_date.desc&language=pt-BR&include_image_language=pt`);
+        const data = await response.json();
+        setMoviesDetails(data.results);
+        handleSlides(data.results);
+      } catch{
         console.log(error);
       }
-       
     }
 
     fetchMovies();

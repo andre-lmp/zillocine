@@ -328,10 +328,6 @@ header{
   justify-content: space-between;
 }
 
-header button{
-  cursor: pointer;
-}
-
 .links-titulo h1{
   font: 700 2.8em "Raleway", sans-serif;
   color: var(--color-white);
@@ -361,6 +357,7 @@ header button{
   background-color: transparent;
   outline: none;
   cursor: pointer;
+  z-index: 1;
 }
 
 .link-icons a{
@@ -604,6 +601,23 @@ header button{
   display: flex;
   flex-direction: row;
   gap: 1.5rem;
+}
+
+.motion-slides .slides-container{
+  width: 100%;
+}
+
+.motion-slides .slides-container .motion-images{
+  width: 165px;
+  height: 250px;
+  animation: fadeIN .2s ease-out;
+}
+
+.motion-slides .slides-container .motion-images img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 3px;
 }
 
 .container-content:hover .movies-img{
@@ -1070,6 +1084,22 @@ footer{
 }
 
 @media screen and (max-width: 600px) {
+  header{
+    max-height: 480px;
+  }
+
+  .header-images{
+    max-height: 480px;
+  }
+
+  .container-home{
+    row-gap: 2rem;
+  }
+
+  .home-movies-container{
+    row-gap: 2rem;
+  }
+
   .pageTitle{
     font: 600 1.5em "Raleway", sans-serif;
     color: var(--color-white);
@@ -1081,8 +1111,14 @@ footer{
     font-size: 1.3em;
   }
   .div-menu ul li button{
-    font-size: 1.1em;
+    font-size: 1.7em;
   }
+
+  .button-header-div button{
+    width: 45px;
+    height: 45px;
+  }
+
   .carrosel-header{
     transition: transform .7s ease-in-out;
   }
@@ -1117,7 +1153,7 @@ footer{
     display: flex;
     flex-direction: column;
     row-gap: 2rem;
-  }
+  };
   
 }
 

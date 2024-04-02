@@ -9,9 +9,7 @@ const  fetchMovies = (props) => {
   const [moviesDetails, setMoviesDetails] = useState([]);
   const newDate = new Date().toISOString().split('T')[0];
   const apiKey = "df087968ddf338b4ac0f9876af17f739";
-  const [telaWidth, setTelaWidth] = useState();
-  const widthCarrosel = useRef();
-  const widthApp = useRef();
+  const widthCarousel = useRef();
   const [autorizado, setAutorizado] = useState(false);
   const navigate = useNavigate();
   const [type, setType] = useState(props.tipo);
@@ -63,6 +61,30 @@ const  fetchMovies = (props) => {
     10768: "Guerra",
     37: "Faroeste"
  };
+
+ const breakpoints = {
+  750: {
+    slidesPerView: 3
+  },
+  820:{
+    slidesPerView: 4
+  },
+  990:{
+    slidesPerView: 5
+  },
+  1160:{
+    slidesPerView: 6
+  },
+  1330:{
+    slidesPerView: 7
+  },
+  1640:{
+    slidesPerView: 8
+  },
+  1950:{
+    slidesPerView: 9
+  }
+ };
  
   const handleClick = (e) => {
     const valor = e.target.attributes.value.value;
@@ -108,6 +130,7 @@ const  fetchMovies = (props) => {
   useEffect(() => {
     const delay = setTimeout(() => {
       setAutorizado(true);
+      console.log(widthCarousel.current.scrollWidth);
     }, 1000);
 
     const fetchMovies = async () => {
@@ -156,7 +179,7 @@ const  fetchMovies = (props) => {
 
   return autorizado ? (
     <section className="movies-container" id="movies-container">
-        <div className="container-content" ref={widthApp}>
+        <div className="container-content">
           <div className="title-box">
             {props.titulo ? (
               <h1 key={props.titulo}>{props.titulo}</h1>
@@ -171,7 +194,7 @@ const  fetchMovies = (props) => {
           ) : null}
 
           {widthSize > 750 ? (
-              <Swiper ref={swiper} className="swiper-container" style={{width: '100%', height: 'auto'}} slidesPerView={6}>
+              <Swiper ref={swiper} className="swiper-container" style={{width: '100%', height: 'auto'}} breakpoints={breakpoints}>
                       {moviesDetails.map((movie) => (
                           <SwiperSlide className="swiper-slide" >
                             <div key={movie.id} id="swiper-img" className="movies-img" onClick={handleClick}><img value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/></div>
@@ -179,10 +202,10 @@ const  fetchMovies = (props) => {
                       ))}
               </Swiper>
           ): (
-            <motion.div className="motion-slides" drag="x" dragConstraints={{ right: 0, left: -telaWidth }} ref={widthCarrosel}>
+            <motion.div className="motion-slides" drag="x" dragConstraints={{ right: 0, left: -((widthCarousel.current?.scrollWidth - widthSize) + 40) }} ref={widthCarousel}>
               {moviesDetails.map((movie) => (
-                <div className="container-content" >
-                  <div className="movies-img"  onClick={handleClick}>
+                <div className="slides-container" >
+                  <div key={movie.id} className="motion-images"  onClick={handleClick}>
                     {movie.poster_path ? (
                       <img value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
                     ):(
