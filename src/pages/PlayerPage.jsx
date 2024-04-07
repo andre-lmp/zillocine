@@ -84,8 +84,7 @@ function PlayerPage() {
   },[id]);
   
   return autorizado ?(
-    <main className='page-container'>
-
+    <main className='player-container'>
       <div className="div-menu" id={btnAtivo}>
           <ul>
             <li><button><CgClose onClick={btnClick} className="close-icon"/></button></li>
@@ -124,20 +123,20 @@ function PlayerPage() {
             </div>
         </div>
 
-        <div className='header-images'>
-          <div className="carrosel-header">
-                <div className="carrosel-img" id={ativo}>
+        <div className='player-movies'>
+          <div className="information-container">
+                <div className="movies-information" id={ativo}>
                   { moviesDetails.backdrop_path !== null ? (
                     <img src={`${imgUrl}${moviesDetails.backdrop_path}`}/>
                   ) : (
                     <img src={`${imgUrl}${moviesDetails.poster_path}`}/>
                   )}
 
-                  <div id="movie-details-player" className="movieDetails">
+                  <div id="details">
                     {moviesDetails.title ? (
-                      <h2 className="pageTitle" >{moviesDetails.title}</h2>
+                      <h1 className="pageTitle" >{moviesDetails.title}</h1>
                     ):(
-                      <h2 className="pageTitle">{moviesDetails.name}</h2>
+                      <h1 className="pageTitle">{moviesDetails.name}</h1>
                     )}
 
                     {moviesDetails.tagline ? (
@@ -147,12 +146,12 @@ function PlayerPage() {
                     )}
 
                     <button className="btn-play-page" id="btn-play" onClick={handleClick}><LuPlay className="btn-icon-page" id="icon"/></button>
-                    <div className="background-filter"></div>
+                    <div id="background"></div>
                       
                   </div>
                   <div className='header-fim'></div>
                 </div>
-                <div id={ativo2} className='player-page'>
+                <div id={ativo2} className='player-video'>
                   {moviesDetails.videos.results.length !== 0 ? (
                     <iframe
                     width="100%"

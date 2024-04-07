@@ -64,12 +64,20 @@ function Header({HeightScroll}) {
     if (hideBar === true) {
       setBtnAtivo('desativado');
       setHideBar(false);
-      divOpacity.current.style.opacity = '.9';
+      divOpacity.current.style.opacity = '.95';
       divOpacity.current.style.zIndex = '100';
       divOpacity.current.style.height = `${HeightScroll}px`;
     }
   }
 
+  const handleReleaseDate = (date) => {
+    const newDate = [];
+    for (let i = 0; i < 4; i++){
+      newDate.push(date[i]);
+    } 
+    return newDate;
+  }
+ 
   useEffect(() => {
     const delay = setTimeout(() => {
       setAutorizado(true);
@@ -81,6 +89,7 @@ function Header({HeightScroll}) {
         const data = await response.json();
         setMoviesDetails(data.results);
         handleSlides(data.results);
+        console.log(data.results);
       } catch{
         console.log(error);
       }
@@ -134,8 +143,9 @@ function Header({HeightScroll}) {
                   <img src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`} className="slide-image"/>
                   <div className="header-slide-details">
                     <h1>{movie.title}</h1>
-                    <p>{movie.tagline}</p>
-                    <button onClick={handleClick} value={movie.id} id="btn-play"><LuPlay onClick={handleClick} value={movie.id} id="icon" /></button>
+                    <h2>{handleReleaseDate(movie.release_date)}</h2>
+                    <p>{movie.overview}</p>
+                    <button onClick={handleClick} value={movie.id} id="btn-play">Assistir Filme</button>
                   </div>
                   <div className='end-header'></div>
                 </SwiperSlide>
