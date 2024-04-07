@@ -14,16 +14,14 @@ function PlayerPage() {
   const apiURL = 'https://api.themoviedb.org/3/';
   const [autorizado, setAutorizado] = useState(false);
   const navigate = useNavigate();
-  const [ativo, setAtivo] = useState('desativado');
   const headerContainer = useRef();
-  const [ativo2, setAtivo2] = useState('desativado');
+  const [playerAtivo, setPlayerAtivo] = useState('desativado');
   const [imgUrl, setImgUrl] = useState("https://image.tmdb.org/t/p/original");
   const [btnAtivo, setBtnAtivo] = useState('btnDesativado');
   const [hideBar, setHideBar] = useState(true);
   const AppRef = useRef();
   const handleClick = () => {
-    setAtivo('ativo');
-    setAtivo2('ativo2')
+    setPlayerAtivo('player-ativo')
   }
 
   const btnClick = () => {
@@ -54,6 +52,14 @@ function PlayerPage() {
     }
   }
 
+  const handleReleaseDate = (date) => {
+    const newDate = [];
+    for (let i = 0; i < 4; i++){
+      newDate.push(date[i]);
+    } 
+    return newDate;
+  }
+
   useEffect(() => {
     const Delay = setTimeout(() => {
       setAutorizado(true);
@@ -74,6 +80,7 @@ function PlayerPage() {
           const movieDetail = await fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}&language=pt-BR&page=1&include_image_language=pt&append_to_response=videos`);
           const data = await movieDetail.json();
           setMoviesDetails(data);
+          console.log(data);
         } catch (error) {
           console.log(error);
         }
@@ -123,9 +130,9 @@ function PlayerPage() {
             </div>
         </div>
 
-        <div className='player-movies'>
-          <div className="information-container">
-                <div className="movies-information" id={ativo}>
+        <section className='player-movies'>
+          <section className="information-container">
+                <section className="movies-information">
                   { moviesDetails.backdrop_path !== null ? (
                     <img src={`${imgUrl}${moviesDetails.backdrop_path}`}/>
                   ) : (
@@ -139,23 +146,26 @@ function PlayerPage() {
                       <h1 className="pageTitle">{moviesDetails.name}</h1>
                     )}
 
-                    {moviesDetails.tagline ? (
-                      <p className="page-tagline">{moviesDetails.tagline}</p>
+                    {moviesDetails.release_date ? (
+                      <h2>{handleReleaseDate(moviesDetails.release_date)}</h2>
+                    ): (
+                      <h2>{handleReleaseDate(moviesDetails.first_air_date)}</h2>
+                    )}
+
+                    {moviesDetails.overview ? (
+                      <p className="page-tagline">{moviesDetails.overview}</p>
                     ):(
                       <p className="page-tagline">Subtitulo indisponivel</p>
                     )}
 
-                    <button className="btn-play-page" id="btn-play" onClick={handleClick}><LuPlay className="btn-icon-page" id="icon"/></button>
-                    <div id="background"></div>
-                      
+                    <button onClick={handleClick}>Assistir Filme</button>
                   </div>
-                  <div className='header-fim'></div>
-                </div>
-                <div id={ativo2} className='player-video'>
+                  <div id="background"></div>
+                </section>
+                <div id={playerAtivo} className='player-video'>
+                  <div id="player-end"></div>
                   {moviesDetails.videos.results.length !== 0 ? (
                     <iframe
-                    width="100%"
-                    height="500"
                     src={`https://www.youtube.com/embed/${moviesDetails.videos.results[0].key}`}
                     frameBorder="0"
                     allow=" autoplay; encrypted-media; gyroscope; picture-in-picture"
@@ -169,14 +179,14 @@ function PlayerPage() {
                   )}
                   <div className="fundoPlayer"></div>
                 </div>
-          </div>
-        </div>
+          </section>
+        </section>
 
       </header>
 
-      <div className='about-movie'>
+      <section className='overview-section'>
         <hr></hr>
-        <div className='about-movie-text'>
+        <div className='overview-content'>
           {type === 'filme' ? (
             <h1>Sobre o filme</h1>
           ) : (
@@ -189,7 +199,7 @@ function PlayerPage() {
             <p>Descrição indisponivel</p>
           )}
         </div>
-      </div>
+      </section>
 
       <Footer/>
     </main>

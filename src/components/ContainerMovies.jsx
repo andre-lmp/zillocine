@@ -185,7 +185,7 @@ const  fetchMovies = (props) => {
               <h1 key={props.titulo}>{props.titulo}</h1>
             ): null}
           </div>
-            <hr/>
+          <hr/>
           {props.btn === 'true' ? (
               <div ref={btnsType} className="btns-movie-serie">
                 <button value='filme' onClick={defTipo}>Filmes</button>
