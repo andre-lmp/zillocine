@@ -49,6 +49,20 @@
   }
 }
 
+@keyframes pulse{
+  0%{
+    background-color: gray;
+  }
+
+  50%{
+    background-color: darkgrey;
+  }
+
+  100%{
+    background-color: gray;
+  }
+}
+
 body{
   background-color: var(--body-color);
 }
@@ -213,6 +227,7 @@ header{
   min-width: 130px;
   height: 160px;
   cursor: pointer;
+  position: relative;
 }
 
 .fetch-result .movies-box .image-box img{
@@ -232,9 +247,9 @@ header{
 }
 
 .fetch-result .info-section h2{
-  font: 500 1.5em "Raleway", sans-serif;
+  font: 500 1.4em "Raleway", sans-serif;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 1;
   color: var(--white-opacity-1);
   text-overflow: ellipsis;
   overflow: hidden;
@@ -461,8 +476,8 @@ header .header-images .slide-image{
 
 header .header-images .header-slide-details{
   position: absolute;
-  margin-left: 80px;
   bottom: 0px;
+  left: 30px;
   display: flex;
   width: fit-content;
   flex-direction: column;
@@ -582,6 +597,17 @@ header .header-images .header-slide-details button{
   padding: 10px 20px;
 }
 
+.container-content .slides-title{
+  color: var(--white-opacity-08);
+  font: 600 1.1em 'Raleway', sans-serif;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-top: 10px;
+  padding: 0px 13px;
+}
+
 .container-content .title-box{
   min-height: 50px;
   display: flex;
@@ -612,7 +638,7 @@ header .header-images .header-slide-details button{
   opacity: 0.8;
   border-radius: 4px;
   margin: 0px 10px;
-  animation: fadeIN .4s ease-out;
+  position: relative;
 }
 
 #swiper-img:hover{
@@ -632,10 +658,14 @@ header .header-images .header-slide-details button{
   width: 100%;
 }
 
+.motion-slides .slides-container .slides-title{
+  padding: 0;
+}
+
 .motion-slides .slides-container .motion-images{
-  width: 165px;
-  height: 250px;
-  animation: fadeIN .2s ease-out;
+  width: 160px;
+  height: 240px;
+  position: relative;
 }
 
 .motion-slides .slides-container .motion-images img{
@@ -655,13 +685,27 @@ header .header-images .header-slide-details button{
   height: 270px;
   border: 3px solid var(--transparent);
   opacity: .8;
-  transition: all .1s ease-in;
+  position: relative;
+  z-index: 3;
+}
+
+.movies-img::before, .motion-images::before, .image-box::before{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: gray;
+  animation: pulse 2s ease-in-out infinite;
+  border-radius: 3px;
+  z-index: -1;
 }
 
 .movies-img img{
   width: 100%;
   height: 100%;
-  border-radius: 4px;
+  border-radius: 3px;
   object-fit: cover;
 }
 
@@ -720,9 +764,9 @@ header .header-images .header-slide-details button{
   row-gap: 1rem;
   position: absolute;
   bottom: 0;
-  left: 50px;
+  left: 15px;
   z-index: 5;
-  width: 40%;
+  width: 60%;
 }
 
 .player-container .movies-information #details::before{
@@ -738,7 +782,7 @@ header .header-images .header-slide-details button{
 
 .player-container .movies-information #details h1{
   color: var(--white-opacity-1);
-  font: 800 2.5em 'Raleway', serif;
+  font: 800 2em 'Raleway', serif;
   margin-bottom: 10px;
 }
 
@@ -749,14 +793,14 @@ header .header-images .header-slide-details button{
   padding: 3px 10px;
   border-radius: 5px;
   background-color: var(--orangered);
-  font: 500 1.1em helvetica, sans-serif;
+  font: 500 1em helvetica, sans-serif;
 }
 
 .player-container .movies-information #details p{
   color: var(--white-opacity-95);
   display: -webkit-box;
   -webkit-line-clamp: 2;
-  font: 400 1.15em 'Noto Sans', helvetica, sans-serif;
+  font: 400 1em 'Noto Sans', helvetica, sans-serif;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -835,7 +879,7 @@ header .header-images .header-slide-details button{
 .player-container .overview-section{
   z-index: 6;
   margin-top: 80px;
-  padding: 0px 30px 80px 30px;
+  padding: 0px 30px 80px 15px;
 }
 
 .player-container .overview-section .overview-content{
@@ -860,7 +904,7 @@ header .header-images .header-slide-details button{
 .player-container .overview-section .overview-content p{
   font: 400 1.15em "Noto Sans", sans-serif;
   color: var(--white-opacity-1);
-  width: 60%;
+  width: 100%;
   line-height: 150%;
   opacity: .8
 }
@@ -1216,11 +1260,33 @@ footer{
 
 @media screen and (max-width: 600px) {
   header{
-    max-height: 480px;
+    max-height: 530px;
   }
 
-  .header-images{
-    max-height: 480px;
+  header .header-images{
+    max-height: 530px;
+  }
+
+  header .header-images .header-slide-details{
+    width: 60%;
+    left: 15px;
+    bottom: 40px;
+  }
+
+  header .header-images .header-slide-details h1{
+    font-size: 1.7em;
+  }
+
+  header .header-images .header-slide-details h2{
+    font-size: 1em;
+  }
+
+  header .header-images .header-slide-details p{
+    font-size: 1em;
+  }
+
+  header .header-images .header-slide-details button{
+    font-size: 1em;
   }
 
   .container-home{

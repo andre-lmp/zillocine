@@ -144,7 +144,11 @@ function Header({HeightScroll}) {
                   <div className="header-slide-details">
                     <h1>{movie.title}</h1>
                     <h2>{handleReleaseDate(movie.release_date)}</h2>
-                    <p>{movie.overview}</p>
+                    {movie.overview ? (
+                      <p>{movie.overview}</p>
+                    ): (
+                      <p>O lançamento de um dos mais aguardados filmes de uma sequencia de sucesso</p>
+                    )}
                     <button onClick={handleClick} value={movie.id} id="btn-play">Ir para o Filme</button>
                   </div>
                   <div className='end-header'></div>

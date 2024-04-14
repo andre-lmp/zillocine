@@ -198,6 +198,11 @@ const  fetchMovies = (props) => {
                       {moviesDetails.map((movie) => (
                           <SwiperSlide className="swiper-slide" >
                             <div key={movie.id} id="swiper-img" className="movies-img" onClick={handleClick}><img value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/></div>
+                            {movie.title ? (
+                              <h2 className="slides-title">{movie.title}</h2>
+                            ): (
+                              <h2 className="slides-title">{movie.name}</h2>
+                            )}
                           </SwiperSlide>
                       ))}
               </Swiper>
@@ -212,6 +217,11 @@ const  fetchMovies = (props) => {
                       <img value={movie.id} src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}/>
                     )}
                   </div>
+                  {movie.title ? (
+                    <h2 className="slides-title">{movie.title}</h2>
+                  ): (
+                    <h2 className="slides-title">{movie.name}</h2>
+                  )}
                 </div>
               ))}
             </motion.div>
