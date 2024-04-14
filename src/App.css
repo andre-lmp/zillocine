@@ -1273,6 +1273,14 @@ footer{
     bottom: 40px;
   }
 
+header .header-images .header-slide-details::before{
+  width: 100%;
+}
+
+.player-container .movies-information #details::before{
+  width: 100%;
+}
+
   header .header-images .header-slide-details h1{
     font-size: 1.7em;
   }
