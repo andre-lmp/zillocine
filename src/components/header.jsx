@@ -23,6 +23,15 @@ function Header({HeightScroll}) {
   const [hideBar, setHideBar] = useState(true);
   const ContainerHeader = useRef();
   const newDate = new Date().toISOString().split('T')[0];
+  const [scrolled, setScrolled] = useState(undefined);
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50){
+      setScrolled('scrolled');
+    }else{
+      setScrolled(undefined);
+    }
+  });
 
   const btnNavigate = (e) => {
     navigate(`/${e.target.id}`)
@@ -101,7 +110,7 @@ function Header({HeightScroll}) {
   return autorizado ? (
     <main ref={ContainerHeader} id="header-main">
       <div ref={divOpacity} className="opacity-div"></div>
-          <div className="header-links">
+          <div id={scrolled} className="header-links">
             <Search onValueChange={HandleHideChange} hide={hideBar}/>
             <div className='links-content'>
               <div id="btn-filmes-series" className="link-icons">

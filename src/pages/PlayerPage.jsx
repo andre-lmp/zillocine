@@ -60,6 +60,31 @@ function PlayerPage() {
     return newDate;
   }
 
+  const handleGenres = (object) => {
+    const genres = [];
+    for (let genre in object){
+      genres.push(object[genre].name);
+    }
+    return genres;
+  }
+
+  const handleRunTime = (runtime) => {
+    let hours = 0;
+    let minites = 0;
+    const time = [];
+
+    if (runtime >= 60){
+      hours = parseInt(runtime / 60);
+      minites = parseInt(runtime - (hours * 60));
+      time.push(hours, minites);
+    }else{
+      minites = runtime;
+      time.push(hours, minites);
+    }
+
+    return time;
+  }
+
   useEffect(() => {
     const Delay = setTimeout(() => {
       setAutorizado(true);
@@ -105,7 +130,7 @@ function PlayerPage() {
 
       <Search onValueChange={HandleHideChange} hide={hideBar}/>
 
-      <header ref={headerContainer}>
+      <header ref={headerContainer} id="player-header">
         <div ref={AppRef} className='opacity-div'></div>
         <div className="header-links">
             <div className='links-content'>
@@ -131,36 +156,69 @@ function PlayerPage() {
         </div>
 
         <section className='player-movies'>
-          <section className="information-container">
-                <section className="movies-information">
+          <div id="player-background"></div>
+          <div className="player_container_info">
+              <div id="img-box">
+                { moviesDetails.poster_path !== null ? (
+                    <img src={`${imgUrl}${moviesDetails.poster_path}`}/>
+                ):(
+                    <img src={`${imgUrl}${moviesDetails.backdrop_path}`}/>
+                )}
+              </div>
+              <div id="details-box">
+
+                <div>
+                  <h1>{moviesDetails.title ? (
+                    moviesDetails.title
+                  ):(
+                    moviesDetails.name
+                  )}  <span>({handleReleaseDate(moviesDetails.release_date)})</span></h1>
+                  <div id="release_date">
+                    <div id="date_info">
+                      <span className="decoration-icon">{moviesDetails.release_date}</span>
+                      <div className="decoration-icon" id="runtime">
+                        {handleRunTime(moviesDetails.runtime).map((time, index) => (
+                            index === 0 ?(
+                              <span>{time}h</span>
+                            ):(
+                              <span>{time}m</span>
+                            )
+                        ))}
+                      </div>
+                      {handleGenres(moviesDetails.genres).map(genre => (
+                      <span className="decoration-icon">{genre}</span>
+                      ))}
+                    </div>
+                  </div>
+
+                </div>
+
+                <div id="vote_average">
+                  <h3>Classificação Geral do Fans</h3>
+                  <div id="count">{moviesDetails.vote_average.toFixed(0)}0 <span>%</span></div>
+                </div>
+
+                <div id='overview-box'>
+                  <h2>Sinopse</h2>
+                  <p>{moviesDetails.overview ? (
+                    moviesDetails.overview
+                  ): (
+                    'Informação do filme/serie indisponivel neste momento. Recarregue a pagina novamente'
+                  )}</p>
+                </div>
+
+                <div id="btn-video-box">
+                  <button>Assistir Trailer</button>
+                </div>
+              </div>
+          </div>
+          <section className="player_img_box">
+                <section className="player_img_container">
                   { moviesDetails.backdrop_path !== null ? (
                     <img src={`${imgUrl}${moviesDetails.backdrop_path}`}/>
                   ) : (
                     <img src={`${imgUrl}${moviesDetails.poster_path}`}/>
                   )}
-
-                  <div id="details">
-                    {moviesDetails.title ? (
-                      <h1 className="pageTitle" >{moviesDetails.title}</h1>
-                    ):(
-                      <h1 className="pageTitle">{moviesDetails.name}</h1>
-                    )}
-
-                    {moviesDetails.release_date ? (
-                      <h2>{handleReleaseDate(moviesDetails.release_date)}</h2>
-                    ): (
-                      <h2>{handleReleaseDate(moviesDetails.first_air_date)}</h2>
-                    )}
-
-                    {moviesDetails.overview ? (
-                      <p className="page-tagline">{moviesDetails.overview}</p>
-                    ):(
-                      <p className="page-tagline">Subtitulo indisponivel</p>
-                    )}
-
-                    <button onClick={handleClick}>Assistir Filme</button>
-                  </div>
-                  <div id="background"></div>
                 </section>
                 <div id={playerAtivo} className='player-video'>
                   <div id="player-end"></div>
