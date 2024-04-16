@@ -17,7 +17,7 @@ function Header({HeightScroll}) {
   const app = useRef();
   const [autorizado, setAutorizado] = useState(false);
   const navigate = useNavigate();
-  const [btnAtivo, setBtnAtivo] = useState('btnDesativado');
+  const [menuActive, setMenuActive] = useState('disabled');
   const [type, setType] = useState('filme');
   const divOpacity = useRef();
   const [hideBar, setHideBar] = useState(true);
@@ -36,7 +36,7 @@ function Header({HeightScroll}) {
   const btnNavigate = (e) => {
     navigate(`/${e.target.id}`)
     if (e.target.id === '') {
-      setBtnAtivo('btnDesativado');
+      setMenuActive('disabled');
     }
   }
 
@@ -46,10 +46,19 @@ function Header({HeightScroll}) {
   }
 
   const btnClick = () => {
-    if (btnAtivo === 'btnDesativado'){
-      setBtnAtivo('btnAtivo')
+    if (menuActive === 'disabled'){
+      setMenuActive('menu-actived')
+      divOpacity.current.style.transition = 'all .2s ease-in-out'
+      divOpacity.current.style.opacity = '.55';
+      divOpacity.current.style.zIndex = '1000';
+      divOpacity.current.style.height = `${HeightScroll}px`;
     }else{
-      setBtnAtivo('btnDesativado')
+      setMenuActive('disabled')
+      divOpacity.current.style.opacity = '0';
+      setTimeout(() => {
+        divOpacity.current.style.zIndex = '-200';
+        divOpacity.current.style.transition = 'all .3s ease-in-out';
+      }, 200);
     }
   }
 
@@ -71,7 +80,7 @@ function Header({HeightScroll}) {
 
   const hideBarSearch = () => {
     if (hideBar === true) {
-      setBtnAtivo('desativado');
+      setMenuActive('disabled');
       setHideBar(false);
       divOpacity.current.style.opacity = '.95';
       divOpacity.current.style.zIndex = '100';
@@ -134,7 +143,7 @@ function Header({HeightScroll}) {
             </div>
         </div>
 
-        <div className="div-menu" id={btnAtivo}>
+        <div className="div-menu" id={menuActive}>
           <ul>
             <li><button><CgClose onClick={btnClick} className="close-icon"/></button></li>
             <li><p id="" onClick={btnNavigate}>Inicio</p></li>

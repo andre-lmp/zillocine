@@ -8,25 +8,42 @@ import '/src/App.css';
 import { CgClose } from "react-icons/cg";
 
 function Series() {
-    const [btnAtivo, setBtnAtivo] = useState('btnDesativado');
-    const navigate = useNavigate();
-    const [autorizado, setAutorizado] = useState(false);
-    const [genreMovie, setGenreMovie] = useState('lançamentos');
+    const [menuActive, setMenuActive] = useState('disabled');
+    const navigate = useNavigate(undefined);
+    const [authorized, setAuthorized] = useState(false);
+    const [movieGenre, setMovieGenre] = useState('lançamentos');
     const [hideBar, setHideBar] = useState(true);
-    const AppRef = useRef();
-    const genreBtns = useRef();
+    const AppRef = useRef(undefined);
+    const genreBtns = useRef(undefined);
+    const [scrolled, setScrolled] = useState(undefined);
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50){
+            setScrolled('scrolled');
+        }else{
+            setScrolled(undefined);
+        }
+    });
 
     const btnClick = () => {
-        if (btnAtivo === 'btnDesativado'){
-          setBtnAtivo('btnAtivo')
+        if (menuActive === 'disabled'){
+          setMenuActive('menuActive');
+          AppRef.current.style.transition = 'all .2s ease-in-out'
+          AppRef.current.style.opacity = '.55';
+          AppRef.current.style.zIndex = '1000';
         }else{
-          setBtnAtivo('btnDesativado')
+          setMenuActive('disabled');
+          AppRef.current.style.opacity = 0;
+          setTimeout(() => {
+            AppRef.current.style.zIndex = '-200';
+            AppRef.current.style.transition = 'all .3s ease-in-out';
+          }, 200);
         }
     }
     
     const handleGenres = (e) => {
         const valor = e.target.value
-        setGenreMovie(valor);
+        setMovieGenre(valor);
         handleColorBtn(e.target.value);
     }
 
@@ -43,7 +60,7 @@ function Series() {
 
     const hideBarSearch = () => {
         if (hideBar === true) {
-          setBtnAtivo('desativado');
+          setMenuActive('desativado');
           setHideBar(false);
         AppRef.current.style.opacity = '.9';
         AppRef.current.style.zIndex = '100';
@@ -65,14 +82,14 @@ function Series() {
 
     useEffect(() => {
         const delay = setTimeout(() => {
-            setAutorizado(true);
+            setAuthorized(true);
         }, 1000);
     },[]);
 
     return(
         <main className="moviesPageContainer">
             <div ref={AppRef} className='opacity-div'></div>
-            <div className="div-menu" id={btnAtivo}>
+            <div className="div-menu" id={menuActive}>
                 <ul>
                     <li><button><CgClose onClick={btnClick} className="close-icon"/></button></li>
                     <li><p id='' onClick={btnNavigate}>Inicio</p></li>
@@ -85,7 +102,7 @@ function Series() {
 
             <Search onValueChange={HandleHideChange} hide={hideBar}/>
 
-            <div className="header-links">
+            <div id={scrolled} className="header-links">
                 <div className='links-content'>
                     <div id="btn-filmes-series" className="link-icons">
                         <button onClick={btnClick} className="btn-menu">|||</button>
@@ -107,7 +124,7 @@ function Series() {
                 </div>
             </div>
 
-            {autorizado === true ? (
+            {authorized === true ? (
                     <div className='barraGeneros'>
                         <ul ref={genreBtns}>
                             <li><button value='Lançamentos' onClick={handleGenres}>Lançamentos</button></li>
@@ -121,11 +138,11 @@ function Series() {
             }
 
                 <div className='box-series'>
-                    <FetchMovies titulo={genreMovie} btn='false' page='1' tipo='serie' genre={genreMovie}/>
-                    <FetchMovies  page='2' tipo='serie' genre={genreMovie}/>
-                    <FetchMovies  page='3' tipo='serie' genre={genreMovie}/>
-                    <FetchMovies  page='4' tipo='serie' genre={genreMovie}/>
-                    <FetchMovies  page='5' tipo='serie' genre={genreMovie}/>
+                    <FetchMovies titulo={movieGenre} btn='false' page='1' tipo='serie' genre={movieGenre}/>
+                    <FetchMovies  page='2' tipo='serie' genre={movieGenre}/>
+                    <FetchMovies  page='3' tipo='serie' genre={movieGenre}/>
+                    <FetchMovies  page='4' tipo='serie' genre={movieGenre}/>
+                    <FetchMovies  page='5' tipo='serie' genre={movieGenre}/>
                 </div>
             
             <Footer/>

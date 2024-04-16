@@ -9,31 +9,49 @@ import Footer from '/src/components/footer';
 import { CgClose } from "react-icons/cg";
 
 function Movies() {
-    const [btnAtivo, setBtnAtivo] = useState('btnDesativado');
-    const navigate = useNavigate();
-    const [autorizado, setAutorizado] = useState(false);
-    const [genreMovie, setGenreMovie] = useState('Lançamentos');
+    const [menuActive, setMenuActive] = useState('disabled');
+    const navigate = useNavigate(undefined);
+    const [authorized, setAuthorized] = useState(false);
+    const [movieGenre, setMovieGenre] = useState('Lançamentos');
     const [hideBar, setHideBar] = useState(true);
-    const AppRef = useRef();
-    const HeightMovies = useRef();
-    const [heightPageMovies, setHeightPageMovies] = useState();
+    const AppRef = useRef(undefined);
+    const MoviesHeight = useRef(undefined);
+    const [MoviesPageHeight, setMoviesPageHeight] = useState(0);
     const [key, setKey] = useState(0); 
-    const genreBtns = useRef();
+    const genreBtns = useRef(undefined);
+    const [scrolled, setScrolled] = useState(undefined);
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50){
+            setScrolled('scrolled');
+        }else{
+            setScrolled(undefined);
+        }
+    });
 
     const btnClick = () => {
-        if (btnAtivo === 'btnDesativado'){
-          setBtnAtivo('btnAtivo')
+        if (menuActive === 'disabled'){
+          setMenuActive('menu-actived')
+          AppRef.current.style.transition = 'all .2s ease-in-out'
+          AppRef.current.style.opacity = '.55';
+          AppRef.current.style.zIndex = '1000';
+          AppRef.current.style.height = `${MoviesPageHeight}px`;
         }else{
-          setBtnAtivo('btnDesativado')
+          setMenuActive('disabled')
+          AppRef.current.style.opacity = 0;
+          setTimeout(() => {
+            AppRef.current.style.zIndex = '-200';
+            AppRef.current.style.transition = 'all .3s ease-in-out';
+          }, 200);
         }
     }
 
     const handleGenres = (e) => {
         const valor = e.target.value
-        setGenreMovie(valor);
+        setMovieGenre(valor);
         setKey(prevKey => prevKey + 1);
         handleColorBtn(valor);
-        console.log(genreMovie);
+        console.log(movieGenre);
     }
 
     const btnNavigate = (e) => {
@@ -49,16 +67,16 @@ function Movies() {
 
     const hideBarSearch = () => {
         if (hideBar === true) {
-          setBtnAtivo('desativado');
+          setMenuActive('disabled');
           setHideBar(false);
-          AppRef.current.style.opacity = '.9';
+          AppRef.current.style.opacity = '.95';
           AppRef.current.style.zIndex = '100';
-          AppRef.current.style.height = `${heightPageMovies}px`;
+          AppRef.current.style.height = `${MoviesPageHeight}px`;
         }
     }
 
     const GetHeight = setTimeout(() => {
-        setHeightPageMovies(HeightMovies.current?.scrollHeight);
+        setMoviesPageHeight(MoviesHeight.current?.scrollHeight);
     }, 2000);
 
     const handleColorBtn = (genre) => {
@@ -76,15 +94,15 @@ function Movies() {
 
     useEffect(() => {
         const delay = setTimeout(() => {
-            setAutorizado(true);
+            setAuthorized(true);
         }, 1000);
         
     },[]);
 
     return(
-        <main ref={HeightMovies} className="moviesPageContainer">
+        <main ref={MoviesHeight} className="moviesPageContainer">
             <div ref={AppRef} className='opacity-div'></div>
-            <div className="div-menu" id={btnAtivo}>
+            <div className="div-menu" id={menuActive}>
                 <ul>
                     <li><button><CgClose onClick={btnClick} className="close-icon"/></button></li>
                     <li><p id='' onClick={btnNavigate}>Inicio</p></li>
@@ -97,7 +115,7 @@ function Movies() {
 
             <Search onValueChange={HandleHideChange} hide={hideBar}/>
 
-            <div className="header-links">
+            <div id={scrolled} className="header-links">
                 <div className='links-content'>
                     <div id="btn-filmes-series" className="link-icons">
                         <button onClick={btnClick} className="btn-menu">|||</button>
@@ -119,7 +137,7 @@ function Movies() {
                 </div>
             </div>
 
-            {autorizado === true ? (
+            {authorized === true ? (
                     <div className='barraGeneros'>
                         <ul ref={genreBtns}>
                             <li><button value='Lançamentos' onClick={handleGenres}>Lançamentos</button></li>
@@ -132,11 +150,11 @@ function Movies() {
                 ) : null
             }
             <div className='box-movies'>
-                <FetchMovies titulo={genreMovie} btn='false' page='1' tipo='filme' genre={genreMovie}/>
-                <FetchMovies page='2' tipo='filme' genre={genreMovie}/>
-                <FetchMovies page='3' tipo='filme' genre={genreMovie}/>
-                <FetchMovies page='4' tipo='filme' genre={genreMovie}/>
-                <FetchMovies page='5' tipo='filme' genre={genreMovie}/>
+                <FetchMovies titulo={movieGenre} btn='false' page='1' tipo='filme' genre={movieGenre}/>
+                <FetchMovies page='2' tipo='filme' genre={movieGenre}/>
+                <FetchMovies page='3' tipo='filme' genre={movieGenre}/>
+                <FetchMovies page='4' tipo='filme' genre={movieGenre}/>
+                <FetchMovies page='5' tipo='filme' genre={movieGenre}/>
             </div>
 
             <Footer/>

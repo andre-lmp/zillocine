@@ -18,6 +18,7 @@ function Search({hide, onValueChange}) {
     const btnSeries = useRef();
     const [type, setType] = useState('filme');
     const [typeContent, setTypeContent] = useState('filme');
+    const [loading, setLoading] = useState('true');
 
     const handleInputChange = (e) => {
         let value = e.target.value;
@@ -52,6 +53,10 @@ function Search({hide, onValueChange}) {
         btnSeries.current.style.border = '1pt solid white';
         btnMovies.current.style.border = '1pt solid red';
     }
+
+    const handleLoaderImage = () => {
+        setLoading('false');
+    }    
 
     useEffect(() => {
         if (type === 'filme') {
@@ -143,11 +148,11 @@ function Search({hide, onValueChange}) {
                 ):null}
                 {searchResult.map((movie) => (
                     <motion.div key={movie.id} initial={{y: 100, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{ease: 'easeOut',duration: 0.5}} className="movies-box" >
-                        <div  className="image-box">
+                        <div display={loading} className="image-box">
                             {movie.poster_path !== null ? (
-                                <img id={movie.id} onClick={SearchNavigate} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
+                                <img onLoad={handleLoaderImage} id={movie.id} onClick={SearchNavigate} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
                             ):(
-                                <img id={movie.id} onClick={SearchNavigate} src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}/>
+                                <img onLoad={handleLoaderImage} id={movie.id} onClick={SearchNavigate} src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}/>
                             )}
                         </div>
 

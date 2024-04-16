@@ -16,6 +16,7 @@ const  fetchMovies = (props) => {
   const [widthSize, setWidthSize] = useState(window.innerWidth);
   const swiper = useRef(null);
   const btnsType = useRef();
+  const [loading, setLoading] = useState('true');
 
   window.addEventListener('resize', () => {
     setWidthSize(window.innerWidth);
@@ -127,6 +128,10 @@ const  fetchMovies = (props) => {
     }
   }
 
+  const handleLoaderImage = () => {
+    setLoading('false');
+  }
+
   useEffect(() => {
     const delay = setTimeout(() => {
       setAutorizado(true);
@@ -197,7 +202,7 @@ const  fetchMovies = (props) => {
               <Swiper ref={swiper} className="swiper-container" style={{width: '100%', height: 'auto'}} breakpoints={breakpoints}>
                       {moviesDetails.map((movie) => (
                           <SwiperSlide className="swiper-slide" >
-                            <div key={movie.id} id="swiper-img" className="movies-img" onClick={handleClick}><img value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/></div>
+                            <div key={movie.id} id="swiper-img" display={loading} className="movies-img" onClick={handleClick}><img onLoad={handleLoaderImage} value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/></div>
                             {movie.title ? (
                               <h2 className="slides-title">{movie.title}</h2>
                             ): (
@@ -210,11 +215,11 @@ const  fetchMovies = (props) => {
             <motion.div className="motion-slides" drag="x" dragConstraints={{ right: 0, left: -((widthCarousel.current?.scrollWidth - widthSize) + 40) }} ref={widthCarousel}>
               {moviesDetails.map((movie) => (
                 <div className="slides-container" >
-                  <div key={movie.id} className="motion-images"  onClick={handleClick}>
+                  <div display={loading} key={movie.id} className="motion-images"  onClick={handleClick}>
                     {movie.poster_path ? (
-                      <img value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
+                      <img onLoad={handleLoaderImage} value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
                     ):(
-                      <img value={movie.id} src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}/>
+                      <img onLoad={handleLoaderImage} value={movie.id} src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}/>
                     )}
                   </div>
                   {movie.title ? (

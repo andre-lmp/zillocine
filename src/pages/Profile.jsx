@@ -10,20 +10,37 @@ import { CgClose } from "react-icons/cg";
 
 function ProfilePage() {
     const [autorizado, setAutorizado] = useState(false);
-    const navigate = useNavigate();
-    const [btnAtivo, setBtnAtivo] = useState('btnDesativado');
+    const navigate = useNavigate(undefined);
+    const [menuActive, setMenuActive] = useState('disabled');
     const [hideBar, setHideBar] = useState(true);
-    const AppRef = useRef();
+    const AppRef = useRef(undefined);
+    const [scrolled, setScrolled] = useState(undefined);
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50){
+            setScrolled('scrolled');
+        }else{
+            setScrolled(undefined);
+        }
+    });
 
     const delay = setTimeout(() => {
         setAutorizado(true);
     }, 1000);
 
     const btnClick = () => {
-        if (btnAtivo === 'btnDesativado'){
-          setBtnAtivo('btnAtivo')
+        if (menuActive === 'disabled'){
+          setMenuActive('menu-actived');
+          AppRef.current.style.transition = 'all .2s ease-in-out'
+          AppRef.current.style.opacity = '.55';
+          AppRef.current.style.zIndex = '1000';
         }else{
-          setBtnAtivo('btnDesativado')
+          setMenuActive('disabled');
+          AppRef.current.style.opacity = 0;
+          setTimeout(() => {
+            AppRef.current.style.zIndex = '-200';
+            AppRef.current.style.transition = 'all .3s ease-in-out';
+          }, 200);
         }
     }
 
@@ -40,7 +57,7 @@ function ProfilePage() {
     
     const hideBarSearch = () => {
         if (hideBar === true) {
-          setBtnAtivo('desativado');
+          setMenuActive('desativado');
           setHideBar(false);
         AppRef.current.style.opacity = '.9';
         AppRef.current.style.zIndex = '100';
@@ -50,7 +67,7 @@ function ProfilePage() {
     return autorizado ?(
         <main className="perfilContainer">
             <div ref={AppRef} className='opacity-div'></div>
-            <div className="div-menu" id={btnAtivo}>
+            <div className="div-menu" id={menuActive}>
                 <ul>
                     <li><button><CgClose onClick={btnClick} className="close-icon"/></button></li>
                     <li><p id="" onClick={btnNavigate}>Inicio</p></li>
@@ -63,7 +80,7 @@ function ProfilePage() {
 
             <Search onValueChange={HandleHideChange} hide={hideBar}/>
 
-            <div className="header-links">
+            <div id={scrolled} className="header-links">
                 <div className='links-content'>
                     <div id="btn-filmes-series" className="link-icons">
                         <button onClick={btnClick} className="btn-menu">|||</button>

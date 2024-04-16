@@ -13,22 +13,41 @@ function PlayerPage() {
   const apiKey = "df087968ddf338b4ac0f9876af17f739";
   const apiURL = 'https://api.themoviedb.org/3/';
   const [autorizado, setAutorizado] = useState(false);
-  const navigate = useNavigate();
-  const headerContainer = useRef();
-  const [playerAtivo, setPlayerAtivo] = useState('desativado');
+  const navigate = useNavigate(undefined);
+  const headerContainer = useRef(undefined);
+  const [playerActive, setPlayerActive] = useState('disabled');
   const [imgUrl, setImgUrl] = useState("https://image.tmdb.org/t/p/original");
-  const [btnAtivo, setBtnAtivo] = useState('btnDesativado');
+  const [menuActive, setMenuActive] = useState('disabled');
   const [hideBar, setHideBar] = useState(true);
-  const AppRef = useRef();
+  const AppRef = useRef(undefined);
+  const [scrolled, setScrolled] = useState(undefined);
+  const [loading, setLoading] = useState('true');
+
+  window.addEventListener('scroll', () => {
+      if (window.scrollY > 50){
+          setScrolled('scrolled');
+      }else{
+          setScrolled(undefined);
+      }
+  });
+
   const handleClick = () => {
-    setPlayerAtivo('player-ativo')
+    setPlayerActive('player-ativo')
   }
 
   const btnClick = () => {
-    if (btnAtivo === 'btnDesativado'){
-      setBtnAtivo('btnAtivo')
+    if (menuActive === 'disabled'){
+      setMenuActive('menu-actived')
+      AppRef.current.style.transition = 'all .2s ease-in-out'
+      AppRef.current.style.opacity = '.55';
+      AppRef.current.style.zIndex = '1000';
     }else{
-      setBtnAtivo('btnDesativado')
+      setMenuActive('disabled')
+      AppRef.current.style.opacity = 0;
+      setTimeout(() => {
+        AppRef.current.style.zIndex = '-200';
+        AppRef.current.style.transition = 'all .3s ease-in-out';
+      }, 200);
     }
   }
 
@@ -45,9 +64,9 @@ function PlayerPage() {
 
   const hideBarSearch = () => {
     if (hideBar === true) {
-      setBtnAtivo('desativado');
+      setMenuActive('disabled');
       setHideBar(false);
-    AppRef.current.style.opacity = '.9';
+    AppRef.current.style.opacity = '.95';
     AppRef.current.style.zIndex = '100';
     }
   }
@@ -85,6 +104,10 @@ function PlayerPage() {
     return time;
   }
 
+  const handleLoaderImage = () => {
+    setLoading('false');
+  }
+
   useEffect(() => {
     const Delay = setTimeout(() => {
       setAutorizado(true);
@@ -117,7 +140,7 @@ function PlayerPage() {
   
   return autorizado ?(
     <main className='player-container'>
-      <div className="div-menu" id={btnAtivo}>
+      <div className="div-menu" id={menuActive}>
           <ul>
             <li><button><CgClose onClick={btnClick} className="close-icon"/></button></li>
             <li><p id="" onClick={btnNavigate}>Inicio</p></li>
@@ -132,7 +155,7 @@ function PlayerPage() {
 
       <header ref={headerContainer} id="player-header">
         <div ref={AppRef} className='opacity-div'></div>
-        <div className="header-links">
+        <div id={scrolled} className="header-links">
             <div className='links-content'>
               <div id="btn-filmes-series" className="link-icons">
                 <button onClick={btnClick} className="btn-menu">|||</button>
@@ -158,24 +181,38 @@ function PlayerPage() {
         <section className='player-movies'>
           <div id="player-background"></div>
           <div className="player_container_info">
-              <div id="img-box">
+              <div display={loading} id="img-box">
                 { moviesDetails.poster_path !== null ? (
-                    <img src={`${imgUrl}${moviesDetails.poster_path}`}/>
+                    <img onLoad={handleLoaderImage} src={`${imgUrl}${moviesDetails.poster_path}`}/>
                 ):(
-                    <img src={`${imgUrl}${moviesDetails.backdrop_path}`}/>
+                    <img onLoad={handleLoaderImage} src={`${imgUrl}${moviesDetails.backdrop_path}`}/>
                 )}
               </div>
               <div id="details-box">
-
                 <div>
+
                   <h1>{moviesDetails.title ? (
                     moviesDetails.title
                   ):(
                     moviesDetails.name
-                  )}  <span>({handleReleaseDate(moviesDetails.release_date)})</span></h1>
+                  )}  
+                    <span>({moviesDetails.release_date ? (
+                      handleReleaseDate(moviesDetails.release_date)
+                    ): (
+                      handleReleaseDate(moviesDetails.first_air_date)
+                    )})
+                    </span>
+                  </h1>
+
                   <div id="release_date">
                     <div id="date_info">
-                      <span className="decoration-icon">{moviesDetails.release_date}</span>
+                      <span className="decoration-icon">
+                        {moviesDetails.release_date ? (
+                          moviesDetails.release_date
+                        ):(
+                          moviesDetails.first_air_date
+                        )}
+                      </span>
                       <div className="decoration-icon" id="runtime">
                         {handleRunTime(moviesDetails.runtime).map((time, index) => (
                             index === 0 ?(
@@ -220,45 +257,9 @@ function PlayerPage() {
                     <img src={`${imgUrl}${moviesDetails.poster_path}`}/>
                   )}
                 </section>
-                <div id={playerAtivo} className='player-video'>
-                  <div id="player-end"></div>
-                  {moviesDetails.videos.results.length !== 0 ? (
-                    <iframe
-                    src={`https://www.youtube.com/embed/${moviesDetails.videos.results[0].key}`}
-                    frameBorder="0"
-                    allow=" autoplay; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
-                  ) : (
-                    <div className='iframe-error'>
-                      <h1>Desculpe</h1>
-                      <h2>Video indisponivel</h2>
-                    </div>
-                  )}
-                  <div className="fundoPlayer"></div>
-                </div>
           </section>
         </section>
-
       </header>
-
-      <section className='overview-section'>
-        <hr></hr>
-        <div className='overview-content'>
-          {type === 'filme' ? (
-            <h1>Sobre o filme</h1>
-          ) : (
-            <h1>Sobre a Serie</h1>
-          )}
-
-          {moviesDetails.overview ? (
-            <p>{moviesDetails.overview}</p>
-          ):(
-            <p>Descrição indisponivel</p>
-          )}
-        </div>
-      </section>
-
       <Footer/>
     </main>
   ) : null
