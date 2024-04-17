@@ -153,9 +153,9 @@ function PlayerPage() {
 
       <Search onValueChange={HandleHideChange} hide={hideBar}/>
 
-      <header ref={headerContainer} id="player-header">
+      <header ref={headerContainer} className="player-header">
         <div ref={AppRef} className='opacity-div'></div>
-        <div id={scrolled} className="header-links">
+        <div id={scrolled} className="header-links player-menu-bar">
             <div className='links-content'>
               <div id="btn-filmes-series" className="link-icons">
                 <button onClick={btnClick} className="btn-menu">|||</button>
@@ -177,90 +177,94 @@ function PlayerPage() {
 
             </div>
         </div>
+      </header>
 
-        <section className='player-movies'>
-          <div id="player-background"></div>
-          <div className="player_container_info">
-              <div display={loading} id="img-box">
-                { moviesDetails.poster_path !== null ? (
-                    <img onLoad={handleLoaderImage} src={`${imgUrl}${moviesDetails.poster_path}`}/>
-                ):(
-                    <img onLoad={handleLoaderImage} src={`${imgUrl}${moviesDetails.backdrop_path}`}/>
-                )}
-              </div>
-              <div id="details-box">
-                <div>
+      <section className='player-movies'>
+        <div id="player-background"></div>
+        <div className="player_container_info">
+            <div display={loading} id="img-box">
+              { moviesDetails.poster_path !== null ? (
+                  <img onLoad={handleLoaderImage} src={`${imgUrl}${moviesDetails.poster_path}`}/>
+              ):(
+                  <img onLoad={handleLoaderImage} src={`${imgUrl}${moviesDetails.backdrop_path}`}/>
+              )}
+            </div>
+            <div id="details-box">
+              <div>
 
+                <div id="details-box-title">
                   <h1>{moviesDetails.title ? (
-                    moviesDetails.title
-                  ):(
-                    moviesDetails.name
-                  )}  
-                    <span>({moviesDetails.release_date ? (
-                      handleReleaseDate(moviesDetails.release_date)
-                    ): (
-                      handleReleaseDate(moviesDetails.first_air_date)
-                    )})
-                    </span>
-                  </h1>
-
-                  <div id="release_date">
-                    <div id="date_info">
-                      <span className="decoration-icon">
-                        {moviesDetails.release_date ? (
-                          moviesDetails.release_date
-                        ):(
-                          moviesDetails.first_air_date
-                        )}
+                        moviesDetails.title
+                      ):(
+                        moviesDetails.name
+                      )}
+                      <span>
+                          ({moviesDetails.release_date ? (
+                            handleReleaseDate(moviesDetails.release_date)
+                          ): (
+                            handleReleaseDate(moviesDetails.first_air_date)
+                          )})
                       </span>
-                      <div className="decoration-icon" id="runtime">
-                        {handleRunTime(moviesDetails.runtime).map((time, index) => (
-                            index === 0 ?(
-                              <span>{time}h</span>
-                            ):(
-                              <span>{time}m</span>
-                            )
-                        ))}
-                      </div>
-                      {handleGenres(moviesDetails.genres).map(genre => (
-                      <span className="decoration-icon">{genre}</span>
+                  </h1>
+            
+                </div>
+
+                <div id="release_date">
+                  <div id="date_info">
+                    <span className="decoration-icon">
+                      {moviesDetails.release_date ? (
+                        moviesDetails.release_date
+                      ):(
+                        moviesDetails.first_air_date
+                      )}
+                    </span>
+                    <div className="decoration-icon" id="runtime">
+                      {handleRunTime(moviesDetails.runtime).map((time, index) => (
+                          index === 0 ?(
+                            <span>{time}h</span>
+                          ):(
+                            <span>{time}m</span>
+                          )
                       ))}
                     </div>
+                    {handleGenres(moviesDetails.genres).map(genre => (
+                    <span className="decoration-icon">{genre}</span>
+                    ))}
                   </div>
-
                 </div>
 
-                <div id="vote_average">
-                  <h3>Classificação Geral do Fans</h3>
-                  <div id="count">{moviesDetails.vote_average.toFixed(0)}0 <span>%</span></div>
-                </div>
-
-                <div id='overview-box'>
-                  <h2>Sinopse</h2>
-                  <p>{moviesDetails.overview ? (
-                    moviesDetails.overview
-                  ): (
-                    'Informação do filme/serie indisponivel neste momento. Recarregue a pagina novamente'
-                  )}</p>
-                </div>
-
-                <div id="btn-video-box">
-                  <button>Assistir Trailer</button>
-                </div>
               </div>
-          </div>
-          <section className="player_img_box">
-                <section className="player_img_container">
-                  { moviesDetails.backdrop_path !== null ? (
-                    <img src={`${imgUrl}${moviesDetails.backdrop_path}`}/>
-                  ) : (
-                    <img src={`${imgUrl}${moviesDetails.poster_path}`}/>
-                  )}
-                </section>
-          </section>
-        </section>
-      </header>
-      <Footer/>
+
+              <div id="vote_average">
+                <h3>Classificação Geral do Fans</h3>
+                <div id="count">{moviesDetails.vote_average.toFixed(0)}0 <span>%</span></div>
+              </div>
+
+              <div id='overview-box'>
+                <h2>Sinopse</h2>
+                <p>{moviesDetails.overview ? (
+                  moviesDetails.overview
+                ): (
+                  'Informação do filme/serie indisponivel neste momento. Recarregue a pagina novamente'
+                )}</p>
+              </div>
+
+              <div id="btn-video-box">
+                <button>Assistir Trailer</button>
+              </div>
+            </div>
+        </div>
+      </section>
+      <section className="player_img_background">
+              <section className="player_img_container">
+                { moviesDetails.backdrop_path !== null ? (
+                  <img src={`${imgUrl}${moviesDetails.backdrop_path}`}/>
+                ) : (
+                  <img src={`${imgUrl}${moviesDetails.poster_path}`}/>
+                )}
+              </section>
+      </section>
+    <Footer/>
     </main>
   ) : null
 }
