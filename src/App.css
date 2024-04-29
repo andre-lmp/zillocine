@@ -11,12 +11,14 @@
   --black-opacity-08: rgb(0, 0, 0, 0.8);
   --black-opacity-06: rgb(0, 0, 0, 0.6);
   --black-opacity-00: rgb(0, 0, 0, 0.0);
-  --body-color: rgb(23, 21, 34);
-  --body-opacity-07: rgb(23, 21, 34, 0.75);
-  --body-opacity-05: rgb(23, 21, 34, 0.5);
-  --body-opacity-00: rgb(23, 21, 34, 0.0);
+  --body-color: rgb(2, 8, 23);
+  --body-opacity-09: rgb(2, 8, 23, 0.9);
+  --body-opacity-07: rgb(2, 8, 23, 0.75);
+  --body-opacity-05: rgb(2, 8, 23, 0.5);
+  --body-opacity-00: rgb(2, 8, 23, 0.0);
   --blue: #0F0F1A;
   --dark-blue: darkslateblue;
+  --blueviolet: blueviolet;
   --red: red;
   --red-opacity-07: rgb(255, 0, 0, 0.7);
   --white-opacity-1: white;
@@ -25,7 +27,7 @@
   --white-opacity-07: rgb(255, 255, 255, 0.7);
   --white-opacity-06: rgb(255, 255, 255, 0.6);
   --white-opacity-01: rgb(255, 255, 255, 0.1);
-  --gray: gray;
+  --gray: rgb(100, 100, 100);
   --purple: #8956f0;
   --orangered: orangered;
   --orange: orange;
@@ -68,7 +70,7 @@ body{
 }
 
 ::-webkit-scrollbar{
-  width: 9px;
+  width: 7px;
 }
 
 ::-webkit-scrollbar-thumb{
@@ -78,6 +80,8 @@ body{
 header{
   position: relative;
   width: 100%;
+  max-width: 2000px;
+  margin: auto;
   height: 100vh;
   max-height: 1000px;
   z-index: 4;
@@ -96,6 +100,7 @@ header{
   position: fixed;
   z-index: -5;
   top: 0;
+  opacity: 0;
   transform: translateX(-100%);
   transition: all .2s ease-out;
 }
@@ -104,6 +109,7 @@ header{
   z-index: 1100;
   background-color: var(--black);
   transform: translateX(0);
+  opacity: 1;
 }
 
 .div-menu ul{
@@ -115,7 +121,7 @@ header{
 }
 
 .div-menu ul li p{
-  font: 400 1.5em "Roboto", sans-serif;
+  font: 400 1.4em "Roboto", sans-serif;
   color: var(--white-opacity-07);
   cursor: pointer;
 }
@@ -178,7 +184,7 @@ header{
 }
 
 .Search-options label button{
-  font: 500 1em 'Roboto', sans-serif;
+  font: 500 0.9em 'Roboto', sans-serif;
   color: var(--white-opacity-08);
   background-color: var(--transparent);
   border: 1pt solid var(--red);
@@ -210,7 +216,7 @@ header{
 
 .fetch-result .section-title h1{
   color: var(--white-opacity-1);
-  font: 500 1.5em "Raleway", sans-serif;
+  font: 500 1.4em "Raleway", sans-serif;
 }
 
 .fetch-result .section-title #line{
@@ -248,7 +254,7 @@ header{
 }
 
 .fetch-result .info-section h2{
-  font: 500 1.4em "Raleway", sans-serif;
+  font: 500 1.3em "Raleway", sans-serif;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   color: var(--white-opacity-1);
@@ -260,7 +266,7 @@ header{
 
 .fetch-result .info-section .review-section h3{
   color: var(--red);
-  font: 400 1.2em 'Roboto', sans-serif;
+  font: 400 1.1em 'Roboto', sans-serif;
 }
 
 .fetch-result .info-section .review-section .review-stars{
@@ -270,13 +276,16 @@ header{
 }
 
 .fetch-result .info-section .review-section .review-stars .star-icon{
-  font-size: 1em;
+  font-size: 0.97em;
   color: var(--orange);
+}
+.fetch-result .info-section .review-section .review-stars p{
+  font-size: 0.97em;
 }
 
 .fetch-result .info-section  p{
   font: 400 1em 'Noto Sans', sans-serif;
-  color: var(--white-opacity-08);
+  color: var(--white-opacity-95);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   text-overflow: ellipsis;
@@ -305,7 +314,7 @@ header{
 .inputSearch{
   width: 100%;
   padding: 5px;
-  font: 400 14pt 'Noto Sans', sans-serif;
+  font: 400 16px 'Noto Sans', sans-serif;
   box-sizing: border-box;
   background-color: var(--transparent);
   border: none;
@@ -341,13 +350,17 @@ header{
 
 .header-links{
   width: 100%;
+  max-width: 2000px;
   padding-bottom: 30px;
   box-sizing: border-box;
   background-image: linear-gradient(to bottom, var(--body-color), var(--body-opacity-05), var(--body-opacity-00));
   display: flex;
   flex-direction: row;
   position: fixed;
+  margin: auto;
   top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 100;
 }
 
@@ -391,7 +404,7 @@ header{
   border: none;
   color: var(--white-opacity-1);
   font-weight: 400;
-  font-size: 1.7em;
+  font-size: 1.6em;
   transform: rotate(90deg);
   background-color: var(--transparent);
   outline: none;
@@ -400,7 +413,7 @@ header{
 }
 
 .link-icons a{
-  font: 500 1.3em "Roboto", sans-serif;
+  font: 500 1.2em "Roboto", sans-serif;
   color: var(--white-opacity-07);
   text-decoration: none;
   cursor: pointer;
@@ -411,13 +424,13 @@ header{
 }
 
 .button-header-div button{
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
   border-radius: 100%;
   color: var(--white-opacity-1);
   border: 2px solid var(--red);
   background-color: var(--black);
-  font: 600 1.2em "Roboto", sans-serif;
+  font: 600 1em "Roboto", sans-serif;
   transition: all .2s ease-in-out;
   box-shadow: 1px 1px 45px var(--black);
   display: flex;
@@ -428,7 +441,7 @@ header{
 
 .link-icons h3{
   color: var(--white-opacity-95);
-  font: 500 1.2em "Roboto", sans-serif;
+  font: 500 1.1em "Roboto", sans-serif;
   cursor: pointer;
 }
 
@@ -440,7 +453,7 @@ header{
 }
 
 .lupa-icon{
-  font-size: 1.5em;
+  font-size: 1.4em;
   cursor: pointer;
   color: var(--white-opacity-07);
 }
@@ -506,7 +519,7 @@ header .header-images .header-slide-details::before{
 }
 
 header .header-images .header-slide-details h1{
-  font: 800 3.1em "Raleway", sans-serif;
+  font: 800 2.4em "Raleway", sans-serif;
   color: var(--white-opacity-1);
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -521,29 +534,30 @@ header .header-images .header-slide-details h2{
   padding: 3px 10px;
   border-radius: 5px;
   background-color: var(--orangered);
-  font: 500 1.1em helvetica, sans-serif;
+  font: 600 .97em 'Noto Sans', helvetica, sans-serif;
 }
 
 header .header-images .header-slide-details p{
-  color: var(--white-opacity-95);
+  color: var(--white-opacity-1);
   overflow: hidden;
   display: -webkit-box;
   line-height: 150%;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  font: 400 1.15em "Noto Sans",sans-serif;
+  opacity: 1;
+  font: 500 1em "Noto Sans",sans-serif;
 }
 
 header .header-images .header-slide-details button{
   color: var(--white-opacity-1);
   background-color: var(--dark-blue);
   border: 1pt solid var(--transparent);
-  font: 600 1.1em helvetica, sans-serif;
+  font: 600 1em helvetica, sans-serif;
   display: inline-block;
   width: fit-content;
   outline: none;
   border-radius: 5px;
-  width: 165px;
+  width: 185px;
   height: 43px;
   cursor: pointer;
 }
@@ -569,9 +583,9 @@ header .header-images .header-slide-details button{
   outline: none;
   background-color: var(--transparent);
   color: var(--white-opacity-1);
-  font: 500 1em 'Roboto', sans-serif;
+  font: 500 0.9em 'Roboto', sans-serif;
   border: 1.4pt solid var(--red);
-  border-radius: 20px;
+  border-radius: 40px;
   cursor: pointer;
   transition: all .1s ease-in;
 }
@@ -597,7 +611,9 @@ header .header-images .header-slide-details button{
 .container-home{
   display: flex;
   flex-direction: column;
-  row-gap: 5rem;
+  row-gap: 3rem;
+  max-width: 2000px;
+  margin: auto;
 }
 
 .container-content{
@@ -616,6 +632,7 @@ header .header-images .header-slide-details button{
   overflow: hidden;
   margin-top: 10px;
   padding: 0px 13px;
+  display: none;
 }
 
 .container-content .title-box{
@@ -626,7 +643,7 @@ header .header-images .header-slide-details button{
 
 .container-content h1{
   color: var(--white-opacity-1);
-  font: 500 1.5em "Roboto", sans-serif;
+  font: 500 1.4em "Roboto", sans-serif;
   animation: fadeIN .3s ease-in-out;
 }
 
@@ -645,16 +662,10 @@ header .header-images .header-slide-details button{
   border: 1.5pt solid var(--transparent) !important;
   transition: all .1s ease-in !important;
   cursor: pointer;
-  opacity: 0.8;
-  border-radius: 4px;
-  margin: 0px 10px;
-  position: relative;
-}
-
-#swiper-img:hover{
   opacity: 1;
-  border-radius: 4px;
-  border: 1.5pt solid var(--red) !important;
+  border-radius: 5px;
+  margin: 0px 20px 0px 0px;
+  position: relative;
 }
 
 .motion-slides{
@@ -687,41 +698,40 @@ header .header-images .header-slide-details button{
 }
 
 .container-content:hover .movies-img{
-  border: 3px solid var(--red);
   opacity: 1;
 }
 
 .movies-img{
   min-width: 170px;
-  height: 270px;
+  height: 300px;
   border: 3px solid var(--transparent);
-  opacity: .8;
   position: relative;
   z-index: 3;
 }
 
-.movies-img::before, .motion-images::before, .image-box::before, #img-box::before{
+body img::before{
   content: '';
-  display: none;
+  display: block;
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: gray;
+  background-color: var(--gray);
   animation: pulse 2s ease-in-out infinite;
   border-radius: 4px;
-  z-index: -1;
+  z-index: 1;
 }
 
-.movies-img[display='true']::before, .motion-images[display='true']::before, #img-box[display='true']::before, .image-box[display='true']::before{
-  display: block;
+body img[display='true']::before{
+  display: none;
+  z-index: -1;
 }
 
 .movies-img img{
   width: 100%;
   height: 100%;
-  border-radius: 3px;
+  border-radius: 5px;
   object-fit: cover;
 }
 
@@ -745,12 +755,13 @@ header .header-images .header-slide-details button{
   width: 100%;
   display: flex;
   flex-direction: column;
-  background-color: transparent;
+  max-width: 2000px;
+  margin: auto;
 }
 
 .player-header{
   width: 100%;
-  height: 20vh;
+  height: 110px;
   position: fixed;
   top: 0;
   padding: 0;
@@ -759,7 +770,7 @@ header .header-images .header-slide-details button{
 }
 
 .player-header .player-menu-bar{
-  height: 20vh;
+  height: 110px;
   padding: 0;
 }
 
@@ -772,10 +783,14 @@ header .header-images .header-slide-details button{
 
 .player-container .player_img_background{
   width: 100%;
+  max-width: 2000px;
+  margin: auto;
   height: 100vh;
+  max-height: 800px;
   position: absolute;
   top: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: -4;
 }
 
@@ -786,7 +801,7 @@ header .header-images .header-slide-details button{
 .player-container  .player_img_container img{
   width: 100%;
   height: 100vh;
-  max-height: 1000px;
+  max-height: 800px;
   opacity: 1;
   object-fit: cover;
 }
@@ -795,22 +810,21 @@ header .header-images .header-slide-details button{
   display: flex;
   flex-direction: row;
   row-gap: 1rem;
-  align-items: flex-end;
+  align-items: flex-start;
   z-index: 7;
-  padding: 0px 30px;
+  padding: 130px 30px 0px 30px;
   max-width: 100%;
-  height: 100vh;
-  max-height: 1000px;
+  overflow-y: visible;
+  min-height: auto;
+  max-height: 800px;
 }
 
-
 .player-container .player_container_info #img-box{
-  width: 20%;
+  width: calc(height);
   min-width: 300px;
-  height: 70%;
-  max-height: 1000px;
+  height: 70vh;
+  max-height: 600px;
   position: relative;
-  top: -5vh;
 }
 
 .player-container .player_container_info #img-box img{
@@ -823,14 +837,14 @@ header .header-images .header-slide-details button{
 .player-container .player_container_info #details-box{
   max-width: 1200px;
   width: 100%;
-  height: 70%;
+  min-height: 70vh;
   max-height: 800px;
   padding: 0px 40px;
   display: flex;
   flex-direction: column;
   row-gap: 2rem; 
+  top: 0;
   position: relative;
-  top: -5vh; 
 }
 
 .player-container .player_container_info #details-box #details-box-title{
@@ -838,11 +852,12 @@ header .header-images .header-slide-details button{
   flex-direction: row;
   align-items: flex-end;
   gap: .7rem;
+  margin-top: -5px;
 }
 
 .player-container .player_container_info #details-box #details-box-title h1{
   color: var(--white-opacity-1);
-  font: 800 2em 'Noto Sans', sans-serif;
+  font: 800 1.8em 'Noto Sans', sans-serif;
   width: fit-content;
   display: block;
   padding: 0;
@@ -851,7 +866,7 @@ header .header-images .header-slide-details button{
 .player-container .player_container_info #details-box #details-box-title h1 span{
   font-weight: 400;
   margin-left: 0.7rem;
-  font-size: 0.9em;
+  font-size: 0.85em;
   color: var(--white-opacity-08);
 }
 
@@ -869,9 +884,9 @@ header .header-images .header-slide-details button{
 }
 
 .player-container #details-box #release_date span{
-  color: rgb(255, 255, 255, 0.9);
+  color: var(--white-opacity-95);
   width: max-content;
-  font: 500 1em 'Noto Sans', sans-serif;
+  font: 500 0.9em 'Noto Sans', sans-serif;
   margin-right: 20px;
   margin-left: 10px;
   position: relative;
@@ -915,8 +930,8 @@ header .header-images .header-slide-details button{
 }
 
 .player-container #details-box #vote_average h3{
-  font: 500 1em 'Roboto', arial, helvetica, sans-serif;
-  color: rgb(255, 255, 255, 0.9);
+  font: 500 0.9em 'Roboto', arial, helvetica, sans-serif;
+  color: var(--white-opacity-95);
 }
 
 .player-container #details-box #vote_average #count{
@@ -946,27 +961,27 @@ header .header-images .header-slide-details button{
 
 .player-container #details-box #overview-box h2{
   color: var(--white-opacity-1);
-  font: 800 1.4em 'Noto Sans', sans-serif;
+  font: 800 1.3em 'Noto Sans', sans-serif;
 }
 
 .player-container #details-box #overview-box p{
-  color: rgb(255, 255, 255, 0.9);
+  color: var(--white-opacity-95);
   font: 500 1em 'Noto Sans', sans-serif;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 3;
   overflow: hidden;
   line-height: 150%;
 }
 
 .player-container #details-box #btn-video-box button{
-  padding: 9px 30px;
+  padding: 9px 40px;
   outline: none;
   border: none;
   border-radius: 3px;
-  background-color: blueviolet;
+  background-color: var(--blueviolet);
   color: var(--white-opacity-1);
-  font: 700 1.05em helvetica, sans-serif;
+  font: 700 1em helvetica, sans-serif;
   cursor: pointer;
 }
 
@@ -978,7 +993,7 @@ header .header-images .header-slide-details button{
   width: 100%;
   height: 100%;
   z-index: -1;
-  background-color: rgb(23, 21, 34, 0.9);
+  background-color: var(--body-opacity-09);
 }
 
 .pageTitle{
@@ -988,6 +1003,8 @@ header .header-images .header-slide-details button{
 
 .moviesPageContainer{
   width: 100%;
+  max-width: 2000px;
+  margin: auto;
   padding-top: 200px;
   display: flex;
   flex-direction: column;
@@ -1029,9 +1046,9 @@ header .header-images .header-slide-details button{
 .barraGeneros ul li button{
   background-color: var(--transparent);
   border: 1pt solid var(--red);
-  font: 600 1em arial, sans-serif;
+  font: 500 0.9em 'Roboto', helvetica, sans-serif;
   color: var(--white-opacity-07);
-  padding: 5px 20px;
+  padding: 5px 30px;
   border-radius: 20px;
   outline: none;
 }
@@ -1254,10 +1271,14 @@ footer{
   }
 
   .player-container .player-movies .player_container_info{
+    display: flex;
     flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
     height: auto;
-    padding: 0px;
+    margin-top: 0;
     row-gap: 3rem;
+    padding: 130px 0px 0px 0px;
     max-height: 3000px;
   }
 
@@ -1265,12 +1286,12 @@ footer{
     width: 40%;
     height: 60vh;
     max-height: 500px;
-    margin: 30vh auto 0 auto;
+    margin: auto;
   }
 
   .player-container .player_container_info #details-box{
     margin: auto;
-    width: 100%;
+    min-width: 100%;
     box-sizing: border-box;
   }
 
@@ -1281,6 +1302,10 @@ footer{
 
   .player-container #details-box #release_date span{
     font-size: .9em;
+  }
+
+  .container-content h1{
+    font-size: 1.3em;
   }
 
 }
@@ -1316,10 +1341,6 @@ footer{
 
   .container-content{
     width: 90%;
-  }
-
-  .container-content h1{
-    font-size: 1.5em;
   }
 
   .container-content button{
@@ -1359,7 +1380,6 @@ footer{
   }
 
   .player-container .player_container_info #img-box{
-    margin-top: 25vh;
     height: 60%;
     min-width: 250px;
   }
@@ -1407,7 +1427,7 @@ footer{
   }
 
   header .header-images .header-slide-details h1{
-    font-size: 1.7em;
+     font-size: 1.7em;
   }
 
   header .header-images .header-slide-details h2{

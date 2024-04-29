@@ -51,11 +51,9 @@ function Movies() {
         setMovieGenre(valor);
         setKey(prevKey => prevKey + 1);
         handleColorBtn(valor);
-        console.log(movieGenre);
     }
 
     const btnNavigate = (e) => {
-        console.log(e);
         navigate(`/${e.target.id}`)
     }
 

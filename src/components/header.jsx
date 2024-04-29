@@ -107,7 +107,6 @@ function Header({HeightScroll}) {
         const data = await response.json();
         setMoviesDetails(data.results);
         handleSlides(data.results);
-        console.log(data.results);
       } catch{
         console.log(error);
       }

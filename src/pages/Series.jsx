@@ -48,7 +48,6 @@ function Series() {
     }
 
     const btnNavigate = (e) => {
-        console.log(e);
         navigate(`/${e.target.id}`)
     }
 

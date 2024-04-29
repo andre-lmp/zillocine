@@ -52,7 +52,6 @@ function PlayerPage() {
   }
 
   const btnNavigate = (e) => {
-    console.log(e);
     navigate(`/${e.target.id}`)
   }
 
@@ -119,7 +118,6 @@ function PlayerPage() {
           const movieDetail = await fetch(`${apiURL}/movie/${id}?api_key=${apiKey}&language=pt-BR&page=1&include_image_language=pt&append_to_response=videos`);
           const data = await movieDetail.json();
           setMoviesDetails(data);
-          console.log(data);
         } catch (error) {
           console.log(error);
         }
@@ -128,7 +126,6 @@ function PlayerPage() {
           const movieDetail = await fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}&language=pt-BR&page=1&include_image_language=pt&append_to_response=videos`);
           const data = await movieDetail.json();
           setMoviesDetails(data);
-          console.log(data);
         } catch (error) {
           console.log(error);
         }
@@ -182,11 +179,11 @@ function PlayerPage() {
       <section className='player-movies'>
         <div id="player-background"></div>
         <div className="player_container_info">
-            <div display={loading} id="img-box">
+            <div id="img-box">
               { moviesDetails.poster_path !== null ? (
-                  <img onLoad={handleLoaderImage} src={`${imgUrl}${moviesDetails.poster_path}`}/>
+                  <img onLoad={handleLoaderImage} display={loading} src={`${imgUrl}${moviesDetails.poster_path}`}/>
               ):(
-                  <img onLoad={handleLoaderImage} src={`${imgUrl}${moviesDetails.backdrop_path}`}/>
+                  <img onLoad={handleLoaderImage} display={loading} src={`${imgUrl}${moviesDetails.backdrop_path}`}/>
               )}
             </div>
             <div id="details-box">

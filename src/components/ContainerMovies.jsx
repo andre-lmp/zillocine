@@ -44,6 +44,15 @@ const  fetchMovies = (props) => {
     37: 'Faroeste'
   };
 
+  const customTitles = {
+    'Lançamentos': 'Em Destaque: Os Filmes Mais Recentes',
+    'Ação': 'Adrenalina em cartaz',
+    'Terror': 'Horror em exibição',
+    'Comedia': 'Diversão com a família',
+    'Documentario': 'Documentando o mundo',
+    'Ficção': 'Universos paralelos: Ficção'
+  };
+
   const seriesGenres = {
     10759: "Ação",
     16: "Animação",
@@ -61,9 +70,9 @@ const  fetchMovies = (props) => {
     10766: "Talk Show",
     10768: "Guerra",
     37: "Faroeste"
- };
+  };
 
- const breakpoints = {
+  const breakpoints = {
   750: {
     slidesPerView: 3
   },
@@ -85,7 +94,15 @@ const  fetchMovies = (props) => {
   1950:{
     slidesPerView: 9
   }
- };
+  };
+
+  const handleCustomTitle = (title) => {
+    if (customTitles[title]){
+      return customTitles[title];
+    }else{
+      return title;
+    }
+  }
  
   const handleClick = (e) => {
     const valor = e.target.attributes.value.value;
@@ -187,7 +204,7 @@ const  fetchMovies = (props) => {
         <div className="container-content">
           <div className="title-box">
             {props.titulo ? (
-              <h1 key={props.titulo}>{props.titulo}</h1>
+              <h1 key={props.titulo}>{handleCustomTitle(props.titulo)}</h1>
             ): null}
           </div>
           <hr/>
@@ -202,12 +219,14 @@ const  fetchMovies = (props) => {
               <Swiper ref={swiper} className="swiper-container" style={{width: '100%', height: 'auto'}} breakpoints={breakpoints}>
                       {moviesDetails.map((movie) => (
                           <SwiperSlide className="swiper-slide" >
-                            <div key={movie.id} id="swiper-img" display={loading} className="movies-img" onClick={handleClick}><img onLoad={handleLoaderImage} value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/></div>
-                            {movie.title ? (
-                              <h2 className="slides-title">{movie.title}</h2>
-                            ): (
-                              <h2 className="slides-title">{movie.name}</h2>
-                            )}
+                            <div  id="swiper-img"  className="movies-img" onClick={handleClick}>
+                              { movie.poster_path ? (
+                                <img key={movie.id} onLoad={handleLoaderImage} value={movie.id} display={loading} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
+                              ):(
+                                <img src="" display='false'/>
+                              )
+                              }
+                            </div>
                           </SwiperSlide>
                       ))}
               </Swiper>
