@@ -501,7 +501,7 @@ header .header-images .header-slide-details{
   width: fit-content;
   flex-direction: column;
   z-index: 55;
-  width: 40%;
+  width: 45%;
   row-gap: 1rem;
   padding: 10px 10px 10px 0px;
 }
@@ -509,7 +509,6 @@ header .header-images .header-slide-details{
 header .header-images .header-slide-details::before{
   content: '';
   position: fixed;
-  top: 0;
   left: 0;
   bottom: 0;
   width: 70%;
@@ -552,7 +551,7 @@ header .header-images .header-slide-details button{
   color: var(--white-opacity-1);
   background-color: var(--dark-blue);
   border: 1pt solid var(--transparent);
-  font: 600 1em helvetica, sans-serif;
+  font: 600 .9em helvetica, sans-serif;
   display: inline-block;
   width: fit-content;
   outline: none;
@@ -583,7 +582,7 @@ header .header-images .header-slide-details button{
   outline: none;
   background-color: var(--transparent);
   color: var(--white-opacity-1);
-  font: 500 0.9em 'Roboto', sans-serif;
+  font: 500 0.85em 'Roboto', sans-serif;
   border: 1.4pt solid var(--red);
   border-radius: 40px;
   cursor: pointer;
@@ -643,7 +642,7 @@ header .header-images .header-slide-details button{
 
 .container-content h1{
   color: var(--white-opacity-1);
-  font: 500 1.4em "Roboto", sans-serif;
+  font: 500 1.3em "Roboto", sans-serif;
   animation: fadeIN .3s ease-in-out;
 }
 
@@ -936,9 +935,9 @@ body img[display='true']::before{
 
 .player-container #details-box #vote_average #count{
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  min-width: 50px;
+  width: 49px;
+  height: 49px;
+  min-width: 49px;
   border: 1.5pt solid var(--red);
   display: flex;
   justify-content: center;
@@ -961,12 +960,12 @@ body img[display='true']::before{
 
 .player-container #details-box #overview-box h2{
   color: var(--white-opacity-1);
-  font: 800 1.3em 'Noto Sans', sans-serif;
+  font: 800 1.2em 'Noto Sans', sans-serif;
 }
 
 .player-container #details-box #overview-box p{
   color: var(--white-opacity-95);
-  font: 500 1em 'Noto Sans', sans-serif;
+  font: 500 0.95em 'Noto Sans', sans-serif;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
@@ -981,7 +980,7 @@ body img[display='true']::before{
   border-radius: 3px;
   background-color: var(--blueviolet);
   color: var(--white-opacity-1);
-  font: 700 1em helvetica, sans-serif;
+  font: 700 0.9em helvetica, sans-serif;
   cursor: pointer;
 }
 
@@ -1182,6 +1181,7 @@ footer{
   align-items: center;
 }
 
+
 .about-project h1{
   font: 600 1.5em 'Raleway', sans-serif;
 }
@@ -1253,6 +1253,10 @@ footer{
     font-size: 1.7em;
   }
 
+  header .header-slide-details{
+    min-width: 60%;
+  }
+
   .app-main{
     display: flex;
     flex-direction: column;
@@ -1312,17 +1316,88 @@ footer{
 
 @media screen and (max-width: 700px) {
   .header-links{
-    background-image: linear-gradient(to bottom, var(--black-opacity-09), var(--black-opacity-08), var(--black-opacity-06), var(--black-opacity-00));
+    background-image: linear-gradient(to bottom, var(--body-color), var(--body-opacity-05), var(--body-opacity-00));
+  }
+
+  .links-titulo h1{
+    font-size: 2.1em;
+  }
+
+  .link-icons button{
+    font-size: 1em;
+    width: 40px;
+    height: 40px;
+  }
+
+  .btn-menu{
+    font-size: 1.6em !important;
+  }
+
+  .div-menu{
+    width: 200px;
+  }
+
+  .div-menu ul li p{
+    font-size: 1.2em;
+  }
+
+  .div-menu ul li button{
+    font-size: 1.8em;
+  }
+
+  header .header-slide-details{
+    min-width: 90%;
+    margin: auto;
+  }
+
+  header .header-slide-details::before{
+    min-width: 100%;
+    max-height: 70%;
+    bottom: 0;
+    top: 50%;
+    left: 0;
+    background-image: linear-gradient(to top, var(--body-color), var(--body-opacity-05), var(--body-opacity-00)) !important;
+  }
+
+  header .header-slide-details a{
+    display: none;
+  }
+
+  header .header-slide-details > * {
+    margin: auto;
+    text-align: center;
+  }
+
+  header .header-slide-details h1{
+    max-width: 80%;
+    font-size: 2.2em !important;
+  }
+
+  header .header-slide-details h2{
+    font-size: 0.9em !important;
+  }
+
+  header .header-slide-details p{
+    font-size: 0.9em !important;
+    -webkit-line-clamp: 3 !important;
+  }
+
+  header .header-slide-details button{
+    display: none !important;
+  }
+
+  .title-box h1{
+    font-size: 1.2em;
+  }
+
+  .container-content button{
+    font-size: 0.8em !important;
   }
 
   .links-content{
     width: 100%;
   }
  
-  .links-titulo h1{
-    font-size: 2.3em;
-    font-weight: 600;
-  }
   .movieDetails h1{
     font-size: 1.6em;
   }
@@ -1380,7 +1455,7 @@ footer{
   }
 
   .player-container .player_container_info #img-box{
-    height: 60%;
+    height: 70vh;
     min-width: 250px;
   }
 
@@ -1389,7 +1464,10 @@ footer{
   }
 
   .player-container .player_container_info #details-box #details-box-title h1{
-    font-size: 1.8em;
+    font-size: 1.7em;
+  }
+  .player-container #details-box #release_date span{
+    font-size: .8em;
   }
   .player-container #details-box #release_date .decoration-icon{
     margin-left: 0;
@@ -1399,17 +1477,45 @@ footer{
   }
   .player-container #details-box #overview-box p{
     -webkit-line-clamp: 6;
+    font-size: 0.9em;
+  }
+
+  .player-container #details-box #btn-video-box button{
+    font-size: 0.85em;
+  }
+
+  .player-container #details-box #vote_average h3{
+    font-size: 0.85em;
+  }
+  .player-container #details-box #vote_average #count{
+    width: 45px;
+    height: 45px;
+    min-width: 45px;
+    min-height: 45px;
+    font-size: 0.9em;
+  }
+
+  .footer-links a{
+    font-size: 1.1em;
+  }
+
+  .about-project h1, .about-project h2{
+    font-size: 1.1em;
+  }
+
+  .about-project .social-icons a{
+    font-size: 0.9em;
   }
 
 }
 
 @media screen and (max-width: 600px) {
   header{
-    max-height: 600px;
+    max-height: 650px;
   }
 
   header .header-images{
-    max-height: 600px;
+    max-height: 650px;
   }
 
   header .header-images .header-slide-details{
@@ -1500,10 +1606,9 @@ footer{
   }
 
   .about-project{
-    display: flex;
     flex-direction: column;
     row-gap: 2rem;
-  };
+  }
   
 }
 
@@ -1523,6 +1628,15 @@ footer{
   .movieDetails #btn-play{
     border: 1.4pt solid var(--white-opacity-1);
   }
+
+  .player-container .player_container_info #img-box{
+    height: 50vh;
+  }
+
+  .player-container .player_container_info #details-box #details-box-title h1{
+    font-size: 1.4em;
+  }
+
   .movieDetails{
     margin-left: 30px;
   }

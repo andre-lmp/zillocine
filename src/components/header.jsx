@@ -154,7 +154,7 @@ function Header({HeightScroll}) {
         </div>
       <header>
         <div className='header-images' ref={app}>
-          <Swiper className='swiper' slidesPerView={1} autoplay={{delay: 5000}} speed='800' loop='true' pagination={{clickable: true}} modules={[Pagination]}>
+          <Swiper className='swiper' slidesPerView={1} autoplay={{delay: 5000}} speed='500' loop='true' pagination={{clickable: true}} modules={[Pagination]}>
               {moviesDetails.map((movie) => (
                 <SwiperSlide className='slide'>
                   <img src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`} className="slide-image"/>
