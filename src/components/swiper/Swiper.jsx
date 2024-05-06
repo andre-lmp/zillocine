@@ -11,7 +11,9 @@ export function Swiper(props){
         register();
         const params = {...rest};
         Object.assign(swiperRef.current, params);
-        swiperRef.current.initialize();
+        setTimeout(() => {
+            swiperRef.current.initialize();
+        }, 1000);
     },[])
 
     return(

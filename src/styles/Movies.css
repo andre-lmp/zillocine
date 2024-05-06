@@ -1,0 +1,65 @@
+@import url('/src/styles/Movies.css');
+
+.movies-page-container{
+    margin-top: 200px;
+}
+
+.movies-page-container .genres-bar{
+    width: 100%;
+    z-index: 20;
+    padding: 0px 20px;
+    box-sizing: border-box;
+  }
+  
+  .movies-page-container .genres-bar ul{
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    padding: 0px;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .movies-page-container .genres-bar ul li button{
+    background-color: var(--midnightblue);
+    font: 500 16px 'Roboto', helvetica, sans-serif;
+    color: var(--white-opacity-07);
+    padding: 5px 30px;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    animation: fadeIN .2s ease-in-out;
+  }
+  
+  .movies-page-container .genres-bar ul li:nth-child(1) button{
+    color: var(--white-opacity-1);
+  }
+
+  
+@media screen and (min-width: 2000px) {
+
+  .swiper-image{
+    min-height: 400px;
+  }
+}
+
+@media screen and (max-width: 950px){
+  
+}
+
+@media screen and (max-width: 800px) {
+  
+}
+
+@media screen and (max-width: 700px) {
+
+}
+
+@media screen and (max-width: 600px) {
+  
+}
+
+@media screen and (max-width: 500px) {
+  
+}

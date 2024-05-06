@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from 'react-router-dom';
-import '/src/App.css';
+import '/src/styles/Swiper.css';
 import { Swiper, SwiperSlide } from '/src/components/swiper/Swiper.jsx';
 
 const  fetchMovies = (props) => {
@@ -200,7 +200,7 @@ const  fetchMovies = (props) => {
   },[type, props.genre])
 
   return autorizado ? (
-    <section className="movies-container" id="movies-container">
+    <section className="movie-fetcher">
         <div className="container-content">
           <div className="title-box">
             {props.titulo ? (
@@ -219,7 +219,7 @@ const  fetchMovies = (props) => {
               <Swiper ref={swiper} className="swiper-container" style={{width: '100%', height: 'auto'}} breakpoints={breakpoints}>
                       {moviesDetails.map((movie) => (
                           <SwiperSlide className="swiper-slide" >
-                            <div  id="swiper-img"  className="movies-img" onClick={handleClick}>
+                            <div className="swiper-image" onClick={handleClick}>
                               { movie.poster_path ? (
                                 <img key={movie.id} onLoad={handleLoaderImage} value={movie.id} display={loading} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
                               ):(

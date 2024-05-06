@@ -1,181 +1,68 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
-import { LuPlay, LuSearch } from "react-icons/lu";
 import Search from "/src/components/SearchBar";
-import { Swiper, SwiperSlide } from '/src/components/swiper/Swiper.jsx';
-import { Pagination } from 'swiper/modules';
-import { CgClose } from "react-icons/cg";
-import '/src/App.css';
-import 'swiper/css';
-import 'swiper/element/css/pagination';
-import '/src/App.css';
+import { LuSearch } from "react-icons/lu";
+import '/src/styles/App.css';
 
-function Header({HeightScroll}) {
-  const [moviesDetails, setMoviesDetails] = useState([]);
-  const apiKey = "df087968ddf338b4ac0f9876af17f739";
-  const apiURL = 'https://api.themoviedb.org/3/';
-  const app = useRef();
-  const [autorizado, setAutorizado] = useState(false);
+function Header() {
+  
+  const [authorized, setAuthorized] = useState(false);
+  const [hideSearchBar, setHideSearchBar] = useState(true);
+  const scrolled = useRef(undefined);
+  const overlayRef = useRef(undefined);
   const navigate = useNavigate();
-  const [menuActive, setMenuActive] = useState('disabled');
-  const [type, setType] = useState('filme');
-  const divOpacity = useRef();
-  const [hideBar, setHideBar] = useState(true);
-  const ContainerHeader = useRef();
-  const newDate = new Date().toISOString().split('T')[0];
-  const [scrolled, setScrolled] = useState(undefined);
 
   window.addEventListener('scroll', () => {
     if (window.scrollY > 50){
-      setScrolled('scrolled');
+      scrolled.current.style.padding = '20px 50px';
+      scrolled.current.style.backgroundColor = 'rgb(2, 8, 23)';
     }else{
-      setScrolled(undefined);
+      scrolled.current.style.backgroundColor = 'transparent';
+      scrolled.current.style.padding = '20px 50px 40px 50px';
     }
   });
 
-  const btnNavigate = (e) => {
+  const handleNavigationLinks = (e) => {
     navigate(`/${e.target.id}`)
-    if (e.target.id === '') {
-      setMenuActive('disabled');
-    }
-  }
-
-  const handleClick = (e) => {
-    const valor = e.target.attributes.value.value;
-    navigate(`/Page/${valor}/${type}`);
-  }
-
-  const btnClick = () => {
-    if (menuActive === 'disabled'){
-      setMenuActive('menu-actived')
-      divOpacity.current.style.transition = 'all .2s ease-in-out'
-      divOpacity.current.style.opacity = '.55';
-      divOpacity.current.style.zIndex = '1000';
-      divOpacity.current.style.height = `${HeightScroll}px`;
-    }else{
-      setMenuActive('disabled')
-      divOpacity.current.style.opacity = '0';
-      setTimeout(() => {
-        divOpacity.current.style.zIndex = '-200';
-        divOpacity.current.style.transition = 'all .3s ease-in-out';
-      }, 200);
-    }
-  }
+  };
 
   const HandleHideChange = (newValue) => {
-    setHideBar(newValue);
-    divOpacity.current.style.opacity = '0';
-    setTimeout(() => {
-      divOpacity.current.style.zIndex = '-200';
-    }, 300);
-  }
+  };
 
-  const handleSlides = (movies) => {
-    const movieIds = [];
-    for (let i = 0; i<=4; i++){
-        movieIds.push(movies[i]);
-    }
-    setMoviesDetails(movieIds);
-  }
 
-  const hideBarSearch = () => {
-    if (hideBar === true) {
-      setMenuActive('disabled');
-      setHideBar(false);
-      divOpacity.current.style.opacity = '.95';
-      divOpacity.current.style.zIndex = '100';
-      divOpacity.current.style.height = `${HeightScroll}px`;
-    }
-  }
-
-  const handleReleaseDate = (date) => {
-    const newDate = [];
-    for (let i = 0; i < 4; i++){
-      newDate.push(date[i]);
-    } 
-    return newDate;
-  }
+  const handleBarSearch = () => {
+    if (hideSearchBar) {
+      setHideSearchBar(false);
+    };
+  };
  
   useEffect(() => {
-    const delay = setTimeout(() => {
-      setAutorizado(true);
-    }, 1000);
-
-    const fetchMovies = async () => {
-      try {
-        const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&primary_release_date.gte=${newDate}&sort=primary_release_date.desc&language=pt-BR&include_image_language=pt`);
-        const data = await response.json();
-        setMoviesDetails(data.results);
-        handleSlides(data.results);
-      } catch{
-        console.log(error);
-      }
-    }
-
-    fetchMovies();
-  },[])
+    setAuthorized(true);
+  },[]);
   
-  return autorizado ? (
-    <main ref={ContainerHeader} id="header-main">
-      <div ref={divOpacity} className="opacity-div"></div>
-          <div id={scrolled} className="header-links">
-            <Search onValueChange={HandleHideChange} hide={hideBar}/>
-            <div className='links-content'>
-              <div id="btn-filmes-series" className="link-icons">
-                <button onClick={btnClick} className="btn-menu">|||</button>
-                <a className="btn-header" id="Filmes" onClick={btnNavigate}>Filmes</a>
-                <a className="btn-header" id="Series" onClick={btnNavigate}>Séries</a>
+  return authorized ? (
+    <header>
+      <div ref={overlayRef} className="overlayDiv"></div>
+          <div ref={scrolled} className="header-links">
+            <Search className='search-bar-header' onValueChange={HandleHideChange} hide={hideSearchBar}/>
+              <div className="links left-links">
+                <button>|||</button>
+                <a id="Movies" onClick={handleNavigationLinks}>Filmes</a>
+                <a id="Series" onClick={handleNavigationLinks}>Séries</a>
               </div>
 
-              <div className="links-titulo">
+              <div className="project-title">
                 <h1>MovieZilla</h1>
               </div>
 
-              <div className='link-icons'>
-                <LuSearch onClick={hideBarSearch} className='lupa-icon'/>
-                <div className="button-header-div">
-                  <button className="icon-conta" id='Perfil' onClick={btnNavigate}>C</button>
-                  <h3 id="Perfil" onClick={btnNavigate}>Conta</h3>
-                </div>
+              <div className='links right-links'>
+                <LuSearch onClick={handleBarSearch} className='lupa-icon'/>
+                <button className="icon-conta" id='Profile' onClick={handleNavigationLinks}>C</button>
+                <h3 id="Profile" onClick={handleNavigationLinks}>Conta</h3>
               </div>
               
             </div>
-        </div>
-
-        <div className="div-menu" id={menuActive}>
-          <ul>
-            <li><button><CgClose onClick={btnClick} className="close-icon"/></button></li>
-            <li><p id="" onClick={btnNavigate}>Inicio</p></li>
-            <li><p id="Filmes" onClick={btnNavigate}>Filmes</p></li>
-            <li><p id="Series" onClick={btnNavigate}>Series</p></li>
-            <li><p onClick={hideBarSearch}>Pesquisar</p></li>
-            <li><p id="Perfil" onClick={btnNavigate}>Conta</p></li>
-          </ul>
-        </div>
-      <header>
-        <div className='header-images' ref={app}>
-          <Swiper className='swiper' slidesPerView={1} autoplay={{delay: 5000}} speed='500' loop='true' pagination={{clickable: true}} modules={[Pagination]}>
-              {moviesDetails.map((movie) => (
-                <SwiperSlide className='slide'>
-                  <img src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`} className="slide-image"/>
-                  <div className="header-slide-details">
-                    <h1>{movie.title}</h1>
-                    <h2>{handleReleaseDate(movie.release_date)}</h2>
-                    {movie.overview ? (
-                      <p>{movie.overview}</p>
-                    ): (
-                      <p>O lançamento de um dos mais aguardados filmes de uma sequencia de sucesso</p>
-                    )}
-                    <button onClick={handleClick} value={movie.id} id="btn-play">Ir para o Filme</button>
-                  </div>
-                  <div className='end-header'></div>
-                </SwiperSlide>
-              ))};
-          </Swiper>
-
-        </div>
-      </header>
-    </main>
+    </header>
   ) : null;
 }
 

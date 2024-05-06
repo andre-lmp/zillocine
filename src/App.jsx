@@ -1,26 +1,24 @@
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import { useState } from 'react';
-import Home from "./pages/Home";
+import HomePage from "./pages/HomePage";
 import PlayerPage from './pages/PlayerPage';
-import Movies from './pages/Movies';
-import Series from './pages/Series';
-import ProfilePage from './pages/Profile';
-import './App.css';
-
+import MoviesPage from './pages/MoviesPage';
+import SeriesPage from './pages/SeriesPage';
+import ProfilePage from './pages/ProfilePage';
+import Header from "/src/components/header";
+import '/src/styles/App.css';
 
 export default function App() {
-  const [idmovie, setIdmovie] = useState();
-  const click = (valor) => {
-    setIdmovie(valor);
-  }
+  
   return (
     <Router>
+      <Header/>
       <Routes>
-        <Route path='/' Component={Home}/>
+        <Route path='/' Component={HomePage}/>
         <Route path='/Page/:id/:type' Component={PlayerPage}/>
-        <Route path='/Filmes' Component={Movies}/>
-        <Route path='/Series' Component={Series}/>
-        <Route path='/Perfil' Component={ProfilePage}/>
+        <Route path='/Movies' Component={MoviesPage}/>
+        <Route path='/Series' Component={SeriesPage}/>
+        <Route path='/Profile' Component={ProfilePage}/>
       </Routes>
     </Router>
   )

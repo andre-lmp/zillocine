@@ -4,6 +4,7 @@ import { HiXMark } from "react-icons/hi2";
 import { IoStar } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import '/src/styles/App.css';
 
 function Search({hide, onValueChange}) {
     const [searchTerm, setSearchTerm] = useState('');
@@ -121,14 +122,14 @@ function Search({hide, onValueChange}) {
     },[searchTerm, hide, type]);
 
     return(
-        <main ref={main} className="search-container-main">
+        <main ref={main} className="search-component">
             <div ref={SearchBar} className="search-bar-container">
                 <div className="Search-input-container">
                     <LuSearch id="search-icon-bar" className="lupa-icon"/>
                     <input value={searchTerm} onChange={handleInputChange} type="text" className="inputSearch" placeholder="O que voce está procurando ?"></input>
                     <HiXMark onClick={() => onValueChange(true)} className="close-bar-icon"/>
                 </div>
-                <div className="Search-options">
+                <div className="search-options">
                     <label>
                         <button ref={btnMovies} onClick={btnClickMovies}>Filmes</button>
                     </label>
