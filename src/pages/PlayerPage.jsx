@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef} from "react";
 import { useParams } from "react-router-dom";
-import '/src/styles/player.css';
+import '/src/styles/Player.css';
 import Footer from '/src/components/footer';
 
 function PlayerPage() {
