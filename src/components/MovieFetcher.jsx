@@ -6,21 +6,18 @@ import '/src/styles/Swiper.css';
 import { Swiper, SwiperSlide } from '/src/components/swiper/Swiper.jsx';
 
 const  fetchMovies = (props) => {
-  const [moviesDetails, setMoviesDetails] = useState([]);
+  const [moviesData, setMoviesData] = useState([]);
   const newDate = new Date().toISOString().split('T')[0];
-  const apiKey = "df087968ddf338b4ac0f9876af17f739";
-  const widthCarousel = useRef();
-  const [autorizado, setAutorizado] = useState(false);
+  const apiKey = "e1534e69b483f2e9d62ea1c394850e4e";
+  const [authorized, setAuthorized] = useState(false);
   const navigate = useNavigate();
-  const [type, setType] = useState(props.tipo);
-  const [widthSize, setWidthSize] = useState(window.innerWidth);
+  const [type, setType] = useState(props.type);
   const swiper = useRef(null);
   const btnsType = useRef();
   const [loading, setLoading] = useState('true');
-
-  window.addEventListener('resize', () => {
-    setWidthSize(window.innerWidth);
-  })
+  const [displayWidth, setDisplayWidth] = useState(0);
+  const motionRef = useRef(undefined);
+  const [sentConfirmAuthorized, setSentConfirmAuthorized] = useState(true);
 
   const moviesGenres = {
     28: 'Ação',
@@ -102,17 +99,17 @@ const  fetchMovies = (props) => {
     }else{
       return title;
     }
-  }
+  };
  
-  const handleClick = (e) => {
+  const handleMoviesNavigation = (e) => {
     const valor = e.target.attributes.value.value;
     navigate(`/Page/${valor}/${type}`);
-  }
+  };
 
-  const defTipo = (e) => {
+  const defType = (e) => {
     setType(e.target.value);
     handleChangeType(e.target.value);
-  }
+  };
 
   const handleGenres = (value, type) => {
     let genre = '';
@@ -130,7 +127,7 @@ const  fetchMovies = (props) => {
       }
     }
     return genre;
-  }
+  };
 
   const handleChangeType = (type) => {
     if (btnsType.current){
@@ -143,34 +140,51 @@ const  fetchMovies = (props) => {
         }
       }
     }
-  }
+  };
 
-  const handleLoaderImage = () => {
-    setLoading('false');
-  }
+  const getMotionHeight = () => {
+    let width = 0;
+    if (motionRef.current){
+      width = 20 + (motionRef.current.scrollWidth - motionRef.current.offsetWidth);
+      return -width;
+    }
+  };
+
 
   useEffect(() => {
+
+    const getDocumentWidth = () => {
+      if (window.innerWidth){
+        setDisplayWidth(window.innerWidth);
+      }else{
+        setTimeout(getDocumentWidth, 100);
+      }
+    };
+  
+    getDocumentWidth();
+
+    window.addEventListener('resize', getDocumentWidth);
+
     const delay = setTimeout(() => {
-      setAutorizado(true);
-      console.log(widthCarousel.current.scrollWidth);
+      setAuthorized(true);
     }, 1000);
 
     const fetchMovies = async () => {
-      if (type === 'filme') {
+      if (type === 'Movie') {
         if (props.genre === 'Lançamentos'){
           try {
             const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&primary_release_date.gte=${newDate}&sort=primary_release_date.desc&language=pt-BR&include_image_language=pt&page=${props.page}`);
             const data = await response.json();
-            setMoviesDetails(data.results);
-            setType('filme')
+            setMoviesData(data.results);
+            setType('Movie');
           } catch (error) {
           }
         }else{
           try {
             const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_genres=${handleGenres(props.genre, 'filme')}&language=pt-BR&include_image_language=pt&page=${props.page}`);
             const data = await response.json();
-            setMoviesDetails(data.results);
-            setType('filme')
+            setMoviesData(data.results);
+            setType('Movie');
           } catch (error) {
           }
         }
@@ -180,46 +194,52 @@ const  fetchMovies = (props) => {
           try {
             const lançamentos = await fetch(`https://api.themoviedb.org/3/tv/on_the_air?api_key=${apiKey}&language=pt-BR&page=${props.page}`);
             const data = await lançamentos.json();
-            setMoviesDetails(data.results);
-            setType('serie')
+            setMoviesData(data.results);
+            setType('Serie');
           } catch (error) {
           }
         }else{
           try{
             const lançamentos = await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&with_genres=${handleGenres(props.genre, 'serie')}&page=${props.page}`);
             const data = await lançamentos.json();
-            setMoviesDetails(data.results);
-            setType('serie');
+            setMoviesData(data.results);
+            setType('Serie');
+          
           } catch (error) {
           }
         }
       }
     }     
-  fetchMovies();
+    fetchMovies();
 
-  },[type, props.genre])
+  },[type, props.genre]);
 
-  return autorizado ? (
+  const handleLoaderImage = (e) => {
+    setLoading('false');
+    props.isLoaded(true);
+  };
+
+  return authorized ? (
     <section className="movie-fetcher">
         <div className="container-content">
           <div className="title-box">
-            {props.titulo ? (
-              <h1 key={props.titulo}>{handleCustomTitle(props.titulo)}</h1>
+            {props.title ? (
+              <h1 key={props.title}>{handleCustomTitle(props.title)}</h1>
             ): null}
           </div>
           <hr/>
           {props.btn === 'true' ? (
               <div ref={btnsType} className="btns-movie-serie">
-                <button value='filme' onClick={defTipo}>Filmes</button>
-                <button value='serie' onClick={defTipo}>Series</button>
+                <button value='Movie' onClick={defType}>Filmes</button>
+                <button value='Serie' onClick={defType}>Series</button>
             </div>
           ) : null}
 
-          {widthSize > 750 ? (
+          {displayWidth > 750 ? (
               <Swiper ref={swiper} className="swiper-container" style={{width: '100%', height: 'auto'}} breakpoints={breakpoints}>
-                      {moviesDetails.map((movie) => (
+                      {moviesData.map((movie) => (
                           <SwiperSlide className="swiper-slide" >
-                            <div className="swiper-image" onClick={handleClick}>
+                            <div className="swiper-image" onClick={handleMoviesNavigation}>
                               { movie.poster_path ? (
                                 <img key={movie.id} onLoad={handleLoaderImage} value={movie.id} display={loading} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
                               ):(
@@ -231,23 +251,23 @@ const  fetchMovies = (props) => {
                       ))}
               </Swiper>
           ): (
-            <motion.div className="motion-slides" drag="x" dragConstraints={{ right: 0, left: -((widthCarousel.current?.scrollWidth - widthSize) + 40) }} ref={widthCarousel}>
-              {moviesDetails.map((movie) => (
-                <div className="slides-container" >
-                  <div display={loading} key={movie.id} className="motion-images"  onClick={handleClick}>
-                    {movie.poster_path ? (
-                      <img onLoad={handleLoaderImage} value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
-                    ):(
-                      <img onLoad={handleLoaderImage} value={movie.id} src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}/>
-                    )}
+            <motion.div
+             ref={motionRef} 
+             className="motion-container" 
+             drag='x'  
+             dragConstraints={{right: 0, left: getMotionHeight()}}  
+            >
+              {moviesData.map((movie) => (
+                  <div>
+                    <div display={loading} key={movie.id} className="motion-slide"  onClick={handleMoviesNavigation}>
+                      {movie.poster_path ? (
+                        <img onLoad={handleLoaderImage} value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
+                      ):(
+                        <img onLoad={handleLoaderImage} value={movie.id} src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}/>
+                      )}
+                    </div>
                   </div>
-                  {movie.title ? (
-                    <h2 className="slides-title">{movie.title}</h2>
-                  ): (
-                    <h2 className="slides-title">{movie.name}</h2>
-                  )}
-                </div>
-              ))}
+                ))}
             </motion.div>
           )}
           

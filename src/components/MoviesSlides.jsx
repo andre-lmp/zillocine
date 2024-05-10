@@ -1,16 +1,18 @@
 import { Swiper, SwiperSlide } from '/src/components/swiper/Swiper.jsx';
 import { useEffect, useState } from 'react';
 import { Pagination, Autoplay } from 'swiper/modules';
+import { useNavigate } from 'react-router-dom';
 import '/src/styles/Home.css';
 import 'swiper/css';
 import 'swiper/element/css/autoplay';
 import 'swiper/element/css/pagination';
 
 function MovieSlides() {
-    const apiKey = "df087968ddf338b4ac0f9876af17f739";
+    const apiKey = "e1534e69b483f2e9d62ea1c394850e4e";
     const newDate = new Date().toISOString().split('T')[0];
     const [moviesData, setMoviesData] = useState([]);
     const [authorized, setAuthorized] = useState(false);
+    const navigate = useNavigate(undefined);
 
     const handleSelectionMovies = (data) => {
         const movieIds = [];
@@ -31,7 +33,7 @@ function MovieSlides() {
     const NavigateToMovie = (e) => {
         const value = e.target.attributes.value.value;
         navigate(`/Page/${value}/Movie`);
-      }
+    }
 
    useEffect(() => {
     const fetchMovies = async () => {
@@ -43,11 +45,8 @@ function MovieSlides() {
         } catch{
           console.log(error);
         }
-    }
-  
-    window.addEventListener('load', () => {
-      setAuthorized(true);
-    });
+    };  
+    setAuthorized(true);
     fetchMovies();
    },[]);
 

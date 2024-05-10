@@ -11,16 +11,7 @@ function Header() {
   const scrolled = useRef(undefined);
   const overlayRef = useRef(undefined);
   const navigate = useNavigate();
-
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 50){
-      scrolled.current.style.padding = '20px 50px';
-      scrolled.current.style.backgroundColor = 'rgb(2, 8, 23)';
-    }else{
-      scrolled.current.style.backgroundColor = 'transparent';
-      scrolled.current.style.padding = '20px 50px 40px 50px';
-    }
-  });
+  const [displayWidth, setDisplayWidth] = useState(0);
 
   const handleNavigationLinks = (e) => {
     navigate(`/${e.target.id}`)
@@ -37,8 +28,41 @@ function Header() {
   };
  
   useEffect(() => {
+    const getDocumentWidth = () => {
+      if (window.innerWidth){
+        setDisplayWidth(window.innerWidth);
+      }else{
+        setTimeout(getDocumentWidth, 100);
+      }
+    };
+  
+    getDocumentWidth();
+
+    window.addEventListener('resize', getDocumentWidth);
+
+
     setAuthorized(true);
   },[]);
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50){
+      if (displayWidth >= 750){
+        scrolled.current.style.padding = '20px 40px';
+        scrolled.current.style.backgroundColor = 'rgb(2, 8, 23)';
+      }else{
+        scrolled.current.style.padding = '25px 20px';
+        scrolled.current.style.backgroundColor = 'rgb(2, 8, 23)';
+      }
+
+    }else{
+      scrolled.current.style.backgroundColor = 'transparent';
+      if (displayWidth >= 750){
+        scrolled.current.style.padding = '20px 40px 40px 40px';
+      }else{
+        scrolled.current.style.padding = '25px 20px';
+      }
+    }
+  });
   
   return authorized ? (
     <header>

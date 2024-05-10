@@ -1,5 +1,6 @@
 import React from 'react';
 import MoviesFetcher from '/src/components/MovieFetcher.jsx';
+import Loading from '/src/components/LoadingContent.jsx';
 import { useState, useEffect, useRef} from "react";
 import '/src/styles/Movies.css';
 import Footer from '/src/components/footer';
@@ -9,12 +10,26 @@ function Movies() {
     const [movieGenre, setMovieGenre] = useState('Lançamentos');
     const [key, setKey] = useState(0); 
     const genreBtns = useRef(undefined);
+    const [isLoading, setIsLoading] = useState(false);
+    const [loadingIsDisable, setLoadingIsDisable] = useState(false);
+
+    const handleComponentLoaded = (e) => {
+        setIsLoading(e);
+    };
+
+    const handleLoadingDisable = (e) => {
+        setLoadingIsDisable(e);
+    };
 
     const handleGenres = (e) => {
-        setMovieGenre(e.target.value);
-        setKey(prevKey => prevKey + 1);
-        handleColorBtn(e.target.value);
-    }
+        if (loadingIsDisable === true){
+            setIsLoading(false);
+            setLoadingIsDisable(false);
+            setMovieGenre(e.target.value);
+            setKey(prevKey => prevKey + 1);
+            handleColorBtn(e.target.value);
+        };
+    };
 
     const handleColorBtn = (genre) => {
         if (genreBtns.current){
@@ -27,13 +42,10 @@ function Movies() {
                 }
             }
         }
-    }
+    };
 
     useEffect(() => {
-        const delay = setTimeout(() => {
-            setAuthorized(true);
-        }, 1000);
-        
+        setAuthorized(true);
     },[]);
 
     return(
@@ -51,11 +63,31 @@ function Movies() {
                 ) : null
             }
             <div className='box-movies'>
-                <MoviesFetcher titulo={movieGenre} btn='false' page='1' tipo='filme' genre={movieGenre}/>
-                <MoviesFetcher page='2' tipo='filme' genre={movieGenre}/>
-                <MoviesFetcher page='3' tipo='filme' genre={movieGenre}/>
-                <MoviesFetcher page='4' tipo='filme' genre={movieGenre}/>
-                <MoviesFetcher page='5' tipo='filme' genre={movieGenre}/>
+                <div className="loading-container">
+                    <Loading disable={handleLoadingDisable} title={true} active={isLoading}/>
+                    <MoviesFetcher isLoaded={handleComponentLoaded} title={movieGenre} btn='false' page='1' type='Movie' genre={movieGenre}/>
+                </div>
+
+                <div className="loading-container">
+                    <Loading disable={handleLoadingDisable} title={false} active={isLoading}/>
+                    <MoviesFetcher isLoaded={handleComponentLoaded} page='2' type='Movie' genre={movieGenre}/>
+                </div>
+
+                <div className="loading-container">
+                    <Loading disable={handleLoadingDisable} title={false} active={isLoading}/>
+                    <MoviesFetcher isLoaded={handleComponentLoaded} page='3' type='Movie' genre={movieGenre}/>
+                </div>
+
+                <div className="loading-container">
+                    <Loading disable={handleLoadingDisable} title={false} active={isLoading}/>
+                    <MoviesFetcher isLoaded={handleComponentLoaded} page='4' type='Movie' genre={movieGenre}/>
+                </div>
+
+                <div className="loading-container">
+                    <Loading disable={handleLoadingDisable} title={false} active={isLoading}/>
+                    <MoviesFetcher isLoaded={handleComponentLoaded} page='5' type='Movie' genre={movieGenre}/>
+                </div>
+
             </div>
 
             <Footer/>

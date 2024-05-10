@@ -54,9 +54,15 @@ header .header-links{
   background-image: linear-gradient(to bottom, var(--body-color), var(--body-opacity-05), var(--body-opacity-00));
   display: flex;
   flex-direction: row;
-  padding: 20px 50px 40px 50px;
+  padding: 20px 40px 40px 40px;
   justify-content: space-between;
   box-sizing: border-box;
+}
+
+header .project-title{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 header .project-title h1{
@@ -450,37 +456,26 @@ header .right-links .lupa-icon:hover{
   object-fit: cover;
 }
 
-.movie-fetcher .movie-fetcher .motion-slides{
-  width: 100%;
+.movie-fetcher  .motion-container{
   display: flex;
-  flex-direction: row;
+  flex-direction: row; 
   gap: 1.5rem;
+  width: auto;
+  overflow-x: visible;
 }
 
-.movie-fetcher .motion-slides .slides-container{
-  width: 100%;
-}
-
-.movie-fetcher .motion-slides .slides-container .slides-title{
-  padding: 0;
-}
-
-.movie-fetcher .motion-slides .slides-container .motion-images{
-  width: 160px;
+.movie-fetcher .motion-container  .motion-slide{
+  min-width: 160px;
   height: 240px;
   position: relative;
 }
 
-.movie-fetcher .motion-slides .slides-container .motion-images img{
+.movie-fetcher .motion-container  .motion-slide img{
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
   border-radius: 3px;
-}
-
-.movie-fetcher:hover .swiper-image{
-  opacity: 1;
 }
 
 footer{
@@ -491,7 +486,6 @@ footer{
   border-top: 1pt solid var(--white-opacity-01);
   background-color: var(--body-color);
   color: var(--white-opacity-95);
-  margin-top: 100px;
 }
 
 .footer-links{
@@ -556,6 +550,56 @@ footer{
   border-bottom: 1.5pt solid var(white-opacity-1);
 }
 
+.loading-component{
+  width: 100%;
+  height: 100%;
+  padding: 20px 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  justify-content: center;
+  background-color: var(--body-color);
+  position: absolute;
+  top: 50%;
+  left: 0;
+  z-index: 5;
+  transform: translateY(-50%);
+  display: none;
+}
+
+.loading-component .loading-swiper{
+  width: 100%;
+}
+
+.loading-component .slides-opacity-0{
+  opacity: 0;
+}
+
+.loading-component .loading-div{
+  min-width: 170px;
+  height: 300px;
+  margin-right: 20px;
+  border-radius: 5px;
+  background-color: var(--gray);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.loading-component h1, .loading-component h2{
+  width: 300px;
+  height: 25px;
+  max-width: 80%;
+  border-radius: 4px;
+  background-color: var(--gray);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.loading-component h2{
+  width: 150px;
+  max-width: 40%;
+  margin-top: 10px;
+}
+
 @media screen and (max-width: 900px){
   
   header .project-title h1{
@@ -576,12 +620,38 @@ footer{
 }
 
 @media screen and (max-width: 700px) {
+  header{
+    position: absolute;
+  }
+
+  header .header-links{
+    padding: 25px 20px;
+  }
+
   header .left-links a{
     display: none;
   }
 
+  header .left-links button{
+    font-size: 30px;
+  }
+
+  header .right-links button{
+    width: 42px;
+    height: 42px;
+    font-size: 16px;
+  }
+
+  header .project-title h1{
+    font-size: 30px;
+  }
+
   header .right-links .lupa-icon{
     display: none;
+  }
+
+  .movie-fetcher h1{
+    font-size: 22px;
   }
 }
 

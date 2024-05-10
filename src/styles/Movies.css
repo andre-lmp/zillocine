@@ -2,6 +2,10 @@
 
 .movies-page-container{
     margin-top: 200px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+    justify-content: space-between;
 }
 
 .movies-page-container .genres-bar{
@@ -36,6 +40,10 @@
     color: var(--white-opacity-1);
   }
 
+  .movies-page-container .loading-container{
+    position: relative;
+    margin-bottom: 10px;
+  }
   
 @media screen and (min-width: 2000px) {
 

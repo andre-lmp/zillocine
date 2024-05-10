@@ -6,19 +6,24 @@ import Footer from '/src/components/footer';
 function PlayerPage() {
   const {id, type} = useParams();
   const [moviesDetails, setMoviesDetails] = useState([]);
-  const apiKey = "df087968ddf338b4ac0f9876af17f739";
+  const apiKey = "e1534e69b483f2e9d62ea1c394850e4e";
   const apiURL = 'https://api.themoviedb.org/3/';
   const [autorizado, setAutorizado] = useState(false);
   const [imgUrl, setImgUrl] = useState("https://image.tmdb.org/t/p/original");
   const [loading, setLoading] = useState('true');
-
+  const movieImgRef = useRef(undefined);
+  const movieDetailsRef = useRef(undefined);
 
   const handleReleaseDate = (date) => {
-    const newDate = [];
-    for (let i = 0; i < 4; i++){
-      newDate.push(date[i]);
-    } 
-    return newDate;
+    if (date){
+      const newDate = [];
+      for (let i = 0; i < 4; i++){
+        newDate.push(date[i]);
+      } 
+      return newDate;
+    }else{
+      return undefined;
+    }
   }
 
   const handleGenres = (object) => {
@@ -56,11 +61,12 @@ function PlayerPage() {
     }, 2000)
 
     const fetchMovies = async () => {
-      if (type === 'filme') {
+      if (type === 'Movie') {
         try {
           const movieDetail = await fetch(`${apiURL}/movie/${id}?api_key=${apiKey}&language=pt-BR&page=1&include_image_language=pt&append_to_response=videos`);
           const data = await movieDetail.json();
-          setMoviesDetails(data);
+          setMoviesDetails(data.results);
+          console.log(data);
         } catch (error) {
           console.log(error);
         }
@@ -68,7 +74,7 @@ function PlayerPage() {
         try {
           const movieDetail = await fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}&language=pt-BR&page=1&include_image_language=pt&append_to_response=videos`);
           const data = await movieDetail.json();
-          setMoviesDetails(data);
+          setMoviesDetails(data.results);
         } catch (error) {
           console.log(error);
         }
@@ -76,6 +82,16 @@ function PlayerPage() {
     }
 
     fetchMovies();
+
+    const equalizeHeights = () => {
+      if (movieDetailsRef.current && movieImgRef.current){
+        movieImgRef.current.style.height = `${movieDetailsRef.current.offsetHeight}px`;
+      }else{
+        setTimeout(equalizeHeights, 100);
+      }
+    };
+
+    equalizeHeights();
   },[id]);
   
   return autorizado ?(
@@ -83,14 +99,14 @@ function PlayerPage() {
       <section className='player-movies'>
         <div id="player-background"></div>
         <div className="player_container_info">
-            <div id="img-box">
+            <div ref={movieImgRef} id="img-box">
               { moviesDetails.poster_path !== null ? (
                   <img onLoad={handleLoaderImage} display={loading} src={`${imgUrl}${moviesDetails.poster_path}`}/>
               ):(
                   <img onLoad={handleLoaderImage} display={loading} src={`${imgUrl}${moviesDetails.backdrop_path}`}/>
               )}
             </div>
-            <div id="details-box">
+            <div ref={movieDetailsRef} id="details-box">
               <div>
 
                 <div id="details-box-title">
