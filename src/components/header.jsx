@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
-import Search from "/src/components/SearchBar";
 import { LuSearch } from "react-icons/lu";
 import '/src/styles/App.css';
 
-function Header() {
+function Header(props) {
   
   const [authorized, setAuthorized] = useState(false);
   const [hideSearchBar, setHideSearchBar] = useState(true);
@@ -17,14 +16,12 @@ function Header() {
     navigate(`/${e.target.id}`)
   };
 
-  const HandleHideChange = (newValue) => {
+  const activeMenu = () => {
+    props.menuIsActive(true);
   };
 
-
-  const handleBarSearch = () => {
-    if (hideSearchBar) {
-      setHideSearchBar(false);
-    };
+  const ActiveSearchBar = () => {
+    props.searchBarActive(true);
   };
  
   useEffect(() => {
@@ -68,9 +65,8 @@ function Header() {
     <header>
       <div ref={overlayRef} className="overlayDiv"></div>
           <div ref={scrolled} className="header-links">
-            <Search className='search-bar-header' onValueChange={HandleHideChange} hide={hideSearchBar}/>
               <div className="links left-links">
-                <button>|||</button>
+                <button onClick={activeMenu}>|||</button>
                 <a id="Movies" onClick={handleNavigationLinks}>Filmes</a>
                 <a id="Series" onClick={handleNavigationLinks}>Séries</a>
               </div>
@@ -80,7 +76,7 @@ function Header() {
               </div>
 
               <div className='links right-links'>
-                <LuSearch onClick={handleBarSearch} className='lupa-icon'/>
+                <LuSearch onClick={ActiveSearchBar} className='lupa-icon'/>
                 <button className="icon-conta" id='Profile' onClick={handleNavigationLinks}>C</button>
                 <h3 id="Profile" onClick={handleNavigationLinks}>Conta</h3>
               </div>

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from 'react-router-dom';
 import '/src/styles/Swiper.css';
 import { Swiper, SwiperSlide } from '/src/components/swiper/Swiper.jsx';
+import { reject } from "lodash";
 
 const  fetchMovies = (props) => {
   const [moviesData, setMoviesData] = useState([]);
@@ -17,8 +18,8 @@ const  fetchMovies = (props) => {
   const [loading, setLoading] = useState('true');
   const [displayWidth, setDisplayWidth] = useState(0);
   const motionRef = useRef(undefined);
-  const [sentConfirmAuthorized, setSentConfirmAuthorized] = useState(true);
-
+  const componentRef = useRef(undefined);
+  const imagesRef = useRef([]);
   const moviesGenres = {
     28: 'Ação',
     12: 'Aventura',
@@ -150,9 +151,76 @@ const  fetchMovies = (props) => {
     }
   };
 
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      setAuthorized(true);
+    }, 1000);
+
+    const fetchMovies = async () => {
+      if (type === 'Movie') {
+        if (props.genre === 'Lançamentos'){
+          try {
+            const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&primary_release_date.gte=${newDate}&sort=primary_release_date.desc&language=pt-BR&include_image_language=pt&page=${props.page}`);
+            if (response.ok){
+              const data = await response.json();
+              setMoviesData(data.results);
+              setType('Movie');
+            }else{
+              props.isLoading(true);
+            }
+          } catch (error) {
+            props.isLoading(true);
+          }
+        }else{
+          try {
+            const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_genres=${handleGenres(props.genre, 'filme')}&language=pt-BR&include_image_language=pt&page=${props.page}`);
+            if (response.ok){
+              const data = await response.json();
+              setMoviesData(data.results);
+              setType('Movie');
+            }else{
+              props.isLoading(true);
+            }
+          } catch (error) {
+            props.isLoading(true);
+          }
+        }
+
+      }else{
+        if (props.genre === 'Lançamentos'){
+          try {
+            const lançamentos = await fetch(`https://api.themoviedb.org/3/tv/on_the_air?api_key=${apiKey}&language=pt-BR&page=${props.page}`);
+            if (lançamentos.ok) {
+              const data = await lançamentos.json();
+              setMoviesData(data.results);
+              setType('Serie');
+            }else{
+              props.isLoading(true);
+            }
+          } catch (error) {
+            props.isLoading(true);
+          }
+        }else{
+          try{
+            const lançamentos = await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&with_genres=${handleGenres(props.genre, 'serie')}&page=${props.page}`);
+            if (lançamentos.ok){
+              const data = await lançamentos.json();
+              setMoviesData(data.results);
+              setType('Serie');
+            }else{
+              props.isLoading(true);
+            }
+          } catch (error) {
+            props.isLoading(true);
+          }
+        }
+      }
+    }     
+    fetchMovies();
+   
+  },[type, props.genre]);
 
   useEffect(() => {
-
     const getDocumentWidth = () => {
       if (window.innerWidth){
         setDisplayWidth(window.innerWidth);
@@ -165,62 +233,51 @@ const  fetchMovies = (props) => {
 
     window.addEventListener('resize', getDocumentWidth);
 
-    const delay = setTimeout(() => {
-      setAuthorized(true);
-    }, 1000);
-
-    const fetchMovies = async () => {
-      if (type === 'Movie') {
-        if (props.genre === 'Lançamentos'){
-          try {
-            const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&primary_release_date.gte=${newDate}&sort=primary_release_date.desc&language=pt-BR&include_image_language=pt&page=${props.page}`);
-            const data = await response.json();
-            setMoviesData(data.results);
-            setType('Movie');
-          } catch (error) {
-          }
+    const disableComponent = () => {
+      if (!props.visible){
+        if (componentRef.current){
+          componentRef.current.style.display = 'none';
         }else{
-          try {
-            const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_genres=${handleGenres(props.genre, 'filme')}&language=pt-BR&include_image_language=pt&page=${props.page}`);
-            const data = await response.json();
-            setMoviesData(data.results);
-            setType('Movie');
-          } catch (error) {
-          }
+          setTimeout(disableComponent, 100);
         }
-
       }else{
-        if (props.genre === 'Lançamentos'){
-          try {
-            const lançamentos = await fetch(`https://api.themoviedb.org/3/tv/on_the_air?api_key=${apiKey}&language=pt-BR&page=${props.page}`);
-            const data = await lançamentos.json();
-            setMoviesData(data.results);
-            setType('Serie');
-          } catch (error) {
-          }
+        if (componentRef.current){
+          componentRef.current.style.display = 'block';
         }else{
-          try{
-            const lançamentos = await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&with_genres=${handleGenres(props.genre, 'serie')}&page=${props.page}`);
-            const data = await lançamentos.json();
-            setMoviesData(data.results);
-            setType('Serie');
-          
-          } catch (error) {
-          }
+          setTimeout(disableComponent, 100);
         }
       }
-    }     
-    fetchMovies();
+    };
 
-  },[type, props.genre]);
+    disableComponent();
 
-  const handleLoaderImage = (e) => {
-    setLoading('false');
-    props.isLoaded(true);
-  };
+    const loadImages = (url) => {
+      return new Promise((resolve, reject) => {
+        const image = new Image();
+        image.src = url;
+        image.onload = resolve;
+        image.onerror = reject; 
+      });
+    };
+
+    const checkImagesLoaded = async () => {
+      try{
+
+        await Promise.all(imagesRef.current.map((imageRef) => loadImages(imageRef.src)));
+        props.isLoading(false);
+        console.log('carregou');
+
+      }catch (error){
+        console.error(error);
+      }
+    };
+
+    checkImagesLoaded();
+
+  },[props.visible]);
 
   return authorized ? (
-    <section className="movie-fetcher">
+    <section ref={componentRef} className="movie-fetcher">
         <div className="container-content">
           <div className="title-box">
             {props.title ? (
@@ -237,11 +294,11 @@ const  fetchMovies = (props) => {
 
           {displayWidth > 750 ? (
               <Swiper ref={swiper} className="swiper-container" style={{width: '100%', height: 'auto'}} breakpoints={breakpoints}>
-                      {moviesData.map((movie) => (
+                      {moviesData.map((movie, index) => (
                           <SwiperSlide className="swiper-slide" >
                             <div className="swiper-image" onClick={handleMoviesNavigation}>
                               { movie.poster_path ? (
-                                <img key={movie.id} onLoad={handleLoaderImage} value={movie.id} display={loading} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
+                                <img className="slide-images" key={movie.id} value={movie.id} display={undefined} ref={(e) => {imagesRef.current[index] = e}} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
                               ):(
                                 <img src="" display='false'/>
                               )
@@ -261,9 +318,9 @@ const  fetchMovies = (props) => {
                   <div>
                     <div display={loading} key={movie.id} className="motion-slide"  onClick={handleMoviesNavigation}>
                       {movie.poster_path ? (
-                        <img onLoad={handleLoaderImage} value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
+                        <img value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
                       ):(
-                        <img onLoad={handleLoaderImage} value={movie.id} src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}/>
+                        <img value={movie.id} src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}/>
                       )}
                     </div>
                   </div>

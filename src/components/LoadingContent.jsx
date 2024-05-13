@@ -6,8 +6,6 @@ import { useState, useEffect, useRef } from 'react';
 function Loading(props) {
     const [countSlides, setCountSlides] = useState([]);
     const componentActive = useRef(undefined);
-    const [isAnimated, setIsAnimated] = useState(true);
-    const [slidesOpacity, setSlidesOpacity] = useState('slides-opacity-0');
     const breakpoints = {
         280: {
             slidesPerView: 2
@@ -41,7 +39,6 @@ function Loading(props) {
     };
 
     useEffect(() => {
-        props.disable(true);
         const getWidth = () => {
             if (window.innerWidth){
                 handleCountSlides(window.innerWidth);
@@ -56,38 +53,12 @@ function Loading(props) {
             handleCountSlides(window.innerWidth);
         });
     
-       const handleLoadingActive = () => {
-        console.log('component  ' + props.active);
-            if (props.active === false) {
-                props.disable(false);
-                if(isAnimated) {
-                    if (componentActive.current){
-                        componentActive.current.style.display = 'flex';
-                    }
-                }
-            }
-            else{
-                setIsAnimated(false);
-                if (componentActive.current){
-                    setTimeout(() => {
-                        componentActive.current.style.display = 'none';
-                        setIsAnimated(true);
-                        props.disable(true);
-                    }, 1500);
-                }
-            }
-        };
-
-        setTimeout(() => {
-            setSlidesOpacity('slidesOpacity-1');
-        }, 3000);
-        handleLoadingActive();
-    },[props.active, props.disable]);
+    },[]);
 
     return(
         <section ref={componentActive} className='loading-component'>
                 {props.title ? (
-                    <div className={`${slidesOpacity}`}>
+                    <div>
                         <h1></h1>
                         <h2></h2>
                     </div>
@@ -96,7 +67,7 @@ function Loading(props) {
                 {countSlides ? (
                     countSlides.map(slide => (
                         <SwiperSlide>
-                            <div className={`loading-div ${slidesOpacity}`}>
+                            <div className='loading-div'>
                                 <img src="" display='true' alt="" />
                             </div>
                         </SwiperSlide>

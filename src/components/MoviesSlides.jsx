@@ -39,9 +39,11 @@ function MovieSlides() {
     const fetchMovies = async () => {
         try {
           const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&primary_release_date.gte=${newDate}&sort=primary_release_date.desc&language=pt-BR&include_image_language=pt`);
-          const data = await response.json();
-          setMoviesData(data.results);
-          handleSelectionMovies(data.results);
+          if (response.ok) {
+            const data = await response.json();
+            setMoviesData(data.results);
+            handleSelectionMovies(data.results);
+          }
         } catch{
           console.log(error);
         }

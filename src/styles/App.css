@@ -23,7 +23,6 @@ body img[display='true']::before{
 header{
   position: relative;
   width: 100%;
-  max-width: 2000px;
   margin: auto;
   z-index: 4;
   display: flex;
@@ -134,30 +133,106 @@ header .right-links .lupa-icon:hover{
 
 .search-component{
   width: 100%;
-  height: 150px;
-  background-image: linear-gradient(to bottom, var(--black), var(--black), var(--black-opacity-00));
-  position: fixed;
+  background-color: var(--body-color);
+  position: absolute;
   top: 0;
+  left: 0;
   transform: translateY(-100%);
-  transition: transform .3s ease-in-out;
+  transition: all .3s ease-in-out;
   display: flex;
-  justify-content: center;
   align-items: center;
+  row-gap: 30px;
   z-index: 240;
   flex-direction: column;
 }
 
-.search-component .fetch-result{
-  width: 80%;
-  left: 50%;
-  position: absolute;
+.search-component .search-bar-container{
+  width: 100%;
+  padding: 0px 40px;
+  box-sizing: border-box;
   display: flex;
-  top: 150px;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.search-component .Search-input-container{
+  width: 70%;
+  border: 1pt solid var(--red);
+  border-radius: 5px;
+  padding: 5px 20px;
+  display: flex;
+  gap: 1rem;
+  margin-top: 20px;
+  flex-direction: row;
+  align-items: center;
+}
+
+.search-component .close-bar-icon{
+  color: var(--white-opacity-07);
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.search-component .lupa-icon{
+  color: var(--white-opacity-08);
+  font-size: 20px;
+}
+
+.search-component .close-bar-icon:hover{
+  color: var(--white-opacity-1);
+}
+
+.search-component input{
+  width: 100%;
+  padding: 5px;
+  font: 400 16px 'Noto Sans', sans-serif;
+  box-sizing: border-box;
+  background-color: var(--transparent);
+  border: none;
+  outline: none;
+  color: var(--white-opacity-1);
+}
+
+.search-component input::placeholder{
+  color: var(--white-opacity-07);
+  font-weight: 400;
+}
+
+
+.search-component .search-options{
+  width: 70%;
+  padding: 20px 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.search-component .search-options label{
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.search-component .search-options label button{
+  font: 500 15px 'Roboto', sans-serif;
+  color: var(--white-opacity-08);
+  background-color: var(--transparent);
+  border: 1pt solid var(--red);
+  border-radius: 5px;
+  padding: 4px 30px;
+  cursor: pointer;
+}
+
+.search-component .fetch-result{
+  width: 100%;
+  height: max-content;
+  padding: 0px 40px;
+  box-sizing: border-box;
+  background-color: var(--body-color);
+  display: flex;
   flex-direction: column;
   row-gap: 3rem;
   z-index: -200;
-  transform: translateX(-50%);
-  overflow-y: scroll;
 }
 
 .search-component .fetch-result::-webkit-scrollbar{
@@ -247,18 +322,18 @@ header .right-links .lupa-icon:hover{
   -webkit-box-orient: vertical;
 }
 
-
 .menu-component{
   width: 300px;
   height: 100vh;
   padding: 30px 20px;
-  background-color: var(--body-color);
+  background-color: var(--blue);
   position: fixed;
-  z-index: -5;
   top: 0;
-  opacity: 0;
+  z-index: 155;
   transform: translateX(-100%);
+  left: 0;
   transition: all .2s ease-out;
+  border-right: 1pt solid var(--white-opacity-03) ;
 }
 
 .menu-component ul{
@@ -270,7 +345,7 @@ header .right-links .lupa-icon:hover{
 }
 
 .menu-component ul li p{
-  font: 400 25px "Roboto", sans-serif;
+  font: 400 23px "Roboto", sans-serif;
   color: var(--white-opacity-07);
   cursor: pointer;
 }
@@ -297,68 +372,7 @@ header .right-links .lupa-icon:hover{
 
 .menu-component ul li button .close-icon{
   color:var(--white-opacity-1);
-}
-
-.search-component .search-options{
-  width: 70%;
-  padding: 20px 20px;
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-}
-
-.search-component .search-options label{
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-}
-
-.search-component .search-options label button{
-  font: 500 15px 'Roboto', sans-serif;
-  color: var(--white-opacity-08);
-  background-color: var(--transparent);
-  border: 1pt solid var(--red);
-  border-radius: 40px;
-  padding: 4px 30px;
-  cursor: pointer;
-}
-
-
-.search-component input{
-  width: 100%;
-  padding: 5px;
-  font: 400 16px 'Noto Sans', sans-serif;
-  box-sizing: border-box;
-  background-color: var(--transparent);
-  border: none;
-  color: var(--white-opacity-1);
-}
-
-.search-component input::placeholder{
-  color: var(--white-opacity-07);
-  font-weight: 400;
-}
-
-.search-component .Search-input-container{
-  width: 70%;
-  border: 1pt solid var(--red);
-  border-radius: 40px;
-  padding: 5px 20px;
-  display: flex;
-  gap: 1rem;
-  margin-top: 20px;
-  flex-direction: row;
-  align-items: center;
-}
-
-.search-component .close-bar-icon{
-  color: var(--white-opacity-07);
-  font-size: 32px;
-  cursor: pointer;
-}
-
-.search-component .close-bar-icon:hover{
-  color: var(--white-opacity-1);
+  font-size: 30px;
 }
 
 .movie-fetcher{
@@ -381,9 +395,9 @@ header .right-links .lupa-icon:hover{
   outline: none;
   background-color: var(--transparent);
   color: var(--white-opacity-1);
-  font: 500 15px 'Roboto', sans-serif;
-  border: 1.4pt solid var(--red);
-  border-radius: 40px;
+  font: 500 14px 'Roboto', sans-serif;
+  border: 1pt solid var(--red);
+  border-radius: 5px;
   cursor: pointer;
   transition: all .1s ease-in;
 }
@@ -481,7 +495,7 @@ header .right-links .lupa-icon:hover{
 footer{
   width: 100%;
   display: flex;
-  z-index: 6;
+  z-index: 20;
   flex-direction: column;
   border-top: 1pt solid var(--white-opacity-01);
   background-color: var(--body-color);
@@ -560,20 +574,10 @@ footer{
   row-gap: 20px;
   justify-content: center;
   background-color: var(--body-color);
-  position: absolute;
-  top: 50%;
-  left: 0;
-  z-index: 5;
-  transform: translateY(-50%);
-  display: none;
 }
 
 .loading-component .loading-swiper{
   width: 100%;
-}
-
-.loading-component .slides-opacity-0{
-  opacity: 0;
 }
 
 .loading-component .loading-div{
@@ -582,7 +586,7 @@ footer{
   margin-right: 20px;
   border-radius: 5px;
   background-color: var(--gray);
-  animation: pulse 2s ease-in-out infinite;
+  animation: pulse 2s ease-in-out infinite, fadeIN .2s ease-in-out;
 }
 
 .loading-component h1, .loading-component h2{
@@ -591,7 +595,7 @@ footer{
   max-width: 80%;
   border-radius: 4px;
   background-color: var(--gray);
-  animation: pulse 2s ease-in-out infinite;
+  animation: pulse 2s ease-in-out infinite, fadeIN .4s ease-in-out;
 }
 
 .loading-component h2{

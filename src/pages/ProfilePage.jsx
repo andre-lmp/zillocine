@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
 import BackgroundProfile from '/src/images/BackgroundProfile.png';
-import Footer from '/src/components/footer';
 import '/src/styles/Profile.css';
 
 function ProfilePage() {
@@ -32,7 +31,6 @@ function ProfilePage() {
                 <div className="data-item"><h1>Senha</h1><h2>********</h2></div>
             </div>
                     
-            <Footer/>
         </main>
     
     ) : null;

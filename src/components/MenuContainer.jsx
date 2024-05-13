@@ -1,42 +1,45 @@
 import { useNavigate } from "react-router-dom";
 import { CgClose } from "react-icons/cg";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import '/src/styles/App.css';
+import { isAccessor } from "typescript";
 
-function Menu() {
+function Menu(props) {
     const navigate = useNavigate(undefined);
-    const [menuActive, setMenuActive] = useState(false);
     const menuRef = useRef(undefined);
+    const [menuActive, setMenuActive] = useState(props.isActive);
 
     const handleNavigationLinks = (e) => {
         navigate(`/${e.target.id}`)
+        props.isDisable(false);
     };
 
-    const handleChangeMenu = () => {
-        if (!menuActive){
-          setMenuActive(true);
-          if (menuRef.current){
-            menuRef.current.style.opacity = '1';
-            menuRef.current.style.transform = 'translateX(100%)';
-          }
+    const closeMenu = () => {
+      props.isDisable(false);
+    }
+
+    useEffect(() => {
+      const handleActiveMenu = () => {
+        if (props.isActive){
+          menuRef.current.style.transform = 'translateX(0%)';
         }else{
-          setMenuActive(false);
-          if (menuRef.current){
-            menuRef.current.style.opacity = '0';
-            menuRef.current.style.transform = 'translateX(-100%)';
-          }
+          menuRef.current.style.transform = 'translateX(-100%)';
         }
-    };
+      };
+
+      handleActiveMenu();
+    },[props.isActive]);
 
     return(
         <section ref={menuRef} className="menu-component">
             <nav className="menu-container">
                 <ul>
-                    <li><button><CgClose className="close-icon"/></button></li>
+                    <li><button><CgClose onClick={closeMenu} className="close-icon"/></button></li>
                     <li><p id="" onClick={handleNavigationLinks}>Inicio</p></li>
-                    <li><p id="Filmes" onClick={handleNavigationLinks}>Filmes</p></li>
+                    <li><p id="Movies" onClick={handleNavigationLinks}>Filmes</p></li>
                     <li><p id="Series" onClick={handleNavigationLinks}>Series</p></li>
                     <li><p>Pesquisar</p></li>
-                    <li><p id="Perfil" onClick={handleNavigationLinks}>Conta</p></li>
+                    <li><p id="Profile" onClick={handleNavigationLinks}>Conta</p></li>
                 </ul>
             </nav>
         </section>

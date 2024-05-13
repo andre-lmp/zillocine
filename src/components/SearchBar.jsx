@@ -6,128 +6,129 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import '/src/styles/App.css';
 
-function Search({hide, onValueChange}) {
+function Search(props) {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResult, setSearchResult] = useState([]);
     const apiKey = "df087968ddf338b4ac0f9876af17f739";
-    const resultContainer = useRef();
-    let Search = false;
-    const main = useRef();
-    const SearchBar = useRef();
+    const searchComponentRef = useRef();
     const Navigate = useNavigate();
     const btnMovies = useRef();
     const btnSeries = useRef();
+    const resultContainerRef = useRef(undefined);
     const [type, setType] = useState('filme');
     const [typeContent, setTypeContent] = useState('filme');
     const [loading, setLoading] = useState('true');
+    const [authorized, setAuthorized] = useState(false);
 
     const handleInputChange = (e) => {
-        let value = e.target.value;
-        setSearchTerm(value);
-    }
-
-    if (SearchBar.current) {
-        if (hide === false) {
-            resultContainer.current.style.zIndex = 140;
-            SearchBar.current.style.transform = 'translateY(0%)';
+        if (e){
+            setSearchTerm(e.target.value);
         }else{
-            resultContainer.current.style.zIndex = -200;
-            SearchBar.current.style.transform = 'translateY(-100%)';
+            setSearchTerm('');
         }
-    }
+    };
+
+    const disableMenu = () => {
+        props.isDisable(false);
+    };
 
     const SearchNavigate = (e) => {
         const idMovie = e.target.id;
         console.log(e);
         Navigate(`/Page/${idMovie}/${typeContent}`);
-        onValueChange(true);
-    }
+    };
 
     const btnClickMovies = () => {
         setType('filme');
-        btnMovies.current.style.border = '1pt solid white';
-        btnSeries.current.style.border = '1pt solid red';
-    };
+        if (btnMovies.current){
+            btnMovies.current.style.border = '1pt solid white';
+            btnSeries.current.style.border = '1pt solid red';
+        };
+    }
 
     const btnClickSeries = () => {
         setType('serie');
-        btnSeries.current.style.border = '1pt solid white';
-        btnMovies.current.style.border = '1pt solid red';
-    }
+        if (btnSeries) {
+            btnSeries.current.style.border = '1pt solid white';
+            btnMovies.current.style.border = '1pt solid red';
+        }
+    };
 
     const handleLoaderImage = () => {
         setLoading('false');
-    }    
+    };  
 
     useEffect(() => {
         if (type === 'filme') {
-            const fetchMovies = async () => {
-                try{
-                    const response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=pt-BR&query=${searchTerm}`);
-                    const data = await response.json();
-                    if (Search) {
-                        setSearchResult(data.results);
-                    }else{
+                const fetchMovies = async () => {
+                    try{
+                        const response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=pt-BR&query=${searchTerm}`);
+                        if (response.ok && searchTerm.length > 2){
+                            const data = await response.json();
+                            setSearchResult(data.results);
+                            setAuthorized(true);
+                        }else{
+                            setSearchResult([]);
+                        }
+                    }catch (error) {
+                        console.log(error);
+                        setAuthorized(false);
                         setSearchResult([]);
                     }
-                }catch (error) {
-                    console.log(error);
                 }
-            }
-
-            if (searchTerm.length > 2) {
-                fetchMovies();
-                Search = true;
-                resultContainer.current.style.height = `450%`;
-            }
-
             setTypeContent('filme');
+
         }else{
-            const fetchMovies = async () => {
-                try{
-                    const response = await fetch(`https://api.themoviedb.org/3/search/tv?api_key=${apiKey}&language=pt-BR&query=${searchTerm}`);
-                    const data = await response.json();
-                    if (Search) {
-                        setSearchResult(data.results);
-                    }else{
+                const fetchMovies = async () => {
+                    try{
+                        const response = await fetch(`https://api.themoviedb.org/3/search/tv?api_key=${apiKey}&language=pt-BR&query=${searchTerm}`);
+                        if (response.ok && searchTerm){
+                            const data = await response.json();
+                            setSearchResult(data.results);
+                            setAuthorized(true);
+                        }else{
+                            setSearchResult([]);
+                        }
+                    }catch (error) {
+                        console.log(error);
+                        setAuthorized(false);
                         setSearchResult([]);
                     }
-                }catch (error) {
-                    console.log(error);
                 }
-            }
-
-            if (searchTerm.length > 2) {
-                setSearchResult([]);
-                fetchMovies();
-                Search = true;
-                resultContainer.current.style.height = `450%`;
-            }
 
             setTypeContent('serie');
-        }
+        };
 
-
-        if (hide === true) {
-            setSearchTerm('');
+        if (!props.isActive) {
+            setSearchTerm(undefined);
             setSearchResult([]);
-        }
+        };
 
-        if (searchTerm.length <= 2) {
-            Search = false;
-            resultContainer.current.style.height = `0%`;
-            setSearchResult([]);
-        }
+    },[searchTerm, type, props.isActive]);
 
-    },[searchTerm, hide, type]);
+    useEffect(() => {
+        const handleSearchBarActive = () => {
+            if (searchComponentRef.current) {
+                if (props.isActive){
+                    setAuthorized(false);
+                    searchComponentRef.current.style.transform = 'translateY(0%)';
+                }else{
+                    setAuthorized(false);
+                    searchComponentRef.current.style.transform = 'translateY(-100%)';
+                }
+            }
+        };
+
+        handleSearchBarActive();
+    },[props.isActive]);
 
     return(
-        <main ref={main} className="search-component">
-            <div ref={SearchBar} className="search-bar-container">
+        <section ref={searchComponentRef} className="search-component">
+            <div className="search-bar-container">
                 <div className="Search-input-container">
                     <LuSearch id="search-icon-bar" className="lupa-icon"/>
-                    <input value={searchTerm} onChange={handleInputChange} type="text" className="inputSearch" placeholder="O que voce está procurando ?"></input>
-                    <HiXMark onClick={() => onValueChange(true)} className="close-bar-icon"/>
+                    <input onChange={handleInputChange} type="text" className="inputSearch" placeholder="O que voce está procurando ?"></input>
+                    <HiXMark onClick={disableMenu} className="close-bar-icon"/>
                 </div>
                 <div className="search-options">
                     <label>
@@ -140,49 +141,49 @@ function Search({hide, onValueChange}) {
                 </div>
             </div>
 
-            <div ref={resultContainer} className="fetch-result">
-                {searchResult.length > 0 ? (
+            {authorized ? (
+                <div ref={resultContainerRef} className="fetch-result">
                     <div className="section-title">
                         <h1>Resultados ({searchResult.length})</h1>
                         <hr id="line"></hr>
                     </div>
-                ):null}
-                {searchResult.map((movie) => (
-                    <motion.div key={movie.id} initial={{y: 100, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{ease: 'easeOut',duration: 0.5}} className="movies-box" >
-                        <div display={loading} className="image-box">
-                            {movie.poster_path !== null ? (
-                                <img onLoad={handleLoaderImage} id={movie.id} onClick={SearchNavigate} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
-                            ):(
-                                <img onLoad={handleLoaderImage} id={movie.id} onClick={SearchNavigate} src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}/>
-                            )}
-                        </div>
-
-                        <div className="info-section">
-                            {movie.title ? (
-                                <h2 className="movie-title" id={movie.id} onClick={SearchNavigate} >{movie.title}</h2>
-                            ):(
-                                <h2 className="movie-title" id={movie.id} onClick={SearchNavigate}>{movie.name}</h2>
-                            )}
-
-                            <div className="review-section">
-                                <h3>Avaliação</h3>
-                                <div className="review-stars">
-                                    <p>{movie.vote_average.toFixed(1)}</p>
-                                    <p>/</p>
-                                    <p><IoStar className="star-icon"/></p>
-                                </div>
+                    {searchResult.map((movie) => (
+                        <motion.div key={movie.id} initial={{y: 100, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{ease: 'easeOut',duration: 0.3}} className="movies-box" >
+                            <div display={loading} className="image-box">
+                                {movie.poster_path !== null ? (
+                                    <img onLoad={handleLoaderImage} id={movie.id} onClick={SearchNavigate} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
+                                ):(
+                                    <img onLoad={handleLoaderImage} id={movie.id} onClick={SearchNavigate} src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}/>
+                                )}
                             </div>
 
-                            {movie.overview ? (
-                                <p id="review-description" className="review-description">{movie.overview}</p>
-                            ):(
-                                <p className="review-description">Descrição indisponivel</p>
-                            )}
-                        </div>
-                    </motion.div>
-                ))}
-            </div>
-        </main>
+                            <div className="info-section">
+                                {movie.title ? (
+                                    <h2 className="movie-title" id={movie.id} onClick={SearchNavigate} >{movie.title}</h2>
+                                ):(
+                                    <h2 className="movie-title" id={movie.id} onClick={SearchNavigate}>{movie.name}</h2>
+                                )}
+
+                                <div className="review-section">
+                                    <h3>Avaliação</h3>
+                                    <div className="review-stars">
+                                        <p>{movie.vote_average.toFixed(1)}</p>
+                                        <p>/</p>
+                                        <p><IoStar className="star-icon"/></p>
+                                    </div>
+                                </div>
+
+                                {movie.overview ? (
+                                    <p id="review-description" className="review-description">{movie.overview}</p>
+                                ):(
+                                    <p className="review-description">Descrição indisponivel</p>
+                                )}
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
+            ): null}
+        </section>
     )
 }
 

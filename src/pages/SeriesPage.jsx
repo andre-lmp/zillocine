@@ -1,7 +1,6 @@
 import MoviesFetcher from '/src/components/MovieFetcher.jsx';
 import Loading from '/src/components/LoadingContent.jsx';
 import { useState, useEffect, useRef} from "react";
-import Footer from '/src/components/footer';
 import '/src/styles/Movies.css';
 
 function Series() {
@@ -9,13 +8,8 @@ function Series() {
     const [movieGenre, setMovieGenre] = useState('lançamentos');
     const genreBtns = useRef(undefined);
     const [isLoading, setIsLoading] = useState(true);
-    const [loadingIsDisable, setLoadingIsDisable] = useState(false);
 
-    const handleLoadingDisable = (e) => {
-        setLoadingIsDisable(e);
-    };
-
-    const handleComponentLoaded = (e) => {
+    const handleComponentIsLoading = (e) => {
         setIsLoading(e);
     };
 
@@ -38,9 +32,7 @@ function Series() {
     }
 
     useEffect(() => {
-        const delay = setTimeout(() => {
-            setAuthorized(true);
-        }, 1000);
+        setAuthorized(true);
     },[]);
 
     return(
@@ -59,35 +51,67 @@ function Series() {
             }
 
                 <div className='box-series'>
-            
-                    <div className="loading-container">
-                        <Loading title={true} active={isLoading}/>
-                        <MoviesFetcher isLoaded={handleComponentLoaded} title={movieGenre} btn='false' page='1' type='Serie' genre={movieGenre}/>
-                    </div>
 
-                    <div className="loading-container">
-                        <Loading title={false} active={isLoading}/>
-                        <MoviesFetcher isLoaded={handleComponentLoaded} page='2' type='Serie' genre={movieGenre}/>
-                    </div>
+                    {isLoading ? (
+                        <div className='loading-container'>
+                            <Loading title={true} />
+                            <MoviesFetcher visible={false} isLoading={handleComponentIsLoading} title={movieGenre} btn='false' page='1' type='Serie' genre={movieGenre}/>
+                        </div>
+                    ): (
+                        <div className='loading-container'>
+                            <MoviesFetcher visible={true} isLoading={handleComponentIsLoading} title={movieGenre} btn='false' page='1' type='Serie' genre={movieGenre}/>
+                        </div>
+                    )}
 
-                    <div className="loading-container">
-                        <Loading title={false} active={isLoading}/>
-                        <MoviesFetcher isLoaded={handleComponentLoaded} page='3' type='Serie' genre={movieGenre}/>
-                    </div>
 
-                    <div className="loading-container">
-                        <Loading title={false} active={isLoading}/>
-                        <MoviesFetcher isLoaded={handleComponentLoaded} page='4' type='Serie' genre={movieGenre}/>
-                    </div>
+                    {isLoading ? (
+                        <div className='loading-container'>
+                            <Loading title={false} />
+                            <MoviesFetcher visible={false} isLoading={handleComponentIsLoading} title={false} btn='false' page='2' type='Serie' genre={movieGenre}/>
+                        </div>
+                    ): (
+                        <div className='loading-container'>
+                            <MoviesFetcher visible={true} isLoading={handleComponentIsLoading} title={false} btn='false' page='2' type='Serie' genre={movieGenre}/>
+                        </div>
+                    )}
 
-                    <div className="loading-container">
-                        <Loading title={false} active={isLoading}/>
-                        <MoviesFetcher isLoaded={handleComponentLoaded} page='5' type='Serie' genre={movieGenre}/>
-                    </div>
 
+                    {isLoading ? (
+                        <div className='loading-container'>
+                            <Loading title={false} />
+                            <MoviesFetcher visible={false} isLoading={handleComponentIsLoading} title={false} btn='false' page='3' type='Serie' genre={movieGenre}/>
+                        </div>
+                    ): (
+                        <div className='loading-container'>
+                            <MoviesFetcher visible={true} isLoading={handleComponentIsLoading} title={false} btn='false' page='3' type='Serie' genre={movieGenre}/>
+                        </div>
+                    )}
+
+
+                    {isLoading ? (
+                        <div className='loading-container'>
+                            <Loading title={false} />
+                            <MoviesFetcher visible={false} isLoading={handleComponentIsLoading} title={false} btn='false' page='4' type='Serie' genre={movieGenre}/>
+                        </div>
+                    ): (
+                        <div className='loading-container'>
+                            <MoviesFetcher visible={true} isLoading={handleComponentIsLoading} title={false} btn='false' page='4' type='Serie' genre={movieGenre}/>
+                        </div>
+                    )}
+
+
+                    {isLoading ? (
+                        <div className='loading-container'>
+                            <Loading title={false} />
+                            <MoviesFetcher visible={false} isLoading={handleComponentIsLoading} title={false} btn='false' page='5' type='Serie' genre={movieGenre}/>
+                        </div>
+                    ): (
+                        <div className='loading-container'>
+                            <MoviesFetcher visible={true} isLoading={handleComponentIsLoading} title={false} btn='false' page='5' type='Serie' genre={movieGenre}/>
+                        </div>
+                    )}
                 </div>
             
-            <Footer/>
         </main>
     )
 }

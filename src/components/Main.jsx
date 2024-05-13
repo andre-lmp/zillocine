@@ -5,20 +5,9 @@ import { useState } from "react";
 
 function Main() {
   const [isLoading, setIsLoading] = useState(true);
-  const [loadingIsDisable, setLoadingIsDisable] = useState(true);
 
-  const handleLoadingDisable = (e) => {
-    if (e) {
-        setLoadingIsDisable(e);
-    };
-  };
-
-  const handleComponentLoaded = (e) => {
-    if (e){
-      setIsLoading(false);
-    }else{
-      setIsLoading(true);
-    }
+  const handleComponentIsLoading = (e) => {
+    setIsLoading(e);
   };
 
   return(
@@ -27,30 +16,73 @@ function Main() {
 
       <div className="home-container">
 
-        <div className="loading-container">
-          <Loading disable={handleLoadingDisable} title={true} active={isLoading}/>
-          <FetchMovies page='1' isLoaded={handleComponentLoaded} title='Em Destaque: Os Filmes Mais Recentes' btn='true' type='Movie' genre='Lançamentos'/>
-        </div>
+          {isLoading ? (
+            <div className="loading-container">
+              <Loading title={true}/>
+              <FetchMovies visible={false} isLoading={handleComponentIsLoading} page='1' title='Em Destaque: Os Filmes Mais Recentes' btn='true' type='Movie' genre='Lançamentos'/>
+            </div>
+          ):(
+            <div className="loading-container">
+              <FetchMovies visible={true} page='1' title='Em Destaque: Os Filmes Mais Recentes' btn='true' type='Movie' genre='Lançamentos'/>
+            </div>
+          )}
 
-        <div className="loading-container">
-          <Loading disable={handleLoadingDisable} title={true} active={isLoading}/>
-          <FetchMovies page='1' isLoaded={handleComponentLoaded} title='Horror em exibição' btn='true' type='Movie' genre='Terror'/>
-        </div>
+          {isLoading ? (
+            <div className="loading-container">
+              <Loading title={true}/>
+              <FetchMovies visible={false} isLoading={handleComponentIsLoading} page='1' title='Adrenalina em cartaz' btn='true' type='Movie' genre='Ação'/>
+            </div>
+          ):(
+            <div className="loading-container">
+              <FetchMovies visible={true} page='1' title='Adrenalina em cartaz' btn='true' type='Movie' genre='Ação'/>
+            </div>
+          )}
 
-        <div className="loading-container">
-          <Loading disable={handleLoadingDisable} title={true} active={isLoading}/>
-          <FetchMovies page='1' isLoaded={handleComponentLoaded} title='Adrenalina em cartaz' btn='true' type='Movie' genre='Ação'/>
-        </div>
+          {isLoading ? (
+            <div className="loading-container">
+              <Loading title={true}/>
+              <FetchMovies visible={false} isLoading={handleComponentIsLoading} page='1' title='Horror em exibição' btn='true' type='Movie' genre='Terror'/>
+            </div>
+          ):(
+            <div className="loading-container">
+              <FetchMovies visible={true} page='1' title='Horror em exibição' btn='true' type='Movie' genre='Terror'/>
+            </div>
+          )}
 
-        <div className="loading-container">
-          <Loading disable={handleLoadingDisable} title={true} active={isLoading}/>
-          <FetchMovies page='1' isLoaded={handleComponentLoaded} title='Universos paralelos: Ficção' btn='true' type='Movie' genre='Ficção Cientifica'/>
-        </div>
+          {isLoading ? (
+            <div className="loading-container">
+              <Loading title={true}/>
+              <FetchMovies visible={false} isLoading={handleComponentIsLoading} page='1' title='Universos paralelos: Ficção' btn='true' type='Movie' genre='Ficção Cientifica'/>
+            </div>
+          ):(
+            <div className="loading-container">
+              <FetchMovies visible={true} page='1' title='Universos paralelos: Ficção' btn='true' type='Movie' genre='Ficção Cientifica'/>
+            </div>
+          )}
 
-        <div className="loading-container">
-          <Loading disable={handleLoadingDisable} title={true} active={isLoading}/>
-          <FetchMovies page='1' isLoaded={handleComponentLoaded} title='Documentando o mundo' btn='true' type='Movie' genre='Documentario'/>
-        </div>
+
+          {isLoading ? (
+            <div className="loading-container">
+              <Loading title={true}/>
+              <FetchMovies visible={false} isLoading={handleComponentIsLoading} page='1' title='Diversão com a família' btn='true' type='Movie' genre='Comedia'/>
+            </div>
+          ):(
+            <div className="loading-container">
+              <FetchMovies visible={true} page='1' title='Diversão com a família' btn='true' type='Movie' genre='Comedia'/>
+            </div>
+          )}
+
+
+          {isLoading ? (
+            <div className="loading-container">
+              <Loading title={true}/>
+              <FetchMovies visible={false} isLoading={handleComponentIsLoading} page='1' title='Documentando o mundo' btn='true' type='Movie' genre='Documentario'/>
+            </div>
+          ):(
+            <div className="loading-container">
+              <FetchMovies visible={true} page='1' title='Documentando o mundo' btn='true' type='Movie' genre='Documentario'/>
+            </div>
+          )}
 
       </div>
     </section>

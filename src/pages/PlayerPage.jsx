@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef} from "react";
 import { useParams } from "react-router-dom";
 import '/src/styles/Player.css';
-import Footer from '/src/components/footer';
 
 function PlayerPage() {
   const {id, type} = useParams();
@@ -56,26 +55,33 @@ function PlayerPage() {
   }
 
   useEffect(() => {
-    const Delay = setTimeout(() => {
-      setAutorizado(true);
-    }, 2000)
-
     const fetchMovies = async () => {
       if (type === 'Movie') {
         try {
-          const movieDetail = await fetch(`${apiURL}/movie/${id}?api_key=${apiKey}&language=pt-BR&page=1&include_image_language=pt&append_to_response=videos`);
-          const data = await movieDetail.json();
-          setMoviesDetails(data.results);
-          console.log(data);
+          const response = await fetch(`${apiURL}/movie/${id}?api_key=${apiKey}&language=pt-BR&page=1&include_image_language=pt&append_to_response=videos`);
+          if (response.ok){
+            const data = await response.json();
+            setMoviesDetails(data);
+            setAutorizado(true);
+          }else{
+            setAutorizado(false);
+          }
         } catch (error) {
           console.log(error);
+          setAutorizado(false);
         }
       }else{
         try {
-          const movieDetail = await fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}&language=pt-BR&page=1&include_image_language=pt&append_to_response=videos`);
-          const data = await movieDetail.json();
-          setMoviesDetails(data.results);
+          const response = await fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}&language=pt-BR&page=1&include_image_language=pt&append_to_response=videos`);
+          if (response.ok) {
+            const data = await response.json();
+            setMoviesDetails(data);
+            setAutorizado(true);
+          }else{
+            setAutorizado(false);
+          }
         } catch (error) {
+          setAutorizado(false);
           console.log(error);
         }
       }
@@ -95,7 +101,7 @@ function PlayerPage() {
   },[id]);
   
   return autorizado ?(
-    <main className='player-container'>
+    <section className='player-container'>
       <section className='player-movies'>
         <div id="player-background"></div>
         <div className="player_container_info">
@@ -172,7 +178,7 @@ function PlayerPage() {
             </div>
         </div>
       </section>
-      <section className="player_img_background">
+      <section  className="player_img_background">
               <section className="player_img_container">
                 { moviesDetails.backdrop_path !== null ? (
                   <img src={`${imgUrl}${moviesDetails.backdrop_path}`}/>
@@ -181,8 +187,7 @@ function PlayerPage() {
                 )}
               </section>
       </section>
-    <Footer/>
-    </main>
+    </section>
   ) : null
 }
 
