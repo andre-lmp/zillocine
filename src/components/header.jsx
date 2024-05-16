@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import { LuSearch } from "react-icons/lu";
+import { FaUserLarge } from "react-icons/fa6";
 import '/src/styles/App.css';
 
 function Header(props) {
@@ -13,7 +14,7 @@ function Header(props) {
   const [displayWidth, setDisplayWidth] = useState(0);
 
   const handleNavigationLinks = (e) => {
-    navigate(`/${e.target.id}`)
+    navigate(`/${e}`)
   };
 
   const activeMenu = () => {
@@ -63,8 +64,8 @@ function Header(props) {
           <div ref={scrolled} className="header-links">
               <div className="links left-links">
                 <button onClick={activeMenu}>|||</button>
-                <a id="Movies" onClick={handleNavigationLinks}>Filmes</a>
-                <a id="Series" onClick={handleNavigationLinks}>Séries</a>
+                <a  onClick={() => {handleNavigationLinks('Movies')}}>Filmes</a>
+                <a  onClick={() => {handleNavigationLinks('Series')}}>Séries</a>
               </div>
 
               <div className="project-title">
@@ -72,9 +73,11 @@ function Header(props) {
               </div>
 
               <div className='links right-links'>
-                <LuSearch id="Search" onClick={handleNavigationLinks} className='lupa-icon'/>
-                <button className="icon-conta" id='Profile' onClick={handleNavigationLinks}>C</button>
-                <h3 id="Profile" onClick={handleNavigationLinks}>Conta</h3>
+                <LuSearch onClick={() => {handleNavigationLinks('Search')}} className='lupa-icon'/>
+                <button className="icon-conta" onClick={() => {handleNavigationLinks('Profile')}}>
+                  <FaUserLarge onClick={() => {handleNavigationLinks('Profile')}} className="user-icon"/>
+                </button>
+                <h3 id="Auth" >Entrar</h3>
               </div>
               
             </div>

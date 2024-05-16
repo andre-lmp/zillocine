@@ -4,15 +4,13 @@
     margin-top: 200px;
     display: flex;
     flex-direction: column;
-    row-gap: 30px;
-    margin-bottom: 50px;
+    padding: 0px 30px;
     justify-content: space-between;
 }
 
 .movies-page-container .genres-bar{
     width: 100%;
     z-index: 20;
-    padding: 0px 20px;
     box-sizing: border-box;
 }
   

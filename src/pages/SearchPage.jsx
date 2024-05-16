@@ -68,7 +68,7 @@ function SearchContent() {
             }
 
             if (contentTypeBtnsRef){
-                contentTypeBtnsRef[0].style.border = '1.5pt solid rgb(255, 255, 255, 0.8)';
+                contentTypeBtnsRef[0].style.border = '1.5pt solid rgb(255, 255, 255)';
                 contentTypeBtnsRef[1].style.border = '1.5pt solid transparent';
             }
         }else{
@@ -79,9 +79,15 @@ function SearchContent() {
                 FetchSeries(term);
             }
             if (contentTypeBtnsRef){
-                contentTypeBtnsRef[1].style.border = '1.5pt solid rgb(255, 255, 255, 0.8)';
+                contentTypeBtnsRef[1].style.border = '1.5pt solid rgb(255, 255, 255)';
                 contentTypeBtnsRef[0].style.border = '1.5pt solid transparent';
             }
+        }
+     };
+
+     const handleUnavailableContent = (index) => {
+        if (contentData[index]){
+            contentData.splice(index, 1);
         }
      };
 
@@ -121,7 +127,7 @@ function SearchContent() {
                 {contentData.length !== 0 ? (
                     <h2>({contentData.length}) Encontrados</h2>
                 ): null}
-                {contentData.map(content => (
+                {contentData.map((content, index) => (
                     <div key={content.id} className="content-box" onClick={() => {handleNavigation(content.id)}} >
                         {content.poster_path ? (
                             <img display={undefined} src={`https://image.tmdb.org/t/p/w500${content.poster_path}`}></img>
@@ -132,9 +138,7 @@ function SearchContent() {
                         ): null}
 
                         {!content.backdrop_path && !content.poster_path ? (
-                            <div className="img-not-loaded">
-
-                            </div>
+                            handleUnavailableContent(index)
                         ): null}
                     </div>
                 ))}

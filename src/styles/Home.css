@@ -59,7 +59,7 @@
 }
 
 .home-slides-container .movie-slides-info h1{
-  font: 800 44px "Raleway", sans-serif;
+  font: 700 44px "Raleway", sans-serif;
   color: var(--white-opacity-1);
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -112,6 +112,7 @@
 
 .home-container .loading-container{
   position: relative;
+  padding: 0px 30px;
 }
 
 @media screen and (max-width: 900px){

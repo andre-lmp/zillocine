@@ -85,12 +85,6 @@ const  fetchMovies = (props) => {
   },
   1330:{
     slidesPerView: 7
-  },
-  1640:{
-    slidesPerView: 8
-  },
-  1950:{
-    slidesPerView: 9
   }
   };
 
@@ -276,6 +270,12 @@ const  fetchMovies = (props) => {
 
   },[props.visible]);
 
+  const handleUnavailableContent = (index) => {
+    if (moviesData[index]){
+      moviesData.splice(index, 1);
+    }
+  };
+
   return authorized ? (
     <section ref={componentRef} className="movie-fetcher">
         <div className="container-content">
@@ -296,13 +296,19 @@ const  fetchMovies = (props) => {
               <Swiper ref={swiper} className="swiper-container" style={{width: '100%', height: 'auto'}} breakpoints={breakpoints}>
                       {moviesData.map((movie, index) => (
                           <SwiperSlide className="swiper-slide" >
-                            <div className="swiper-image" onClick={handleMoviesNavigation}>
+                            <div key={movie.id} className="swiper-image" onClick={handleMoviesNavigation}>
                               { movie.poster_path ? (
-                                <img className="slide-images" key={movie.id} value={movie.id} display={undefined} ref={(e) => {imagesRef.current[index] = e}} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
-                              ):(
-                                <img src="" display='false'/>
-                              )
-                              }
+                                <img className="slide-images" value={movie.id} display={undefined} ref={(e) => {imagesRef.current[index] = e}} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
+                              ): null }
+
+                              {movie.backdrop_path ? (
+                                <img ref={(e) => {imagesRef.current[index] = e}} src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}></img>
+                              ): null}
+
+                              {!movie.backdrop_path && !movie.poster_path ? (
+                                handleUnavailableContent(index)
+                              ): null}
+                              
                             </div>
                           </SwiperSlide>
                       ))}

@@ -10,7 +10,7 @@ function Menu(props) {
     const [menuActive, setMenuActive] = useState(props.isActive);
 
     const handleNavigationLinks = (e) => {
-        navigate(`/${e.target.id}`)
+        navigate(`/${e}`)
         props.isDisable(false);
     };
 
@@ -35,11 +35,11 @@ function Menu(props) {
             <nav className="menu-container">
                 <ul>
                     <li><button><CgClose onClick={closeMenu} className="close-icon"/></button></li>
-                    <li><p id="" onClick={handleNavigationLinks}>Inicio</p></li>
-                    <li><p id="Movies" onClick={handleNavigationLinks}>Filmes</p></li>
-                    <li><p id="Series" onClick={handleNavigationLinks}>Series</p></li>
-                    <li><p id='Search' onClick={handleNavigationLinks}>Pesquisar</p></li>
-                    <li><p id="Profile" onClick={handleNavigationLinks}>Conta</p></li>
+                    <li><p onClick={() => {handleNavigationLinks('')}}>Inicio</p></li>
+                    <li><p onClick={() => {handleNavigationLinks('Movies')}}>Filmes</p></li>
+                    <li><p onClick={() => {handleNavigationLinks('Series')}}>Series</p></li>
+                    <li><p onClick={() => {handleNavigationLinks('Search')}}>Pesquisar</p></li>
+                    <li><p onClick={() => {handleNavigationLinks('Profile')}}>Conta</p></li>
                 </ul>
             </nav>
         </section>
