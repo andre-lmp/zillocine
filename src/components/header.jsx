@@ -20,10 +20,6 @@ function Header(props) {
     props.menuIsActive(true);
   };
 
-  const ActiveSearchBar = () => {
-    props.searchBarActive(true);
-  };
- 
   useEffect(() => {
     const getDocumentWidth = () => {
       if (window.innerWidth){
@@ -76,7 +72,7 @@ function Header(props) {
               </div>
 
               <div className='links right-links'>
-                <LuSearch onClick={ActiveSearchBar} className='lupa-icon'/>
+                <LuSearch id="Search" onClick={handleNavigationLinks} className='lupa-icon'/>
                 <button className="icon-conta" id='Profile' onClick={handleNavigationLinks}>C</button>
                 <h3 id="Profile" onClick={handleNavigationLinks}>Conta</h3>
               </div>

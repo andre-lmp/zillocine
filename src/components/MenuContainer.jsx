@@ -38,7 +38,7 @@ function Menu(props) {
                     <li><p id="" onClick={handleNavigationLinks}>Inicio</p></li>
                     <li><p id="Movies" onClick={handleNavigationLinks}>Filmes</p></li>
                     <li><p id="Series" onClick={handleNavigationLinks}>Series</p></li>
-                    <li><p>Pesquisar</p></li>
+                    <li><p id='Search' onClick={handleNavigationLinks}>Pesquisar</p></li>
                     <li><p id="Profile" onClick={handleNavigationLinks}>Conta</p></li>
                 </ul>
             </nav>
