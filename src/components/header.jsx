@@ -39,22 +39,15 @@ function Header(props) {
   },[]);
 
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 50){
+    if (window.scrollY > 100){
       if (displayWidth >= 750){
-        scrolled.current.style.padding = '20px 40px';
         scrolled.current.style.backgroundColor = 'rgb(2, 8, 23)';
       }else{
-        scrolled.current.style.padding = '25px 20px';
         scrolled.current.style.backgroundColor = 'rgb(2, 8, 23)';
       }
 
     }else{
       scrolled.current.style.backgroundColor = 'transparent';
-      if (displayWidth >= 750){
-        scrolled.current.style.padding = '20px 40px 40px 40px';
-      }else{
-        scrolled.current.style.padding = '25px 20px';
-      }
     }
   });
   
@@ -62,18 +55,19 @@ function Header(props) {
     <header>
       <div ref={overlayRef} className="overlayDiv"></div>
           <div ref={scrolled} className="header-links">
-              <div className="links left-links">
-                <button onClick={activeMenu}>|||</button>
-                <a  onClick={() => {handleNavigationLinks('Movies')}}>Filmes</a>
-                <a  onClick={() => {handleNavigationLinks('Series')}}>Séries</a>
-              </div>
 
               <div className="project-title">
                 <h1>MovieZilla</h1>
               </div>
 
-              <div className='links right-links'>
+              <div className="links center-links">
+                <a onClick={() => {handleNavigationLinks('')}}>Inicio</a>
+                <a  onClick={() => {handleNavigationLinks('Movies')}}>Filmes</a>
+                <a  onClick={() => {handleNavigationLinks('Series')}}>Séries</a>
                 <LuSearch onClick={() => {handleNavigationLinks('Search')}} className='lupa-icon'/>
+              </div>
+
+              <div className='links right-links'>
                 <button className="icon-conta" onClick={() => {handleNavigationLinks('Profile')}}>
                   <FaUserLarge onClick={() => {handleNavigationLinks('Profile')}} className="user-icon"/>
                 </button>

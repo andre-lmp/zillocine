@@ -4,7 +4,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    row-gap: 3rem;
+    row-gap: 2rem;
     margin-bottom: 20px;
 }
 
@@ -37,14 +37,14 @@
 .home-slides-container .movie-slides-info{
   position: absolute;
   bottom: 5%;
-  left: 40px;
+  left: 30px;
   display: flex;
   width: fit-content;
   flex-direction: column;
   z-index: 55;
   width: 45%;
   row-gap: 1rem;
-  padding: 10px 10px 10px 0px;
+  padding: 10px 10px 0px 0px;
 }
 
 .home-slides-container .movie-slides-info::before{
@@ -59,7 +59,7 @@
 }
 
 .home-slides-container .movie-slides-info h1{
-  font: 700 44px "Raleway", sans-serif;
+  font: 800 45px "Raleway", sans-serif;
   color: var(--white-opacity-1);
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -72,7 +72,7 @@
   display: inline-block;
   width: fit-content;
   padding: 3px 10px;
-  border-radius: 5px;
+  border-radius: 4px;
   background-color: var(--orangered);
   font: 600 16px 'Noto Sans', helvetica, sans-serif;
 }
@@ -92,7 +92,7 @@
   color: var(--white-opacity-1);
   background-color: var(--dark-blue);
   border: 1pt solid var(--transparent);
-  font: 600 16px helvetica, sans-serif;
+  font: 600 16px 'Poppins', 'Roboto', helvetica, sans-serif;
   display: inline-block;
   width: fit-content;
   outline: none;

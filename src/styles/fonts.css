@@ -11,7 +11,9 @@
     --body-opacity-09: rgb(2, 8, 23, 0.9);
     --body-opacity-07: rgb(2, 8, 23, 0.75);
     --body-opacity-05: rgb(2, 8, 23, 0.5);
+    --body-opacity-03: rgb(2, 8, 23, 0.3);
     --body-opacity-00: rgb(2, 8, 23, 0.0);
+    --body-opacity-01: rgb(2, 8, 23, 0.1);
     --blue: #0F0F1A;
     --midnightblue: midnightblue;
     --dark-blue: darkslateblue;

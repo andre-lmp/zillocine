@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef} from "react";
 import { useParams } from "react-router-dom";
+import { IoPlay } from "react-icons/io5";
 import '/src/styles/Player.css';
 
 function PlayerPage() {
@@ -103,11 +104,28 @@ function PlayerPage() {
   return autorizado ?(
     <section className="player-pg-container">
       <div className="player-bg-img">
-        {contentData.poster_path ? (
-          <img src={`https://image.tmdb.org/t/p/original${contentData.poster_path}`} alt="tmdb images" />
-        ): (
+        {contentData.backdrop_path ? (
           <img src={`https://image.tmdb.org/t/p/original${contentData.backdrop_path}`} alt="tmdb images" />
+        ): (
+          <img src={`https://image.tmdb.org/t/p/original${contentData.poster_path}`} alt="tmdb images" />
         )}
+
+        <div className="player-img-info">
+          <h1>
+            {contentData.title ? (
+              contentData.title
+            ): (
+              contentData.name
+            )}
+          </h1>
+          <div className="date-details">
+            <h2>2024</h2>
+            <h2>1h 06m</h2>
+          </div>
+          <button>
+            <IoPlay className="play-icon"/>
+            Assistir Trailer</button>
+        </div>
       </div>
     </section>
   ) : null
