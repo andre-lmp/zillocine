@@ -184,7 +184,34 @@ header .right-links h3{
 .movie-fetcher{
   width: 100%;
   margin: auto;
-  overflow: hidden;
+  position: relative;
+}
+
+.movie-fetcher .swiper-btns-control{
+  width: min-content;
+  position: absolute;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  z-index: 33;
+  top: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.movie-fetcher .swiper-btns-control .arrows{
+  color: var(--white-opacity-1);
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.movie-fetcher .btn-left{
+  left: -30px;
+}
+
+.movie-fetcher .btn-right{
+  right: -10px;
 }
 
 .movie-fetcher hr, .about-movie hr{
@@ -195,7 +222,7 @@ header .right-links h3{
   margin-bottom: 20px;
 }
 
-.movie-fetcher button{
+.movie-fetcher .fetcher-change-type{
   padding: 4px 30px;
   outline: none;
   background-color: var(--transparent);
@@ -207,7 +234,7 @@ header .right-links h3{
   transition: all .1s ease-in;
 }
 
-.movie-fetcher button:nth-child(1){
+.movie-fetcher .fetcher-change-type:nth-child(1){
   border: 1pt solid var(--white-opacity-1);
 }
 

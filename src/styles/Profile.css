@@ -2,11 +2,13 @@
 
 .profile-page{
     max-width: 100vw;
+    max-height: 800px;
 }
   
 .profile-page .background-container{
     width: 100%;
     height: 60vh;
+    max-height: 400px;
     position: relative;
     background-color: var(--body-color);
     border-bottom: 3px solid var(--red);

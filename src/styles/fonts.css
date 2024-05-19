@@ -23,6 +23,7 @@
     --red-opacity-07: rgb(255, 0, 0, 0.7);
     --white-opacity-1: white;
     --white-opacity-95: rgb(255, 255, 255, 0.95);
+    --white-opacity-09: rgb(255, 255, 255, 0.9);
     --white-opacity-08: rgb(255, 255, 255, 0.8);
     --white-opacity-07: rgb(255, 255, 255, 0.7);
     --white-opacity-06: rgb(255, 255, 255, 0.6);
@@ -76,7 +77,7 @@
   body{
     background-color: var(--body-color);
   }
-  
+
   ::-webkit-scrollbar{
     width: 7px;
   }

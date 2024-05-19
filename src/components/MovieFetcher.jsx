@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from 'react-router-dom';
 import '/src/styles/Swiper.css';
 import { Swiper, SwiperSlide } from '/src/components/swiper/Swiper.jsx';
-import { reject } from "lodash";
+import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 
 const  fetchMovies = (props) => {
   const [moviesData, setMoviesData] = useState([]);
@@ -13,13 +13,13 @@ const  fetchMovies = (props) => {
   const [authorized, setAuthorized] = useState(false);
   const navigate = useNavigate();
   const [type, setType] = useState(props.type);
-  const swiper = useRef(null);
   const btnsType = useRef();
   const [loading, setLoading] = useState('true');
   const [displayWidth, setDisplayWidth] = useState(0);
   const motionRef = useRef(undefined);
   const componentRef = useRef(undefined);
   const imagesRef = useRef([]);
+  const [swiperRef, setSwiperRef] = useState(undefined);
   const moviesGenres = {
     28: 'Ação',
     12: 'Aventura',
@@ -268,7 +268,18 @@ const  fetchMovies = (props) => {
 
     checkImagesLoaded();
 
+
   },[props.visible]);
+
+  const handleSwiperControl = (command) => {
+    if (swiperRef){
+      if (command === 'next') {
+        swiperRef.slideNext();
+      }else{
+        swiperRef.slidePrev();
+      }
+    }
+  };
 
   const handleUnavailableContent = (index) => {
     if (moviesData[index]){
@@ -287,13 +298,13 @@ const  fetchMovies = (props) => {
           <hr/>
           {props.btn === 'true' ? (
               <div ref={btnsType} className="btns-movie-serie">
-                <button value='Movie' onClick={defType}>Filmes</button>
-                <button value='Serie' onClick={defType}>Series</button>
+                <button className="fetcher-change-type" value='Movie' onClick={defType}>Filmes</button>
+                <button className="fetcher-change-type" value='Serie' onClick={defType}>Series</button>
             </div>
           ) : null}
 
           {displayWidth > 750 ? (
-              <Swiper ref={swiper} className="swiper-container" style={{width: '100%', height: 'auto'}} breakpoints={breakpoints}>
+              <Swiper swiperRef={setSwiperRef} className="swiper-container" style={{width: '100%', height: 'auto'}} breakpoints={breakpoints}>
                       {moviesData.map((movie, index) => (
                           <SwiperSlide className="swiper-slide" >
                             <div key={movie.id} className="swiper-image" onClick={handleMoviesNavigation}>
@@ -335,6 +346,9 @@ const  fetchMovies = (props) => {
           )}
           
         </div>
+
+        <button className="swiper-btns-control btn-left"><SlArrowLeft className="arrows" onClick={() => {handleSwiperControl('prev')}}/></button>
+        <button className="swiper-btns-control btn-right"><SlArrowRight className="arrows" onClick={() => {handleSwiperControl('next')}}/></button>
       </section>
   ): null;
 }

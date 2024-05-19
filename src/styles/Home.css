@@ -59,7 +59,7 @@
 }
 
 .home-slides-container .movie-slides-info h1{
-  font: 800 45px "Raleway", sans-serif;
+  font: 800 40px "Raleway", sans-serif;
   color: var(--white-opacity-1);
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -85,7 +85,7 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   opacity: 1;
-  font: 500 17px "Noto Sans",sans-serif;
+  font: 500 17px "Noto Sans", 'Poppins', helvetica, sans-serif;
 }
 
 .home-slides-container .movie-slides-info button{

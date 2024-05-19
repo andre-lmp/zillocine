@@ -5,13 +5,14 @@
     display: flex;
     flex-direction: column;
     margin: auto;
-    row-gap: 3rem;
-    position: relative;
+    row-gap: 30px;
 }
 
 .player-pg-container .player-bg-img{
   width: 100%;
   height: 100vh;
+  max-height: 800px;
+  position: relative;
 }
 
 .player-pg-container .player-bg-img::before{
@@ -33,7 +34,7 @@
   top: 0;
   left: 0;
   z-index: 1;
-  background-image:  linear-gradient(90deg, var(--body-color), var(--body-opacity-07) ,var(--body-opacity-07), var(--body-opacity-00));
+  background-image:  linear-gradient(90deg, var(--body-color), var(--body-opacity-07) ,var(--body-opacity-05), var(--body-opacity-00));
 }
 
 .player-pg-container .player-bg-img img{
@@ -55,27 +56,42 @@
 
 .player-pg-container .date-details{
   display: flex;
-  gap: 10px;
+  flex-direction: row;
+  gap: 9px;
+  align-items: center;
 }
 
-.player-pg-container .player-img-info h1{
-  font: 800 45px 'Raleway', 'Roboto', sans-serif;
-  color: var(--white-opacity-1);
-  line-height: 100%;
-}
-
-.player-pg-container .player-img-info h2{
-  color: var(--white-opacity-1);
-  background-color: var(--orangered);
-  font: 500 16px 'Poppins', 'Roboto', sans-serif;
+.player-pg-container .date-details img{
+  height: 25px;
+  margin-left: 7px;
   width: fit-content;
-  padding: 2px 10px;
+  object-fit: cover;
+  border-radius: 4px;
+  background-color: var(--white-opacity-08);
+}
+
+.player-pg-container .date-details h2{
+  color: var(--white-opacity-08);
+  font: 400 16px 'Poppins', 'Roboto', sans-serif;
+  width: fit-content;
   border-radius: 4px;
 }
 
-.player-pg-container .player-img-info h2:nth-child(2){
-  background-color: transparent;
+.player-pg-container .date-details .release-date{
+  background-color: var(--orangered);
+  padding: 2px 5px;
+}
 
+.player-pg-container .date-details .content-runtime{
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.player-pg-container .player-img-info h1{
+  font: 800 40px 'Raleway', 'Roboto', sans-serif;
+  color: var(--white-opacity-1);
+  line-height: 100%;
 }
 
 .player-pg-container .player-img-info  button{
@@ -96,4 +112,115 @@
 
 .player-pg-container .player-img-info  .play-icon{
   font-size: 17px;
+}
+
+
+.player-pg-container .player-content-info{
+  width: 100%;
+  padding: 10px 30px;
+  box-sizing: border-box;
+}
+
+.player-pg-container .player-content-info p{
+  color: var(--white-opacity-09);
+  font: 400 18px 'Noto Sans', serif;
+  max-width: 80%;
+  line-height: 150%;
+}
+
+.player-pg-container .additional-content{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0px 30px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.player-pg-container .additional-content h1{
+  color: var(--white-opacity-1);
+  font: 600 21px "Roboto", sans-serif;
+  margin-bottom: 20px;
+}
+
+.player-pg-container .additional-content .content-seasons{
+  height: 250px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  margin-right: 20px;
+  flex-direction: column;
+  position: relative;
+}
+
+.player-pg-container .additional-content .content-seasons::before{
+  content: '';
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  border-radius: 4px;
+  border:  1.5pt solid var(--transparent);
+  box-sizing: border-box;
+}
+
+.player-pg-container .additional-content .content-seasons:hover::before{
+  z-index: 1;
+  background-color: var(--black-opacity-08);
+  border: 1.5pt solid var(--white-opacity-1);
+}
+
+.player-pg-container .additional-content .content-seasons img{
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.player-pg-container  .content-seasons-info{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 0px;
+}
+
+.player-pg-container  .content-seasons-info h2{
+  color: var(--white-opacity-08);
+  font: 400 18px "Roboto", 'Poppins', sans-serif;
+}
+
+.player-pg-container  .content-seasons-info span{
+  color: var(--white-opacity-07);
+  font: 400 18px "Roboto", 'Poppins', sans-serif;
+}
+
+.player-pg-container .additional-content button{
+  position: absolute;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  z-index: 33;
+  top: 50%;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(-25%);
+}
+
+.player-pg-container .additional-content button .arrows{
+  color: var(--white-opacity-1);
+  cursor: pointer;
+}
+
+.player-pg-container .btn-left{
+  left: 0;
+}
+
+.player-pg-container .btn-right{
+  right: 0;
 }
