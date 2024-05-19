@@ -101,11 +101,6 @@ const  fetchMovies = (props) => {
     navigate(`/Page/${valor}/${type}`);
   };
 
-  const defType = (e) => {
-    setType(e.target.value);
-    handleChangeType(e.target.value);
-  };
-
   const handleGenres = (value, type) => {
     let genre = '';
     if (type === 'filme'){
@@ -296,13 +291,6 @@ const  fetchMovies = (props) => {
             ): null}
           </div>
           <hr/>
-          {props.btn === 'true' ? (
-              <div ref={btnsType} className="btns-movie-serie">
-                <button className="fetcher-change-type" value='Movie' onClick={defType}>Filmes</button>
-                <button className="fetcher-change-type" value='Serie' onClick={defType}>Series</button>
-            </div>
-          ) : null}
-
           {displayWidth > 750 ? (
               <Swiper swiperRef={setSwiperRef} className="swiper-container" style={{width: '100%', height: 'auto'}} breakpoints={breakpoints}>
                       {moviesData.map((movie, index) => (

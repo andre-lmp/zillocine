@@ -8,7 +8,6 @@ import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import MoviesFetcher from '/src/components/MovieFetcher.jsx';
 import '/src/styles/Player.css';
 
-
 function PlayerPage() {
   const {id, type} = useParams();
   const [contentData, setContentData] = useState([]);
@@ -210,13 +209,13 @@ function PlayerPage() {
 
       {type === 'Movie' ? (
         <section className="additional-content">
-          <MoviesFetcher visible={true} isLoading={undefined} title='Você pode gostar' btn='false' page='1' type='Movie' genre={handleGenres(contentData.genres)}/>
+          <MoviesFetcher visible={true} isLoading={undefined} title='Você pode gostar' page='1' type='Movie' genre={handleGenres(contentData.genres)}/>
         </section>
       ): (
         <section className="additional-content">
           <button className="swiper-btns-control btn-left" ><SlArrowLeft onClick={() => {handleSwiperControl('prev')}} className="arrows"/></button>
           <button className="swiper-btns-control btn-right" ><SlArrowRight onClick={() => {handleSwiperControl('next')}} className="arrows"/></button>
-          <h1>Temporadas</h1>
+          <h1 className="player-swiper-title">Temporadas</h1>
           <Swiper  breakpoints={breakpoints} swiperRef={setSwiperRef} >
             {contentSeasons ? (
               contentSeasons.map((seasons) => (

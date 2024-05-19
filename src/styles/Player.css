@@ -139,8 +139,11 @@
 
 .player-pg-container .additional-content h1{
   color: var(--white-opacity-1);
-  font: 600 21px "Roboto", sans-serif;
-  margin-bottom: 20px;
+  font: 500 20px "Roboto", sans-serif;
+}
+
+.player-pg-container .additional-content .player-swiper-title{
+  margin-bottom: 15px;
 }
 
 .player-pg-container .additional-content .content-seasons{

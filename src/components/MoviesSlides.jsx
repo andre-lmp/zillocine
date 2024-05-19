@@ -2,7 +2,7 @@ import { Swiper, SwiperSlide } from '/src/components/swiper/Swiper.jsx';
 import { useEffect, useState } from 'react';
 import { Pagination, Autoplay } from 'swiper/modules';
 import { useNavigate } from 'react-router-dom';
-import '/src/styles/Home.css';
+import '/src/styles/App.css';
 import 'swiper/css';
 import 'swiper/element/css/autoplay';
 import 'swiper/element/css/pagination';
@@ -54,7 +54,7 @@ function MovieSlides() {
 
    if (authorized) {
     return(
-        <section className='home-slides-container'>
+        <section className='presentation-slides'>
              <Swiper className='swiper' slidesPerView={1} autoplay={{delay: 4000}} speed='500' loop={true} pagination={{clickable: true}} modules={[Pagination, Autoplay]}>
                 {moviesData.map((movie) => (
                     <SwiperSlide className='slide'>

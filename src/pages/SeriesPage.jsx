@@ -1,6 +1,7 @@
 import MoviesFetcher from '/src/components/MovieFetcher.jsx';
 import Loading from '/src/components/LoadingContent.jsx';
 import { useState, useEffect, useRef} from "react";
+import MovieSlides from '/src/components/MoviesSlides';
 import '/src/styles/Movies.css';
 
 function Series() {
@@ -37,18 +38,17 @@ function Series() {
 
     return(
         <main className="movies-page-container">
-            {authorized === true ? (
-                    <div className='genres-bar'>
-                        <ul ref={genreBtns}>
-                            <li><button value='Lançamentos' onClick={handleGenres}>Lançamentos</button></li>
-                            <li><button value='Terror' onClick={handleGenres}>Suspense</button></li>
-                            <li><button value='Ação' onClick={handleGenres}>Ação</button></li>
-                            <li><button value='Comedia' onClick={handleGenres}>Comedia</button></li>
-                            <li><button value='Documentario' onClick={handleGenres}>Documentarios</button></li>
-                        </ul>
-                    </div>
-                ) : null
-            }
+                <MovieSlides/>
+
+                <div className='genres-bar'>
+                    <ul ref={genreBtns}>
+                        <li><button value='Lançamentos' onClick={handleGenres}>Lançamentos</button></li>
+                        <li><button value='Terror' onClick={handleGenres}>Suspense</button></li>
+                        <li><button value='Ação' onClick={handleGenres}>Ação</button></li>
+                        <li><button value='Comedia' onClick={handleGenres}>Comedia</button></li>
+                        <li><button value='Documentario' onClick={handleGenres}>Documentarios</button></li>
+                    </ul>
+                </div>
 
                 <div className='box-series'>
 

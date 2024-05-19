@@ -194,10 +194,11 @@ header .right-links h3{
   border: none;
   outline: none;
   z-index: 33;
-  top: 60%;
+  top: 55%;
   display: flex;
   justify-content: center;
   align-items: center;
+  transform: translateY(-50%);
 }
 
 .movie-fetcher .swiper-btns-control .arrows{
@@ -218,54 +219,19 @@ header .right-links h3{
   width: 100%;
   background-image: linear-gradient(to right, var(--red), var(--transparent));
   border: none;
-  height: 1.5px;
+  height: 1.5pt;
   margin-bottom: 20px;
 }
 
-.movie-fetcher .fetcher-change-type{
-  padding: 4px 30px;
-  outline: none;
-  background-color: var(--transparent);
-  color: var(--white-opacity-1);
-  font: 500 14px 'Roboto', sans-serif;
-  border: 1pt solid var(--red);
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all .1s ease-in;
-}
-
-.movie-fetcher .fetcher-change-type:nth-child(1){
-  border: 1pt solid var(--white-opacity-1);
-}
-
-.movie-fetcher .btns-movie-serie{
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  margin-bottom: 30px;
-}
-
-.movie-fetcher .slides-title{
-  color: var(--white-opacity-08);
-  font: 600 19px 'Raleway', sans-serif;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  margin-top: 10px;
-  padding: 0px 13px;
-  display: none;
-}
-
 .movie-fetcher .title-box{
-  min-height: 50px;
   display: flex;
   align-items: center;
+  margin-bottom: 8px;
 }
 
 .movie-fetcher h1{
   color: var(--white-opacity-1);
-  font: 600 21px "Roboto", sans-serif;
+  font: 500 20px "Roboto", sans-serif;
   animation: fadeIN .3s ease-in-out;
 }
 
@@ -457,6 +423,100 @@ footer{
   width: 150px;
   max-width: 40%;
   margin-top: 10px;
+}
+
+.presentation-slides{
+  max-width: 100%;
+  height: 100vh;
+  max-height: 800px;
+}
+
+.presentation-slides img{
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+  opacity: 0.8;
+}
+
+.presentation-slides .movie-slides-info{
+  position: absolute;
+  bottom: 5%;
+  left: 30px;
+  display: flex;
+  width: fit-content;
+  flex-direction: column;
+  z-index: 55;
+  width: 45%;
+  row-gap: 1rem;
+  padding: 10px 10px 0px 0px;
+}
+
+.presentation-slides .movie-slides-info::before{
+  content: '';
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 70%;
+  height: 100vh;
+  z-index: -1;
+  background-image: linear-gradient(to right, var(--body-color),var(--body-opacity-05), var(--body-opacity-00));
+}
+
+.presentation-slides .movie-slides-info h1{
+  font: 800 40px "Raleway", sans-serif;
+  color: var(--white-opacity-1);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.presentation-slides .movie-slides-info h2{
+  color: var(--white-opacity-1);
+  display: inline-block;
+  width: fit-content;
+  padding: 3px 10px;
+  border-radius: 4px;
+  background-color: var(--orangered);
+  font: 600 16px 'Noto Sans', helvetica, sans-serif;
+}
+
+.presentation-slides .movie-slides-info p{
+  color: var(--white-opacity-1);
+  overflow: hidden;
+  display: -webkit-box;
+  line-height: 150%;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  opacity: 1;
+  font: 500 17px "Noto Sans", 'Poppins', helvetica, sans-serif;
+}
+
+.presentation-slides .movie-slides-info button{
+  color: var(--white-opacity-1);
+  background-color: var(--dark-blue);
+  border: 1pt solid var(--transparent);
+  font: 600 16px 'Poppins', 'Roboto', helvetica, sans-serif;
+  display: inline-block;
+  width: fit-content;
+  outline: none;
+  border-radius: 5px;
+  width: 190px;
+  height: 43px;
+  cursor: pointer;
+}
+
+.presentation-slides .container-end{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 50%;
+  background-image: linear-gradient(to top, var(--body-color), var(--transparent));
+}
+
+.home-container .loading-container{
+  position: relative;
+  padding: 0px 30px;
 }
 
 @media screen and (max-width: 900px){
