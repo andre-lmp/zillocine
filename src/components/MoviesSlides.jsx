@@ -31,9 +31,13 @@ function MovieSlides(props) {
         return newDate;
     }
 
-    const NavigateToMovie = (e) => {
+    const NavigateToPlayer = (e) => {
         const value = e.target.attributes.value.value;
-        navigate(`/Page/${value}/Movie`);
+        if (props.currentPage === 'SeriesPage'){
+          navigate(`/Page/${value}/Serie`);
+        }else{
+          navigate(`/Page/${value}/Movie`);
+        }
     }
 
    useEffect(() => {
@@ -177,7 +181,7 @@ function MovieSlides(props) {
                             ): (
                             <p>O lançamento de um dos mais aguardados filmes de uma sequencia de sucesso</p>
                             )}
-                            <button onClick={NavigateToMovie} value={movie.id} id="btn-play">Ir para o Filme</button>
+                            <button onClick={NavigateToPlayer} value={movie.id} id="btn-play">Ir para o Filme</button>
                         </div>
                     </SwiperSlide>
                 ))};
