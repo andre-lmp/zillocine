@@ -38,7 +38,7 @@ function Series() {
 
     return(
         <main className="movies-page-container">
-                <MovieSlides/>
+                <MovieSlides currentPage={'SeriesPage'}/>
 
                 <div className='genres-bar'>
                     <ul ref={genreBtns}>

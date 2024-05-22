@@ -12,7 +12,7 @@ function Main() {
 
   return(
     <section className="home-container">
-      <MovieSlides/>
+      <MovieSlides currentPage={'HomePage'}/>
 
       <div className="home-container">
 

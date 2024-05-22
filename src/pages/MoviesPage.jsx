@@ -44,7 +44,7 @@ function Movies() {
 
     return(
         <section className="movies-page-container">
-            <MovieSlides/>
+            <MovieSlides currentPage={'MoviesPage'}/>
             
             <div className='genres-bar'>
                 <ul ref={genreBtns}>

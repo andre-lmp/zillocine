@@ -9,6 +9,7 @@ import Header from "/src/components/header";
 import Footer from "/src/components/footer";
 import Menu from '/src/components/MenuContainer';
 import SearchPage from '/src/pages/SearchPage';
+import ScrollTop from '/src/components/ScrollTop';
 import '/src/styles/App.css';
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
     <Router>
       <Header menuIsActive={isMenuActive}/>
       <Menu isActive={menuIsActive} isDisable={isMenuActive}/>
+      <ScrollTop/>
       <Routes>
         <Route path='/' Component={HomePage}/>
         <Route path='/Page/:id/:type' Component={PlayerPage}/>

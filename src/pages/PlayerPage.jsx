@@ -213,34 +213,34 @@ function PlayerPage() {
         </section>
       ): (
         <section className="additional-content">
-          <button className="swiper-btns-control btn-left" ><SlArrowLeft onClick={() => {handleSwiperControl('prev')}} className="arrows"/></button>
-          <button className="swiper-btns-control btn-right" ><SlArrowRight onClick={() => {handleSwiperControl('next')}} className="arrows"/></button>
           <h1 className="player-swiper-title">Temporadas</h1>
-          <Swiper  breakpoints={breakpoints} swiperRef={setSwiperRef} >
-            {contentSeasons ? (
-              contentSeasons.map((seasons) => (
-                <SwiperSlide >
-                  <div className="content-seasons">
-                    {seasons.backdrop_path ? (
-                      <img src={`https://image.tmdb.org/t/p/original${seasons.backdrop_path}`} alt="tmdb images" />
-                    ): (
-                      <img src={`https://image.tmdb.org/t/p/original${seasons.poster_path}`} alt="tmdb images" />
-                    )}
-
-                    <div className="content-seasons-info">
-                      <h2>{seasons.name}</h2>
-                      <span>
-                        {seasons.air_date ? (
-                          handleReleaseDate(seasons.air_date)
-                        ): null}
-                      </span>
-
+          <section className="swiper-box">
+            <button className="swiper-btns-control btn-left" ><SlArrowLeft onClick={() => {handleSwiperControl('prev')}} className="arrows"/></button>
+            <button className="swiper-btns-control btn-right" ><SlArrowRight onClick={() => {handleSwiperControl('next')}} className="arrows"/></button>
+            <Swiper  breakpoints={breakpoints} swiperRef={setSwiperRef} >
+              {contentSeasons ? (
+                contentSeasons.map((seasons) => (
+                  <SwiperSlide >
+                    <div className="content-seasons">
+                      {seasons.backdrop_path ? (
+                        <img src={`https://image.tmdb.org/t/p/original${seasons.backdrop_path}`} alt="tmdb images" />
+                      ): (
+                        <img src={`https://image.tmdb.org/t/p/original${seasons.poster_path}`} alt="tmdb images" />
+                      )}
+                      <div className="content-seasons-info">
+                        <h2>{seasons.name}</h2>
+                        <span>
+                          {seasons.air_date ? (
+                            handleReleaseDate(seasons.air_date)
+                          ): null}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </SwiperSlide>
-              ))
-            ): null}
-          </Swiper>
+                  </SwiperSlide>
+                ))
+              ): null}
+            </Swiper>
+          </section>
         </section>
       )}
 

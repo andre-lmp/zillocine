@@ -7,7 +7,7 @@ import 'swiper/css';
 import 'swiper/element/css/autoplay';
 import 'swiper/element/css/pagination';
 
-function MovieSlides() {
+function MovieSlides(props) {
     const apiKey = "e1534e69b483f2e9d62ea1c394850e4e";
     const newDate = new Date().toISOString().split('T')[0];
     const [moviesData, setMoviesData] = useState([]);
@@ -16,10 +16,11 @@ function MovieSlides() {
 
     const handleSelectionMovies = (data) => {
         const movieIds = [];
-        for (let i = 0; i<=4; i++){
+        for (let i = 0; i<=6; i++){
             movieIds.push(data[i]);
         }
        setMoviesData(movieIds);
+       setAuthorized(true);
     };
 
     const handleReleaseDate = (date) => {
@@ -36,32 +37,141 @@ function MovieSlides() {
     }
 
    useEffect(() => {
-    const fetchMovies = async () => {
-        try {
-          const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&primary_release_date.gte=${newDate}&sort=primary_release_date.desc&language=pt-BR&include_image_language=pt`);
-          if (response.ok) {
-            const data = await response.json();
-            setMoviesData(data.results);
-            handleSelectionMovies(data.results);
+    const fetchMovies = async (genre) => {
+        if (props.currentPage === 'HomePage'){
+          try {
+            const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&primary_release_date.gte=${newDate}&sort=primary_release_date.desc&language=pt-BR&include_image_language=pt`);
+            if (response.ok) {
+              const data = await response.json();
+              setMoviesData(data.results);
+              handleSelectionMovies(data.results);
+            }
+          } catch{
+            console.log(error);
+          }          
+
+        }else{
+          if (props.currentPage === 'MoviesPage'){
+            try {
+              const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_genres=${genre}&language=pt-BR&include_image_language=pt&page=1`);
+              if (response.ok){
+                const data = await response.json();
+                return data.results;
+              }
+
+            } catch (error) {
+              console.error(error);
+            }
           }
-        } catch{
-          console.log(error);
+
+          if (props.currentPage === 'SeriesPage') {
+            try{
+              const response = await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&language=pt-BR&with_genres=${genre}&page=1`);
+              if (response.ok){
+                const data = await response.json();
+                return data.results;
+              }
+            } catch (error) {
+              console.error(error);
+            }
+          }
         }
-    };  
-    setAuthorized(true);
-    fetchMovies();
-   },[]);
+    };
+
+    const selectBestMovies = async (list) => {
+      const selectResult = [];
+
+      const select = (item) => {
+        let maxScore = 0;
+        let maxScoreIndex = 0
+
+        for (let index in item){
+          if (item[index].vote_average > maxScore){
+            maxScore = item[index].vote_average
+            maxScoreIndex = index;
+          }
+        }
+        return item[maxScoreIndex];
+      };
+
+      for (let index in list){
+       const getResultSelect =  async () => {
+          const result = await select(list[index]);
+          selectResult.push(result);
+        };
+
+        getResultSelect();
+      }
+
+      setMoviesData(selectResult);
+      setAuthorized(true);
+    };
+    
+    const handleFetchMovies = async () => {
+      let genres = [''];
+      if (props.currentPage === 'MoviesPage'){
+        genres = ['27','878','28', '10752', '10749', '99'];
+      };
+
+      if (props.currentPage === 'SeriesPage'){
+        genres = ['9648', '878', '10759', '10764', '10768', '16', '99'];
+      };
+
+      const fetchDataResult = [];
+      try{
+        for (let index in genres) {
+          const result = await fetchMovies(genres[index]);
+          fetchDataResult.push(result);
+        }
+      }catch (error){
+        console.error(error);
+      }finally{
+        selectBestMovies(fetchDataResult);
+      }
+    };
+
+    if (props.currentPage === 'HomePage'){
+      fetchMovies();
+    }else{
+      handleFetchMovies();
+    }
+   },[props.currentPage]);
+
+   const removeUndefined = (index) => {
+    moviesData.splice(index, 1);
+   };
 
    if (authorized) {
     return(
         <section className='presentation-slides'>
              <Swiper className='swiper' slidesPerView={1} autoplay={{delay: 4000}} speed='500' loop={true} pagination={{clickable: true}} modules={[Pagination, Autoplay]}>
-                {moviesData.map((movie) => (
+                {moviesData.map((movie, index) => (
+                    !movie ? (removeUndefined(index)) : null,
                     <SwiperSlide className='slide'>
-                        <img src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`} />
+                        <div className='presentation-img'>
+                          {movie.backdrop_path ? (
+                            <img src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`} />
+                          ): null}
+                          {movie.poster_path ? (
+                            <img src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`} />
+                          ): null}
+                        </div>
                         <div className="movie-slides-info">
-                            <h1>{movie.title}</h1>
-                            <h2>{handleReleaseDate(movie.release_date)}</h2>
+                            <h1>
+                              {movie.title ? (
+                                movie.title
+                              ): (
+                                movie.name
+                              )}
+                            </h1>
+                            <h2>
+                              {movie.release_date ? (
+                                handleReleaseDate(movie.release_date)
+                              ): (
+                                handleReleaseDate(movie.first_air_date)
+                              )}
+                            </h2>
+
                             {movie.overview ? (
                             <p>{movie.overview}</p>
                             ): (
@@ -69,7 +179,6 @@ function MovieSlides() {
                             )}
                             <button onClick={NavigateToMovie} value={movie.id} id="btn-play">Ir para o Filme</button>
                         </div>
-                        <div className='container-end'></div>
                     </SwiperSlide>
                 ))};
           </Swiper>

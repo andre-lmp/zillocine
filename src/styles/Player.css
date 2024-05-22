@@ -23,7 +23,7 @@
   top: 0;
   left: 0;
   z-index: 2;
-  background-image:  linear-gradient(to bottom, var(--body-opacity-07), var(--body-opacity-00), var(--body-opacity-00), var(--body-color));
+  background-image:  linear-gradient(to bottom, var(--body-color), var(--body-opacity-00), var(--body-opacity-00), var(--body-color));
 }
 
 .player-pg-container .player-bg-img::after{
@@ -124,7 +124,7 @@
 .player-pg-container .player-content-info p{
   color: var(--white-opacity-09);
   font: 400 18px 'Noto Sans', serif;
-  max-width: 80%;
+  width: 40%;
   line-height: 150%;
 }
 
@@ -134,6 +134,10 @@
   flex-direction: column;
   padding: 0px 30px;
   box-sizing: border-box;
+  position: relative;
+}
+
+.player-pg-container .swiper-box{
   position: relative;
 }
 
@@ -187,18 +191,23 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   padding: 7px 0px;
 }
 
 .player-pg-container  .content-seasons-info h2{
   color: var(--white-opacity-08);
-  font: 400 18px "Roboto", 'Poppins', sans-serif;
+  font: 500 16px "Roboto", 'Poppins', sans-serif;
+  max-width: 60%;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
 }
 
 .player-pg-container  .content-seasons-info span{
   color: var(--white-opacity-07);
-  font: 400 18px "Roboto", 'Poppins', sans-serif;
+  font: 500 16px "Roboto", 'Poppins', sans-serif;
 }
 
 .player-pg-container .additional-content button{
@@ -212,7 +221,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: translateY(-25%);
+  transform: translateY(-50%);
 }
 
 .player-pg-container .additional-content button .arrows{
@@ -221,9 +230,24 @@
 }
 
 .player-pg-container .btn-left{
-  left: 0;
+  left: -25px;
 }
 
 .player-pg-container .btn-right{
-  right: 0;
+  right: -20px;
+}
+
+@media screen and (min-width: 1400px){
+  .player-pg-container .player-img-info h1{
+    font-size: 60px;
+  }
+  .player-pg-container .player-content-info p{
+    font-size: 21px;
+  }
+}
+
+@media screen and (max-width: 1399px){
+  .player-pg-container .player-content-info p{
+    width: 50%;
+  }
 }

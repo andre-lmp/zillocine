@@ -1,5 +1,9 @@
 @import url('/src/styles/fonts.css');
 
+html{
+  scroll-behavior: smooth;
+}
+
 header{
   position: relative;
   width: 100%;
@@ -47,7 +51,7 @@ header .header-links::before{
   top: 0;
   left: 0;
   z-index: -1;
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(0px);
 }
 
 header .project-title{
@@ -65,6 +69,7 @@ header .links{
   display: flex;
   align-items: center;
   gap: 2rem;
+  background-color: transparent;
   justify-content: space-between;
 }
 
@@ -86,7 +91,6 @@ header .center-links a{
   text-decoration: none;
   cursor: pointer;
 }
-
 
 header .center-links a:hover{
   color: var(--white-opacity-1);
@@ -110,7 +114,6 @@ header .right-links button{
   border: 2px solid var(--red);
   background-color: var(--black);
   transition: all .2s ease-in-out;
-  box-shadow: 1px 1px 45px var(--black);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -194,7 +197,7 @@ header .right-links h3{
   border: none;
   outline: none;
   z-index: 33;
-  top: 55%;
+  top: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -208,11 +211,11 @@ header .right-links h3{
 }
 
 .movie-fetcher .btn-left{
-  left: -30px;
+  left: -25px;
 }
 
 .movie-fetcher .btn-right{
-  right: -10px;
+  right: -20px;
 }
 
 .movie-fetcher hr, .about-movie hr{
@@ -231,13 +234,17 @@ header .right-links h3{
 
 .movie-fetcher h1{
   color: var(--white-opacity-1);
-  font: 500 20px "Roboto", sans-serif;
+  font: 500 20px "Roboto",'Poppins', sans-serif;
   animation: fadeIN .3s ease-in-out;
 }
 
 .fetchMovies-container{
   animation: fadeIN 5s ease-in-out;
   position: absolute;
+}
+
+.movie-fetcher .swiper-box{
+  position: relative;
 }
 
 .movie-fetcher .swiper-container{
@@ -431,11 +438,42 @@ footer{
   max-height: 800px;
 }
 
+
+.presentation-slides .presentation-img{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.presentation-slides .presentation-img::before{
+  content: '';
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  background-image:  linear-gradient(to bottom, var(--body-color), var(--body-opacity-00), var(--body-opacity-00), var(--body-color));
+}
+
+.presentation-slides .presentation-img::after{
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 70%;
+  height: 100%;
+  z-index: 4;
+  background-image: linear-gradient(to right, var(--body-color),var(--body-opacity-05), var(--body-opacity-00));
+}
+
 .presentation-slides img{
   height: 100%;
   object-fit: cover;
   width: 100%;
   opacity: 0.8;
+  position: relative;
 }
 
 .presentation-slides .movie-slides-info{
@@ -445,21 +483,10 @@ footer{
   display: flex;
   width: fit-content;
   flex-direction: column;
-  z-index: 55;
-  width: 45%;
+  z-index: 44;
+  width: 40%;
   row-gap: 1rem;
   padding: 10px 10px 0px 0px;
-}
-
-.presentation-slides .movie-slides-info::before{
-  content: '';
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 70%;
-  height: 100vh;
-  z-index: -1;
-  background-image: linear-gradient(to right, var(--body-color),var(--body-opacity-05), var(--body-opacity-00));
 }
 
 .presentation-slides .movie-slides-info h1{
@@ -506,17 +533,21 @@ footer{
   cursor: pointer;
 }
 
-.presentation-slides .container-end{
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 50%;
-  background-image: linear-gradient(to top, var(--body-color), var(--transparent));
-}
-
 .home-container .loading-container{
   position: relative;
   padding: 0px 30px;
+}
+
+@media screen and (min-width: 1400px){
+  .presentation-slides .movie-slides-info h1{
+    font-size: 60px;
+  }
+}
+
+@media screen and (min-width: 1600px){
+  .movie-fetcher .swiper-image{
+    height: 320px;
+  }
 }
 
 @media screen and (max-width: 900px){

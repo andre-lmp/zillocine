@@ -94,7 +94,7 @@ function SearchContent() {
      const resetInputValue = () => {
         if (userInputRef.current){
             userInputRef.current.value = null;
-            FetchMovies('Familia');
+            FetchMovies('the');
         }
      };
 
@@ -103,8 +103,8 @@ function SearchContent() {
      };
 
      useEffect(() => {
-        FetchMovies('Familia');
-        changeFetchType('Movie', 'Familia');
+        FetchMovies('the');
+        changeFetchType('Movie', 'the');
      }, []);
 
     return(
