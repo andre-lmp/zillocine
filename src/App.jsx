@@ -5,7 +5,7 @@ import PlayerPage from './pages/PlayerPage';
 import MoviesPage from './pages/MoviesPage';
 import SeriesPage from './pages/SeriesPage';
 import ProfilePage from './pages/ProfilePage';
-import Header from "/src/components/Header";
+import Header from "./components/Header";
 import Footer from "/src/components/Footer";
 import Menu from '/src/components/MenuContainer';
 import SearchPage from '/src/pages/SearchPage';
