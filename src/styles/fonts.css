@@ -9,6 +9,7 @@
     --black-opacity-00: rgb(0, 0, 0, 0.0);
     --body-color: rgb(2, 8, 23);
     --body-opacity-09: rgb(2, 8, 23, 0.9);
+    --body-opacity-08: rgb(2, 8, 23, 0.8);
     --body-opacity-07: rgb(2, 8, 23, 0.75);
     --body-opacity-05: rgb(2, 8, 23, 0.5);
     --body-opacity-03: rgb(2, 8, 23, 0.3);
@@ -27,10 +28,13 @@
     --white-opacity-08: rgb(255, 255, 255, 0.8);
     --white-opacity-07: rgb(255, 255, 255, 0.7);
     --white-opacity-06: rgb(255, 255, 255, 0.6);
+    --white-opacity-05: rgb(255, 255, 255, 0.5);
+    --white-opacity-04: rgb(255, 255, 255, 0.4);
     --white-opacity-03: rgb(255, 255, 255, 0.3);
     --white-opacity-02: rgb(255, 255, 255, 0.2);
     --white-opacity-01: rgb(255, 255, 255, 0.1);
     --gray: rgb(100, 100, 100);
+    --gainsboro: gainsboro;
     --purple: #8956f0;
     --orangered: orangered;
     --orange: orange;

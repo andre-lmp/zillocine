@@ -11,7 +11,7 @@
 .player-pg-container .player-bg-img{
   width: 100%;
   height: 100vh;
-  max-height: 800px;
+  max-height: 850px;
   position: relative;
 }
 
@@ -31,8 +31,8 @@
   width: 60%;
   height: 100%;
   position: absolute;
-  top: 0;
   left: 0;
+  bottom: 0;
   z-index: 1;
   background-image:  linear-gradient(90deg, var(--body-color), var(--body-opacity-07) ,var(--body-opacity-05), var(--body-opacity-00));
 }
@@ -44,9 +44,9 @@
 }
 
 .player-pg-container .player-img-info{
-  max-width: 40%;
+  width: 40%;
   position: absolute;
-  bottom: 10px;
+  bottom: 20px;
   left: 30px;
   z-index: 3;
   display: flex;
@@ -103,6 +103,7 @@
   display: flex;
   flex-direction: row;
   align-items: center; 
+  justify-content: center;
   gap: 10px;
   color: var(--white-opacity-1);
   background-color: var(--dark-blue);
@@ -183,6 +184,7 @@
   width: 100%;
   height: 200px;
   object-fit: cover;
+  object-position: top;
   border-radius: 4px;
 }
 
@@ -250,4 +252,62 @@
   .player-pg-container .player-content-info p{
     width: 50%;
   }
+}
+
+@media screen and (max-width: 700px){
+  .player-pg-container .player-img-info{
+    width: 100%;
+    left: 0;
+    padding: 0px 15px;
+    box-sizing: border-box;
+    align-items: flex-start;  
+  }
+
+  .player-pg-container .player-bg-img{
+    height: 80vh;
+  }
+
+  .player-pg-container .player-content-info{
+    padding: 0px 15px;
+  }
+
+  .player-pg-container .player-img-info h1{
+    font-size: 35px;
+  }
+
+  .player-pg-container .player-content-info p{
+    width: 100%;
+    font-size: 16.5px;
+    font-weight: 500;
+  }
+
+  .player-pg-container .additional-content{
+    padding: 20px 15px 0px 15px;
+  }
+
+  .player-pg-container .additional-content h1{
+    font-size: 17.5px;
+    font-weight: 600;
+  }
+
+  .player-pg-container .additional-content button{
+    display: none;
+  }
+
+  .player-pg-container .player-img-info  button{
+    font-size: 15.5px;
+    width: 100%;
+    padding: 15px; 
+  }
+
+  .player-pg-container .player-bg-img::after{
+    width: 100%;
+    height: 65%;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(to top, var(--body-color),var(--body-opacity-08), var(--body-opacity-00));
+  }
+}
+
+@media screen and (max-width: 600px) {
 }

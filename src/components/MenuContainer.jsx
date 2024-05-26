@@ -40,6 +40,8 @@ function Menu(props) {
                     <li><p onClick={() => {handleNavigationLinks('Series')}}>Series</p></li>
                     <li><p onClick={() => {handleNavigationLinks('Search')}}>Pesquisar</p></li>
                     <li><p onClick={() => {handleNavigationLinks('Profile')}}>Conta</p></li>
+                    <li></li>
+                    <li><p onClick={() => {handleNavigationLinks('Auth')}}>Entrar</p></li>
                 </ul>
             </nav>
         </section>

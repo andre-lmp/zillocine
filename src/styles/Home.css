@@ -4,83 +4,20 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    row-gap: 2rem;
+    row-gap: 32px;
     margin-bottom: 20px;
 }
 
-.swiper{
-  width: 100%;
-  height: 100%;
-  --swiper-pagination-color: var(--white-opacity-1);
-  --swiper-pagination-bullet-size: 0.6em;
-  --swiper-pagination-bullet-inactive-color: var(--white-opacity-07);
-}
-
-.slide{
-  width: 100%;
-  height: 100%;
-}
-
-
-
 @media screen and (max-width: 900px){
-  .presentation-slides{
-    height: 90vh;
-  }
-
-  .swiper{
-    --swiper-pagination-bullet-size: 0.5em;
-  }
-
-  .presentation-slides .movie-slides-info h1{
-    font: 800 40px "Raleway", sans-serif;
-  }
-
-  .presentation-slides .movie-slides-info h2{
-    font: 600 15px 'Noto Sans', helvetica, sans-serif;
-  }
-
-  .presentation-slides .movie-slides-info p{
-    font: 500 16px "Noto Sans",sans-serif;
-  }
 }
 
 @media screen and (max-width: 700px) {
-
-  .presentation-slides .movie-slides-info{
-    width: 100%;
-    left: 0;
-    box-sizing: border-box;
-  }
-  
-  .presentation-slides .movie-slides-info::before{
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 70vh;
-    background-image: linear-gradient(to top, var(--body-color),var(--body-opacity-05), var(--body-opacity-00));
-  }
-  
-  .presentation-slides .movie-slides-info h1{
-    font: 800 40px "Raleway", sans-serif;
-    text-align: center;
-  }
-  
-  .presentation-slides .movie-slides-info h2{
-    margin: auto;
-  }
-  
-  .presentation-slides .movie-slides-info p{
-    text-align: center;
-  }
-  
-  .presentation-slides .movie-slides-info button{
-    margin: auto;
+  .home-container{
+    row-gap: 25px;
+    margin-bottom: 0px;
   }
 }
 
 @media screen and (max-width: 600px) {
-  .presentation-slides .movie-slides-info h1{
-    font: 800 30px "Raleway", sans-serif;
-  }
+
 }

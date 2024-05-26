@@ -43,11 +43,13 @@
 
 .movies-page-container .loading-container{
   position: relative;
-  margin-bottom: 10px;
 }
 
 .movies-page-container .box-movies, .box-series{
   padding: 0px 30px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
 }
 
 @media screen and (min-width: 2000px) {
@@ -66,7 +68,23 @@
 }
 
 @media screen and (max-width: 700px) {
+  .movies-page-container{
+    row-gap: 10px;
+  }
 
+  .movies-page-container .loading-container{
+    margin-bottom: 0;
+  }
+
+  .movies-page-container .genres-bar{
+    padding: 0px 15px;
+  }
+
+  .movies-page-container .box-movies, .box-series{
+    padding: 0px 15px;
+    margin-top: 25px;
+    row-gap: 10px;
+  }
 }
 
 @media screen and (max-width: 600px) {

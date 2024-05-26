@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faUser} from '@fortawesome/free-solid-svg-icons';
-import BackgroundProfile from '/src/images/BackgroundProfile.png';
 import '/src/styles/Profile.css';
+import { FaUserCircle } from "react-icons/fa";
+import { HiOutlinePencilSquare } from "react-icons/hi2";
 
 function ProfilePage() {
     const [autorizado, setAutorizado] = useState(false);
@@ -12,26 +11,41 @@ function ProfilePage() {
     },[]);
 
     return autorizado ?(
-        <main className="profile-page">
-            <div className="background-container">
-                <div className="background-image-container">
-                    <img src={BackgroundProfile} alt="Background"/>
-                </div>
-                <div className="base-profile">
-                    <div className="profile-image">
-                        <FontAwesomeIcon id='userIcon' icon={faUser}/>
-                    </div>
-                </div>
-                <div className="profile-linear"></div>
-            </div>
+        <section className="profile-page">
         
-            <div className="data-container">
-                <div className="data-item"><h1>Nome</h1><h2>UsuarioTest</h2></div>
-                <div className="data-item"><h1>Endereço de Email</h1><h2>Usuariotest43@gmail.com</h2></div>
-                <div className="data-item"><h1>Senha</h1><h2>********</h2></div>
-            </div>
+            <section className="content-container">
+                <div className="profile-data">
+                    <h1 id="profile-section-title">Perfil</h1>
+                    <div className="user-icon-box">
+                        <FaUserCircle className="user-icon"/>
+                    </div>
+                    <section className="user-info">
+                        <div className="data-item">
+                            <h1>Nome de Usuario</h1>
+                            <h2>
+                                UsuarioTest
+                                <HiOutlinePencilSquare className="pencil-icon"/>
+                            </h2>
+                        </div>
+                        <div className="data-item">
+                            <h1>Email</h1>
+                            <h2>
+                                Usuariotest43@gmail.com
+                                <HiOutlinePencilSquare className="pencil-icon"/>
+                            </h2>
+                        </div>
+                        <div className="data-item">
+                            <h1>Senha</h1
+                            ><h2>
+                                ********
+                                <HiOutlinePencilSquare className="pencil-icon"/>
+                            </h2>
+                        </div>
+                    </section>
+                </div>
+            </section>
                     
-        </main>
+        </section>
     
     ) : null;
 }

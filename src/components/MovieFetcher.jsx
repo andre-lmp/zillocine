@@ -72,24 +72,27 @@ const  fetchMovies = (props) => {
   };
 
   const breakpoints = {
-  750: {
-    slidesPerView: 3
-  },
-  820:{
-    slidesPerView: 4
-  },
-  990:{
-    slidesPerView: 5
-  },
-  1160:{
-    slidesPerView: 6
-  },
-  1400:{
-    slidesPerView: 7
-  },
-  1750: {
-    slidesPerView: 8
-  }
+    300:{
+      slidesPerView: 2
+    },
+    600: {
+      slidesPerView: 3
+    },
+    820:{
+      slidesPerView: 4
+    },
+    990:{
+      slidesPerView: 5
+    },
+    1160:{
+      slidesPerView: 6
+    },
+    1400:{
+      slidesPerView: 7
+    },
+    1750: {
+      slidesPerView: 8
+    }
   };
 
   const handleCustomTitle = (title) => {
@@ -295,50 +298,31 @@ const  fetchMovies = (props) => {
             ): null}
           </div>
           <hr/>
-          {displayWidth > 750 ? (
-              <section className="swiper-box">
-                <button className="swiper-btns-control btn-left"><SlArrowLeft className="arrows" onClick={() => {handleSwiperControl('prev')}}/></button>
-                <button className="swiper-btns-control btn-right"><SlArrowRight className="arrows" onClick={() => {handleSwiperControl('next')}}/></button>
-                <Swiper swiperRef={setSwiperRef} className="swiper-container" style={{width: '100%', height: 'auto'}} breakpoints={breakpoints}>
-                        {moviesData.map((movie, index) => (
-                            <SwiperSlide className="swiper-slide" >
-                              <div key={movie.id} className="swiper-image" onClick={handleMoviesNavigation}>
-                                { movie.poster_path ? (
-                                  <img className="slide-images" value={movie.id} display={undefined} ref={(e) => {imagesRef.current[index] = e}} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
-                                ): null }
-                                {movie.backdrop_path ? (
-                                  <img ref={(e) => {imagesRef.current[index] = e}} src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}></img>
-                                ): null}
-                                {!movie.backdrop_path && !movie.poster_path ? (
-                                  handleUnavailableContent(index)
-                                ): null}
-                
-                              </div>
-                            </SwiperSlide>
-                        ))}
-                </Swiper>
-              </section>
-          ): (
-            <motion.div
-             ref={motionRef} 
-             className="motion-container" 
-             drag='x'  
-             dragConstraints={{right: 0, left: getMotionHeight()}}  
-            >
-              {moviesData.map((movie) => (
-                  <div>
-                    <div display={loading} key={movie.id} className="motion-slide"  onClick={handleMoviesNavigation}>
-                      {movie.poster_path ? (
-                        <img value={movie.id} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
-                      ):(
-                        <img value={movie.id} src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}/>
-                      )}
-                    </div>
-                  </div>
-                ))}
-            </motion.div>
-          )}
-          
+          <section className="swiper-box">
+            <button className="swiper-btns-control btn-left"><SlArrowLeft className="arrows" onClick={() => {handleSwiperControl('prev')}}/></button>
+            <button className="swiper-btns-control btn-right"><SlArrowRight className="arrows" onClick={() => {handleSwiperControl('next')}}/></button>
+            <Swiper swiperRef={setSwiperRef} className="swiper-container" style={{width: '100%', height: 'auto'}} breakpoints={breakpoints}>
+                    {moviesData.map((movie, index) => (
+                        <SwiperSlide className="swiper-slide" >
+                          <div key={movie.id} className="swiper-image" onClick={handleMoviesNavigation}>
+                            
+                            { movie.poster_path &&
+                              <img className="slide-images" value={movie.id} display={undefined} ref={(e) => {imagesRef.current[index] = e}} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
+                            }
+
+                            {movie.backdrop_path &&
+                              <img ref={(e) => {imagesRef.current[index] = e}} src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}></img>
+                            }
+                            
+                            {!movie.backdrop_path && !movie.poster_path ? (
+                              handleUnavailableContent(index)
+                            ): null}
+            
+                          </div>
+                        </SwiperSlide>
+                    ))}
+            </Swiper>
+          </section>
         </div>
 
       </section>

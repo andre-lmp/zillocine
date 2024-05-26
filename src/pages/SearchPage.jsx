@@ -129,13 +129,14 @@ function SearchContent() {
                 ): null}
                 {contentData.map((content, index) => (
                     <div key={content.id} className="content-box" onClick={() => {handleNavigation(content.id)}} >
-                        {content.poster_path ? (
-                            <img display={undefined} src={`https://image.tmdb.org/t/p/w500${content.poster_path}`}></img>
-                        ): null}
+                        
+                        {content.poster_path &&
+                         <img display={undefined} src={`https://image.tmdb.org/t/p/w500${content.poster_path}`}></img>
+                        }
 
-                        {content.backdrop_path ? (
-                                <img display={undefined} src={`https://image.tmdb.org/t/p/w500${content.backdrop_path}`}></img>
-                        ): null}
+                        {content.backdrop_path &&
+                            <img display={undefined} src={`https://image.tmdb.org/t/p/w500${content.backdrop_path}`}></img>
+                        }
 
                         {!content.backdrop_path && !content.poster_path ? (
                             handleUnavailableContent(index)

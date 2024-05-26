@@ -5,10 +5,7 @@ html{
 }
 
 header{
-  position: relative;
   width: 100%;
-  margin: auto;
-  z-index: 4;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -16,10 +13,8 @@ header{
   transition: opacity .2s linear;
   box-sizing: border-box;
   position: fixed;
-  margin: auto;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
   z-index: 100;
 }
 
@@ -40,7 +35,7 @@ header .header-links{
   justify-content: space-between;
   background-color: transparent;
   box-sizing: border-box;
-
+  align-items: center;
 }
 
 header .header-links::before{
@@ -132,6 +127,24 @@ header .right-links h3{
   cursor: pointer;
 }
 
+header .menu-icon{
+  width: 28px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  display: none;
+}
+
+header .menu-icon div{
+  width: 100%;
+  height: 2px;
+  background-color: var(--white-opacity-1);
+  border-radius: 10px;
+}
+
 .menu-component{
   width: 300px;
   height: 100vh;
@@ -150,22 +163,22 @@ header .right-links h3{
   display: flex;
   flex-direction: column;
   list-style: none;
-  row-gap: 2rem;
+  row-gap: 30px;
   position: relative;
 }
 
-.menu-component ul li p{
+.menu-component ul p{
   font: 500 23px "Poppins", 'Roboto', helvetica, sans-serif;
   color: var(--white-opacity-07);
   cursor: pointer;
 }
 
-.menu-component ul li p:hover{
+.menu-component ul p:hover{
   color: var(--white-opacity-1);
   transform: scale(1.01);
 }
 
-.menu-component ul li button{
+.menu-component ul button{
   border: none;
   font: 300 34px "Roboto", sans-serif;
   display: flex;
@@ -179,7 +192,7 @@ header .right-links h3{
   outline: none;
 }
 
-.menu-component ul li button .close-icon{
+.menu-component button .close-icon{
   color:var(--white-opacity-1);
   font-size: 31px;
 }
@@ -236,6 +249,10 @@ header .right-links h3{
   color: var(--white-opacity-1);
   font: 500 20px "Roboto",'Poppins', sans-serif;
   animation: fadeIN .3s ease-in-out;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 1;
 }
 
 .fetchMovies-container{
@@ -259,7 +276,7 @@ header .right-links h3{
   cursor: pointer;
   opacity: 1;
   border-radius: 4px;
-  margin: 0px 20px 0px 0px;
+  margin-right: 20px;
   position: relative;
   min-width: 170px;
   height: 300px;
@@ -324,70 +341,60 @@ footer{
   display: flex;
   z-index: 20;
   margin-top: 50px;
+  padding: 30px;
   flex-direction: column;
+  box-sizing: border-box;
+  row-gap: 30px;
+  justify-content: center;
   border-top: 1pt solid var(--white-opacity-01);
   background-color: var(--body-color);
   color: var(--white-opacity-95);
 }
 
-.footer-links{
+footer .about-project{
   width: 100%;
   display: flex;
-  justify-content: center;
-  justify-content: center;
-  gap: 2rem;
-  padding: 30px;
-  box-sizing: border-box;
-}
-
-.about-project{
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 30px 40px;
+  flex-direction: row-reverse;
   box-sizing: border-box;
   align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap-reverse;
+  gap: 30px;
+  row-gap: 30px;
 }
 
-
-.about-project h1{
-  font: 600 25px 'Raleway', sans-serif;
+footer .about-project h2{
+  width: fit-content;
+  font: 700 21px 'Raleway', sans-serif;
 }
 
-.about-project h2{
-  font: 400 21px 'Raleway', sans-serif; 
-}
-
-.about-project h2 span{
-  font-weight: 500;
-}
-
-.social-icons{
+footer .social-icons{
   display: flex;
-  gap: 2rem;
+  gap: 30px;
   flex-direction: row;
+  justify-content: center;
 }
 
-.social-icons .icons{
-  font-size: 24px;
+footer .social-icons .icons{
+  font-size: 23px;
   transition: transform .1s ease-in-out;
   color: var(--white-opacity-95);
 }
 
-.social-icons .icons:hover{
+footer .social-icons .icons:hover{
   transform: scale(1.2);
 }
 
-.footer-links a{
+footer .footer-links a{
   text-decoration: none;
-  font: 400 20px 'Roboto', sans-serif;
+  font: 500 21px 'Raleway', 'Roboto', sans-serif;
   cursor: pointer;
   border-bottom: 1.5pt solid var(--transparent);
   padding-bottom: 5px;
+  display: none;
 }
 
-.footer-links a:hover{
+footer .footer-links a:hover{
   color: var(--white-opacity-1);
   border-bottom: 1.5pt solid var(white-opacity-1);
 }
@@ -432,10 +439,23 @@ footer{
   margin-top: 10px;
 }
 
+.swiper{
+  width: 100%;
+  height: 100%;
+  --swiper-pagination-color: var(--white-opacity-1);
+  --swiper-pagination-bullet-size: 0.6em;
+  --swiper-pagination-bullet-inactive-color: var(--white-opacity-07);
+}
+
+.slide{
+  width: 100%;
+  height: 100%;
+}
+
 .presentation-slides{
   max-width: 100%;
   height: 100vh;
-  max-height: 800px;
+  max-height: 850px;
 }
 
 
@@ -478,10 +498,9 @@ footer{
 
 .presentation-slides .movie-slides-info{
   position: absolute;
-  bottom: 5%;
   left: 30px;
+  bottom: 15px;
   display: flex;
-  width: fit-content;
   flex-direction: column;
   z-index: 44;
   width: 40%;
@@ -490,7 +509,7 @@ footer{
 }
 
 .presentation-slides .movie-slides-info h1{
-  font: 800 40px "Raleway", sans-serif;
+  font: 800 40px "Raleway", 'Poppins', sans-serif;
   color: var(--white-opacity-1);
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -527,9 +546,9 @@ footer{
   display: inline-block;
   width: fit-content;
   outline: none;
-  border-radius: 5px;
-  width: 190px;
-  height: 43px;
+  border-radius: 4px;
+  width: 200px;
+  padding: 9px 0px;
   cursor: pointer;
 }
 
@@ -551,7 +570,6 @@ footer{
 }
 
 @media screen and (max-width: 900px){
-  
   header .center-links a:nth-child(3){
     display: none;
   }
@@ -559,22 +577,44 @@ footer{
   header .right-links h3{
     display: none;
   }
-  
+
+  .presentation-slides{
+    height: 90vh;
+  }
+
+  .presentation-slides .movie-slides-info h1{
+    font: 800 40px "Raleway", sans-serif;
+  }
+
+  .presentation-slides .movie-slides-info h2{
+    font: 600 15px 'Noto Sans', helvetica, sans-serif;
+  }
+
+  .presentation-slides .movie-slides-info p{
+    font: 500 16px "Noto Sans",sans-serif;
+  }
+
+  .swiper{
+    --swiper-pagination-bullet-size: 0.5em;
+  }
 }
 
 @media screen and (max-width: 800px) {
+  
 }
 
 @media screen and (max-width: 700px) {
+
   header{
-    position: absolute;
+    width: 100vw;
   }
 
   header .header-links{
-    padding: 15px 20px;
+    width: 100%;
+    padding: 15px;
   }
 
-  header .center-links a{
+  header .center-links{
     display: none;
   }
 
@@ -583,24 +623,137 @@ footer{
   }
 
   header .right-links button{
-    width: 42px;
-    height: 42px;
+    width: 41px;
+    height: 41px;
     font-size: 16px;
   }
 
   header .project-title h1{
-    font-size: 25px;
+    font-size: 24px;
   }
 
   header .right-links .lupa-icon{
     display: none;
   }
 
+  header .menu-icon{
+    display: flex;
+    width: 27px;
+    row-gap: 6px;
+  }
+
+  .home-container .loading-container{
+    padding: 0px 15px;
+  }
+
+  .movie-fetcher .swiper-btns-control{
+    display: none;
+  }
+
   .movie-fetcher h1{
-    font-size: 22px;
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  .movie-fetcher .swiper-image{
+    min-width: 160px;
+    height: 250px;
+  }
+
+  .movie-fetcher .swiper-image{
+    margin-right: 10px;
+  }
+
+  .movie-fetcher .swiper-image:hover img{
+    opacity: 1;
+  }
+
+  .movie-fetcher .swiper-image::before{
+    display: none;
+  }
+
+  .movie-fetcher hr{
+    display: none;
+  }
+
+  .presentation-slides .movie-slides-info{
+    width: 100%;
+    left: 0;
+    bottom: 35px;
+    box-sizing: border-box;
+    padding: 0px 15px;
+  }
+
+  .presentation-slides .movie-slides-info button{
+    font-size: 15.5px;
+    width: 100%;
+    padding: 14px 0px;
+    border-radius: 5px;
+  }
+  
+  .presentation-slides .movie-slides-info::before{
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 70vh;
+    background-image: linear-gradient(to top, var(--body-color),var(--body-opacity-05), var(--body-opacity-00));
+  }
+
+  .presentation-slides .presentation-img::after{
+    width: 100%;
+    height: 65%;
+    left: 0;
+    bottom: 0;
+    background-image: linear-gradient(to top, var(--body-color),var(--body-opacity-08), var(--body-opacity-00));
+  }
+  
+  .presentation-slides .movie-slides-info h1{
+    font: 800 40px "Raleway", sans-serif;
+    text-align: center;
+  }
+  
+  .presentation-slides .movie-slides-info h2{
+    margin: auto;
+  }
+  
+  .presentation-slides .movie-slides-info p{
+    text-align: center;
+  }
+  
+  .presentation-slides .movie-slides-info button{
+    margin: auto;
+  }
+
+  .menu-component{
+    width: 60%;
+    padding: 8px 20px;
+  }
+
+  .menu-component ul p{
+    font-size: 20px;
+  }
+
+  .menu-component button .close-icon{
+    font-size: 28px;
+  }
+
+  footer{
+    padding: 25px 15px;
+  }
+
+  footer .about-project h2{
+    font-size: 20px;
   }
 }
 
 @media screen and (max-width: 600px) {
-  
+  .presentation-slides .movie-slides-info h1{
+    font: 800 30px "Raleway", sans-serif;
+  }
+}
+
+@media screen and (max-width: 500px){
+  .presentation-slides{
+    height: 80vh;
+  }
 }

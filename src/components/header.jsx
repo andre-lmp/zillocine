@@ -17,10 +17,6 @@ function Header(props) {
     navigate(`/${e}`)
   };
 
-  const activeMenu = () => {
-    props.menuIsActive(true);
-  };
-
   useEffect(() => {
     const getDocumentWidth = () => {
       if (window.innerWidth){
@@ -40,12 +36,7 @@ function Header(props) {
 
   window.addEventListener('scroll', () => {
     if (window.scrollY > 100){
-      if (displayWidth >= 750){
         scrolled.current.style.backgroundColor = 'rgb(2, 8, 23)';
-      }else{
-        scrolled.current.style.backgroundColor = 'rgb(2, 8, 23)';
-      }
-
     }else{
       scrolled.current.style.backgroundColor = 'transparent';
     }
@@ -55,6 +46,12 @@ function Header(props) {
     <header>
       <div ref={overlayRef} className="overlayDiv"></div>
           <div ref={scrolled} className="header-links">
+             
+              <div onClick={() => {props.menuIsActive(true)}} className="menu-icon">
+                <div className=""></div>
+                <div className=""></div>
+                <div className=""></div>
+              </div>
 
               <div className="project-title">
                 <h1>MovieZilla</h1>
@@ -71,7 +68,7 @@ function Header(props) {
                 <button className="icon-conta" onClick={() => {handleNavigationLinks('Profile')}}>
                   <FaUserLarge onClick={() => {handleNavigationLinks('Profile')}} className="user-icon"/>
                 </button>
-                <h3 id="Auth" >Entrar</h3>
+                <h3 id="Auth" onClick={() => {handleNavigationLinks('Auth')}}>Entrar</h3>
               </div>
               
             </div>

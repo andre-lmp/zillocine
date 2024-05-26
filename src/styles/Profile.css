@@ -1,98 +1,89 @@
 @import url('/src/styles/Profile.css');
 
 .profile-page{
-    max-width: 100vw;
+    width: 100%;
+    min-height: calc(100vh - 50px);
+    padding: 0px 30px;
+    box-sizing: border-box;
+}
+
+.profile-page .content-container{
+    width: 100%;
+    height: 100vh;
     max-height: 800px;
-}
-  
-.profile-page .background-container{
-    width: 100%;
-    height: 60vh;
-    max-height: 400px;
-    position: relative;
-    background-color: var(--body-color);
-    border-bottom: 3px solid var(--red);
-}
-  
-.profile-page .background-image-container{
-    width: 100%;
-    height: 100%;
-}
-  
-.profile-page .background-image-container img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: .3;
-}
-  
-.profile-page .profile-image{
-    background-color: var(--black);
-    width: 150px;
-    height: 150px;
-    border-radius: 100%;
-    position: absolute;
     display: flex;
-    border: 3px solid var(--transparent);
-    border-top: 3px solid var(--red);
-    border-right: 3px solid var(--red);
     justify-content: center;
     align-items: center;
-    transform: rotate(-45deg);
-    z-index: 3;
 }
+
   
-.profile-page .base-profile{
-    position: absolute;
-    bottom: calc(150px / 2);
-    left: calc(50% - 100px);
-}
-  
-.profile-page .profile-linear{
-    width: 100%;
-    height: 20%;
-    background-image: linear-gradient(to top, var(--black), var(--black-opacity-00));
-    position: absolute;
-    bottom: 0;
-    z-index: 2;
-}
-  
-.profile-page #userIcon{
-    font-size: 50px;
-    transform: rotate(45deg);
-    color: var(--white-opacity-1);
-}
-  
-.profile-page .data-container{
-    width: 50%;
-    max-width: 800px;
-    min-width: 250px;
+.profile-page .profile-data{
     background-color: var(--red);
-    margin: 110px auto 100px auto;
     background-color: var(--white-opacity-01);
-    padding: 30px;
+    padding: 50px 50px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    border-radius: 6px;
+    position: relative;
+}
+
+.profile-page #profile-section-title{
+    color: var(--white-opacity-1);
+    font: 500 20px 'Roboto', 'Poppins', sans-serif;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.profile-page .user-icon-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.profile-page .user-icon-box .user-icon{
+    color: var(--gainsboro);
+    font-size: 200px;
+}
+
+.profile-page .user-info{
+    width: 250px;
     display: flex;
     flex-direction: column;
-    row-gap: 2rem;
-    border-radius: 8px;
+    row-gap: 25px;
 }
   
-.profile-page .data-container .data-item{
+.profile-page .profile-data .data-item{
     display: flex;
     flex-direction: column;
-    border-bottom: 1px solid var(--white-opacity-01);
-    padding-bottom: 10px;
-    row-gap: .5rem;
+    padding-bottom: 2px;
+    border-bottom: 1pt solid var(--white-opacity-03);
+    row-gap: 8px;
 }
   
-.profile-page .data-container .data-item h1{
-    font: 400 19px 'Roboto', sans-serif;
+.profile-page .profile-data .data-item h1{
+    font: 500 17px 'Poppins','Roboto', sans-serif;
     color: var(--white-opacity-1);
 }
   
-.profile-page .data-container .data-item h2{
-    font: 400 17px 'Roboto', sans-serif;
+.profile-page .profile-data .data-item h2{
+    font: 400 17px 'Roboto','Poppins', sans-serif;
     color: var(--white-opacity-06);
+    position: relative;
+}
+
+.profile-page .profile-data .pencil-icon{
+    color: var(--white-opacity-09);
+    position: absolute;
+    top: 50%;
+    right: 0;
+    cursor: pointer;
+    transform: translateY(-50%);
 }
 
 
@@ -108,17 +99,25 @@
   }
   
   @media screen and (max-width: 800px) {
-    
+    .profile-page #profile-section-title{
+        display: none;
+    }
   }
   
   @media screen and (max-width: 700px) {
-  
+    .profile-page{
+        padding: 0px 15px;
+    }
   }
   
   @media screen and (max-width: 600px) {
-    
+    .profile-page .user-icon-box .user-icon{
+        font-size: 180px;
+    }
   }
   
   @media screen and (max-width: 500px) {
-    
+    .profile-page .user-icon-box .user-icon{
+        font-size: 160px;
+    }
   }
