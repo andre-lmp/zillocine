@@ -6,12 +6,12 @@ import MoviesPage from './pages/MoviesPage';
 import SeriesPage from './pages/SeriesPage';
 import ProfilePage from './pages/ProfilePage';
 import Header from "./components/Header";
-import Footer from "/src/components/Footer";
-import Menu from '/src/components/MenuContainer';
-import SearchPage from '/src/pages/SearchPage';
-import ScrollTop from '/src/components/ScrollTop';
-import AuthPage from '/src/pages/AuthPage';
-import '/src/styles/App.css';
+import Footer from "./components/Footer";
+import Menu from './components/MenuContainer';
+import SearchPage from './pages/SearchPage';
+import ScrollTop from './components/ScrollTop';
+import AuthPage from './pages/AuthPage';
+import './styles/App.css';
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
