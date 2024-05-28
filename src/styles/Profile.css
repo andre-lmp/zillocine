@@ -72,13 +72,13 @@
 }
   
 .profile-page .profile-data .data-item h2{
-    font: 400 17px 'Roboto','Poppins', sans-serif;
+    font: 400 18px 'Roboto','Poppins', sans-serif;
     color: var(--white-opacity-06);
     position: relative;
 }
 
 .profile-page .profile-data .pencil-icon{
-    color: var(--white-opacity-09);
+    color: var(--white-opacity-08);
     position: absolute;
     top: 50%;
     right: 0;

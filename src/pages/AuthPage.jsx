@@ -40,7 +40,7 @@ function Auth(){
             
             <section className='auth-container'>
                 <div className='form-container'>
-                    <h1>MovieZilla</h1>
+                    <h1>ZilloCine</h1>
                     <form onSubmit={() => {handleUserAuthenticated()}}>
                         <div className='input-container'>
                             <label htmlFor="name">Nome</label>

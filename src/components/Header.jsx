@@ -54,7 +54,7 @@ function Header(props) {
               </div>
 
               <div className="project-title">
-                <h1>MovieZilla</h1>
+                <h1>ZilloCine</h1>
               </div>
 
               <div className="links center-links">
