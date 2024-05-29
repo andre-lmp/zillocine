@@ -49,9 +49,11 @@ function MovieSlides(props) {
               const data = await response.json();
               setMoviesData(data.results);
               handleSelectionMovies(data.results);
+              props.isVisible(true);
             }
           } catch{
             console.log(error);
+            props.isVisible(false);
           }          
 
         }else{
@@ -89,12 +91,14 @@ function MovieSlides(props) {
         let maxScore = 0;
         let maxScoreIndex = 0
 
-        for (let index in item){
-          if (item[index].vote_average > maxScore){
-            maxScore = item[index].vote_average
+        item.forEach((element, index) => {
+          if (element.vote_average > maxScore){
+            maxScore = element.vote_average
             maxScoreIndex = index;
+            console.log(index);
           }
-        }
+        });
+
         return item[maxScoreIndex];
       };
 
@@ -109,6 +113,7 @@ function MovieSlides(props) {
 
       setMoviesData(selectResult);
       setAuthorized(true);
+      props.isVisible(true);
     };
     
     const handleFetchMovies = async () => {
@@ -122,12 +127,15 @@ function MovieSlides(props) {
       };
 
       const fetchDataResult = [];
+      
       try{
         for (let index in genres) {
           const result = await fetchMovies(genres[index]);
           fetchDataResult.push(result);
         }
-      }catch (error){
+      }
+
+      catch (error){
         console.error(error);
       }finally{
         selectBestMovies(fetchDataResult);
@@ -181,7 +189,9 @@ function MovieSlides(props) {
                             ): (
                             <p>O lançamento de um dos mais aguardados filmes de uma sequencia de sucesso</p>
                             )}
-                            <button onClick={NavigateToPlayer} value={movie.id} id="btn-play">Ir para o Filme</button>
+                            <button onClick={NavigateToPlayer} value={movie.id} id="btn-play">
+                              Ir para {props.contentType}
+                            </button>
                         </div>
                     </SwiperSlide>
                 ))};

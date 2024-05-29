@@ -56,7 +56,7 @@ header .project-title{
 }
 
 header .project-title h1{
-  font: 800 30px "Raleway", sans-serif;
+  font: 800 29px "Raleway", sans-serif;
   color: var(--white-opacity-1);
 }
 
@@ -402,7 +402,7 @@ footer .footer-links a:hover{
 .loading-component{
   width: 100%;
   height: 100%;
-  padding: 20px 20px;
+  padding: 20px 0px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -623,8 +623,8 @@ footer .footer-links a:hover{
   }
 
   header .right-links button{
-    width: 41px;
-    height: 41px;
+    width: 40px;
+    height: 40px;
     font-size: 16px;
   }
 
@@ -638,7 +638,7 @@ footer .footer-links a:hover{
 
   header .menu-icon{
     display: flex;
-    width: 27px;
+    width: 26px;
     row-gap: 6px;
   }
 
@@ -704,7 +704,7 @@ footer .footer-links a:hover{
     height: 65%;
     left: 0;
     bottom: 0;
-    background-image: linear-gradient(to top, var(--body-color),var(--body-opacity-08), var(--body-opacity-00));
+    background-image: linear-gradient(to top, var(--body-color),var(--body-color), var(--body-opacity-00));
   }
   
   .presentation-slides .movie-slides-info h1{
@@ -754,6 +754,6 @@ footer .footer-links a:hover{
 
 @media screen and (max-width: 500px){
   .presentation-slides{
-    height: 80vh;
+    height: 83vh;
   }
 }

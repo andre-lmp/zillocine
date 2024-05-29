@@ -1,22 +1,25 @@
 @import url('/src/styles/Movies.css');
 
+.movies-pg{
+  width: 100%;
+  min-height: calc(100vh - 50px);
+}
 
-.movies-page-container{
+.movies-pg-container{
     display: flex;
     flex-direction: column;
-    row-gap: 30px;
     justify-content: space-between;
 }
 
-.movies-page-container .genres-bar{
+.movies-pg .genres-bar{
     width: 100%;
     z-index: 20;
     box-sizing: border-box;
+    margin: 50px 0px 30px 0px;
     padding: 0px 30px;
-    margin-top: 20px;
 }
   
-.movies-page-container .genres-bar ul{
+.movies-pg .genres-bar ul{
   display: flex;
   flex-direction: row;
   list-style: none;
@@ -25,7 +28,7 @@
   flex-wrap: wrap;
 }
   
-.movies-page-container .genres-bar ul li button{
+.movies-pg .genres-bar ul li button{
   background-color: var(--midnightblue);
   font: 500 16px 'Roboto', helvetica, sans-serif;
   color: var(--white-opacity-07);
@@ -37,15 +40,15 @@
   animation: fadeIN .2s ease-in-out;
 }
   
-.movies-page-container .genres-bar ul li:nth-child(1) button{
+.movies-pg .genres-bar ul li:nth-child(1) button{
   color: var(--white-opacity-1);
 }
 
-.movies-page-container .loading-container{
+.movies-pg .loading-container{
   position: relative;
 }
 
-.movies-page-container .box-movies, .box-series{
+.movies-pg .box-movies, .box-series{
   padding: 0px 30px;
   display: flex;
   flex-direction: column;
@@ -68,19 +71,20 @@
 }
 
 @media screen and (max-width: 700px) {
-  .movies-page-container{
+  .movies-pg{
     row-gap: 10px;
   }
 
-  .movies-page-container .loading-container{
+  .movies-pg .loading-container{
     margin-bottom: 0;
   }
 
-  .movies-page-container .genres-bar{
+  .movies-pg .genres-bar{
     padding: 0px 15px;
+    margin: 40px 0px 20px 0px;
   }
 
-  .movies-page-container .box-movies, .box-series{
+  .movies-pg .box-movies, .box-series{
     padding: 0px 15px;
     margin-top: 25px;
     row-gap: 10px;

@@ -8,15 +8,12 @@ import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 
 const  fetchMovies = (props) => {
   const [moviesData, setMoviesData] = useState([]);
+  const [swiperSlides, setSwiperSlides] = useState([]);
   const newDate = new Date().toISOString().split('T')[0];
   const apiKey = "e1534e69b483f2e9d62ea1c394850e4e";
   const [authorized, setAuthorized] = useState(false);
   const navigate = useNavigate();
   const [type, setType] = useState(props.type);
-  const btnsType = useRef();
-  const [loading, setLoading] = useState('true');
-  const [displayWidth, setDisplayWidth] = useState(0);
-  const motionRef = useRef(undefined);
   const componentRef = useRef(undefined);
   const imagesRef = useRef([]);
   const [swiperRef, setSwiperRef] = useState(undefined);
@@ -104,53 +101,69 @@ const  fetchMovies = (props) => {
   };
  
   const handleMoviesNavigation = (e) => {
-    const valor = e.target.attributes.value.value;
-    navigate(`/Page/${valor}/${type}`);
+    navigate(`/Page/${e}/${type}`);
   };
 
-  const handleGenres = (value, type) => {
-    let genre = '';
+  const handleGenres = (genre, type) => {  
+    let genreName = '';
+
     if (type === 'filme'){
-      for (let item in moviesGenres){
-        if (value === moviesGenres[item]){
-          genre = item;
+      Object.entries(moviesGenres).forEach(([key, value]) => {
+        if (value === genre){
+          genreName = key;
         }
-      }
-    }else{
-      for (let item in seriesGenres){
-        if (value === seriesGenres[item]){
-          genre = item;
-        }
-      }
+      });
     }
-    return genre;
+    else{
+      Object.entries(seriesGenres).forEach(([key, value]) => {
+        if (value === genre){
+          genreName = key;
+        }
+      });
+    }
+    return genreName;
   };
 
-  const handleChangeType = (type) => {
-    if (btnsType.current){
-      const children = btnsType.current.childNodes;
-      for (let child in children){
-        if (children[child].value === type){
-          children[child].style.border = '1pt solid white';
-        }else{
-          children[child].style.border = '1pt solid red';
-        }
-      }
-    }
-  };
-
-  const getMotionHeight = () => {
-    let width = 0;
-    if (motionRef.current){
-      width = 20 + (motionRef.current.scrollWidth - motionRef.current.offsetWidth);
-      return -width;
-    }
+  const renderSlides = (data) => {
+    setSwiperSlides(
+      <Swiper swiperRef={setSwiperRef} className="swiper-container" style={{width: '100%', height: 'auto'}} breakpoints={breakpoints}>
+        {data.map((element, index) => (
+          <SwiperSlide>
+            <div key={element.id} className="swiper-image" onClick={() => {handleMoviesNavigation(element.id)}}>
+              {element.poster_path && (
+                <img
+                  className="slide-images"
+                  ref={(e) => { imagesRef.current[index] = e }}
+                  src={`https://image.tmdb.org/t/p/w500${element.poster_path}`}
+                  alt="Poster"
+                />
+              )}
+              
+              {element.backdrop_path && !element.poster_path && (
+                <img
+                  ref={(e) => { imagesRef.current[index] = e }}
+                  src={`https://image.tmdb.org/t/p/w500${element.backdrop_path}`}
+                  alt="Backdrop"
+                />
+              )}
+      
+              {!element.backdrop_path && !element.poster_path ? (
+                handleUnavailableContent(index)
+              ) : null}
+            </div>
+          </SwiperSlide>
+        ))};
+      </Swiper>
+    );
+    
+    setAuthorized(true);
+    props.isLoading(false);
   };
 
   useEffect(() => {
-    const delay = setTimeout(() => {
-      setAuthorized(true);
-    }, 1000);
+
+    const controller = new AbortController();
+    const signal = controller.signal;
 
     const fetchMovies = async () => {
       if (type === 'Movie') {
@@ -159,26 +172,32 @@ const  fetchMovies = (props) => {
             const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&primary_release_date.gte=${newDate}&sort=primary_release_date.desc&language=pt-BR&include_image_language=pt&page=${props.page}`);
             if (response.ok){
               const data = await response.json();
+              renderSlides(data.results);
               setMoviesData(data.results);
               setType('Movie');
             }else{
               props.isLoading(true);
+              setAuthorized(false);
             }
           } catch (error) {
             props.isLoading(true);
+            setAuthorized(false);
           }
         }else{
           try {
             const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_genres=${handleGenres(props.genre, 'filme')}&language=pt-BR&include_image_language=pt&page=${props.page}`);
             if (response.ok){
               const data = await response.json();
+              renderSlides(data.results);
               setMoviesData(data.results);
               setType('Movie');
             }else{
               props.isLoading(true);
+              setAuthorized(false);
             }
           } catch (error) {
             props.isLoading(true);
+            setAuthorized(false);
           }
         }
 
@@ -189,12 +208,15 @@ const  fetchMovies = (props) => {
             if (lançamentos.ok) {
               const data = await lançamentos.json();
               setMoviesData(data.results);
+              renderSlides(data.results);
               setType('Serie');
             }else{
               props.isLoading(true);
+              setAuthorized(false);
             }
           } catch (error) {
             props.isLoading(true);
+            setAuthorized(false);
           }
         }else{
           try{
@@ -202,76 +224,25 @@ const  fetchMovies = (props) => {
             if (lançamentos.ok){
               const data = await lançamentos.json();
               setMoviesData(data.results);
+              renderSlides(data.results);
               setType('Serie');
             }else{
               props.isLoading(true);
+              setAuthorized(false);
             }
           } catch (error) {
             props.isLoading(true);
+            setAuthorized(false);
           }
         }
       }
     }     
     fetchMovies();
-   
+
+    return () => {
+      controller.abort();
+    }
   },[type, props.genre]);
-
-  useEffect(() => {
-    const getDocumentWidth = () => {
-      if (window.innerWidth){
-        setDisplayWidth(window.innerWidth);
-      }else{
-        setTimeout(getDocumentWidth, 100);
-      }
-    };
-  
-    getDocumentWidth();
-
-    window.addEventListener('resize', getDocumentWidth);
-
-    const disableComponent = () => {
-      if (!props.visible){
-        if (componentRef.current){
-          componentRef.current.style.display = 'none';
-        }else{
-          setTimeout(disableComponent, 100);
-        }
-      }else{
-        if (componentRef.current){
-          componentRef.current.style.display = 'block';
-        }else{
-          setTimeout(disableComponent, 100);
-        }
-      }
-    };
-
-    disableComponent();
-
-    const loadImages = (url) => {
-      return new Promise((resolve, reject) => {
-        const image = new Image();
-        image.src = url;
-        image.onload = resolve;
-        image.onerror = reject; 
-      });
-    };
-
-    const checkImagesLoaded = async () => {
-      try{
-
-        await Promise.all(imagesRef.current.map((imageRef) => loadImages(imageRef.src)));
-        props.isLoading(false);
-        console.log('carregou');
-
-      }catch (error){
-        console.error(error);
-      }
-    };
-
-    checkImagesLoaded();
-
-
-  },[props.visible]);
 
   const handleSwiperControl = (command) => {
     if (swiperRef){
@@ -289,7 +260,7 @@ const  fetchMovies = (props) => {
     }
   };
 
-  return authorized ? (
+  return authorized && props.visible ? (
     <section ref={componentRef} className="movie-fetcher">
         <div className="container-content">
           <div className="title-box">
@@ -301,27 +272,9 @@ const  fetchMovies = (props) => {
           <section className="swiper-box">
             <button className="swiper-btns-control btn-left"><SlArrowLeft className="arrows" onClick={() => {handleSwiperControl('prev')}}/></button>
             <button className="swiper-btns-control btn-right"><SlArrowRight className="arrows" onClick={() => {handleSwiperControl('next')}}/></button>
-            <Swiper swiperRef={setSwiperRef} className="swiper-container" style={{width: '100%', height: 'auto'}} breakpoints={breakpoints}>
-                    {moviesData.map((movie, index) => (
-                        <SwiperSlide className="swiper-slide" >
-                          <div key={movie.id} className="swiper-image" onClick={handleMoviesNavigation}>
-                            
-                            { movie.poster_path &&
-                              <img className="slide-images" value={movie.id} display={undefined} ref={(e) => {imagesRef.current[index] = e}} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
-                            }
-
-                            {movie.backdrop_path &&
-                              <img ref={(e) => {imagesRef.current[index] = e}} src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}></img>
-                            }
-                            
-                            {!movie.backdrop_path && !movie.poster_path ? (
-                              handleUnavailableContent(index)
-                            ): null}
-            
-                          </div>
-                        </SwiperSlide>
-                    ))}
-            </Swiper>
+            {swiperSlides && (
+              swiperSlides
+            )}
           </section>
         </div>
 

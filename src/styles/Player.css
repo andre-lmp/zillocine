@@ -1,6 +1,10 @@
 @import url('/src/styles/Player.css');
+.player-component{
+  width: 100%;
+  min-height: calc(100vh - 50px);
+}
 
-.player-pg-container{
+.player-container{
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -8,14 +12,14 @@
     row-gap: 30px;
 }
 
-.player-pg-container .player-bg-img{
+.player-component .player-bg-img{
   width: 100%;
   height: 100vh;
   max-height: 850px;
   position: relative;
 }
 
-.player-pg-container .player-bg-img::before{
+.player-component .player-bg-img::before{
   content: '';
   width: 100%;
   height: 100%;
@@ -26,7 +30,7 @@
   background-image:  linear-gradient(to bottom, var(--body-color), var(--body-opacity-00), var(--body-opacity-00), var(--body-color));
 }
 
-.player-pg-container .player-bg-img::after{
+.player-component .player-bg-img::after{
   content: '';
   width: 60%;
   height: 100%;
@@ -37,13 +41,13 @@
   background-image:  linear-gradient(90deg, var(--body-color), var(--body-opacity-07) ,var(--body-opacity-05), var(--body-opacity-00));
 }
 
-.player-pg-container .player-bg-img img{
+.player-component .player-bg-img img{
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.player-pg-container .player-img-info{
+.player-component .player-img-info{
   width: 40%;
   position: absolute;
   bottom: 20px;
@@ -54,14 +58,15 @@
   row-gap: 20px;
 }
 
-.player-pg-container .date-details{
+.player-component .date-details{
   display: flex;
   flex-direction: row;
   gap: 9px;
+  flex-wrap: wrap;
   align-items: center;
 }
 
-.player-pg-container .date-details img{
+.player-component .date-details img{
   height: 25px;
   margin-left: 7px;
   width: fit-content;
@@ -70,31 +75,31 @@
   background-color: var(--white-opacity-08);
 }
 
-.player-pg-container .date-details h2{
+.player-component .date-details h2{
   color: var(--white-opacity-08);
   font: 400 16px 'Poppins', 'Roboto', sans-serif;
   width: fit-content;
   border-radius: 4px;
 }
 
-.player-pg-container .date-details .release-date{
+.player-component .date-details .release-date{
   background-color: var(--orangered);
   padding: 2px 5px;
 }
 
-.player-pg-container .date-details .content-runtime{
+.player-component .date-details .content-runtime{
   display: flex;
   flex-direction: row;
   gap: 5px;
 }
 
-.player-pg-container .player-img-info h1{
+.player-component .player-img-info h1{
   font: 800 40px 'Raleway', 'Roboto', sans-serif;
   color: var(--white-opacity-1);
   line-height: 100%;
 }
 
-.player-pg-container .player-img-info  button{
+.player-component .player-img-info  button{
   border: none;
   outline: none;
   width: fit-content;
@@ -111,25 +116,25 @@
   cursor: pointer;
 }
 
-.player-pg-container .player-img-info  .play-icon{
+.player-component .player-img-info  .play-icon{
   font-size: 17px;
 }
 
 
-.player-pg-container .player-content-info{
+.player-component .player-content-info{
   width: 100%;
   padding: 10px 30px;
   box-sizing: border-box;
 }
 
-.player-pg-container .player-content-info p{
+.player-component .player-content-info p{
   color: var(--white-opacity-09);
   font: 400 18px 'Noto Sans', serif;
   width: 40%;
   line-height: 150%;
 }
 
-.player-pg-container .additional-content{
+.player-component .additional-content{
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -138,20 +143,20 @@
   position: relative;
 }
 
-.player-pg-container .swiper-box{
+.player-component .swiper-box{
   position: relative;
 }
 
-.player-pg-container .additional-content h1{
+.player-component .additional-content h1{
   color: var(--white-opacity-1);
   font: 500 20px "Roboto", sans-serif;
 }
 
-.player-pg-container .additional-content .player-swiper-title{
+.player-component .additional-content .player-swiper-title{
   margin-bottom: 15px;
 }
 
-.player-pg-container .additional-content .content-seasons{
+.player-component .additional-content .content-seasons{
   height: 250px;
   border-radius: 4px;
   cursor: pointer;
@@ -161,7 +166,7 @@
   position: relative;
 }
 
-.player-pg-container .additional-content .content-seasons::before{
+.player-component .additional-content .content-seasons::before{
   content: '';
   width: 100%;
   height: 100%;
@@ -174,13 +179,13 @@
   box-sizing: border-box;
 }
 
-.player-pg-container .additional-content .content-seasons:hover::before{
+.player-component .additional-content .content-seasons:hover::before{
   z-index: 1;
   background-color: var(--black-opacity-08);
   border: 1.5pt solid var(--white-opacity-1);
 }
 
-.player-pg-container .additional-content .content-seasons img{
+.player-component .additional-content .content-seasons img{
   width: 100%;
   height: 200px;
   object-fit: cover;
@@ -188,7 +193,7 @@
   border-radius: 4px;
 }
 
-.player-pg-container  .content-seasons-info{
+.player-component  .content-seasons-info{
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -197,7 +202,7 @@
   padding: 7px 0px;
 }
 
-.player-pg-container  .content-seasons-info h2{
+.player-component  .content-seasons-info h2{
   color: var(--white-opacity-08);
   font: 500 16px "Roboto", 'Poppins', sans-serif;
   max-width: 60%;
@@ -207,12 +212,12 @@
   -webkit-line-clamp: 2;
 }
 
-.player-pg-container  .content-seasons-info span{
+.player-component  .content-seasons-info span{
   color: var(--white-opacity-07);
   font: 500 16px "Roboto", 'Poppins', sans-serif;
 }
 
-.player-pg-container .additional-content button{
+.player-component .additional-content button{
   position: absolute;
   background-color: transparent;
   border: none;
@@ -226,36 +231,42 @@
   transform: translateY(-50%);
 }
 
-.player-pg-container .additional-content button .arrows{
+.player-component .additional-content button .arrows{
   color: var(--white-opacity-1);
   cursor: pointer;
 }
 
-.player-pg-container .btn-left{
+.player-component .btn-left{
   left: -25px;
 }
 
-.player-pg-container .btn-right{
+.player-component .btn-right{
   right: -20px;
 }
 
 @media screen and (min-width: 1400px){
-  .player-pg-container .player-img-info h1{
+  .player-component .player-img-info h1{
     font-size: 60px;
   }
-  .player-pg-container .player-content-info p{
+  .player-component .player-content-info p{
     font-size: 21px;
   }
 }
 
 @media screen and (max-width: 1399px){
-  .player-pg-container .player-content-info p{
+  .player-component .player-content-info p{
     width: 50%;
   }
 }
 
+@media screen and (max-width: 800px){
+  .player-component .additional-content .content-seasons{
+    margin: 0;
+  }
+}
+
 @media screen and (max-width: 700px){
-  .player-pg-container .player-img-info{
+  .player-component .player-img-info{
     width: 100%;
     left: 0;
     padding: 0px 15px;
@@ -263,44 +274,44 @@
     align-items: flex-start;  
   }
 
-  .player-pg-container .player-bg-img{
+  .player-component .player-bg-img{
     height: 80vh;
   }
 
-  .player-pg-container .player-content-info{
+  .player-component .player-content-info{
     padding: 0px 15px;
   }
 
-  .player-pg-container .player-img-info h1{
+  .player-component .player-img-info h1{
     font-size: 35px;
   }
 
-  .player-pg-container .player-content-info p{
+  .player-component .player-content-info p{
     width: 100%;
     font-size: 16.5px;
     font-weight: 500;
   }
 
-  .player-pg-container .additional-content{
+  .player-component .additional-content{
     padding: 20px 15px 0px 15px;
   }
 
-  .player-pg-container .additional-content h1{
+  .player-component .additional-content h1{
     font-size: 17.5px;
     font-weight: 600;
   }
 
-  .player-pg-container .additional-content button{
+  .player-component .additional-content button{
     display: none;
   }
 
-  .player-pg-container .player-img-info  button{
+  .player-component .player-img-info  button{
     font-size: 15.5px;
     width: 100%;
     padding: 15px; 
   }
 
-  .player-pg-container .player-bg-img::after{
+  .player-component .player-bg-img::after{
     width: 100%;
     height: 65%;
     bottom: 0;

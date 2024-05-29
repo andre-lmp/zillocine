@@ -103,8 +103,15 @@ function SearchContent() {
      };
 
      useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+
         FetchMovies('the');
         changeFetchType('Movie', 'the');
+
+        return () => {
+            controller.abort();
+        };
      }, []);
 
     return(

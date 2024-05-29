@@ -4,15 +4,20 @@ import Loading from '/src/components/LoadingContent.jsx';
 import { useState } from "react";
 
 function Main() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   const handleComponentIsLoading = (e) => {
     setIsLoading(e);
   };
 
+  const componentIsVisible = (e) => {
+    setIsVisible(e);
+  };
+
   return(
     <section className="home-container">
-      <MovieSlides currentPage={'HomePage'}/>
+      <MovieSlides isVisible={componentIsVisible} contentType={'Filme'} currentPage={'HomePage'}/>
 
       <div className="home-container">
 
@@ -23,7 +28,7 @@ function Main() {
             </div>
           ):(
             <div className="loading-container">
-              <FetchMovies visible={true} page='1' title='Em Destaque: Os Filmes Mais Recentes' btn='true' type='Movie' genre='Lançamentos'/>
+              <FetchMovies visible={isVisible} page='1' title='Em Destaque: Os Filmes Mais Recentes' btn='true' type='Movie' genre='Lançamentos'/>
             </div>
           )}
 
@@ -34,7 +39,7 @@ function Main() {
             </div>
           ):(
             <div className="loading-container">
-              <FetchMovies visible={true} page='1' title='Adrenalina em cartaz' btn='true' type='Movie' genre='Ação'/>
+              <FetchMovies visible={isVisible} page='1' title='Adrenalina em cartaz' btn='true' type='Movie' genre='Ação'/>
             </div>
           )}
 
@@ -45,7 +50,7 @@ function Main() {
             </div>
           ):(
             <div className="loading-container">
-              <FetchMovies visible={true} page='1' title='Horror em exibição' btn='true' type='Movie' genre='Terror'/>
+              <FetchMovies visible={isVisible} page='1' title='Horror em exibição' btn='true' type='Movie' genre='Terror'/>
             </div>
           )}
 
@@ -56,7 +61,7 @@ function Main() {
             </div>
           ):(
             <div className="loading-container">
-              <FetchMovies visible={true} page='1' title='Universos paralelos: Ficção' btn='true' type='Movie' genre='Ficção Cientifica'/>
+              <FetchMovies visible={isVisible} page='1' title='Universos paralelos: Ficção' btn='true' type='Movie' genre='Ficção Cientifica'/>
             </div>
           )}
 
@@ -68,7 +73,7 @@ function Main() {
             </div>
           ):(
             <div className="loading-container">
-              <FetchMovies visible={true} page='1' title='Diversão com a família' btn='true' type='Movie' genre='Comedia'/>
+              <FetchMovies visible={isVisible} page='1' title='Diversão com a família' btn='true' type='Movie' genre='Comedia'/>
             </div>
           )}
 
@@ -80,7 +85,7 @@ function Main() {
             </div>
           ):(
             <div className="loading-container">
-              <FetchMovies visible={true} page='1' title='Documentando o mundo' btn='true' type='Movie' genre='Documentario'/>
+              <FetchMovies visible={isVisible} page='1' title='Documentando o mundo' btn='true' type='Movie' genre='Documentario'/>
             </div>
           )}
 
