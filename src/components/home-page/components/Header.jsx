@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import { LuSearch } from "react-icons/lu";
 import { FaUserLarge } from "react-icons/fa6";
-import '/src/styles/App.css';
+import '../../app/shared-styles/App.css';
 
 function Header(props) {
   

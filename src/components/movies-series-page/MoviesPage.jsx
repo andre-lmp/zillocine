@@ -1,9 +1,9 @@
 import React from 'react';
-import MoviesFetcher from '/src/components/MovieFetcher.jsx';
-import Loading from '/src/components/LoadingContent.jsx';
+import MoviesFetcher from '../app/shared-components/MovieFetcher';
+import Loading from '../app/shared-components/LoadingContent';
 import { useState, useRef} from "react";
-import MovieSlides from '/src/components/MoviesSlides';
-import '/src/styles/Movies.css';
+import MovieSlides from '../app/shared-components/MoviesSlides';
+import './Movies-Series.css';
 
 function Movies() {
     const [movieGenre, setMovieGenre] = useState('Lançamentos');

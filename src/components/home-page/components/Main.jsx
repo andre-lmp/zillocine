@@ -1,7 +1,8 @@
-import FetchMovies from "/src/components/MovieFetcher.jsx";
-import MovieSlides from "/src/components/MoviesSlides.jsx";
-import Loading from '/src/components/LoadingContent.jsx';
+import FetchMovies from "../../app/shared-components/MovieFetcher";
+import MovieSlides from "../../app/shared-components/MoviesSlides";
+import Loading from '../../app/shared-components/LoadingContent';
 import { useState } from "react";
+import '../../app/shared-styles/App.css';
 
 function Main() {
   const [isLoading, setIsLoading] = useState(false);

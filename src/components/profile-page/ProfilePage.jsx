@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import '/src/styles/Profile.css';
+import { useState, useEffect } from "react";
+import './Profile.css';
 import { FaUserCircle } from "react-icons/fa";
 import { HiOutlinePencilSquare } from "react-icons/hi2";
 

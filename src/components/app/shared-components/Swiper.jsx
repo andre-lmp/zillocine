@@ -1,6 +1,5 @@
 import { useRef, useEffect } from 'react';
 import { register } from 'swiper/element/bundle';
-import 'swiper/css';
 import 'swiper/element/css/pagination';
 import { Navigation } from 'swiper/modules';
 import SwiperCore from 'swiper';

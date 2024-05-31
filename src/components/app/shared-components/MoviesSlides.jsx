@@ -1,8 +1,8 @@
-import { Swiper, SwiperSlide } from '/src/components/swiper/Swiper.jsx';
+import { Swiper, SwiperSlide } from './Swiper.jsx';
 import { useEffect, useState } from 'react';
 import { Pagination, Autoplay } from 'swiper/modules';
 import { useNavigate } from 'react-router-dom';
-import '/src/styles/App.css';
+import '../shared-styles/App.css';
 import 'swiper/css';
 import 'swiper/element/css/autoplay';
 import 'swiper/element/css/pagination';

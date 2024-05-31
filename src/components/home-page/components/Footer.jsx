@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub, faLinkedin, faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { useState, useEffect } from "react"; 
+import '../../app/shared-styles/App.css';
 
 function Footer() {
   const [loading, setLoading] = useState(false);

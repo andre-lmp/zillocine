@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
 import { HiXMark } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
-import '/src/styles/Search.css';
+import './Search.css';
 
 function SearchContent() {
     const [contentData, setContentData] = useState([]);
@@ -115,41 +115,39 @@ function SearchContent() {
      }, []);
 
     return(
-        <section className="search-pg-component">
-            <section className="input-container">
-                <div className="input-box">
-                    <FiSearch className="lupa-icon"/>
-                    <input onChange={getUserInputValue} ref={userInputRef} type="text" placeholder="O que voce está procurando ?"></input>
-                    <HiXMark onClick={resetInputValue} className="reset-input-icon"/>
-                
-                    <div className="content-tp-options">
-                        <button value='Movie' onClick={(e) => {changeFetchType(e.target.value, undefined)}} ref={(e) => {contentTypeBtnsRef[0] = e}}>Filmes</button>
-                        <button value='Serie' onClick={(e) => {changeFetchType(e.target.value, undefined)}} ref={(e) => {contentTypeBtnsRef[1] = e}}>Series</button>
+        <section className="search-pg">
+            <section className="search-container">
+                <section className="input-container">
+                    <div className="input-box">
+                        <FiSearch className="lupa-icon"/>
+                        <input onChange={getUserInputValue} ref={userInputRef} type="text" placeholder="O que voce está procurando ?"></input>
+                        <HiXMark onClick={resetInputValue} className="reset-input-icon"/>
+            
+                        <div className="content-tp-options">
+                            <button value='Movie' onClick={(e) => {changeFetchType(e.target.value, undefined)}} ref={(e) => {contentTypeBtnsRef[0] = e}}>Filmes</button>
+                            <button value='Serie' onClick={(e) => {changeFetchType(e.target.value, undefined)}} ref={(e) => {contentTypeBtnsRef[1] = e}}>Series</button>
+                        </div>
                     </div>
-                </div>
-
-            </section>
-
-            <section className="fetch-result-container">
-                {contentData.length !== 0 ? (
-                    <h2>({contentData.length}) Encontrados</h2>
-                ): null}
-                {contentData.map((content, index) => (
-                    <div key={content.id} className="content-box" onClick={() => {handleNavigation(content.id)}} >
-                        
-                        {content.poster_path &&
-                         <img display={undefined} src={`https://image.tmdb.org/t/p/w500${content.poster_path}`}></img>
-                        }
-
-                        {content.backdrop_path &&
-                            <img display={undefined} src={`https://image.tmdb.org/t/p/w500${content.backdrop_path}`}></img>
-                        }
-
-                        {!content.backdrop_path && !content.poster_path ? (
-                            handleUnavailableContent(index)
-                        ): null}
-                    </div>
-                ))}
+                </section>
+                <section className="fetch-result-container">
+                    {contentData.length !== 0 ? (
+                        <h2>({contentData.length}) Encontrados</h2>
+                    ): null}
+                    {contentData.map((content, index) => (
+                        <div key={content.id} className="content-box" onClick={() => {handleNavigation(content.id)}} >
+            
+                            {content.poster_path &&
+                             <img display={undefined} src={`https://image.tmdb.org/t/p/w500${content.poster_path}`}></img>
+                            }
+                            {content.backdrop_path &&
+                                <img display={undefined} src={`https://image.tmdb.org/t/p/w500${content.backdrop_path}`}></img>
+                            }
+                            {!content.backdrop_path && !content.poster_path ? (
+                                handleUnavailableContent(index)
+                            ): null}
+                        </div>
+                    ))}
+                </section>
             </section>
         </section>
     )

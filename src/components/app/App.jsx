@@ -1,17 +1,17 @@
 import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 import { useState } from 'react';
-import HomePage from "./pages/HomePage";
-import PlayerPage from './pages/PlayerPage';
-import MoviesPage from './pages/MoviesPage';
-import SeriesPage from './pages/SeriesPage';
-import ProfilePage from './pages/ProfilePage';
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import Menu from './components/MenuContainer';
-import SearchPage from './pages/SearchPage';
-import ScrollTop from './components/ScrollTop';
-import AuthPage from './pages/AuthPage';
-import './styles/App.css';
+import HomePage from "/src/components/home-page/HomePage";
+import PlayerPage from '/src/components/player-page/PlayerPage';
+import MoviesPage from '/src/components/movies-series-page/MoviesPage';
+import SeriesPage from '/src/components/movies-series-page/SeriesPage';
+import ProfilePage from '/src/components/profile-page/ProfilePage';
+import Header from "/src/components/home-page/components/Header";
+import Footer from "/src/components/home-page/components/Footer";
+import Menu from '/src/components/app/shared-components/MenuContainer';
+import SearchPage from '/src/components/search-page/SearchPage';
+import ScrollTop from '/src/components/app/shared-components/ScrollTop';
+import AuthPage from '/src/components/auth-page/AuthPage';
+import './shared-styles/App.css';
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);

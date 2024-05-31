@@ -1,13 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { CgClose } from "react-icons/cg";
-import { useRef, useState, useEffect } from "react";
-import '/src/styles/App.css';
-import { isAccessor } from "typescript";
+import { useRef, useEffect } from "react";
+import '../shared-styles/App.css';
 
 function Menu(props) {
     const navigate = useNavigate(undefined);
     const menuRef = useRef(undefined);
-    const [menuActive, setMenuActive] = useState(props.isActive);
 
     const handleNavigationLinks = (e) => {
         navigate(`/${e}`)

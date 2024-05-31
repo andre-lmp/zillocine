@@ -1,4 +1,4 @@
-@import url('/src/styles/Movies.css');
+@import url('../app/shared-styles/fonts.css');
 
 .movies-pg{
   width: 100%;

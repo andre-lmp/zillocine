@@ -1,5 +1,5 @@
-import Main from "/src/components/Main";
-import "/src/styles/Home.css";
+import Main from "./components/Main";
+import "./Home.css";
 
 function Home() {
 

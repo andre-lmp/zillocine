@@ -1,12 +1,13 @@
 import { useState, useEffect, useRef} from "react";
 import React from "react";
-import '/src/styles/Swiper.css';
-import { Swiper, SwiperSlide } from '/src/components/swiper/Swiper.jsx';
+import { Swiper, SwiperSlide } from '../app/shared-components/Swiper';
 import { useParams } from "react-router-dom";
 import { IoPlay } from "react-icons/io5";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import MoviesFetcher from '/src/components/MovieFetcher.jsx';
-import '/src/styles/Player.css';
+import MoviesFetcher from '../app/shared-components/MovieFetcher';
+import Message from '../app/shared-components/ErrorMessage';
+import Player from "./Player";
+import './Player.css';
 
 function PlayerPage() {
   const {id, type} = useParams();
@@ -18,6 +19,9 @@ function PlayerPage() {
   const movieImgRef = useRef(undefined);
   const movieDetailsRef = useRef(undefined);
   const [swiperRef, setSwiperRef] = useState(undefined);
+  const [playerRef, setPlayerRef] = useState(undefined);
+  const [isPlayerVisible, setIsPlayerVisible] = useState(false);
+  const [isErrorMessage, setIsErrorMessage] = useState(false);
 
   const breakpoints = {
     750: {
@@ -103,6 +107,28 @@ function PlayerPage() {
     }
   };
 
+  const handleVideoPlayer = async () => {
+    if (playerRef){
+      const state = await playerRef.getInternalPlayer().getPlayerState();
+    
+      if (state === 1){
+        playerRef.internalPlayer.pauseVideo();
+        setIsPlayerVisible(true);
+      }else{
+        if (state === 5 || state === 2){
+            playerRef.internalPlayer.playVideo();
+            setIsPlayerVisible(true);
+        }else{
+          if (state === 0){
+            playerRef.internalPlayer.loadVideoById(contentData.videos.results[0].key);
+          }
+        }
+      }
+    }else{
+      setIsErrorMessage(true);
+    };
+  };
+
   useEffect(() => {
     const fetchMovies = async () => {
       if (type === 'Movie') {
@@ -149,13 +175,19 @@ function PlayerPage() {
 
     equalizeHeights();
   },[id]);
-
   
   return(
     <section className="player-component">
-      {authorized &&
+      {authorized ? (
         <section className="player-container">
           <section className="player-bg-img">
+
+            {contentData.videos.results.length ? (
+              <Player youtubeRef={setPlayerRef} isVisible={isPlayerVisible} id={contentData.videos.results[0].key}/>
+            ): (
+              <Message isVisible={isErrorMessage}/>
+            )}
+
             {contentData.backdrop_path ? (
               <img src={`https://image.tmdb.org/t/p/original${contentData.backdrop_path}`} alt="tmdb images" />
             ): (
@@ -190,9 +222,10 @@ function PlayerPage() {
                   handleCompanyLogo(contentData.production_companies)
                 ): null}
               </div>
-              <button>
+              <button onClick={() => {handleVideoPlayer()}}>
                 <IoPlay className="play-icon"/>
-                Assistir Trailer</button>
+                Click para assistir
+              </button>
             </div>
           </section>
           <section className="player-content-info">
@@ -239,7 +272,9 @@ function PlayerPage() {
             </section>
           )}
         </section>
-      }
+      ):(
+        <Message/>
+      )}
     </section>
   )
 }

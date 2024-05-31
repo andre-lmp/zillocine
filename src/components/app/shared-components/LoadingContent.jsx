@@ -1,6 +1,6 @@
 import { parseInt } from 'lodash';
-import { Swiper, SwiperSlide } from '/src/components/swiper/Swiper.jsx';
-import '/src/styles/Swiper.css';
+import { Swiper, SwiperSlide } from './Swiper';
+import '../shared-styles/App.css';
 import { useState, useEffect, useRef } from 'react';
 
 function Loading(props) {

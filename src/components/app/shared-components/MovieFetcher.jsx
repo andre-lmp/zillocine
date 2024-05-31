@@ -1,9 +1,8 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
 import { useNavigate } from 'react-router-dom';
-import '/src/styles/Swiper.css';
-import { Swiper, SwiperSlide } from '/src/components/swiper/Swiper.jsx';
+import '../shared-styles/App.css';
+import { Swiper, SwiperSlide } from './Swiper.jsx';
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 
 const  fetchMovies = (props) => {

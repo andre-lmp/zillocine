@@ -1,11 +1,11 @@
-import '/src/styles/Auth.css';
+import './Auth.css';
 import { BsFillKeyFill } from "react-icons/bs";
 import { FaUser } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { IoEyeSharp } from "react-icons/io5";
 import { useRef, useState } from 'react';
-import posterImg from '/src/images/poster.png';
+import posterImg from '/src/components/app/images/poster.png';
 
 function Auth(){
     const navigate = useNavigate(undefined);
