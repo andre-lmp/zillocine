@@ -28,11 +28,11 @@ function Player(props){
     },[props.youtubeRef]);
 
     useEffect(() => {
-            if (props.isVisible){
-                playerContainerRef.current.style.opacity = '1';
-            }else{
-                playerContainerRef.current.style.opacity = '0';
-            };
+        if (props.isVisible){
+            playerContainerRef.current.style.opacity = '1';
+        }else{
+            playerContainerRef.current.style.opacity = '0';
+        };
     },[props.isVisible]);
 
     return(

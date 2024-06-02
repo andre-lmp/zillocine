@@ -131,7 +131,7 @@ function SearchContent() {
                 </section>
                 <section className="fetch-result-container">
                     {contentData.length !== 0 ? (
-                        <h2>({contentData.length}) Encontrados</h2>
+                        <h2 className="section-title">({contentData.length}) Encontrados</h2>
                     ): null}
                     {contentData.map((content, index) => (
                         <div key={content.id} className="content-box" onClick={() => {handleNavigation(content.id)}} >
@@ -145,6 +145,18 @@ function SearchContent() {
                             {!content.backdrop_path && !content.poster_path ? (
                                 handleUnavailableContent(index)
                             ): null}
+
+                            {content.name && 
+                                <div className='overlay-info'>
+                                    <h2>{content.name}</h2>
+                                </div>
+                            }
+
+                            {content.title && 
+                                <div className='overlay-info'>
+                                    <h2>{content.title}</h2>
+                                </div>
+                            }
                         </div>
                     ))}
                 </section>

@@ -22,6 +22,7 @@ function PlayerPage() {
   const [playerRef, setPlayerRef] = useState(undefined);
   const [isPlayerVisible, setIsPlayerVisible] = useState(false);
   const [isErrorMessage, setIsErrorMessage] = useState(false);
+  const [pageWidth, setPageWidth] = useState(window.innerWidth);
 
   const breakpoints = {
     750: {
@@ -45,6 +46,10 @@ function PlayerPage() {
       spaceBetween: 17
     }
   };
+
+  window.addEventListener('resize', () => {
+    setPageWidth(window.innerWidth);
+  });
 
   const handleReleaseDate = (date) => {
     if (date){
@@ -82,10 +87,16 @@ function PlayerPage() {
     }
 
     return(
-      <h2 className="content-runtime">
-        <span>{time[0]}h</span>
-        <span>{time[1]}m</span>
-      </h2>
+        time[0] > 0 ? (
+          <h2 className="content-runtime">
+            <span>{time[0]}h</span>
+            <span>{time[1]}m</span>
+          </h2>
+        ): (
+          <h2 className="content-runtime">
+            <span>{time[1]}m</span>
+          </h2>
+        )
     );
   };
 
@@ -113,7 +124,8 @@ function PlayerPage() {
   };
 
   const handleVideoPlayer = async (e) => {
-    if (playerRef){
+    if (playerRef && contentData.videos.results.length > 0){
+      setIsPlayerVisible(true);
       const state = await playerRef.getInternalPlayer().getPlayerState();
     
       if (state === 1){
@@ -168,6 +180,7 @@ function PlayerPage() {
           console.log(error);
         }
       }
+      setIsPlayerVisible(false);
     }
 
     fetchMovies();
@@ -182,6 +195,12 @@ function PlayerPage() {
 
     equalizeHeights();
   },[id]);
+
+  const handleUnavailableContent = (index) => {
+    if (contentSeasons[index]){
+      contentSeasons.splice(index, 1);
+    }
+  };
   
   return(
     <section className="player-component">
@@ -250,18 +269,34 @@ function PlayerPage() {
             <section className="additional-content">
               <h1 className="player-swiper-title">Temporadas</h1>
               <section className="swiper-box">
-                <button className="swiper-btns-control btn-left" ><SlArrowLeft onClick={() => {handleSwiperControl('prev')}} className="arrows"/></button>
-                <button className="swiper-btns-control btn-right" ><SlArrowRight onClick={() => {handleSwiperControl('next')}} className="arrows"/></button>
+                
+                {swiperRef && 
+                  swiperRef.virtualSize && 
+                    swiperRef.virtualSize > pageWidth &&
+                      <>
+                        <button className="swiper-btns-control btn-left" ><SlArrowLeft onClick={() => {handleSwiperControl('prev')}} className="arrows"/></button>
+                        <button className="swiper-btns-control btn-right" ><SlArrowRight onClick={() => {handleSwiperControl('next')}} className="arrows"/></button>
+                      </>
+                }
+
                 <Swiper  breakpoints={breakpoints} swiperRef={setSwiperRef} >
                   {contentSeasons ? (
-                    contentSeasons.map((seasons) => (
+                    contentSeasons.map((seasons, index) => (
                       <SwiperSlide >
-                        <div className="content-seasons">
-                          {seasons.backdrop_path ? (
-                            <img src={`https://image.tmdb.org/t/p/original${seasons.backdrop_path}`} alt="tmdb images" />
-                          ): (
-                            <img src={`https://image.tmdb.org/t/p/original${seasons.poster_path}`} alt="tmdb images" />
-                          )}
+                        <div className="content-seasons" onMouseEnter={() => {setActiveOverlay('active-overlay')}} onMouseLeave={() => {setActiveOverlay('disabled-overlay')}}>
+                          
+                          {seasons.backdrop_path || seasons.poster_path &&
+                            seasons.backdrop_path ? (
+                              <img src={`https://image.tmdb.org/t/p/original${seasons.backdrop_path}`} alt="tmdb images" />
+                            ): (
+                              <img src={`https://image.tmdb.org/t/p/original${seasons.poster_path}`} alt="tmdb images" />
+                            )
+                          }
+
+                          {!seasons.poster_path && !seasons.backdrop_path &&
+                            handleUnavailableContent(index)
+                          }
+
                           <div className="content-seasons-info">
                             <h2>{seasons.name}</h2>
                             <span>
@@ -270,6 +305,12 @@ function PlayerPage() {
                               ): null}
                             </span>
                           </div>
+
+                          <div className='overlay-info'>
+                            <h2>{contentData.name}</h2>
+                            <h3>{seasons.name}</h3>
+                          </div>
+                          
                         </div>
                       </SwiperSlide>
                     ))

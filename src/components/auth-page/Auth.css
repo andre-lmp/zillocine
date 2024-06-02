@@ -123,6 +123,8 @@
     padding: 10px 5px 10px 22px;
     font: 400 17px 'Poppins', 'Roboto',  sans-serif;
     color: var(--white-opacity-1);
+    overflow-x: hidden;
+    box-sizing: border-box;
 }
 
 .auth-page form input:-webkit-autofill, .auth-page form input:-webkit-autofill:hover, .auth-page form input:-webkit-autofill:focus, .auth-page form input:-webkit-autofill:active{
@@ -153,13 +155,9 @@
 }
 
 .auth-page form .eye-icon{
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
     color: var(--white-opacity-06);
     cursor: pointer;
-    font-size: 18px;
+    font-size: 19px;
     display: none;
 }
 

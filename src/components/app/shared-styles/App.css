@@ -289,7 +289,6 @@ header .menu-icon div{
   position: relative;
   min-width: 170px;
   height: 300px;
-  position: relative;
   z-index: 3;
 }
 
@@ -316,6 +315,36 @@ header .menu-icon div{
 
 .movie-fetcher .swiper-image:hover img{
   opacity: .2;
+}
+
+.movie-fetcher .mv-overlay-info{
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  padding: 0px 7px 10px 7px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  opacity: 1;
+  transform: translateY(100%);
+  transition: all .25s ease-in-out;
+}
+
+.movie-fetcher .swiper-image:hover .mv-overlay-info{
+  transform: translate(0);
+}
+
+.movie-fetcher .mv-overlay-info h2{
+  text-align: center;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  color: var(--white-opacity-1);
+  font: 700 18px 'Raleway', 'Poppins', sans-serif;
 }
 
 .movie-fetcher .swiper-image:hover::before{
@@ -575,7 +604,7 @@ footer .footer-links a:hover{
 
 .error-component .error-icon{
   color: var(--gainsboro);
-  font-size: 150px;
+  font-size: 140px;
 }
 
 @media screen and (min-width: 1400px){
@@ -693,6 +722,10 @@ footer .footer-links a:hover{
     display: none;
   }
 
+  .movie-fetcher .swiper-image::before , .movie-fetcher .swiper-image:hover::before, .movie-fetcher .mv-overlay-info{
+    display: none;
+  }
+
   .presentation-slides .movie-slides-info{
     width: 100%;
     left: 0;
@@ -773,7 +806,7 @@ footer .footer-links a:hover{
   }
 
   .error-component .error-icon{
-    font-size: 130px;
+    font-size: 110px;
   }
 
   .error-component h1{

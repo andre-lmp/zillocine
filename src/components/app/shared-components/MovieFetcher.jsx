@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import '../shared-styles/App.css';
 import { Swiper, SwiperSlide } from './Swiper.jsx';
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
+import { over } from "lodash";
 
 const  fetchMovies = (props) => {
   const [moviesData, setMoviesData] = useState([]);
@@ -16,7 +17,7 @@ const  fetchMovies = (props) => {
   const componentRef = useRef(undefined);
   const imagesRef = useRef([]);
   const [swiperRef, setSwiperRef] = useState(undefined);
-  
+
   const moviesGenres = {
     28: 'Ação',
     12: 'Aventura',
@@ -156,6 +157,18 @@ const  fetchMovies = (props) => {
               {!element.backdrop_path && !element.poster_path ? (
                 handleUnavailableContent(index)
               ) : null}
+
+              <div className="mv-overlay-info">
+                  <h2>
+                    {element.title &&
+                      element.title
+                    }
+                    {element.name &&
+                      element.name
+                    }
+                  </h2>
+              </div>
+
             </div>
           </SwiperSlide>
         ))};

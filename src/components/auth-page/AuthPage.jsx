@@ -9,22 +9,12 @@ import {Swiper, SwiperSlide } from '../app/shared-components/Swiper';
 
 function Auth(){
     const navigate = useNavigate(undefined);
-    const passwordinputRef = useRef(undefined);
+    const passwordinputRef = useRef([]);
     const [isVisible, setIsVisible] = useState('invisible');
     const [swiperRef, setSwiperRef] = useState(undefined);
 
     const handleUserAuthenticated = () => {
         navigate(`/`);
-    };
-
-    const handleVisiblePassword = () => {
-        if (passwordinputRef.current){
-            if (passwordinputRef.current.type === 'password'){
-                passwordinputRef.current.type = 'text';
-            }else{
-                passwordinputRef.current.type = 'password';
-            }
-        }
     };
 
     const handleVisibleEye = (e) => {
@@ -47,6 +37,16 @@ function Auth(){
         }
     };
 
+    const handleVisiblePassword = (index) => {
+       if (passwordinputRef.current[index]){
+        if (passwordinputRef.current[index].type === 'password'){
+            passwordinputRef.current[index].type = 'text';
+        }else{
+            passwordinputRef.current[index].type = 'password';
+        }
+       }
+    };
+
     return(
         <section className="auth-page">            
             <section className='auth-container'>
@@ -64,18 +64,18 @@ function Auth(){
                                         </div>
                                     </div>
                                     <div className='input-container'>
-                                        <label htmlFor="email">Email</label>
+                                        <label htmlFor="sign-up-email">Email</label>
                                         <div className='input-icons-box'>
                                             <MdEmail className='input-icons'/>
-                                            <input type="email"  id="email" placeholder='Email de login' required/>
+                                            <input type="email"  id="sign-up-email" placeholder='Email de login' required/>
                                         </div>
                                     </div>
                                     <div className='input-container'>
-                                        <label htmlFor="password">Senha</label>
+                                        <label htmlFor="sign-up-password">Senha</label>
                                         <div className='input-icons-box'>
                                             <BsFillKeyFill className='input-icons'/>
-                                            <input ref={passwordinputRef} type="password" id="password" placeholder='Criar senha' onChange={(e) => {handleVisibleEye(e)}} required/>
-                                            <IoEyeSharp className={`eye-icon ${isVisible}`} onClick={() => {handleVisiblePassword()}}/>
+                                            <input ref={(e) => {passwordinputRef.current[0] = e}} type="password" id="sign-up-password" placeholder='Criar senha' onChange={(e) => {handleVisibleEye(e)}} required/>
+                                            <IoEyeSharp className={`eye-icon ${isVisible}`} onClick={() => {handleVisiblePassword(0)}}/>
                                         </div>
                                     </div>
                                     <div className='input-container checkbox-container'>
@@ -112,8 +112,8 @@ function Auth(){
                                         <label htmlFor="password">Senha</label>
                                         <div className='input-icons-box'>
                                             <BsFillKeyFill className='input-icons'/>
-                                            <input ref={passwordinputRef} type="password" id="password" placeholder='Senha de acesso' onChange={(e) => {handleVisibleEye(e)}} required/>
-                                            <IoEyeSharp className={`eye-icon ${isVisible}`} onClick={() => {handleVisiblePassword()}}/>
+                                            <input ref={(e) => {passwordinputRef.current[1] = e}} type="password" id="password" placeholder='Senha de acesso' onChange={(e) => {handleVisibleEye(e)}} required/>
+                                            <IoEyeSharp className={`eye-icon ${isVisible}`} onClick={() => {handleVisiblePassword(1)}}/>
                                         </div>
                                     </div>
 
