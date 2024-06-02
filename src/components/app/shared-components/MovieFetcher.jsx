@@ -69,25 +69,32 @@ const  fetchMovies = (props) => {
 
   const breakpoints = {
     300:{
-      slidesPerView: 2
+      slidesPerView: 2,
+      spaceBetween: 11
     },
     600: {
-      slidesPerView: 3
+      slidesPerView: 3,
+      spaceBetween: 17
     },
     820:{
-      slidesPerView: 4
+      slidesPerView: 4,
+      spaceBetween: 17
     },
     990:{
-      slidesPerView: 5
+      slidesPerView: 5,
+      spaceBetween: 17
     },
     1160:{
-      slidesPerView: 6
+      slidesPerView: 6,
+      spaceBetween: 17
     },
     1400:{
-      slidesPerView: 7
+      slidesPerView: 7,
+      spaceBetween: 17
     },
     1750: {
-      slidesPerView: 8
+      slidesPerView: 8,
+      spaceBetween: 17
     }
   };
 

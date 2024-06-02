@@ -18,6 +18,7 @@
     max-height: 800px;
 }
 
+
 .auth-page .auth-bg-img{
     position: absolute;
     top: 0;
@@ -42,7 +43,22 @@
     object-position: bottom;
 }
 
+.auth-page .forms-swiper{
+    width: 100%;
+    height: 100%;
+}
+
+.auth-page .forms-swiper .slide-container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .auth-page .form-container{
+    width: fit-content;
+    margin: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -83,7 +99,7 @@
 .auth-page form .input-container{
     display: flex;
     flex-direction: column;
-    row-gap: 5px;
+    row-gap: 0px;
 }
 
 .auth-page .input-container label{
@@ -163,26 +179,52 @@
 
 .auth-page .checkbox-container{
     display: flex;
-    flex-direction: row-reverse !important;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 5px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    row-gap: 20px !important;
 }
 
 .auth-page .checkbox-container label{
     opacity: 0.9;
 }
 
-.auth-page .checkbox-container span{
+.auth-page .check-box{
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 5px;
+}
+
+.auth-page .check-box span{
     color: var(--red);
     cursor: pointer;
 }
 
-.auth-page .checkbox-container input{
+.auth-page .check-box input{
     font-size: 40px !important;
     border: none;
     outline: none;
     width: fit-content;
+}
+
+.auth-page .account-exist h2, .forgot-password h2{
+    color: var(--white-opacity-07);
+    font: 500 15.5px 'Poppins', 'Roboto',  sans-serif;
+    text-align: center;
+}
+
+.auth-page .account-exist h2 span, .forgot-password h2 span{
+    color: var(--white-opacity-1);
+    font: 500 15.5px 'Poppins', 'Roboto',  sans-serif;
+    cursor: pointer;
+}
+
+.auth-page .forgot-password h2{
+    text-align: start;
+}
+
+.auth-page .forgot-password h2 span{
+    color: var(--red);
 }
 
 @media screen and (max-width: 700px) {

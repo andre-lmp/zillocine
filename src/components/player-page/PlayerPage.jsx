@@ -25,19 +25,24 @@ function PlayerPage() {
 
   const breakpoints = {
     750: {
-      slidesPerView: 1
+      slidesPerView: 1,
+      spaceBetween: 10
     },
     820:{
-      slidesPerView: 2
+      slidesPerView: 2,
+      spaceBetween: 17
     },
     990:{
-      slidesPerView: 3
+      slidesPerView: 3,
+      spaceBetween: 17
     },
     1160:{
-      slidesPerView: 4
+      slidesPerView: 4,
+      spaceBetween: 17
     },
     1330:{
-      slidesPerView: 5
+      slidesPerView: 5,
+      spaceBetween: 17
     }
   };
 
@@ -107,16 +112,18 @@ function PlayerPage() {
     }
   };
 
-  const handleVideoPlayer = async () => {
+  const handleVideoPlayer = async (e) => {
     if (playerRef){
       const state = await playerRef.getInternalPlayer().getPlayerState();
     
       if (state === 1){
         playerRef.internalPlayer.pauseVideo();
+        e.target.innerText = 'Click para retomar'
         setIsPlayerVisible(true);
       }else{
         if (state === 5 || state === 2){
             playerRef.internalPlayer.playVideo();
+            e.target.innerText = 'Click para pausar'
             setIsPlayerVisible(true);
         }else{
           if (state === 0){
@@ -182,7 +189,7 @@ function PlayerPage() {
         <section className="player-container">
           <section className="player-bg-img">
 
-            {contentData.videos.results.length ? (
+            {contentData.videos.results.length > 0 ? (
               <Player youtubeRef={setPlayerRef} isVisible={isPlayerVisible} id={contentData.videos.results[0].key}/>
             ): (
               <Message isVisible={isErrorMessage}/>
@@ -222,7 +229,7 @@ function PlayerPage() {
                   handleCompanyLogo(contentData.production_companies)
                 ): null}
               </div>
-              <button onClick={() => {handleVideoPlayer()}}>
+              <button key={contentData.id} onClick={(e) => {handleVideoPlayer(e)}}>
                 <IoPlay className="play-icon"/>
                 Click para assistir
               </button>
