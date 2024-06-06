@@ -58,6 +58,17 @@ function Main() {
           {isLoading ? (
             <div className="loading-container">
               <Loading title={true}/>
+              <FetchMovies visible={false} isLoading={handleComponentIsLoading} page='1' title='Diversão para Crianças' btn='true' type='Movie' genre='Animação'/>
+            </div>
+          ):(
+            <div className="loading-container">
+              <FetchMovies visible={isVisible} page='1' title='Diversão para Crianças' btn='true' type='Movie' genre='Animação'/>
+            </div>
+          )}
+
+          {isLoading ? (
+            <div className="loading-container">
+              <Loading title={true}/>
               <FetchMovies visible={false} isLoading={handleComponentIsLoading} page='1' title='Universos paralelos: Ficção' btn='true' type='Movie' genre='Ficção Cientifica'/>
             </div>
           ):(
@@ -66,6 +77,16 @@ function Main() {
             </div>
           )}
 
+          {isLoading ? (
+            <div className="loading-container">
+              <Loading title={true}/>
+              <FetchMovies visible={false} isLoading={handleComponentIsLoading} page='1' title='Guerra: Uma Batalha pela Sobrevivência' btn='true' type='Movie' genre='Guerra'/>
+            </div>
+          ):(
+            <div className="loading-container">
+              <FetchMovies visible={isVisible} page='1' title='Guerra: Uma Batalha pela Sobrevivência' btn='true' type='Movie' genre='Guerra'/>
+            </div>
+          )}
 
           {isLoading ? (
             <div className="loading-container">

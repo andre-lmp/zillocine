@@ -17,14 +17,16 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   return (
-    <Router>
-      <ScrollTop/>
-      <Routes>
-        <Route path='/Auth' Component={AuthPage}/>
-        <Route path='*' element={isLoggedIn ? <AuthenticatedRoutes/> : <Navigate to='/Auth'/>}/>
-      </Routes>
-      <Footer/>
-    </Router>
+    <>
+      <Router>
+        <ScrollTop/>
+        <Routes>
+          <Route path='/Auth' Component={AuthPage}/>
+          <Route path='*' element={isLoggedIn ? <AuthenticatedRoutes/> : <Navigate to='/Auth'/>}/>
+        </Routes>
+        <Footer/>
+      </Router>
+    </>
   );
 };
 

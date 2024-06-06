@@ -51,6 +51,8 @@ function Movies() {
                             <li><button value='Terror' onClick={handleGenres}>Terror</button></li>
                             <li><button value='Ação' onClick={handleGenres}>Ação</button></li>
                             <li><button value='Comedia' onClick={handleGenres}>Comedia</button></li>
+                            <li><button value='Guerra' onClick={handleGenres}>Guerra</button></li>
+                            <li><button value='Animação' onClick={handleGenres}>Animação</button></li>
                             <li><button value='Documentario' onClick={handleGenres}>Documentarios</button></li>
                         </ul>
                     </div>
@@ -116,6 +118,17 @@ function Movies() {
                             </div>
                         )}
 
+                        
+                        {isLoading ? (
+                            <div className='loading-container'>
+                                <Loading title={false} />
+                                <MoviesFetcher visible={false} isLoading={handleComponentIsLoading} title={false} btn='false' page='6' type='Movie' genre={movieGenre}/>
+                            </div>
+                        ): (
+                            <div className='loading-container'>
+                                <MoviesFetcher visible={isVisible} isLoading={handleComponentIsLoading} title={false} btn='false' page='6' type='Movie' genre={movieGenre}/>
+                            </div>
+                        )}
                 </section>
 
             </section>

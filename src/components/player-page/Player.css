@@ -130,7 +130,7 @@
 .player-component .player-content-info p{
   color: var(--white-opacity-09);
   font: 400 18px 'Noto Sans', serif;
-  width: 60%;
+  width: 65%;
   line-height: 150%;
 }
 
@@ -253,9 +253,8 @@
   justify-content: center;
   align-items: center;
   z-index: 10;
-  opacity: 1;
-  transform: translateY(calc(100% + 10px));
-  transition: all .25s ease-in-out;
+  opacity: 0;
+  transition: all .1s ease-in-out;
 }
 
 .player-component .overlay-info h2{
@@ -269,9 +268,8 @@
 }
 
 .player-component .content-seasons:hover .overlay-info{
-  transform: translate(0);
+  animation: fadeIN .25s ease-in-out forwards;
 }
-
 
 .player{
   width: 100%;
@@ -299,7 +297,13 @@
   }
   .player-component .player-content-info p{
     font-size: 21px;
-    width: 40%;
+    width: 60%;
+  }
+}
+
+@media screen and (max-width: 1000px){
+  .player-component .player-content-info p{
+    width: min(100%, 800px);
   }
 }
 
@@ -307,6 +311,7 @@
   .player-component .additional-content .content-seasons{
     margin: 0;
   }
+
 }
 
 @media screen and (max-width: 700px){

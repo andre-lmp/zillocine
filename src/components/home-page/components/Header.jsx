@@ -1,8 +1,11 @@
+import '../../app/shared-styles/App.css';
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import { LuSearch } from "react-icons/lu";
 import { FaUserLarge } from "react-icons/fa6";
-import '../../app/shared-styles/App.css';
+import { FiHome } from "react-icons/fi";
+import { TbMovie } from "react-icons/tb";
+import { BiMoviePlay } from "react-icons/bi";
 
 function Header(props) {
   
@@ -58,9 +61,18 @@ function Header(props) {
               </div>
 
               <div className="links center-links">
-                <a onClick={() => {handleNavigationLinks('')}}>Inicio</a>
-                <a  onClick={() => {handleNavigationLinks('Movies')}}>Filmes</a>
-                <a  onClick={() => {handleNavigationLinks('Series')}}>Séries</a>
+                <a onClick={() => {handleNavigationLinks('')}}>
+                  <FiHome className="link-icons home-icon"/>
+                  Inicio
+                </a>
+                <a  onClick={() => {handleNavigationLinks('Movies')}}>
+                  <TbMovie className="link-icons"/>
+                  Filmes
+                </a>
+                <a  onClick={() => {handleNavigationLinks('Series')}}>
+                  <BiMoviePlay className="link-icons"/>
+                  Séries
+                </a>
                 <LuSearch onClick={() => {handleNavigationLinks('Search')}} className='lupa-icon'/>
               </div>
 

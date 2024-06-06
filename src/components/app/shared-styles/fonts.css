@@ -33,6 +33,7 @@
     --white-opacity-03: rgb(255, 255, 255, 0.3);
     --white-opacity-02: rgb(255, 255, 255, 0.2);
     --white-opacity-01: rgb(255, 255, 255, 0.1);
+    --white-opacity-005: rgb(255, 255, 255, 0.05);
     --gray: rgb(100, 100, 100);
     --gainsboro: gainsboro;
     --purple: #8956f0;
@@ -86,6 +87,15 @@
   
     100%{
       background-color: grey;
+    }
+  }
+
+  @keyframes blur{
+    from{
+      backdrop-filter: blur(0px);
+    }
+    to{
+      backdrop-filter: blur(10px);
     }
   }
   

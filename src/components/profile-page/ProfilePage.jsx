@@ -15,7 +15,6 @@ function ProfilePage() {
         
             <section className="content-container">
                 <div className="profile-data">
-                    <h1 id="profile-section-title">Perfil</h1>
                     <div className="user-icon-box">
                         <FaUserCircle className="user-icon"/>
                     </div>
@@ -30,7 +29,7 @@ function ProfilePage() {
                         <div className="data-item">
                             <h1>Email</h1>
                             <h2>
-                                Usuariotest43@gmail.com
+                                usuariotest43@gmail.com
                                 <HiOutlinePencilSquare className="pencil-icon"/>
                             </h2>
                         </div>

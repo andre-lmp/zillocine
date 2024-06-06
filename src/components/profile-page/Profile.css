@@ -18,25 +18,19 @@
 
   
 .profile-page .profile-data{
+    width: min(500px, 100%);
     background-color: var(--red);
-    background-color: var(--white-opacity-01);
-    padding: 50px 50px;
+    background-color: var(--white-opacity-005);
+    padding: 30px 50px;
     display: flex;
-    flex-direction: row;
+    margin-top: 100px;
+    flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     gap: 30px;
     border-radius: 6px;
     position: relative;
-}
-
-.profile-page #profile-section-title{
-    color: var(--white-opacity-1);
-    font: 500 20px 'Roboto', 'Poppins', sans-serif;
-    position: absolute;
-    top: 10px;
-    left: 10px;
 }
 
 .profile-page .user-icon-box{
@@ -48,11 +42,11 @@
 
 .profile-page .user-icon-box .user-icon{
     color: var(--gainsboro);
-    font-size: 200px;
+    font-size: 150px;
 }
 
 .profile-page .user-info{
-    width: 250px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     row-gap: 25px;

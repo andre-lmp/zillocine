@@ -4,8 +4,17 @@ html{
   scroll-behavior: smooth;
 }
 
+.app-container{
+  max-width: 2000px;
+  margin: auto;
+  position: relative;
+}
+
 header{
   width: 100%;
+  max-width: 2000px;
+  margin: auto;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -14,7 +23,6 @@ header{
   box-sizing: border-box;
   position: fixed;
   top: 0;
-  left: 0;
   z-index: 100;
 }
 
@@ -63,7 +71,7 @@ header .project-title h1{
 header .links{
   display: flex;
   align-items: center;
-  gap: 2rem;
+  column-gap: 32px;
   background-color: transparent;
   justify-content: space-between;
 }
@@ -80,15 +88,34 @@ header .center-links button{
   z-index: 1;
 }
 
+header .center-links{
+  display: flex;
+  flex-direction: row;
+  column-gap: 40px;
+}
+
 header .center-links a{
-  font: 600 20px "Poppins", helvetica, sans-serif;
-  color: var(--white-opacity-07);
+  font: 600 19px "Poppins", helvetica, sans-serif;
+  color: var(--white-opacity-08);
   text-decoration: none;
   cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  column-gap: 8px;
 }
 
 header .center-links a:hover{
   color: var(--white-opacity-1);
+}
+
+header .center-links .link-icons{
+  font-size: 22px;
+}
+
+header .center-links .home-icon{
+  font-size: 19px;
 }
 
 header .center-links .lupa-icon{
@@ -123,8 +150,12 @@ header .right-links button .user-icon{
 
 header .right-links h3{
   color: var(--white-opacity-95);
-  font: 600 20px "Poppins", sans-serif;
+  font: 600 18.5px "Poppins", sans-serif;
   cursor: pointer;
+  padding: 3px 20px;
+  border-radius: 4px;
+  background-color: var(--body-color);
+  border: 1.5pt solid var(--red);
 }
 
 header .menu-icon{
@@ -151,18 +182,19 @@ header .menu-icon div{
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 155;
-  transform: translateX(-100%);
-  transition: all .2s ease-out;
+  z-index: -10;
   backdrop-filter: blur(10px);
+  transition: all .2s linear;
 }
 
 .menu-container{
   width: 300px;
   height: 100vh;
-  background-color: var(--blue);
   padding: 0px 30px;
+  transform: translateX(-100%);
+  transition: all .2s linear;
   border-right: 1pt solid var(--white-opacity-03) ;
+  background-color: var(--body-color);
 }
 
 .menu-container ul{
@@ -175,18 +207,25 @@ header .menu-icon div{
 }
 
 .menu-container ul p{
+  width: fit-content;
   font: 500 23px "Poppins", 'Roboto', helvetica, sans-serif;
-  color: var(--white-opacity-08);
+  color: var(--white-opacity-09);
   cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  column-gap: 9px;
 }
 
 .menu-container ul li:last-child p{
-  background-color: var(--dark-blue);
+  background-color: var(--body-color);
   width: fit-content;
   padding: 5px 50px;
   border-radius: 4px;
   font: 500 19px "Poppins", 'Roboto', helvetica, sans-serif;
   color: var(--white-opacity-1) !important;
+  border: 1.5pt solid var(--red);
 }
 
 .menu-container ul button{
@@ -200,6 +239,14 @@ header .menu-icon div{
   position: absolute;
   right: 0;
   top: 20px;
+}
+
+.menu-container ul .menu-icons{
+  font-size: 22px;
+}
+
+.menu-container ul .user-icon{
+  font-size: 21px;
 }
 
 .menu-container button .close-icon{
@@ -328,14 +375,17 @@ header .menu-icon div{
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  opacity: 1;
-  transform: translateY(100%);
-  transition: all .25s ease-in-out;
+  opacity: 0;
+  transition: all .1s ease-in-out;
 }
 
 .movie-fetcher .swiper-image:hover .mv-overlay-info{
-  transform: translate(0);
+  opacity: 1;
 }
+
+  .movie-fetcher .swiper-image:hover .mv-overlay-info h2{
+    animation: fadeIN .25s ease-in-out forwards;
+  }
 
 .movie-fetcher .mv-overlay-info h2{
   text-align: center;
@@ -344,7 +394,7 @@ header .menu-icon div{
   -webkit-line-clamp: 2;
   overflow: hidden;
   color: var(--white-opacity-1);
-  font: 700 18px 'Raleway', 'Poppins', sans-serif;
+  font: 600 16.5px 'Poppins','Roboto', sans-serif;
 }
 
 .movie-fetcher .swiper-image:hover::before{
@@ -471,6 +521,7 @@ footer .footer-links a:hover{
   max-width: 100%;
   height: 100vh;
   max-height: 850px;
+  box-sizing: border-box;
 }
 
 
@@ -827,5 +878,6 @@ footer .footer-links a:hover{
 @media screen and (max-width: 500px){
   .presentation-slides{
     height: 83vh;
+    max-height: 1000px;
   }
 }

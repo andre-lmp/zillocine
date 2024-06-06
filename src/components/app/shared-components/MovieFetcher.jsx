@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import '../shared-styles/App.css';
 import { Swiper, SwiperSlide } from './Swiper.jsx';
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import { over } from "lodash";
 
 const  fetchMovies = (props) => {
   const [moviesData, setMoviesData] = useState([]);
@@ -46,7 +45,9 @@ const  fetchMovies = (props) => {
     'Terror': 'Horror em exibição',
     'Comedia': 'Diversão com a família',
     'Documentario': 'Documentando o mundo',
-    'Ficção': 'Universos paralelos: Ficção'
+    'Ficção': 'Universos paralelos: Ficção',
+    'Guerra': 'Guerra: Uma Batalha pela Sobrevivência',
+    'Animação': 'Diversão para Crianças'
   };
 
   const seriesGenres = {
