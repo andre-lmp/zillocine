@@ -872,12 +872,13 @@ footer .footer-links a:hover{
 @media screen and (max-width: 600px) {
   .presentation-slides .movie-slides-info h1{
     font: 800 30px "Raleway", sans-serif;
+    -webkit-line-clamp: 1;
   }
 }
 
 @media screen and (max-width: 500px){
   .presentation-slides{
-    height: 83vh;
+    height: 85vh;
     max-height: 1000px;
   }
 }

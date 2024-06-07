@@ -85,6 +85,8 @@
 .player-component .date-details .release-date{
   background-color: var(--orangered);
   padding: 2px 5px;
+  font-weight: 500;
+  color: var(--white-opacity-09);
 }
 
 .player-component .date-details .content-runtime{
@@ -365,7 +367,7 @@
     height: 65%;
     bottom: 0;
     left: 0;
-    background-image: linear-gradient(to top, var(--body-color),var(--body-opacity-08), var(--body-opacity-00));
+    background-image: linear-gradient(to top, var(--body-color),var(--body-color), var(--body-opacity-00));
   }
 
   .player{
@@ -374,4 +376,11 @@
 }
 
 @media screen and (max-width: 600px) {
+  .player-component .date-details img{
+    height: 22px;
+  }
+
+  .player-component .date-details .release-date{
+    padding: 0px 7px;
+  }
 }
