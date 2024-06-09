@@ -184,7 +184,7 @@ header .menu-icon div{
   left: 0;
   z-index: -10;
   backdrop-filter: blur(10px);
-  transition: all .2s linear;
+  transition: all 0s linear;
 }
 
 .menu-container{
@@ -198,7 +198,7 @@ header .menu-icon div{
 }
 
 .menu-container ul{
-  padding: 60px 0px;
+  padding: 70px 0px;
   display: flex;
   flex-direction: column;
   list-style: none;
@@ -225,7 +225,7 @@ header .menu-icon div{
   border-radius: 4px;
   font: 500 19px "Poppins", 'Roboto', helvetica, sans-serif;
   color: var(--white-opacity-1) !important;
-  border: 1.5pt solid var(--red);
+  background-color: var(--red-opacity-07);
 }
 
 .menu-container ul button{
@@ -857,7 +857,7 @@ footer .footer-links a:hover{
   }
 
   .error-component .error-icon{
-    font-size: 110px;
+    font-size: 80px;
   }
 
   .error-component h1{

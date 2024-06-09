@@ -238,16 +238,20 @@ function PlayerPage() {
                     handleReleaseDate(contentData.last_air_date)
                   )}
                 </h2>
-                {contentData.runtime ? (
+                
+                {contentData.runtime &&
                   handleRunTime(contentData.runtime)
-                ): null}
-                {contentData.number_of_seasons ? (
+                }
+
+                {contentData.number_of_seasons &&
                   <h2>{contentData.number_of_seasons} Temporadas</h2>
-                ): null}
-                {contentData.production_companies ? (
+                }
+
+                {contentData.production_companies &&
                   handleCompanyLogo(contentData.production_companies)
-                ): null}
+                }
               </div>
+
               <button key={contentData.id} onClick={(e) => {handleVideoPlayer(e)}}>
                 <IoPlay className="play-icon"/>
                 Click para assistir
