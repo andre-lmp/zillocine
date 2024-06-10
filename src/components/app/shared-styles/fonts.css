@@ -2,6 +2,7 @@
 
 :root{
     --black: black;
+    --black-opacity-095: rgb(0, 0, 0, 0.95);
     --black-opacity-09: rgb(0, 0, 0, 0.9);
     --black-opacity-08: rgb(0, 0, 0, 0.8);
     --black-opacity-06: rgb(0, 0, 0, 0.6);
@@ -22,6 +23,8 @@
     --blueviolet: blueviolet;
     --red: red;
     --red-opacity-07: rgb(255, 0, 0, 0.7);
+    --red-opacity-03: rgb(255, 0, 0, 0.3);
+    --darkred: darkred;
     --white-opacity-1: white;
     --white-opacity-95: rgb(255, 255, 255, 0.95);
     --white-opacity-09: rgb(255, 255, 255, 0.9);
@@ -98,7 +101,24 @@
       backdrop-filter: blur(10px);
     }
   }
+
+  @keyframes dark{
+    from{
+      background-color: var(--black-opacity-00);
+    }
+    to{
+      background-color: var(--black-opacity-095);
+    }
+  }
   
+  @keyframes width{
+    from{
+      width: 100%;
+    }
+    to{
+      width: 0%;
+    }
+  }
 
   body{
     background-color: var(--body-color);

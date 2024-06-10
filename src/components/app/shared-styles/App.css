@@ -401,6 +401,43 @@ header .menu-icon div{
   border: 1.5pt solid var(--white-opacity-1);
 }
 
+.user-alert-component{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: -200;
+  min-height: 100vmax;
+  background-color: var(--black-opacity-00);
+}
+
+.user-alert-component .msg-container{
+  width: min(100%, 400px);
+  display: flex;
+  height: 70px;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--red-opacity-03);
+  transform: translateY(-100%);
+  transition: all .2s linear;
+  position: relative;
+}
+
+.user-alert-component .loading-bar{
+  width: 0%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 6px;
+  background-color: var(--red);
+}
+
+.user-alert-component h1{
+  color: var(--white-opacity-95);
+  font: 500 19px 'Roboto','Poppins', serif;
+}
+
 footer{
   width: 100%;
   display: flex;
@@ -873,6 +910,14 @@ footer .footer-links a:hover{
   .presentation-slides .movie-slides-info h1{
     font: 800 30px "Raleway", sans-serif;
     -webkit-line-clamp: 1;
+  }
+
+  .user-alert-component .msg-container{
+    height: 72px;
+  }
+
+  .user-alert-component h1{
+    font-size: 18px;
   }
 }
 
