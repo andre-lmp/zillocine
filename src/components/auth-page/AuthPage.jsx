@@ -6,7 +6,7 @@ import { FaUser } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { IoEyeSharp } from "react-icons/io5";
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import {Swiper, SwiperSlide } from '../app/shared-components/Swiper';
 
 function Auth({isAlertActive, alertMessage}){
@@ -89,6 +89,9 @@ function Auth({isAlertActive, alertMessage}){
                     alertMessage('Email ou senha incorretos');
                     isAlertActive(true);
                 }
+            }else{
+                alertMessage('Email não cadastrado !');
+                isAlertActive(true);
             }
         }catch (error){
             undefined
@@ -129,7 +132,9 @@ function Auth({isAlertActive, alertMessage}){
         try{
             const response = await findAccountByemail(userCredentials.email);
             if (!response){
-                set(ref(db, `users/${userID}`) , userCredentials);
+                set(ref(db, `users/${userID}`) , userCredentials).then(() => {
+                    navigate('/');
+                });
             }else{
                 alertMessage('Email ja cadastrado !');
                 isAlertActive(true);
