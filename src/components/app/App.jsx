@@ -18,18 +18,16 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isAlertOnScreen, setIsAlertOnScreen] = useState(false);
   const [alertMessage, setAlertMessage] = useState(undefined);
+  const [userData, setUserData] = useState(undefined);
 
-  useEffect(() => {
-    console.log(isAlertOnScreen);
-  },[isAlertOnScreen]);
   return (
     <>
       <Router>
         <ScrollTop/>
         <UserAlert isActive={isAlertOnScreen} onValueChange={setIsAlertOnScreen} message={alertMessage}/>
         <Routes>
-          <Route path='/Auth' element={<AuthPage alertMessage={setAlertMessage} isAlertActive={setIsAlertOnScreen}/>}/>
-          <Route path='*' element={isLoggedIn ? <AuthenticatedRoutes/> : <Navigate to='/Auth'/>}/>
+          <Route path='/Auth' element={<AuthPage alertMessage={setAlertMessage} isAlertActive={setIsAlertOnScreen} onUserData={setUserData}/>}/>
+          <Route path='*' element={isLoggedIn ? <AuthenticatedRoutes userData={userData}/> : <Navigate to='/Auth'/>}/>
         </Routes>
         <Footer/>
       </Router>
@@ -37,7 +35,7 @@ export default function App() {
   );
 };
 
-function AuthenticatedRoutes(){
+function AuthenticatedRoutes(userData){
   const [menuIsActive, setMenuIsActive] = useState(false);
 
   const isMenuActive = (e) => {
@@ -53,7 +51,7 @@ function AuthenticatedRoutes(){
         <Route path='/Page/:id/:type' Component={PlayerPage}/>
         <Route path='/Movies' Component={MoviesPage}/>
         <Route path='/Series' Component={SeriesPage}/>
-        <Route path='/Profile' Component={ProfilePage}/>
+        <Route path='/Profile' element={<ProfilePage userData={userData}/>}/>
         <Route path='/Search' Component={SearchPage}/>
       </Routes>
     </>

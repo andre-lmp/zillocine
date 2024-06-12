@@ -435,7 +435,8 @@ header .menu-icon div{
 
 .user-alert-component h1{
   color: var(--white-opacity-95);
-  font: 500 19px 'Roboto','Poppins', serif;
+  text-transform: uppercase;
+  font: 600 16px 'Roboto','Poppins', serif;
 }
 
 footer{
@@ -692,7 +693,7 @@ footer .footer-links a:hover{
 
 .error-component .error-icon{
   color: var(--gainsboro);
-  font-size: 140px;
+  font-size: 110px;
 }
 
 @media screen and (min-width: 1400px){
@@ -925,5 +926,21 @@ footer .footer-links a:hover{
   .presentation-slides{
     height: 85vh;
     max-height: 1000px;
+  }
+
+  .user-alert-component h1{
+    font-size: 16px;
+  }
+
+  .menu-component ul p{
+    font-size: 19px;
+  }
+
+  .menu-container ul .menu-icons{
+    font-size: 20px;
+  }
+
+  .menu-container ul .user-icon{
+    font-size: 19px;
   }
 }

@@ -9,7 +9,7 @@ import { IoEyeSharp } from "react-icons/io5";
 import { useRef, useState } from 'react';
 import {Swiper, SwiperSlide } from '../app/shared-components/Swiper';
 
-function Auth({isAlertActive, alertMessage}){
+function Auth({isAlertActive, alertMessage, onUserData}){
     const navigate = useNavigate(undefined);
     const [isVisible, setIsVisible] = useState('invisible');
     const [swiperRef, setSwiperRef] = useState(undefined);
@@ -85,6 +85,7 @@ function Auth({isAlertActive, alertMessage}){
                 const userData = Object.values(response);
                 if (userCredentials.email === userData[0].email && userCredentials.password === userData[0].password){
                     navigate('/');
+                    onUserData(userData[0]);
                 }else{
                     alertMessage('Email ou senha incorretos');
                     isAlertActive(true);
@@ -133,6 +134,7 @@ function Auth({isAlertActive, alertMessage}){
             const response = await findAccountByemail(userCredentials.email);
             if (!response){
                 set(ref(db, `users/${userID}`) , userCredentials).then(() => {
+                    onUserData(userCredentials);
                     navigate('/');
                 });
             }else{

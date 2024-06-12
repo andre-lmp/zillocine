@@ -11,7 +11,7 @@ export default function userAlert({message = 'Mensagem de erro', isActive = fals
                 alertElementsRef.current[0].style.animation = 'dark .2s linear forwards';
                 alertElementsRef.current[1].style.transform = 'translateY(0%)';
                 setTimeout(() => {
-                    alertElementsRef.current[2].style.animation = 'width 2s linear';
+                    alertElementsRef.current[2].style.animation = 'width 1.5s linear';
                     setTimeout(() => {
                         alertElementsRef.current[1].style.transform = 'translateY(-100%)';
                         alertElementsRef.current[2].style.animation = '';
@@ -20,7 +20,7 @@ export default function userAlert({message = 'Mensagem de erro', isActive = fals
                             alertElementsRef.current[0].style.zIndex = -200;
                             onValueChange(false);
                         }, 200);
-                    }, 2100);
+                    }, 1600);
                 }, 200);
             }
         }

@@ -5,11 +5,12 @@
     min-height: calc(100vh - 50px);
     padding: 0px 30px;
     box-sizing: border-box;
+    position: relative;
 }
 
 .profile-page .content-container{
     width: 100%;
-    height: 100vh;
+    min-height: calc(100vh - 50px);
     max-height: 800px;
     display: flex;
     justify-content: center;
@@ -21,16 +22,18 @@
     width: min(500px, 100%);
     background-color: var(--red);
     background-color: var(--white-opacity-005);
-    padding: 30px 50px;
     display: flex;
     margin-top: 100px;
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 30px;
+    gap: 35px;
     border-radius: 6px;
     position: relative;
+    padding-top: 20px;
+    overflow: hidden;
+    border: 1pt solid var(--white-opacity-02);
 }
 
 .profile-page .user-icon-box{
@@ -38,6 +41,7 @@
     justify-content: center;
     align-items: center;
     border-radius: 50%;
+    position: relative;
 }
 
 .profile-page .user-icon-box .user-icon{
@@ -50,6 +54,12 @@
     display: flex;
     flex-direction: column;
     row-gap: 25px;
+    padding: 30px 50px;
+    box-sizing: border-box;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background-color: var(--body-color);
+    border-top: 1pt solid var(--white-opacity-03);
 }
   
 .profile-page .profile-data .data-item{
@@ -61,25 +71,52 @@
 }
   
 .profile-page .profile-data .data-item h1{
-    font: 500 17px 'Poppins','Roboto', sans-serif;
+    font: 500 17px 'Poppins', helvetica, sans-serif;
     color: var(--white-opacity-1);
 }
   
 .profile-page .profile-data .data-item h2{
-    font: 400 18px 'Roboto','Poppins', sans-serif;
-    color: var(--white-opacity-06);
+    font: 400 16px 'Poppins', helvetica, sans-serif;
+    color: var(--white-opacity-07);
     position: relative;
 }
 
 .profile-page .profile-data .pencil-icon{
-    color: var(--white-opacity-08);
+    color: var(--white-opacity-07);
     position: absolute;
+    font-size: 20px;
     top: 50%;
     right: 0;
     cursor: pointer;
     transform: translateY(-50%);
 }
 
+.profile-page .user-icon-box .pencil-icon{
+    top: 100%;
+}
+
+.profile-page .noLogged-message{
+    width: 100%;
+    height: calc(100vh - 50px);
+    max-height: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.profile-page .noLogged-message h1{
+    color: var(--white-opacity-1);
+    text-transform: uppercase;
+    text-align: center;
+    font: 600 22px 'Poppins', helvetica, sans-serif;
+}
+
+.profile-page .noLogged-message h2{
+    color: var(--white-opacity-09);
+    font: 500 18px 'Poppins', helvetica, sans-serif;
+}
 
 @media screen and (min-width: 2000px) {
 
@@ -102,16 +139,33 @@
     .profile-page{
         padding: 0px 15px;
     }
+
+    .profile-page .noLogged-message h1{
+        font-size: 18px;
+    }
+    
+    .profile-page .noLogged-message h2{
+        font-size: 16px;
+    }
   }
   
   @media screen and (max-width: 600px) {
     .profile-page .user-icon-box .user-icon{
         font-size: 180px;
     }
+
+    .profile-page .profile-data{
+        row-gap: 40px;
+    }
+
   }
   
   @media screen and (max-width: 500px) {
     .profile-page .user-icon-box .user-icon{
         font-size: 160px;
+    }
+
+    .profile-page .profile-data{
+        margin-top: 0px;
     }
   }
