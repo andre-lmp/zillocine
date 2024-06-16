@@ -10,30 +10,26 @@
 
 .profile-page .content-container{
     width: 100%;
-    min-height: calc(100vh - 50px);
+    height: calc(100vh - 50px);
     max-height: 800px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: 1fr;
+    margin-top: 80px;
+    column-gap: 40px;
 }
 
   
-.profile-page .profile-data{
-    width: min(500px, 100%);
-    background-color: var(--red);
-    background-color: var(--white-opacity-005);
+.profile-page .user-data{
+    width: 100%;
     display: flex;
-    margin-top: 100px;
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
-    gap: 35px;
-    border-radius: 6px;
+    align-items: flex-start;
     position: relative;
-    padding-top: 20px;
     overflow: hidden;
-    border: 1pt solid var(--white-opacity-02);
+    order: 1;
 }
 
 .profile-page .user-icon-box{
@@ -42,6 +38,7 @@
     align-items: center;
     border-radius: 50%;
     position: relative;
+    margin: auto;
 }
 
 .profile-page .user-icon-box .user-icon{
@@ -54,34 +51,35 @@
     display: flex;
     flex-direction: column;
     row-gap: 25px;
-    padding: 30px 50px;
     box-sizing: border-box;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
     background-color: var(--body-color);
-    border-top: 1pt solid var(--white-opacity-03);
 }
   
-.profile-page .profile-data .data-item{
+.profile-page .user-data .data-item{
     display: flex;
     flex-direction: column;
-    padding-bottom: 2px;
-    border-bottom: 1pt solid var(--white-opacity-03);
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1pt solid var(--white-opacity-03);
     row-gap: 8px;
 }
+
+.profile-page .user-data .data-item:hover{
+    border: 1pt solid var(--red);
+}
   
-.profile-page .profile-data .data-item h1{
-    font: 500 17px 'Poppins', helvetica, sans-serif;
+.profile-page .user-data .data-item h1{
+    font: 600 18px 'Poppins', helvetica, sans-serif;
     color: var(--white-opacity-1);
 }
   
-.profile-page .profile-data .data-item h2{
+.profile-page .user-data .data-item h2{
     font: 400 16px 'Poppins', helvetica, sans-serif;
     color: var(--white-opacity-07);
     position: relative;
 }
 
-.profile-page .profile-data .pencil-icon{
+.profile-page .user-data .pencil-icon{
     color: var(--white-opacity-07);
     position: absolute;
     font-size: 20px;
@@ -89,6 +87,10 @@
     right: 0;
     cursor: pointer;
     transform: translateY(-50%);
+}
+
+.profile-page .user-data .pencil-icon:hover{
+    color: var(--red);
 }
 
 .profile-page .user-icon-box .pencil-icon{
@@ -124,23 +126,56 @@
     cursor: pointer;
 }
 
+.profile-page .user-options{
+    width: 100%;
+    height: auto;
+    order: 2;
+    border: 1pt solid var(--white-opacity-03);
+    border-radius: 10px;
+}
+
+@media screen and (min-width: 1400px){
+    .profile-page .user-icon-box .user-icon{
+        font-size: 200px;
+    }
+}
+
 @media screen and (min-width: 2000px) {
     .swiper-image{
       min-height: 400px;
     }
-  }
+}
+
   
-  @media screen and (max-width: 950px){
-    
-  }
+@media screen and (max-width: 950px){
+
+}
   
-  @media screen and (max-width: 800px) {
+@media screen and (max-width: 800px) {
     .profile-page #profile-section-title{
         display: none;
     }
-  }
+
+    .profile-page .content-container{
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        gap: 0px;
+        align-items: center;
+    }
+
+    .profile-page .user-options{
+        display: none;
+    }
+
+    .profile-page .user-info{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+        gap: 20px;   
+    }
+}
   
-  @media screen and (max-width: 700px) {
+@media screen and (max-width: 700px) {
     .profile-page{
         padding: 0px 15px;
     }
@@ -148,29 +183,31 @@
     .profile-page .noLogged-message h1{
         font-size: 18px;
     }
-    
+
     .profile-page .noLogged-message h2{
         font-size: 16px;
     }
-  }
+}
   
-  @media screen and (max-width: 600px) {
+@media screen and (max-width: 600px) {
     .profile-page .user-icon-box .user-icon{
-        font-size: 180px;
+        font-size: 130px;
     }
 
-    .profile-page .profile-data{
+    .profile-page .user-data{
         row-gap: 40px;
     }
-
-  }
+}
   
-  @media screen and (max-width: 500px) {
+@media screen and (max-width: 500px) {
     .profile-page .user-icon-box .user-icon{
-        font-size: 160px;
+        font-size: 120px;
     }
 
-    .profile-page .profile-data{
-        margin-top: 0px;
+    .profile-page .user-info{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+        gap: 20px;   
     }
   }

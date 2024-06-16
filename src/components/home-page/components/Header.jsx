@@ -38,7 +38,7 @@ function Header(props) {
   },[]);
 
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 100){
+    if (window.scrollY > 50){
         scrolled.current.style.backgroundColor = 'rgb(2, 8, 23)';
     }else{
       scrolled.current.style.backgroundColor = 'transparent';

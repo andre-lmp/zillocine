@@ -17,21 +17,14 @@ function ProfilePage({userData}) {
         <section className="profile-page">  
             {userData.userData ? (      
                 <section className="content-container">
-                    <div className="profile-data">
+                    <div className="user-data">
                         <div className="user-icon-box">
                             <FaUserCircle className="user-icon"/>
                             <HiOutlinePencilSquare className="pencil-icon"/>
                         </div>
                         <section className="user-info">
                             <div className="data-item">
-                                <h1>Nome de Usuario</h1>
-                                <h2>
-                                    {userData.userData.name}
-                                    <HiOutlinePencilSquare className="pencil-icon"/>
-                                </h2>
-                            </div>
-                            <div className="data-item">
-                                <h1>Email</h1>
+                                <h1>Endereço de e-mail</h1>
                                 <h2>
                                     {userData.userData.email}
                                     <HiOutlinePencilSquare className="pencil-icon"/>
@@ -44,7 +37,18 @@ function ProfilePage({userData}) {
                                     <HiOutlinePencilSquare className="pencil-icon"/>
                                 </h2>
                             </div>
+                            <div className="data-item">
+                                <h1>Nome</h1>
+                                <h2>
+                                    {userData.userData.name}
+                                    <HiOutlinePencilSquare className="pencil-icon"/>
+                                </h2>
+                            </div>
                         </section>
+                    </div>
+
+                    <div className="user-options">
+
                     </div>
                 </section>
                 ) : (

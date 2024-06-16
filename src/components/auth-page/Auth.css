@@ -232,6 +232,10 @@
 }
 
 @media screen and (max-width: 500px) {
+    .auth-page .form-container{
+        width: 100%;
+    }
+
     .auth-page form{
         width: 100%;
     }
