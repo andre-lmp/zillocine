@@ -13,10 +13,9 @@ html{
 header{
   width: 100%;
   max-width: 2000px;
+  height: 80px;
   margin: auto;
-
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
   transition: opacity .2s linear;
@@ -39,7 +38,7 @@ header .header-links{
   width: 100%;
   display: flex;
   flex-direction: row;
-  padding: 15px 30px;
+  padding: 0px 30px;
   justify-content: space-between;
   background-color: transparent;
   box-sizing: border-box;
@@ -65,7 +64,7 @@ header .project-title{
 
 header .project-title h1{
   font: 800 29px "Raleway", sans-serif;
-  color: var(--white-opacity-1);
+  color: var(--white-opacity-1)
 }
 
 header .links{
@@ -111,7 +110,7 @@ header .center-links a:hover{
 }
 
 header .center-links .link-icons{
-  font-size: 22px;
+  font-size: 20px;
 }
 
 header .center-links .home-icon{
@@ -150,9 +149,9 @@ header .right-links button .user-icon{
 
 header .right-links h3{
   color: var(--white-opacity-95);
-  font: 600 18.5px "Poppins", sans-serif;
+  font: 600 17px "Poppins", helvetica, sans-serif;
   cursor: pointer;
-  padding: 3px 20px;
+  padding: 4px 20px;
   border-radius: 4px;
   background-color: var(--body-color);
   border: 1.5pt solid var(--red);
@@ -216,6 +215,7 @@ header .menu-icon div{
   justify-content: flex-start;
   align-items: center;
   column-gap: 9px;
+  position: relative;
 }
 
 .menu-container ul li:last-child p{
@@ -247,6 +247,13 @@ header .menu-icon div{
 
 .menu-container ul .user-icon{
   font-size: 21px;
+}
+
+.menu-component ul .arrow-up-icon{
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  font-size: 14px;
 }
 
 .menu-container button .close-icon{
@@ -303,8 +310,8 @@ header .menu-icon div{
 }
 
 .movie-fetcher h1{
-  color: var(--white-opacity-1);
-  font: 500 20px "Roboto",'Poppins', sans-serif;
+  color: var(--white-opacity-95);
+  font: 600 19px "Roboto",'Poppins', sans-serif;
   animation: fadeIN .3s ease-in-out;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -376,7 +383,6 @@ header .menu-icon div{
   justify-content: center;
   align-items: flex-end;
   opacity: 0;
-  transition: all .1s ease-in-out;
 }
 
 .movie-fetcher .swiper-image:hover .mv-overlay-info{
@@ -384,7 +390,7 @@ header .menu-icon div{
 }
 
   .movie-fetcher .swiper-image:hover .mv-overlay-info h2{
-    animation: fadeIN .25s ease-in-out forwards;
+    animation: fadeIN .2s ease-out forwards;
   }
 
 .movie-fetcher .mv-overlay-info h2{
@@ -394,7 +400,7 @@ header .menu-icon div{
   -webkit-line-clamp: 2;
   overflow: hidden;
   color: var(--white-opacity-1);
-  font: 600 16.5px 'Poppins','Roboto', sans-serif;
+  font: 600 16px 'Poppins','Roboto', sans-serif;
 }
 
 .movie-fetcher .swiper-image:hover::before{
@@ -632,7 +638,7 @@ footer .footer-links a:hover{
 }
 
 .presentation-slides .movie-slides-info p{
-  color: var(--white-opacity-1);
+  color: var(--white-opacity-09);
   overflow: hidden;
   display: -webkit-box;
   line-height: 150%;
@@ -693,7 +699,7 @@ footer .footer-links a:hover{
 
 .error-component .error-icon{
   color: var(--gainsboro);
-  font-size: 110px;
+  font-size: 90px;
 }
 
 @media screen and (min-width: 1400px){
@@ -719,6 +725,10 @@ footer .footer-links a:hover{
 
   .presentation-slides{
     height: 90vh;
+  }
+
+  .presentation-slides .movie-slides-info{
+    width: 60%;
   }
 
   .presentation-slides .movie-slides-info h1{
@@ -828,6 +838,7 @@ footer .footer-links a:hover{
     width: 100%;
     padding: 14px 0px;
     border-radius: 5px;
+    margin: auto;
   }
   
   .presentation-slides .movie-slides-info::before{
@@ -857,10 +868,6 @@ footer .footer-links a:hover{
   
   .presentation-slides .movie-slides-info p{
     text-align: center;
-  }
-  
-  .presentation-slides .movie-slides-info button{
-    margin: auto;
   }
 
   .menu-container{
@@ -942,5 +949,9 @@ footer .footer-links a:hover{
 
   .menu-container ul .user-icon{
     font-size: 19px;
+  }
+
+  .presentation-slides .movie-slides-info button{
+    font-size: 15px;
   }
 }

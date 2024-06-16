@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import './Profile.css';
 import { FaUserCircle } from "react-icons/fa";
 import { HiOutlinePencilSquare } from "react-icons/hi2";
+import { SlLogin } from "react-icons/sl";
 
 function ProfilePage({userData}) {
     const [autorizado, setAutorizado] = useState(false);
+    const navigate = useNavigate(undefined);
 
     useEffect(() => {
         setAutorizado(true);
@@ -48,6 +51,7 @@ function ProfilePage({userData}) {
                 <section className="noLogged-message">
                     <h1>Desculpe, você não possui uma conta</h1>
                     <h2>Navegue até a área de login</h2>
+                    <SlLogin onClick={() => {navigate('/Auth')}} className="login-icon"/>
                 </section>
                 )
             }

@@ -95,7 +95,6 @@ function MovieSlides(props) {
         if (element.vote_average > maxScore){
           maxScore = element.vote_average
           maxScoreIndex = index;
-          console.log(index);
         }
       });
 

@@ -7,6 +7,7 @@ import { TbMovie } from "react-icons/tb";
 import { BiMoviePlay } from "react-icons/bi";
 import { LuSearch } from 'react-icons/lu';
 import { FaUserLarge } from 'react-icons/fa6';
+import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 
 function Menu(props) {
     const navigate = useNavigate(undefined);
@@ -72,7 +73,12 @@ function Menu(props) {
                     </p></li>
                     
                     <li></li>
-                    <li><p onClick={() => {handleNavigationLinks('Auth')}}>Entrar</p></li>
+                    <li>
+                      <p onClick={() => {handleNavigationLinks('Auth')}}>
+                        Entrar
+                        <FaArrowUpRightFromSquare className='arrow-up-icon'/>
+                      </p>
+                    </li>
                 </ul>
             </nav>
         </section>

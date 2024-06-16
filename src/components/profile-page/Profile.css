@@ -110,16 +110,21 @@
     color: var(--white-opacity-1);
     text-transform: uppercase;
     text-align: center;
-    font: 600 22px 'Poppins', helvetica, sans-serif;
+    font: 600 20px 'Poppins', helvetica, sans-serif;
 }
 
 .profile-page .noLogged-message h2{
     color: var(--white-opacity-09);
-    font: 500 18px 'Poppins', helvetica, sans-serif;
+    font: 500 17px 'Poppins', helvetica, sans-serif;
+}
+
+.profile-page .noLogged-message .login-icon{
+    color: var(--white-opacity-09);
+    font-size: 40px;
+    cursor: pointer;
 }
 
 @media screen and (min-width: 2000px) {
-
     .swiper-image{
       min-height: 400px;
     }

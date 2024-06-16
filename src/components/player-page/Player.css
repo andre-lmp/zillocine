@@ -256,7 +256,7 @@
   align-items: center;
   z-index: 10;
   opacity: 0;
-  transition: all .1s ease-in-out;
+  row-gap: 10px;
 }
 
 .player-component .overlay-info h2{
@@ -270,7 +270,7 @@
 }
 
 .player-component .content-seasons:hover .overlay-info{
-  animation: fadeIN .25s ease-in-out forwards;
+  animation: fadeIN .2s ease-out forwards;
 }
 
 .player{
@@ -383,4 +383,9 @@
   .player-component .date-details .release-date{
     padding: 0px 7px;
   }
+
+  .player-component .player-img-info  button{
+    font-size: 15px;
+  }
+
 }
