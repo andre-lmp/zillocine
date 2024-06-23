@@ -15,7 +15,10 @@ function Footer() {
   return loading ? (
    <footer>
     <div className="about-project">
-      <h2>ZilloCine</h2>
+      <h2>
+        <span>Zillo</span>
+        <span>Cine</span>
+      </h2>
       <div className="social-icons">
         <a href="https://github.com/888888b" target="_blank"><FontAwesomeIcon className="icons" icon={faGithub}/></a>
         <a href="https://www.linkedin.com/in/vitor-hugo-2054622a6/" target="_blank"><FontAwesomeIcon className='icons' icon={faLinkedin}/></a>

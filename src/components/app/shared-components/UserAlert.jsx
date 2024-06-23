@@ -21,7 +21,7 @@ export default function userAlert({message = 'Mensagem de erro', isActive = fals
                             onValueChange(false);
                         }, 200);
                     }, 1600);
-                }, 200);
+                }, 250);
             }
         }
     },[isActive]);

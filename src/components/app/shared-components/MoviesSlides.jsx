@@ -2,6 +2,7 @@ import { Swiper, SwiperSlide } from './Swiper.jsx';
 import { useEffect, useState } from 'react';
 import { Pagination, Autoplay } from 'swiper/modules';
 import { useNavigate } from 'react-router-dom';
+import { PiArrowElbowDownRightBold } from "react-icons/pi";
 import '../shared-styles/App.css';
 import 'swiper/css';
 import 'swiper/element/css/autoplay';
@@ -203,6 +204,7 @@ function MovieSlides(props) {
                             <p>O lançamento de um dos mais aguardados filmes de uma sequencia de sucesso</p>
                             )}
                             <button onClick={NavigateToPlayer} value={movie.id} id="btn-play">
+                              <PiArrowElbowDownRightBold className='arrow-down'/>
                               Ir para {props.contentType}
                             </button>
                         </div>

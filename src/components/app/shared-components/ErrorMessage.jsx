@@ -6,7 +6,6 @@ export default function Message(props) {
     const componentRef = useRef(undefined);
 
     useEffect(() => {
-        console.log(props.isVisible);
         if (componentRef.current){
             if (props.isVisible){
                 componentRef.current.style.opacity = '1';

@@ -56,15 +56,15 @@ header .header-links::before{
   backdrop-filter: blur(0px);
 }
 
-header .project-title{
+header .project-title h1{
+  font: 800 26px "Raleway", sans-serif;
+  color: var(--white-opacity-1);
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-header .project-title h1{
-  font: 800 29px "Raleway", sans-serif;
-  color: var(--white-opacity-1)
+  text-transform: uppercase;
+  flex-direction: row;
+  column-gap: 10px;
 }
 
 header .links{
@@ -90,12 +90,12 @@ header .center-links button{
 header .center-links{
   display: flex;
   flex-direction: row;
-  column-gap: 40px;
+  column-gap: 30px;
 }
 
 header .center-links a{
   font: 600 19px "Poppins", helvetica, sans-serif;
-  color: var(--white-opacity-08);
+  color: var(--white-opacity-09);
   text-decoration: none;
   cursor: pointer;
   display: flex;
@@ -103,10 +103,12 @@ header .center-links a{
   justify-content: center;
   align-items: center;
   column-gap: 8px;
+  padding: 5px 10px;
+  border-radius: 4px;
 }
 
 header .center-links a:hover{
-  color: var(--white-opacity-1);
+  background-color: var(--white-opacity-02);
 }
 
 header .center-links .link-icons{
@@ -120,7 +122,7 @@ header .center-links .home-icon{
 header .center-links .lupa-icon{
   font-size: 25px;
   cursor: pointer;
-  color: var(--white-opacity-07);
+  color: var(--white-opacity-09);
 }
 
 header .center-links .lupa-icon:hover{
@@ -128,11 +130,11 @@ header .center-links .lupa-icon:hover{
 }
 
 header .right-links button{
-  width: 48px;
-  height: 48px;
+  width: 45px;
+  height: 45px;
   border-radius: 100%;
   color: var(--white-opacity-1);
-  border: 2px solid var(--red);
+  border: 2px solid var(--white-opacity-09);
   background-color: var(--black);
   transition: all .2s ease-in-out;
   display: flex;
@@ -144,7 +146,7 @@ header .right-links button{
 
 header .right-links button .user-icon{
   color: var(--white-opacity-08);
-  font-size: 16px;
+  font-size: 14px;
 }
 
 header .right-links h3{
@@ -153,8 +155,8 @@ header .right-links h3{
   cursor: pointer;
   padding: 4px 20px;
   border-radius: 4px;
-  background-color: var(--body-color);
-  border: 1.5pt solid var(--red);
+  background-color: var(--black);
+  border: 1.5pt solid var(--orangered);
 }
 
 header .menu-icon{
@@ -193,7 +195,7 @@ header .menu-icon div{
   transform: translateX(-100%);
   transition: all .2s linear;
   border-right: 1pt solid var(--white-opacity-03) ;
-  background-color: var(--body-color);
+  background-color: var(--black);
 }
 
 .menu-container ul{
@@ -219,7 +221,7 @@ header .menu-icon div{
 }
 
 .menu-container ul li:last-child p{
-  background-color: var(--body-color);
+  background-color: var(--black);
   width: fit-content;
   padding: 5px 50px;
   border-radius: 4px;
@@ -424,10 +426,12 @@ header .menu-icon div{
   margin: auto;
   justify-content: center;
   align-items: center;
-  background-color: var(--red-opacity-03);
+  background-color: var(--darkred);
   transform: translateY(-100%);
-  transition: all .2s linear;
+  transition: all .1s linear;
   position: relative;
+  border-radius: 2px;
+  overflow-x: hidden;
 }
 
 .user-alert-component .loading-bar{
@@ -442,7 +446,7 @@ header .menu-icon div{
 .user-alert-component h1{
   color: var(--white-opacity-95);
   text-transform: uppercase;
-  font: 600 16px 'Roboto','Poppins', serif;
+  font: 600 15px 'Poppins', 'Roboto', helvetica, serif;
 }
 
 footer{
@@ -456,7 +460,7 @@ footer{
   row-gap: 30px;
   justify-content: center;
   border-top: 1pt solid var(--white-opacity-01);
-  background-color: var(--body-color);
+  background-color: var(--black);
   color: var(--white-opacity-95);
 }
 
@@ -473,8 +477,16 @@ footer .about-project{
 }
 
 footer .about-project h2{
+  display: flex;
+  flex-direction: row;
+  column-gap: 5px;
   width: fit-content;
   font: 700 21px 'Raleway', sans-serif;
+}
+
+footer .about-project h2:nth-child(1){
+  text-transform: uppercase;
+  font-size: 20px;
 }
 
 footer .social-icons{
@@ -517,7 +529,7 @@ footer .footer-links a:hover{
   flex-direction: column;
   row-gap: 20px;
   justify-content: center;
-  background-color: var(--body-color);
+  background-color: var(--black);
 }
 
 .loading-component .loading-swiper{
@@ -584,7 +596,7 @@ footer .footer-links a:hover{
   top: 0;
   left: 0;
   z-index: 3;
-  background-image:  linear-gradient(to bottom, var(--body-color), var(--body-opacity-00), var(--body-opacity-00), var(--body-color));
+  background-image:  linear-gradient(to bottom, var(--black), var(--black-opacity-00), var(--black-opacity-00), var(--black));
 }
 
 .presentation-slides .presentation-img::after{
@@ -592,10 +604,10 @@ footer .footer-links a:hover{
   position: absolute;
   left: 0;
   bottom: 0;
-  width: 70%;
+  width: 80%;
   height: 100%;
   z-index: 4;
-  background-image: linear-gradient(to right, var(--body-color),var(--body-opacity-05), var(--body-opacity-00));
+  background-image: linear-gradient(to right, var(--black), var(--black-opacity-08), var(--black-opacity-00));
 }
 
 .presentation-slides img{
@@ -622,7 +634,7 @@ footer .footer-links a:hover{
   font: 800 40px "Raleway", 'Poppins', sans-serif;
   color: var(--white-opacity-1);
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -634,7 +646,7 @@ footer .footer-links a:hover{
   padding: 3px 10px;
   border-radius: 4px;
   background-color: var(--orangered);
-  font: 600 16px 'Noto Sans', helvetica, sans-serif;
+  font: 500 16px 'Noto Sans', helvetica, sans-serif;
 }
 
 .presentation-slides .movie-slides-info p{
@@ -649,6 +661,7 @@ footer .footer-links a:hover{
 }
 
 .presentation-slides .movie-slides-info button{
+  height: 50px;
   color: var(--white-opacity-1);
   background-color: var(--dark-blue);
   border: 1pt solid var(--transparent);
@@ -657,9 +670,17 @@ footer .footer-links a:hover{
   width: fit-content;
   outline: none;
   border-radius: 4px;
-  width: 200px;
-  padding: 9px 0px;
+  width: 220px;
   cursor: pointer;
+  position: relative;
+}
+
+.presentation-slides .movie-slides-info .arrow-down{
+  font-size: 20px;
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .home-container .loading-container{
@@ -671,7 +692,7 @@ footer .footer-links a:hover{
   width: 100%;
   height: 100vh;
   max-height: 850px;
-  background-color: var(--body-color);
+  background-color: var(--black);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -699,7 +720,7 @@ footer .footer-links a:hover{
 
 .error-component .error-icon{
   color: var(--gainsboro);
-  font-size: 90px;
+  font-size: 70px;
 }
 
 @media screen and (min-width: 1400px){
@@ -846,7 +867,7 @@ footer .footer-links a:hover{
     bottom: 0;
     width: 100%;
     height: 70vh;
-    background-image: linear-gradient(to top, var(--body-color),var(--body-opacity-05), var(--body-opacity-00));
+    background-image: linear-gradient(to top, var(--black),var(--black-opacity-05), var(--black-opacity-00));
   }
 
   .presentation-slides .presentation-img::after{
@@ -854,7 +875,7 @@ footer .footer-links a:hover{
     height: 65%;
     left: 0;
     bottom: 0;
-    background-image: linear-gradient(to top, var(--body-color),var(--body-color), var(--body-opacity-00));
+    background-image: linear-gradient(to top, var(--black),var(--black), var(--black-opacity-00));
   }
   
   .presentation-slides .movie-slides-info h1{
@@ -896,6 +917,10 @@ footer .footer-links a:hover{
     font-size: 20px;
   }
 
+  footer .about-project h2:nth-child(1){
+    font-size: 19px;
+  }
+
   .error-component{
     height: 70vh;
     padding: 0px 15px;
@@ -930,6 +955,15 @@ footer .footer-links a:hover{
 }
 
 @media screen and (max-width: 500px){
+  header .project-title h1{
+    font-size: 22px;
+  }
+
+  header .right-links button{
+    width: 38px;
+    height: 38px;
+  }
+
   .presentation-slides{
     height: 85vh;
     max-height: 1000px;
@@ -953,5 +987,9 @@ footer .footer-links a:hover{
 
   .presentation-slides .movie-slides-info button{
     font-size: 15px;
+  }
+
+  .error-component .error-icon{
+    font-size: 65px
   }
 }

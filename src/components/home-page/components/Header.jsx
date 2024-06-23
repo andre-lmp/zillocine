@@ -39,9 +39,11 @@ function Header(props) {
 
   window.addEventListener('scroll', () => {
     if (window.scrollY > 50){
-        scrolled.current.style.backgroundColor = 'rgb(2, 8, 23)';
+        scrolled.current.style.backgroundColor = 'rgb(0, 0, 0, 0.9)';
+        scrolled.current.style.backdropFilter = 'blur(10px);'
     }else{
       scrolled.current.style.backgroundColor = 'transparent';
+      scrolled.current.style.backdropFilter = 'none;'
     }
   });
   
@@ -57,7 +59,10 @@ function Header(props) {
               </div>
 
               <div className="project-title">
-                <h1>ZilloCine</h1>
+                <h1>
+                  <span>Zillo</span>
+                  <span>Cine</span>
+                </h1>
               </div>
 
               <div className="links center-links">

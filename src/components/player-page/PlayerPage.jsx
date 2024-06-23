@@ -21,8 +21,9 @@ function PlayerPage() {
   const [swiperRef, setSwiperRef] = useState(undefined);
   const [playerRef, setPlayerRef] = useState(undefined);
   const [isPlayerVisible, setIsPlayerVisible] = useState(false);
-  const [isErrorMessage, setIsErrorMessage] = useState(false);
+  const [isThereMessage, setIsThereMessage] = useState(false);
   const [pageWidth, setPageWidth] = useState(window.innerWidth);
+  const bgImageRef = useRef(undefined);
 
   const breakpoints = {
     750: {
@@ -126,8 +127,9 @@ function PlayerPage() {
   const handleVideoPlayer = async (e) => {
     if (playerRef && contentData.videos.results.length > 0){
       setIsPlayerVisible(true);
+      bgImageRef.current.style.opacity = 0;
       const state = await playerRef.getInternalPlayer().getPlayerState();
-    
+      
       if (state === 1){
         playerRef.internalPlayer.pauseVideo();
         e.target.innerText = 'Click para retomar'
@@ -144,8 +146,10 @@ function PlayerPage() {
         }
       }
     }else{
-      setIsErrorMessage(true);
+      bgImageRef.current.style.opacity = 0;
+      setIsThereMessage(true);
     };
+
   };
 
   useEffect(() => {
@@ -194,6 +198,9 @@ function PlayerPage() {
     };
 
     equalizeHeights();
+    if (bgImageRef.current){
+      bgImageRef.current.style.opacity = 1;
+    }
   },[id]);
 
   const handleUnavailableContent = (index) => {
@@ -211,13 +218,13 @@ function PlayerPage() {
             {contentData.videos.results.length > 0 ? (
               <Player youtubeRef={setPlayerRef} isVisible={isPlayerVisible} id={contentData.videos.results[0].key}/>
             ): (
-              <Message isVisible={isErrorMessage}/>
+              <Message isVisible={isThereMessage}/>
             )}
 
             {contentData.backdrop_path ? (
-              <img src={`https://image.tmdb.org/t/p/original${contentData.backdrop_path}`} alt="tmdb images" />
+              <img ref={bgImageRef} src={`https://image.tmdb.org/t/p/original${contentData.backdrop_path}`} alt="tmdb images" />
             ): (
-              <img src={`https://image.tmdb.org/t/p/original${contentData.poster_path}`} alt="tmdb images" />
+              <img ref={bgImageRef} src={`https://image.tmdb.org/t/p/original${contentData.poster_path}`} alt="tmdb images" />
             )}
             <div className="player-img-info">
               <h1>
