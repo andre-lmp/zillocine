@@ -9,6 +9,7 @@ function Series() {
     const genreBtns = useRef(undefined);
     const [isLoading, setIsLoading] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
+    const [prevGenreBtn, setPrevGenreBtn] = useState(undefined);
 
     const componentIsVisible = (e) => {
         setIsVisible(e);
@@ -18,22 +19,17 @@ function Series() {
         setIsLoading(e);
     };
 
-    const handleGenres = (e) => {
+    const handleSelectedGenre = (btnRef) => {
         if (!isLoading){
-            setMovieGenre(e.target.value);
-            handleColorBtn(e.target.value);
-        }
-    };
+            setMovieGenre(btnRef.target.value);
 
-    const handleColorBtn = (genre) => {
-        if (genreBtns.current){
-            const children = genreBtns.current.children;
-            for (let child in children){
-                if (children[child].childNodes[0].value === genre){
-                    children[child].childNodes[0].style.color = 'white';
-                }else{
-                    children[child].childNodes[0].style.color = 'rgba(255, 255, 255, 0.7)';
-                }
+            if (!prevGenreBtn){
+                btnRef.target.classList.toggle('genreSelected');
+                setPrevGenreBtn(btnRef);
+            }else{
+                prevGenreBtn.target.classList.toggle('genreSelected'); 
+                btnRef.target.classList.toggle('genreSelected');
+                setPrevGenreBtn(btnRef);
             }
         }
     }
@@ -46,13 +42,13 @@ function Series() {
                     {isVisible &&
                         <div className='genres-bar'>
                             <ul ref={genreBtns}>
-                                <li><button value='Lançamentos' onClick={(e) => handleGenres(e)}>Lançamentos</button></li>
-                                <li><button value='Terror' onClick={(e) => handleGenres(e)}>Suspense</button></li>
-                                <li><button value='Ação' onClick={(e) => handleGenres(e)}>Ação</button></li>
-                                <li><button value='Comedia' onClick={(e) => handleGenres(e)}>Comedia</button></li>
-                                <li><button value='Guerra' onClick={(e) => handleGenres(e)}>Guerra</button></li>
-                                <li><button value='Animação' onClick={(e) => handleGenres(e)}>Animação</button></li>
-                                <li><button value='Documentario' onClick={(e) => handleGenres(e)}>Documentarios</button></li>
+                                <li><button value='Lançamentos' onClick={(e) => {handleSelectedGenre(e)}}>Lançamentos</button></li>
+                                <li><button value='Terror' onClick={(e) => {handleSelectedGenre(e)}}>Suspense</button></li>
+                                <li><button value='Ação' onClick={(e) => {handleSelectedGenre(e)}}>Ação</button></li>
+                                <li><button value='Comedia' onClick={(e) => {handleSelectedGenre(e)}}>Comedia</button></li>
+                                <li><button value='Guerra' onClick={(e) => {handleSelectedGenre(e)}}>Guerra</button></li>
+                                <li><button value='Animação' onClick={(e) => {handleSelectedGenre(e)}}>Animação</button></li>
+                                <li><button value='Documentario' onClick={(e) => {handleSelectedGenre(e)}}>Documentarios</button></li>
                             </ul>
                         </div>
                     };

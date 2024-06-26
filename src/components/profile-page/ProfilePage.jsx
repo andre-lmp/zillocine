@@ -24,25 +24,25 @@ function ProfilePage({userData}) {
                         </div>
                         <section className="user-info">
                             <div className="data-item">
-                                <h1>Endereço de e-mail</h1>
-                                <h2>
+                                <span>Endereço de e-mail</span>
+                                <span>
                                     {userData.userData.email}
                                     <HiOutlinePencilSquare className="pencil-icon"/>
-                                </h2>
+                                </span>
                             </div>
                             <div className="data-item">
-                                <h1>Senha</h1
-                                ><h2>
+                                <span>Senha</span>
+                                <span>
                                     {userData.userData.password}
                                     <HiOutlinePencilSquare className="pencil-icon"/>
-                                </h2>
+                                </span>
                             </div>
                             <div className="data-item">
-                                <h1>Nome</h1>
-                                <h2>
+                                <span>Nome</span>
+                                <span>
                                     {userData.userData.name}
                                     <HiOutlinePencilSquare className="pencil-icon"/>
-                                </h2>
+                                </span>
                             </div>
                         </section>
                     </div>

@@ -153,7 +153,7 @@ function Auth({isAlertActive, alertMessage, onUserData}){
                     <SwiperSlide>
                         <section className='slide-container'>
                             <div className='form-container'>
-                                <h1>ZilloCine</h1>
+                                <h1>Cadastro</h1>
                                 <form onSubmit={(e) => {e.preventDefault() ; addToDatabase(signUpInputsRef.current)}}>
                                     <div className='input-container'>
                                         <label htmlFor="name">Nome</label>
@@ -196,7 +196,7 @@ function Auth({isAlertActive, alertMessage, onUserData}){
                     <SwiperSlide>
                         <section className='slide-container'>
                             <div className='form-container'>
-                                <h1>ZilloCine</h1>
+                                <h1>Entrar</h1>
                                 <form onSubmit={(e) => {e.preventDefault() ; checkExistUser(signInInputsRef.current)}}>
                                     
                                     <div className='input-container'>

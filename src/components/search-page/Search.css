@@ -26,7 +26,7 @@
     flex-direction: row;
     align-items: center;
     padding: 10px 10px;
-    border-radius: 5px;
+    border-radius: 4px;
     position: relative;
     background-color: var(--white-opacity-02);
 }
@@ -64,7 +64,7 @@
 
 .search-pg .content-tp-options{
     position: absolute;
-    top: 110%;
+    top: 100%;
     left: 0;
     display: flex;
     flex-direction: row;
@@ -72,22 +72,29 @@
     align-items: center;
     width: 100%;
     height: 100%;
-    gap: 20px;
+    column-gap: 15px;
 }
 
 .search-pg .content-tp-options button{
+    width: 100px;
+    height: 30px;
     border-radius: 3px;
-    border: 1.5pt solid var(--transparent);
-    padding: 6px 40px;
+    border: none;
     background-color: var(--white-opacity-02);
     color: var(--white-opacity-07);
     font: 500 15px 'Roboto', sans-serif;
     cursor: pointer;
     outline: none;
+    background-color: var(--white-opacity-02);
 }
 
 .search-pg .content-tp-options button:hover{
     color: var(--white-opacity-1);
+}
+
+.search-pg .content-tp-options button.selected{
+    background-color: var(--white-opacity-1);
+    color: var(--black-opacity-1);
 }
 
 .search-pg .fetch-result-container{
@@ -102,7 +109,7 @@
 
 .search-pg .fetch-result-container .section-title{
     color: var(--white-opacity-1);
-    font: 500 20px 'Roboto', 'Poppins', sans-serif;
+    font: 500 19px 'Roboto', 'Poppins', sans-serif;
     position: absolute;
     top: -40px;
     left: 0;

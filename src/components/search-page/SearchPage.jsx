@@ -68,8 +68,8 @@ function SearchContent() {
             }
 
             if (contentTypeBtnsRef){
-                contentTypeBtnsRef[0].style.border = '1.5pt solid rgb(255, 255, 255)';
-                contentTypeBtnsRef[1].style.border = '1.5pt solid transparent';
+                contentTypeBtnsRef[0].classList.add('selected');
+                contentTypeBtnsRef[1].classList.remove('selected');
             }
         }else{
             setFetchContentType('Serie');
@@ -79,8 +79,8 @@ function SearchContent() {
                 FetchSeries(term);
             }
             if (contentTypeBtnsRef){
-                contentTypeBtnsRef[1].style.border = '1.5pt solid rgb(255, 255, 255)';
-                contentTypeBtnsRef[0].style.border = '1.5pt solid transparent';
+                contentTypeBtnsRef[1].classList.add('selected');
+                contentTypeBtnsRef[0].classList.remove('selected');
             }
         }
      };

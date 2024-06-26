@@ -20,28 +20,34 @@
 }
   
 .movies-pg .genres-bar ul{
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   list-style: none;
   padding: 0px;
-  gap: 1rem;
-  flex-wrap: wrap;
+  gap: 15px;
 }
+
+.genres-bar ul li{
+  width: 100%;
+}
+
   
 .movies-pg .genres-bar ul li button{
-  background-color: var(--midnightblue);
+  width: 100%;
+  background-color: var(--dark-blue);
   font: 500 16px 'Roboto', helvetica, sans-serif;
-  color: var(--white-opacity-07);
-  padding: 5px 30px;
-  border-radius: 4px;
+  color: var(--white-opacity-085);
+  padding: 7px 0px;
+  border-radius: 3px;
   outline: none;
   border: none;
   cursor: pointer;
   animation: fadeIN .2s ease-in-out;
 }
-  
-.movies-pg .genres-bar ul li:nth-child(1) button{
-  color: var(--white-opacity-1);
+
+.genres-bar ul .genreSelected{
+  color: var(--white-opacity-1) !important;
+  background-color: var(--orangered) !important;
 }
 
 .movies-pg .loading-container{

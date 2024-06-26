@@ -78,11 +78,10 @@
     display: flex;
     align-items: center;
     top: -20px;
-    left: 50%;
-    transform: translateX(calc(-50% - 5px));
+    left: 25px;
     background-color: var(--body-color);
     padding: 0px 5px;
-    font: 800 30px "Raleway", sans-serif;
+    font: 600 30px 'Poppins',"Raleway", sans-serif;
     color: var(--white-opacity-1);
 }
 
@@ -93,7 +92,7 @@
     border-radius: 3px;
     display: flex;
     flex-direction: column;
-    row-gap: 35px;
+    row-gap: 30px;
 }
 
 .auth-page form .input-container{
@@ -142,8 +141,8 @@
 }
 
 .auth-page form input::placeholder{
-    font: 400 16.5px 'Poppins','Roboto', sans-serif;
-    color: var(--white-opacity-05);
+    font: 400 16px 'Poppins','Roboto', sans-serif;
+    color: var(--white-opacity-07);
 }
 
 .auth-page form .input-icons{

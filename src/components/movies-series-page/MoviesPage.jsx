@@ -7,9 +7,10 @@ import './Movies-Series.css';
 
 function Movies() {
     const [movieGenre, setMovieGenre] = useState('Lançamentos');
-    const genreBtns = useRef(undefined);
+    const genreBtns = useRef([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
+    const [prevGenreBtn, setPrevGenreBtn] = useState(undefined);
 
     const handleComponentIsLoading = (e) => {
         setIsLoading(e);
@@ -19,22 +20,17 @@ function Movies() {
         setIsVisible(e);
     };
 
-    const handleGenres = (e) => {
-        if (!isLoading){
-            setMovieGenre(e.target.value);
-            handleColorBtn(e.target.value);
-        }
-    };
+    const handleGenreSelected = (btnRef) => {
+        if(!isLoading){
+            setMovieGenre(btnRef.target.value);
 
-    const handleColorBtn = (genre) => {
-        if (genreBtns.current){
-            const children = genreBtns.current.children;
-            for (let child in children){
-                if (children[child].childNodes[0].value === genre){
-                    children[child].childNodes[0].style.color = 'white';
-                }else{
-                    children[child].childNodes[0].style.color = 'rgba(255, 255, 255, 0.7)';
-                }
+            if (!prevGenreBtn){
+                btnRef.target.classList.toggle('genreSelected');
+                setPrevGenreBtn(btnRef);
+            }else{
+                prevGenreBtn.target.classList.toggle('genreSelected'); 
+                btnRef.target.classList.toggle('genreSelected');
+                setPrevGenreBtn(btnRef);
             }
         }
     };
@@ -46,14 +42,14 @@ function Movies() {
                 
                 {isVisible  &&
                     <div className='genres-bar'>
-                        <ul ref={genreBtns}>
-                            <li><button value='Lançamentos' onClick={handleGenres}>Lançamentos</button></li>
-                            <li><button value='Terror' onClick={handleGenres}>Terror</button></li>
-                            <li><button value='Ação' onClick={handleGenres}>Ação</button></li>
-                            <li><button value='Comedia' onClick={handleGenres}>Comedia</button></li>
-                            <li><button value='Guerra' onClick={handleGenres}>Guerra</button></li>
-                            <li><button value='Animação' onClick={handleGenres}>Animação</button></li>
-                            <li><button value='Documentario' onClick={handleGenres}>Documentarios</button></li>
+                        <ul>
+                            <li><button ref={(e) => {genreBtns.current[0] = e}} value='Lançamentos' onClick={(e) => {handleGenreSelected(e)}}>Lançamentos</button></li>
+                            <li><button ref={(e) => {genreBtns.current[1] = e}} value='Terror' onClick={(e) => {handleGenreSelected(e)}}>Terror</button></li>
+                            <li><button ref={(e) => {genreBtns.current[2] = e}} value='Ação' onClick={(e) => {handleGenreSelected(e)}}>Ação</button></li>
+                            <li><button ref={(e) => {genreBtns.current[3] = e}} value='Comedia' onClick={(e) => {handleGenreSelected(e)}}>Comedia</button></li>
+                            <li><button ref={(e) => {genreBtns.current[4] = e}} value='Guerra' onClick={(e) => {handleGenreSelected(e)}}>Guerra</button></li>
+                            <li><button ref={(e) => {genreBtns.current[5] = e}} value='Animação' onClick={(e) => {handleGenreSelected(e)}}>Animação</button></li>
+                            <li><button ref={(e) => {genreBtns.current[6] = e}} value='Documentario' onClick={(e) => {handleGenreSelected(e)}}>Documentarios</button></li>
                         </ul>
                     </div>
                 };

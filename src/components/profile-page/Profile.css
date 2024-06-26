@@ -16,7 +16,7 @@
     grid-template-columns: 1fr 2fr;
     grid-template-rows: 1fr;
     margin-top: 80px;
-    column-gap: 40px;
+    column-gap: 20px;
 }
 
   
@@ -42,15 +42,15 @@
 }
 
 .profile-page .user-icon-box .user-icon{
-    color: var(--gainsboro);
-    font-size: 150px;
+    color: var(--white-opacity-08);
+    font-size: 140px;
 }
 
 .profile-page .user-info{
     width: 100%;
     display: flex;
     flex-direction: column;
-    row-gap: 25px;
+    row-gap: 15px;
     box-sizing: border-box;
     background-color: var(--body-color);
 }
@@ -59,38 +59,30 @@
     display: flex;
     flex-direction: column;
     padding: 10px 15px;
-    border-radius: 5px;
-    border: 1pt solid var(--white-opacity-03);
-    row-gap: 8px;
+    border-radius: 4px;
+    background-color: var(--white-opacity-1);
+    row-gap: 7px;
 }
 
-.profile-page .user-data .data-item:hover{
-    border: 1pt solid var(--red);
-}
-  
-.profile-page .user-data .data-item h1{
+.profile-page .user-data .data-item span{
     font: 600 18px 'Poppins', helvetica, sans-serif;
-    color: var(--white-opacity-1);
+    color: var(--black);
 }
   
-.profile-page .user-data .data-item h2{
-    font: 400 16px 'Poppins', helvetica, sans-serif;
-    color: var(--white-opacity-07);
+.profile-page .user-data .data-item span:nth-of-type(2){
+    font: 500 16px 'Poppins', helvetica, sans-serif;
+    color: var(--black-opacity-08);
     position: relative;
 }
 
 .profile-page .user-data .pencil-icon{
-    color: var(--white-opacity-07);
+    color: var(--black-opacity-08);
     position: absolute;
     font-size: 20px;
     top: 50%;
     right: 0;
     cursor: pointer;
     transform: translateY(-50%);
-}
-
-.profile-page .user-data .pencil-icon:hover{
-    color: var(--red);
 }
 
 .profile-page .user-icon-box .pencil-icon{
@@ -130,7 +122,7 @@
     width: 100%;
     height: auto;
     order: 2;
-    border: 1pt solid var(--white-opacity-03);
+    border: 1pt solid var(--white-opacity-05);
     border-radius: 10px;
 }
 
@@ -171,7 +163,7 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: auto auto;
-        gap: 20px;   
+        gap: 15px;   
     }
 }
   
@@ -208,7 +200,7 @@
         display: grid;
         grid-template-columns: 1fr;
         grid-template-rows: auto auto auto;
-        gap: 20px;   
+        gap: 15px;   
     }
 
     .profile-page .noLogged-message .login-icon{
