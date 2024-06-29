@@ -1,4 +1,4 @@
-import '../shared-styles/App.css';
+import '../../app/shared-styles/App.css';
 import { useRef, useEffect } from 'react';
 
 export default function userAlert({message = 'Mensagem de erro', isActive = false, onValueChange}){

@@ -1,17 +1,17 @@
 import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import HomePage from "/src/components/home-page/HomePage";
-import PlayerPage from '/src/components/player-page/PlayerPage';
-import MoviesPage from '/src/components/movies-series-page/MoviesPage';
-import SeriesPage from '/src/components/movies-series-page/SeriesPage';
-import ProfilePage from '/src/components/profile-page/ProfilePage';
-import Header from "/src/components/home-page/components/Header";
-import Footer from "/src/components/home-page/components/Footer";
-import Menu from '/src/components/app/shared-components/MenuContainer';
-import SearchPage from '/src/components/search-page/SearchPage';
-import ScrollTop from '/src/components/app/shared-components/ScrollTop';
-import AuthPage from '/src/components/auth-page/AuthPage';
-import UserAlert from './shared-components/UserAlert';
+import { useState} from 'react';
+import HomePage from "../home-page/page/Home.jsx";
+import PlayerPage from '../player-page/page/PlayerPage.jsx';
+import MoviesPage from '../movies-series-page/movie-page/Movies.jsx'
+import SeriesPage from '../movies-series-page/series-page/Series.jsx';
+import ProfilePage from '../profile-page/page/Profile.jsx';
+import Header from '../home-page/components/Header.jsx';
+import Footer from '../home-page/components/Footer.jsx';
+import Menu from '../app/shared-components/mobile-menu/Menu.jsx';
+import SearchPage from '../search-page/page/Search.jsx';
+import ScrollTop from '../app/shared-components/scroll-to-top/Scroll.jsx';
+import AuthPage from '../auth-page/page/Auth.jsx';
+import UserAlert from '../auth-page/auth-alert/Alert.jsx';
 import './shared-styles/App.css';
 
 export default function App() {
@@ -48,7 +48,7 @@ function AuthenticatedRoutes(userData){
       <Menu isActive={menuIsActive} isDisable={isMenuActive}/>
       <Routes>
         <Route path='/' Component={HomePage}/>
-        <Route path='/Page/:id/:type' Component={PlayerPage}/>
+        <Route path='/Player/:type/:id' Component={PlayerPage}/>
         <Route path='/Movies' Component={MoviesPage}/>
         <Route path='/Series' Component={SeriesPage}/>
         <Route path='/Profile' element={<ProfilePage userData={userData}/>}/>

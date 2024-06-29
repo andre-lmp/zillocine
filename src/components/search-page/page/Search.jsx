@@ -1,8 +1,9 @@
+import '../search-css/Search.css';
 import { useState, useRef, useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
 import { HiXMark } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
-import './Search.css';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 function SearchContent() {
     const [contentData, setContentData] = useState([]);
@@ -85,7 +86,7 @@ function SearchContent() {
         }
      };
 
-     const handleUnavailableContent = (index) => {
+     const removeContentIndex = (index) => {
         if (contentData[index]){
             contentData.splice(index, 1);
         }
@@ -98,8 +99,8 @@ function SearchContent() {
         }
      };
 
-     const handleNavigation = (id) => {
-        navigate(`/Page/${id}/${fetchContentType}`);
+     const navigateTo = (id) => {
+        navigate(`/Player/${fetchContentType}/${id}`);
      };
 
      useEffect(() => {
@@ -129,21 +130,31 @@ function SearchContent() {
                         </div>
                     </div>
                 </section>
-                <section className="fetch-result-container">
+                <section className="fetch-result-container" key={contentData.length}>
                     {contentData.length !== 0 ? (
                         <h2 className="section-title">({contentData.length}) Encontrados</h2>
                     ): null}
                     {contentData.map((content, index) => (
-                        <div key={content.id} className="content-box" onClick={() => {handleNavigation(content.id)}} >
+                        <div key={content.id} className="content-box" onClick={() => {navigateTo(content.id)}} >
             
-                            {content.poster_path &&
-                             <img display={undefined} src={`https://image.tmdb.org/t/p/w500${content.poster_path}`}></img>
-                            }
-                            {content.backdrop_path &&
-                                <img display={undefined} src={`https://image.tmdb.org/t/p/w500${content.backdrop_path}`}></img>
-                            }
+                            {content.poster_path ? (
+                                <LazyLoadImage 
+                                    src={`https://image.tmdb.org/t/p/w500${content.poster_path}`}
+                                    style={{height: '100%'}}
+                                    className={'slide-img'}
+                                />
+                            ) : (
+                                <LazyLoadImage 
+                                    src={`https://image.tmdb.org/t/p/w500${content.backdrop_path}`}
+                                    style={{height: '100%'}}
+                                    className={'slide-img'}
+                                />
+                            )}
+
                             {!content.backdrop_path && !content.poster_path ? (
-                                handleUnavailableContent(index)
+                                contentData[index] ? (
+                                    removeContentIndex(index)
+                                ) : null
                             ): null}
 
                             {content.name && 

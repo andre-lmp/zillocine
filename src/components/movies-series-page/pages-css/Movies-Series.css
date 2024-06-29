@@ -1,25 +1,25 @@
-@import url('../app/shared-styles/fonts.css');
+@import url('../../app/shared-styles/fonts.css');
 
 .movies-pg{
-  width: 100%;
+  width: auto;
   min-height: calc(100vh - 50px);
 }
 
-.movies-pg-container{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.movies-pg .container{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .movies-pg .genres-bar{
-    width: 100%;
-    z-index: 20;
-    box-sizing: border-box;
-    margin: 50px 0px 30px 0px;
-    padding: 0px 30px;
+  width: 100%;
+  z-index: 20;
+  box-sizing: border-box;
+  margin: 50px 0px 30px 0px;
+  padding: 0px 30px;
 }
   
-.movies-pg .genres-bar ul{
+.movies-pg ul{
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   list-style: none;
@@ -27,12 +27,11 @@
   gap: 15px;
 }
 
-.genres-bar ul li{
+.genres-bar li{
   width: 100%;
 }
-
-  
-.movies-pg .genres-bar ul li button{
+ 
+.movies-pg button{
   width: 100%;
   background-color: var(--dark-blue);
   font: 500 16px 'Roboto', helvetica, sans-serif;
@@ -45,7 +44,7 @@
   animation: fadeIN .2s ease-in-out;
 }
 
-.genres-bar ul .genreSelected{
+.genres-bar .genreSelected{
   color: var(--white-opacity-1) !important;
   background-color: var(--orangered) !important;
 }
@@ -54,8 +53,7 @@
   position: relative;
 }
 
-.movies-pg .box-movies, .box-series{
-  padding: 0px 30px;
+.movies-pg .box-movies, .movies-pg .box-series{
   display: flex;
   flex-direction: column;
   row-gap: 10px;
@@ -90,8 +88,7 @@
     margin: 40px 0px 20px 0px;
   }
 
-  .movies-pg .box-movies, .box-series{
-    padding: 0px 15px;
+  .movies-pg .box-movies, .movies-pg .box-series{
     margin-top: 25px;
     row-gap: 10px;
   }

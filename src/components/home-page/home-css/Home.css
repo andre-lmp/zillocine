@@ -1,11 +1,11 @@
-@import url('../app/shared-styles/fonts.css');
+@import url('../../app/shared-styles/fonts.css');
 
 .home-container{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    row-gap: 32px;
-    margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 32px;
+  margin-bottom: 20px;
 }
 
 @media screen and (max-width: 900px){

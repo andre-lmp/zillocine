@@ -20,18 +20,10 @@ export function Swiper(props){
     },[])
 
     useEffect(() => {
-        if (swiperRef.current && swiperRef.current.swiper) {
-            const swiperInstance = swiperRef.current.swiper;
-
-            const moveNext = () => {
-                swiperInstance.slideNext();
-            };
-
-        }
-
         const assingSwiperValue = () => {
             if (swiperRef.current && swiperRef.current.swiper) {
-                props.swiperRef(swiperRef.current.swiper);
+                props.swiperRef(swiperRef.current);
+                console.log(swiperRef.current.swiper.params);
             }else{
                 setTimeout(assingSwiperValue, 100);
             }

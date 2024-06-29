@@ -1,4 +1,4 @@
-@import url('../app/shared-styles/fonts.css');
+@import url('../../app/shared-styles/fonts.css');
 
 .auth-page{
     width: 100%;

@@ -1,4 +1,4 @@
-import '../shared-styles/App.css';
+import '../../shared-styles/App.css';
 import { useNavigate } from "react-router-dom";
 import { CgClose } from "react-icons/cg";
 import { useRef, useEffect } from "react";

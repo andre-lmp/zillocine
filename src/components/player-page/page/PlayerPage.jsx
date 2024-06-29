@@ -1,23 +1,19 @@
+import '../player-css/Player.css';
 import { useState, useEffect, useRef} from "react";
 import React from "react";
-import { Swiper, SwiperSlide } from '../app/shared-components/Swiper';
+import { Swiper, SwiperSlide } from '../../app/shared-components/swiper-element/Swiper.jsx';
 import { useParams } from "react-router-dom";
 import { IoPlay } from "react-icons/io5";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import MoviesFetcher from '../app/shared-components/MovieFetcher';
-import Message from '../app/shared-components/ErrorMessage';
-import Player from "./Player";
-import './Player.css';
+const MoviesFetcher = React.lazy(() => import('../../app/shared-components/content-fetcher/MoviesFetcher.jsx'));
+import Message from '../../app/shared-components/unavailable-content/ErrorMessage.jsx';
+import Player from "../player/Player.jsx";
 
 function PlayerPage() {
-  const {id, type} = useParams();
-  const [contentData, setContentData] = useState([]);
-  const [contentSeasons, setContentSeasons] = useState([]);
+  const {type, id} = useParams();
+  const [contentData, setContentData] = useState(undefined);
+  const [contentSeasons, setContentSeasons] = useState(undefined);
   const apiKey = "e1534e69b483f2e9d62ea1c394850e4e";
-  const apiURL = 'https://api.themoviedb.org/3/';
-  const [authorized, setAuthorized] = useState(false);
-  const movieImgRef = useRef(undefined);
-  const movieDetailsRef = useRef(undefined);
   const [swiperRef, setSwiperRef] = useState(undefined);
   const [playerRef, setPlayerRef] = useState(undefined);
   const [isPlayerVisible, setIsPlayerVisible] = useState(false);
@@ -62,15 +58,6 @@ function PlayerPage() {
     }
 
     return undefined;
-  };
-
-  const handleGenres = (object) => {
-    let genres = '';
-    for (let genre in object){
-      genres = object[genre].name;
-      return genres;
-    }
-    return 'Comedia';
   };
 
   const handleRunTime = (runtime) => {
@@ -152,58 +139,42 @@ function PlayerPage() {
 
   };
 
+  const fetchMovie = async (token, movieId) => {
+    try {
+      const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${token}&language=pt-BR&page=1&include_image_language=pt&append_to_response=videos`);
+      if (response.ok){
+        const data = await response.json();
+        setContentData(data);
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchSerie = async (token, SerieId) => {
+    try {
+      const response = await fetch(`https://api.themoviedb.org/3/tv/${SerieId}?api_key=${token}&language=pt-BR&page=1&include_image_language=pt&append_to_response=videos`);
+      if (response.ok) {
+        const data = await response.json();
+        setContentData(data);
+        setContentSeasons(data.seasons);
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+ 
   useEffect(() => {
-    const fetchMovies = async () => {
-      if (type === 'Movie') {
-        try {
-          const response = await fetch(`${apiURL}/movie/${id}?api_key=${apiKey}&language=pt-BR&page=1&include_image_language=pt&append_to_response=videos`);
-          if (response.ok){
-            const data = await response.json();
-            setContentData(data);
-            setAuthorized(true);
-          }else{
-            setAuthorized(false);
-          }
-        } catch (error) {
-          console.log(error);
-          setAuthorized(false);
-        }
-      }else{
-        try {
-          const response = await fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}&language=pt-BR&page=1&include_image_language=pt&append_to_response=videos`);
-          if (response.ok) {
-            const data = await response.json();
-            setContentData(data);
-            setAuthorized(true);
-            setContentSeasons(data.seasons);
-          }else{
-            setAuthorized(false);
-          }
-        } catch (error) {
-          setAuthorized(false);
-          console.log(error);
-        }
-      }
-      setIsPlayerVisible(false);
-    }
-
-    fetchMovies();
-
-    const equalizeHeights = () => {
-      if (movieDetailsRef.current && movieImgRef.current){
-        movieImgRef.current.style.height = `${movieDetailsRef.current.offsetHeight}px`;
-      }else{
-        setTimeout(equalizeHeights, 100);
-      }
-    };
-
-    equalizeHeights();
-    if (bgImageRef.current){
-      bgImageRef.current.style.opacity = 1;
-    }
+    type === 'Movie' ? (
+      fetchMovie(apiKey, id)
+    ) : (
+      fetchSerie(apiKey, id)
+    )
   },[id]);
 
-  const handleUnavailableContent = (index) => {
+  const removeContentIndex = (index) => {
     if (contentSeasons[index]){
       contentSeasons.splice(index, 1);
     }
@@ -211,7 +182,7 @@ function PlayerPage() {
   
   return(
     <section className="player-component">
-      {authorized ? (
+      {contentData ? (
         <section className="player-container">
           <section className="player-bg-img">
 
@@ -226,6 +197,7 @@ function PlayerPage() {
             ): (
               <img ref={bgImageRef} src={`https://image.tmdb.org/t/p/original${contentData.poster_path}`} alt="tmdb images" />
             )}
+
             <div className="player-img-info">
               <h1>
                 {contentData.title ? (
@@ -274,10 +246,10 @@ function PlayerPage() {
           </section>
           {type === 'Movie' ? (
             <section className="additional-content">
-              <MoviesFetcher visible={true} isLoading={undefined} title='Você pode gostar' page='1' type='Movie' genre={handleGenres(contentData.genres)}/>
+              <MoviesFetcher sectionTitle={contentData.genres[0].id ? contentData.genres[0].id : 'lançamentos'} page='1' genre={contentData.genres[0].id ? contentData.genres[0].id : 'lançamentos'}/>
             </section>
           ): (
-            <section className="additional-content">
+            <section className="additional-content seasons-slides">
               <h1 className="player-swiper-title">Temporadas</h1>
               <section className="swiper-box">
                 
@@ -305,7 +277,7 @@ function PlayerPage() {
                           }
 
                           {!seasons.poster_path && !seasons.backdrop_path &&
-                            handleUnavailableContent(index)
+                            removeContentIndex(index)
                           }
 
                           <div className="content-seasons-info">

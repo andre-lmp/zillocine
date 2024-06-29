@@ -1,6 +1,6 @@
+import '../profile-css/Profile.css';
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import './Profile.css';
 import { FaUserCircle } from "react-icons/fa";
 import { HiOutlinePencilSquare } from "react-icons/hi2";
 import { SlLogin } from "react-icons/sl";

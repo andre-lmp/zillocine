@@ -1,4 +1,4 @@
-import './Auth.css';
+import '../auth-css/Auth.css';
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, push, set, onValue, orderByChild, query, equalTo } from 'firebase/database';
 import { BsFillKeyFill } from "react-icons/bs";
@@ -7,7 +7,7 @@ import { MdEmail } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { IoEyeSharp } from "react-icons/io5";
 import { useRef, useState } from 'react';
-import {Swiper, SwiperSlide } from '../app/shared-components/Swiper';
+import {Swiper, SwiperSlide } from '../../app/shared-components/swiper-element/Swiper.jsx';
 
 function Auth({isAlertActive, alertMessage, onUserData}){
     const navigate = useNavigate(undefined);
@@ -41,9 +41,9 @@ function Auth({isAlertActive, alertMessage, onUserData}){
         },
     };
 
-    const handleSwiperControl = () => {
+    const swiperControllers = () => {
         if (swiperRef){
-            swiperRef.slideNext();
+            swiperRef.swiper.slideNext();
         }
     };
 
@@ -186,7 +186,7 @@ function Auth({isAlertActive, alertMessage, onUserData}){
                             
                                     <button type='submit'>Cadastrar</button>
                                     <div className='account-exist'>
-                                            <h2 onClick={() => {handleSwiperControl()}}>Já tem uma conta? <span>Entrar</span></h2>
+                                            <h2 onClick={() => {swiperControllers()}}>Já tem uma conta? <span>Entrar</span></h2>
                                     </div>
                                 </form>
                             </div>
@@ -222,7 +222,7 @@ function Auth({isAlertActive, alertMessage, onUserData}){
                             
                                     <button type='submit'>Entrar</button>
                                     <div className='account-exist'>
-                                            <h2 onClick={() => {handleSwiperControl()}}>Ainda não tem conta? <span>Criar</span></h2>
+                                            <h2 onClick={() => {swiperControllers()}}>Ainda não tem conta? <span>Criar</span></h2>
                                     </div>
                                 </form>
                             </div>

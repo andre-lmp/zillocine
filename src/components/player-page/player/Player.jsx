@@ -1,4 +1,4 @@
-import './Player.css'
+import '../player-css/Player.css';
 import YouTube from 'react-youtube';
 import { useRef, useEffect } from 'react';
 

@@ -1,9 +1,9 @@
-import { Swiper, SwiperSlide } from './Swiper.jsx';
+import '../../shared-styles/App.css';
+import { Swiper, SwiperSlide } from '../swiper-element/Swiper.jsx';
 import { useEffect, useState } from 'react';
 import { Pagination, Autoplay } from 'swiper/modules';
 import { useNavigate } from 'react-router-dom';
 import { PiArrowElbowDownRightBold } from "react-icons/pi";
-import '../shared-styles/App.css';
 import 'swiper/css';
 import 'swiper/element/css/autoplay';
 import 'swiper/element/css/pagination';
@@ -11,20 +11,20 @@ import 'swiper/element/css/pagination';
 function MovieSlides(props) {
   const apiKey = "e1534e69b483f2e9d62ea1c394850e4e";
   const newDate = new Date().toISOString().split('T')[0];
-  const [moviesData, setMoviesData] = useState([]);
-  const [authorized, setAuthorized] = useState(false);
+  const [contentData, setContentData] = useState([]);
   const navigate = useNavigate(undefined);
 
-  const handleSelectionMovies = (data) => {
+  const selectMovies = (data) => {
       const movieIds = [];
       for (let i = 0; i<=6; i++){
           movieIds.push(data[i]);
       }
-      setMoviesData(movieIds);
-      setAuthorized(true);
+
+      setContentData(movieIds);
+      props.isVisible(true)
   };
 
-  const handleReleaseDate = (date) => {
+  const getReleaseDate = (date) => {
       const newDate = [];
       for (let i = 0; i < 4; i++){
         newDate.push(date[i]);
@@ -32,57 +32,54 @@ function MovieSlides(props) {
       return newDate;
   }
 
-  const NavigateToPlayer = (e) => {
+  const navigateTo = (e) => {
       const value = e.target.attributes.value.value;
-      if (props.currentPage === 'SeriesPage'){
-        navigate(`/Page/${value}/Serie`);
+      if (props.currentPage === 'Series'){
+        navigate(`/Player/${value}/Serie`);
       }else{
-        navigate(`/Page/${value}/Movie`);
+        navigate(`/Player/${value}/Movie`);
       }
   }
 
-  useEffect(() => {
-  const fetchMovies = async (genre) => {
-      if (props.currentPage === 'HomePage'){
-        try {
-          const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&primary_release_date.gte=${newDate}&sort=primary_release_date.desc&language=pt-BR&include_image_language=pt`);
-          if (response.ok) {
-            const data = await response.json();
-            setMoviesData(data.results);
-            handleSelectionMovies(data.results);
-            props.isVisible(true);
-          }
-        } catch{
-          console.log(error);
-          props.isVisible(false);
-        }          
+  const fetchSeries = async (token, genre) => {
+    try{
+      const response = await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${token}&language=pt-BR&with_genres=${genre}&page=1`);
+      if (response.ok){
+        const data = await response.json();
+        return data.results;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-      }else{
-        if (props.currentPage === 'MoviesPage'){
+  const fetchMovies = async (genre, currentPage) => {
+    if (currentPage === 'Home'){
+      try {
+        const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&primary_release_date.gte=${newDate}&sort=primary_release_date.desc&language=pt-BR&include_image_language=pt`);
+        if (response.ok) {
+          const data = await response.json();
+          selectMovies(data.results);
+        }
+      } catch{
+        console.log(error);
+        props.isVisible(false);
+      }          
+
+    } else{
+        if (currentPage === 'Movies'){
           try {
             const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_genres=${genre}&language=pt-BR&include_image_language=pt&page=1`);
             if (response.ok){
               const data = await response.json();
-              return data.results;
+              return data.results
             }
 
           } catch (error) {
             console.error(error);
           }
         }
-
-        if (props.currentPage === 'SeriesPage') {
-          try{
-            const response = await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&language=pt-BR&with_genres=${genre}&page=1`);
-            if (response.ok){
-              const data = await response.json();
-              return data.results;
-            }
-          } catch (error) {
-            console.error(error);
-          }
-        }
-      }
+    };
   };
 
   const selectBestMovies = async (list) => {
@@ -105,73 +102,62 @@ function MovieSlides(props) {
     for (let index in list){
       const getResultSelect =  async () => {
         const result = await select(list[index]);
-        selectResult.push(result);
+        result ? (selectResult.push(result)) : null;
       };
 
       getResultSelect();
     }
 
-    setMoviesData(selectResult);
-    setAuthorized(true);
+    setContentData(selectResult);
     props.isVisible(true);
   };
-  
-  const handleFetchMovies = async () => {
+
+  const fetchAllGenres = async (currentPage) => {
+    const fetchDataResult = [];
     let genres = [''];
-    if (props.currentPage === 'MoviesPage'){
+
+    if (props.currentPage === 'Movies'){
       genres = ['27','878','28', '10752', '10749', '99'];
     };
 
-    if (props.currentPage === 'SeriesPage'){
+    if (props.currentPage === 'Series'){
       genres = ['9648', '878', '10759', '10764', '10768', '16', '99'];
     };
-
-    const fetchDataResult = [];
     
     try{
       for (let index in genres) {
-        const result = await fetchMovies(genres[index]);
+        const result = currentPage === 'Series' ? await fetchSeries(apiKey, genres[index]) :  await fetchMovies(genres[index], currentPage);
         fetchDataResult.push(result);
       }
     }
 
     catch (error){
       console.error(error);
-    }finally{
+    }
+
+    finally{
       selectBestMovies(fetchDataResult);
     }
   };
 
-  if (props.currentPage === 'HomePage'){
-    fetchMovies();
-  }else{
-    handleFetchMovies();
-  }
-  },[props.currentPage]);
-
-  const removeUndefined = (index) => {
-  moviesData.splice(index, 1);
-  };
-
-  const handleCompanyLogo = (url) => {
-    let imgUrl = '';
-
-    for (let index in url){
-      if (url[index].logo_path){
-        imgUrl = url[index].logo_path;
-        return <img src={`https://image.tmdb.org/t/p/original${imgUrl}`}/>
+  useEffect(() => {
+    if (props.currentPage === 'Home') {
+      fetchMovies(null, props.currentPage);
+    }else{
+      if (props.currentPage){
+        fetchAllGenres(props.currentPage);
       }
     }
+  },[]);
 
-    return undefined;
-  };
-
-  if (authorized) {
     return(
+    contentData ? (
         <section className='presentation-slides'>
              <Swiper className='swiper' slidesPerView={1} autoplay={{delay: 4000}} speed='500' loop={true} pagination={{clickable: true}} modules={[Pagination, Autoplay]}>
-                {moviesData.map((movie, index) => (
-                    !movie ? (removeUndefined(index)) : null,
+                {contentData.map((movie, index) => (
+                    !movie && (
+                      contentData[index].splice(index, 1)
+                    ),
                     <SwiperSlide className='slide'>
                         <div className='presentation-img'>
                           {movie.backdrop_path ? (
@@ -192,9 +178,9 @@ function MovieSlides(props) {
 
                             <h2>
                               {movie.release_date ? (
-                                handleReleaseDate(movie.release_date)
+                                getReleaseDate(movie.release_date)
                               ): (
-                                handleReleaseDate(movie.first_air_date)
+                                getReleaseDate(movie.first_air_date)
                               )}
                             </h2>
                               
@@ -203,7 +189,7 @@ function MovieSlides(props) {
                             ): (
                             <p>O lançamento de um dos mais aguardados filmes de uma sequencia de sucesso</p>
                             )}
-                            <button onClick={NavigateToPlayer} value={movie.id} id="btn-play">
+                            <button onClick={navigateTo} value={movie.id} id="btn-play">
                               <PiArrowElbowDownRightBold className='arrow-down'/>
                               Ir para {props.contentType}
                             </button>
@@ -212,8 +198,8 @@ function MovieSlides(props) {
                 ))};
           </Swiper>
         </section>
-    )
-  };
+    ) : null
+  )
 };
 
 

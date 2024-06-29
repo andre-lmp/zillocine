@@ -1,5 +1,5 @@
+import '../../shared-styles/App.css';
 import { BiSolidMoviePlay } from "react-icons/bi";
-import '../shared-styles/App.css';
 import { useEffect, useRef } from "react";
 
 export default function Message(props) {
