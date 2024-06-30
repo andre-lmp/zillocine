@@ -32,13 +32,12 @@ function MovieSlides(props) {
       return newDate;
   }
 
-  const navigateTo = (e) => {
-      const value = e.target.attributes.value.value;
-      if (props.currentPage === 'Series'){
-        navigate(`/Player/${value}/Serie`);
-      }else{
-        navigate(`/Player/${value}/Movie`);
-      }
+  const navigateTo = (currentPage, id) => {
+    currentPage === 'Movies' ? (
+      navigate(`/Player/Movie/${id}`)
+    ) : (
+      navigate(`/Player/Serie/${id}`)
+    )
   }
 
   const fetchSeries = async (token, genre) => {
@@ -141,13 +140,11 @@ function MovieSlides(props) {
   };
 
   useEffect(() => {
-    if (props.currentPage === 'Home') {
-      fetchMovies(null, props.currentPage);
-    }else{
-      if (props.currentPage){
-        fetchAllGenres(props.currentPage);
-      }
-    }
+    props.currentPage === 'Home' ? (
+      fetchMovies(null, props.currentPage)
+    ) : (
+      fetchAllGenres(props.currentPage)
+    )
   },[]);
 
     return(
@@ -189,9 +186,11 @@ function MovieSlides(props) {
                             ): (
                             <p>O lançamento de um dos mais aguardados filmes de uma sequencia de sucesso</p>
                             )}
-                            <button onClick={navigateTo} value={movie.id} id="btn-play">
+                            <button onClick={() => {navigateTo(props.currentPage, movie.id)}} id="btn-play">
                               <PiArrowElbowDownRightBold className='arrow-down'/>
-                              Ir para {props.contentType}
+                              Ir para {props.currentPage === 'Home' ? 'Filmes' : (
+                                props.currentPage === 'Movies' ? 'Filmes' : 'Series'
+                              )}
                             </button>
                         </div>
                     </SwiperSlide>
