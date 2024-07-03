@@ -246,7 +246,7 @@ function PlayerPage() {
           </section>
           {type === 'Movie' ? (
             <section className="additional-content">
-              <MoviesFetcher sectionTitle={contentData.genres[0].id ? contentData.genres[0].id : 'lançamentos'} page='1' genre={contentData.genres[0].id ? contentData.genres[0].id : 'lançamentos'}/>
+              <MoviesFetcher sectionTitle={'Você pode gostar'} removeLine={true} page='1' genre={contentData.genres[0].id ? contentData.genres[0].id : 'lançamentos'}/>
             </section>
           ): (
             <section className="additional-content seasons-slides">

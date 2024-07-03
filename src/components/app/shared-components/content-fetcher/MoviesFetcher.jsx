@@ -7,7 +7,6 @@ const MoviesFetcher = (props) => {
     const newDate = new Date().toISOString().split('T')[0];
 
     const fetchMovies = async (token, genre, page, currentDate) => {
-        console.log(genre, 'genero');
         if (genre === 'lançamentos'){
             try{
                 const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${token}&primary_release_date.gte=${currentDate}&sort=primary_release_date.desc&language=pt-BR&include_image_language=pt&page=${page}`);
@@ -41,7 +40,7 @@ const MoviesFetcher = (props) => {
     },[props.genre]);
 
     return(
-        movies ? <Carousel slidesData={movies} sectionTitle={props.sectionTitle} contentType='Movie'/> : null
+        movies ? <Carousel slidesData={movies} sectionTitle={props.sectionTitle} removeLine={props.removeLine ? props.removeLine : false} contentType='Movie'/> : null
     );
 };
 

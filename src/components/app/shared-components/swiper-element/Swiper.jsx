@@ -23,7 +23,7 @@ export function Swiper(props){
         const assingSwiperValue = () => {
             if (swiperRef.current && swiperRef.current.swiper) {
                 props.swiperRef(swiperRef.current);
-                console.log(swiperRef.current.swiper.params);
+                (swiperRef.current.swiper.params);
             }else{
                 setTimeout(assingSwiperValue, 100);
             }

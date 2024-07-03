@@ -6,36 +6,83 @@ import { FaUserLarge } from "react-icons/fa6";
 import { FiHome } from "react-icons/fi";
 import { TbMovie } from "react-icons/tb";
 import { BiMoviePlay } from "react-icons/bi";
+import { useParams } from 'react-router-dom';
 
 function Header(props) {
   
   const [authorized, setAuthorized] = useState(false);
-  const [hideSearchBar, setHideSearchBar] = useState(true);
   const scrolled = useRef(undefined);
   const overlayRef = useRef(undefined);
   const navigate = useNavigate();
-  const [displayWidth, setDisplayWidth] = useState(0);
+  const navLinks = useRef([]);
+  const navBar = useRef(undefined);
+  const indicatorBar = useRef(undefined);
+  const currentPage = useParams();
 
   const handleNavigationLinks = (e) => {
     navigate(`/${e}`)
   };
 
+  const animationBar = (elements) => {
+    for (let index = 0; index < elements.length; index++) {
+      elements[index].addEventListener('click', () => {
+        const navCords = navBar.current.getBoundingClientRect();
+        const linkCords = elements[index].getBoundingClientRect();
+        indicatorBar.current.style.left = `${linkCords.left - navCords.left}px`;
+        indicatorBar.current.style.width = `${elements[index].offsetWidth}px`;
+      });
+    }
+  };
+
+  const startLinksBar = (navLinksRef) => {
+    const page = Object.values(currentPage)[0];
+    const navCords = navBar.current.getBoundingClientRect();
+    for (let index = 0; index < navLinksRef.length; index++) {
+      page === navLinksRef[index].id && (
+        console.log(navLinksRef[index].offsetWidth),
+        indicatorBar.current.style.left = `${navLinksRef[index].getBoundingClientRect().left - navCords.left}px`,
+        indicatorBar.current.style.width = `${navLinksRef[index].offsetWidth}px`
+      )
+    }
+  };
+
   useEffect(() => {
-    const getDocumentWidth = () => {
-      if (window.innerWidth){
-        setDisplayWidth(window.innerWidth);
-      }else{
-        setTimeout(getDocumentWidth, 100);
-      }
+
+    const callAnimation = () => {
+      navLinks.current.length > 0 && indicatorBar.current && navBar.current ? (
+        animationBar(navLinks.current),
+        startLinksBar(navLinks.current)
+      ) : (
+        setTimeout(() => {
+          callAnimation();
+        }, 100)  
+      )  
     };
-  
-    getDocumentWidth();
 
-    window.addEventListener('resize', getDocumentWidth);
-
-
+    callAnimation();
     setAuthorized(true);
+
   },[]);
+
+  useEffect(() => {
+    const page = Object.values(currentPage)[0];
+    const paths = ['Series', 'Movies', 'Search', ''];
+    const insideSpecialRoutes = () => {
+      for (let index in paths) {
+        if (paths[index] === page) {
+          return true;
+        }
+      }
+
+      return false;
+    };
+
+    if (!insideSpecialRoutes()) {
+      if (indicatorBar.current) {
+        indicatorBar.current.style.width = '0px';
+      }
+    }
+  },[Object.values(currentPage)[0]]);
 
   window.addEventListener('scroll', () => {
     if (window.scrollY > 50){
@@ -50,7 +97,7 @@ function Header(props) {
   return authorized ? (
     <header>
       <div ref={overlayRef} className="overlayDiv"></div>
-          <div ref={scrolled} className="header-links">
+          <nav ref={scrolled} className="navbar">
              
               <div onClick={() => {props.menuIsActive(true)}} className="menu-icon">
                 <div className=""></div>
@@ -65,30 +112,34 @@ function Header(props) {
                 </h1>
               </div>
 
-              <div className="links center-links">
-                <a onClick={() => {handleNavigationLinks('')}}>
+              <ul ref={navBar} className='nav-links'>
+                <li id='' ref={(e) => {navLinks.current[0] = e}} onClick={() => {handleNavigationLinks('')}}>
                   <FiHome className="link-icons home-icon"/>
                   Inicio
-                </a>
-                <a  onClick={() => {handleNavigationLinks('Movies')}}>
+                </li>
+                <li id='Movies' ref={(e) => {navLinks.current[1] = e}} onClick={() => {handleNavigationLinks('Movies')}}>
                   <TbMovie className="link-icons"/>
                   Filmes
-                </a>
-                <a  onClick={() => {handleNavigationLinks('Series')}}>
+                </li>
+                <li id='Series' ref={(e) => {navLinks.current[2] = e}} onClick={() => {handleNavigationLinks('Series')}}>
                   <BiMoviePlay className="link-icons"/>
-                  Séries
-                </a>
-                <LuSearch onClick={() => {handleNavigationLinks('Search')}} className='lupa-icon'/>
-              </div>
+                  Series
+                </li>
+                <li id='Search' ref={(e) => {navLinks.current[3] = e}}>
+                  <LuSearch onClick={() => {handleNavigationLinks('Search')}} className='lupa-icon'/>
+                </li>
 
-              <div className='links right-links'>
+                <div ref={indicatorBar} className='bar-indecator'></div>
+              </ul>
+
+              <div className='links user-links'>
                 <button className="icon-conta" onClick={() => {handleNavigationLinks('Profile')}}>
                   <FaUserLarge onClick={() => {handleNavigationLinks('Profile')}} className="user-icon"/>
                 </button>
                 <h3 id="Auth" onClick={() => {handleNavigationLinks('Auth')}}>Entrar</h3>
               </div>
               
-            </div>
+            </nav>
     </header>
   ) : null;
 }

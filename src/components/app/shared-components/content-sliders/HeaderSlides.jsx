@@ -33,7 +33,8 @@ function MovieSlides(props) {
   }
 
   const navigateTo = (currentPage, id) => {
-    currentPage === 'Movies' ? (
+    console.log(currentPage);
+    currentPage === 'Movies' || currentPage === 'Home' ? (
       navigate(`/Player/Movie/${id}`)
     ) : (
       navigate(`/Player/Serie/${id}`)
@@ -150,7 +151,7 @@ function MovieSlides(props) {
     return(
     contentData ? (
         <section className='presentation-slides'>
-             <Swiper className='swiper' slidesPerView={1} autoplay={{delay: 4000}} speed='500' loop={true} pagination={{clickable: true}} modules={[Pagination, Autoplay]}>
+             <Swiper className='swiper' slidesPerView={1} spaceBetween={0} autoplay={{delay: 4000}} speed='500' loop={true} pagination={{clickable: true}} modules={[Pagination, Autoplay]}>
                 {contentData.map((movie, index) => (
                     !movie && (
                       contentData[index].splice(index, 1)

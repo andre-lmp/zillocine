@@ -315,11 +315,27 @@
   }
 }
 
-@media screen and (max-width: 800px){
+@media screen and (width <= 800px) {
+  .player{
+    height: 500px;
+    max-height: auto;
+  }
+
+  .player-component .player-bg-img{
+    height: 600px;
+  }
+
   .player-component .additional-content .content-seasons{
     margin: 0;
   }
 
+  .player-component .content-seasons:hover .overlay-info{
+    animation: none;
+  }
+
+  .player-component .additional-content .content-seasons::before{
+    display: none;
+  }
 }
 
 @media screen and (max-width: 700px){
@@ -329,10 +345,6 @@
     padding: 0px 15px;
     box-sizing: border-box;
     align-items: flex-start;  
-  }
-
-  .player-component .player-bg-img{
-    height: 80vh;
   }
 
   .player-component .player-content-info{
@@ -375,14 +387,15 @@
     left: 0;
     background-image: linear-gradient(to top, var(--black),var(--black), var(--black-opacity-00));
   }
-
-  .player{
-    height: 70vh;
-  }
-
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 600px){
+  .player-component .player-img-info h1{
+    font-size: 30px;
+  } 
+}
+
+@media screen and (max-width: 500px) {
   .player-component .date-details img{
     height: 22px;
   }
@@ -393,6 +406,10 @@
 
   .player-component .player-img-info  button{
     font-size: 15px;
+  }
+
+  .player-component .player-img-info h1{
+    font-size: 27px;
   }
 
 }

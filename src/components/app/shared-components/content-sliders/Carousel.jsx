@@ -88,7 +88,12 @@ const Carousel = (props) => {
                         ): null}
                     </div>
 
-                    <hr/>
+                    {props.removeLine ? (
+                        null
+                    ) : (
+                        <hr/>
+                    )}
+
                     <section className="swiper-box" key={props.slidesData.length}>
                         <button className="swiper-controllers controller-left">
                             <SlArrowLeft className="arrows" onClick={() => {swiperController('left')}}/>
