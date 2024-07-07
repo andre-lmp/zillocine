@@ -2,7 +2,7 @@
 
 ### Sobre o Projeto
 
-![imagem inicial da aplicação](./src/components/app/images/home_img.png)
+![imagem inicial da aplicação](./src/app/images/home_img.png)
 
 Zillo Cine é uma plataforma web de filmes, séries e animes, criada especialmente para os fãs de conteúdo virtual. Seu objetivo é oferecer uma experiência de streaming de filmes familiar e fácil de navegar, permitindo que os usuários busquem informações sobre seus filmes favoritos de maneira eficiente.
 
