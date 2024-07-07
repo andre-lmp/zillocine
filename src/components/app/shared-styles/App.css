@@ -63,9 +63,7 @@ header .project-title h1{
   display: flex;
   justify-content: center;
   align-items: center;
-  text-transform: uppercase;
   flex-direction: row;
-  column-gap: 10px;
 }
 
 header .links{
