@@ -1,70 +1,36 @@
-## ZilloCine - Plataforma web de Filmes
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-### Sobre o Projeto
+## Getting Started
 
-![imagem inicial da aplicação](./src/app/images/home_img.png)
+First, run the development server:
 
-Zillo Cine é uma plataforma web de filmes, séries e animes, criada especialmente para os fãs de conteúdo virtual. Seu objetivo é oferecer uma experiência de streaming de filmes familiar e fácil de navegar, permitindo que os usuários busquem informações sobre seus filmes favoritos de maneira eficiente.
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-O projeto consiste em seis páginas principais:
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-- **Inicio**: Apresenta destaques, recomendações e acesso rápido às principais categorias.
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-- **Filmes**: Uma seção dedicada exclusivamente a filmes, onde os usuários podem explorar uma ampla gama de títulos.
+This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-- **Séries**: Similar à seção de filmes, mas focada em séries de televisão, permitindo aos usuários encontrar suas séries favoritas e descobrir novas.
+## Learn More
 
-- **Pesquisa**: Página onde o usuario pode realizar buscas por filmes, series ou animes de sua escolha.
+To learn more about Next.js, take a look at the following resources:
 
-- **Player**: Esta página hospeda o player de mídia, onde os usuários podem assistir a trailers de filmes e séries após escolherem um título.
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-- **Conta**: Uma seção personalizada onde os usuários podem gerenciar suas contas.
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-- **Auth**: Página de autenticação, que permite aos usuários se registrarem como tambem realizem login com suas contas.
+## Deploy on Vercel
 
-## Tecnologias Utilizadas
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-### Linguagens e Frameworks
-
-- HTML5
-- CSS3
-- JavaScript (ES6+)
-- React JS
-- Fetch API
-
-### Bibliotecas e Ferramentas
-
-- React Icons
-- React Router DOM
-- Firebase
-- Swiper Slides
-- Vite (Ferramenta de Build)
-
-## Como Rodar o Projeto
-
-Para rodar o projeto localmente, siga os passos abaixo:
-
-1. Consiga uma chave de API gratuita em [https://www.themoviedb.org/](https://www.themoviedb.org/)
-2. Clone o repositorio
-   ```sh
-   git clone https://github.com/888888b/Plataforma_filmes.git
-   ```
-3. Instale os pacotes via NPM
-   ```sh
-   npm install
-   ```
-4. Defina sua chave de API em `src/app/shared-components/context-api/tmdb-context/context.jsx/`
-   ```js
-   const apiKey = 'Sua API aqui';
-   ```
-
-5. Inicie o servidor de desenvolvimento
-    ```sh
-    npm run dev
-    ```
-
-O projeto agora deve estar acessível no seu navegador local.
-
-## deploy da aplicação
-
-- Página: https://plataforma-filmes-three.vercel.app/
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

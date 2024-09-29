@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background-color: #020515;
+  --color: rgb(255, 255, 255);
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--color);
+  min-height: 100vh;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
