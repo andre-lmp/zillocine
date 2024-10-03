@@ -6,6 +6,7 @@ export const PlayerWrapper = styled.section`
 
 export const HeaderWrapper = styled.header`
     width: 100%;
+    overflow-x: hidden;
 
     & .overlay {
         width: 100%;

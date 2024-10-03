@@ -75,7 +75,7 @@ export default function SearchPage() {
     }, []);
 
     return (
-        <section className="flex flex-col px-4 w-full min-h-screen mt-32 font-roboto font-normal">
+        <section className="flex flex-col px-4 w-full min-h-screen mt-32 font-roboto font-normal md:px-6 lg:px-8">
             <div className='w-full flex flex-col gap-y-3'>
                 <div className='bg-neutral-800 flex items-center rounded-md px-4 w-full'>
                     <FiSearch className='text-2xl text-neutral-100'/>

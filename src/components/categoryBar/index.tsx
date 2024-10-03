@@ -22,10 +22,10 @@ export default function CategoryBar( props: categoryBarProps ) {
         props.selectGenre( (e.target as HTMLLIElement).id );
 
         categoryElementsRef.current.forEach( element => {
-            element?.style && Object.assign( element?.style, { backgroundColor: '#16142B' } )
+            element?.style && Object.assign( element?.style, { backgroundColor: '#16142B', color: '#e5e5e5' } )
         });
 
-        Object.assign(( e.target as HTMLLIElement ).style, { backgroundColor: '#ff4500' });
+        Object.assign(( e.target as HTMLLIElement ).style, { backgroundColor: '#ff4500', color: 'white' });
 
     };
 
@@ -50,7 +50,7 @@ export default function CategoryBar( props: categoryBarProps ) {
 
     return (
         <Style.CategoriesWrapper>
-            <ul className='font-roboto font-medium text-base *:cursor-pointer'>
+            <ul className='font-roboto font-medium text-base *:cursor-pointer text-neutral-200'>
                 { categoriesList }
             </ul>
         </Style.CategoriesWrapper>

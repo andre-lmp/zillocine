@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
-import Image from "next/image";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import 'react-lazy-load-image-component/src/effects/opacity.css';
 
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -18,6 +19,9 @@ type componentProps = {
 };
 
 export default function SerieSeansons( props: componentProps ) {
+    const swiperBreakPoints = {
+        1024: { spaceBetween: 20 }
+    };
 
     const { fetchSerieSeasons } = useTmdbFetch();
     const [ seasonEpisodes, setSeasonEpisodes ] = useState<tmdbObjProps>();
@@ -62,18 +66,19 @@ export default function SerieSeansons( props: componentProps ) {
     };
 
     return seasonEpisodes?.episodes ? (
-        <div className='px-4 w-full pt-8 pb-6'>
+        <div className='px-4 w-full pt-8 pb-6 md:px-6 lg:px-8'>
             <SelectSeason selectedSeason={setSelectedSeasonNumber} seasonsList={props.seasons}/>
 
             { seasonEpisodes.episodes[0].still_path && !isLoading &&
                 <>
-                    <p className="mb-1 text-lg font-medium font-roboto">{props.serieName} - {seasonEpisodes?.name}</p>
+                    <p className="mb-1 text-[17px] font-medium font-roboto xl:text-lg">{props.serieName} - {seasonEpisodes?.name}</p>
                     <div className='w-full h-0.5 bg-gradient-to-r mb-3 from-orangered to-transparent'></div>
 
                     <Swiper
                         spaceBetween={15}
                         slidesPerGroupAuto
                         slidesPerView={'auto'}
+                        breakpoints={swiperBreakPoints}
                     >
                         { seasonEpisodes?.episodes.map(( episode: tmdbObjProps ) => (
                             episode.still_path && (
@@ -82,15 +87,15 @@ export default function SerieSeansons( props: componentProps ) {
                                     style={{ width: 'auto', borderRadius: '4px', overflow: 'hidden'}}
                                 >
                                     <div className="w-80">
-                                        <Image
+                                        <LazyLoadImage
                                             src={`https://image.tmdb.org/t/p/original/${episode.still_path}`}
                                             alt={`${props.serieName} ${seasonEpisodes.name} presentation image`}
                                             width={400}
-                                            height={200}
+                                            height={176}
                                             loading="lazy"
-                                            placeholder="blur"
-                                            blurDataURL={`https://image.tmdb.org/t/p/w92/${episode.poster_path ?? episode.backdrop_path}`}
-                                            className='w-80 h-44 object-cover bg-neutral-700'
+                                            effect="opacity"
+                                            placeholderSrc={`https://image.tmdb.org/t/p/w92/${episode.poster_path ?? episode.backdrop_path}`}
+                                            className='w-80 h-44 object-cover bg-darkpurple'
                                         />
 
                                         <p className="font-noto_sans text-base mt-2 line-clamp-1 font-bold leading-relaxed text-neutral-100">
@@ -106,7 +111,7 @@ export default function SerieSeansons( props: componentProps ) {
                                         </div>
                                         
                                         <p className="font-noto_sans text-base line-clamp-3 font-normal leading-relaxed text-neutral-300">
-                                            { episode.overview.length > 3 && episode.overview }
+                                            { episode.overview.length > 3 ? episode.overview : 'Desculpe... não foi possível carregar a descrição deste conteúdo.' }
                                         </p>
                                     </div>
                                 </SwiperSlide> 

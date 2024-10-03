@@ -41,8 +41,8 @@ export default function SelectSeason( props: componentProps ) {
                 onClick={() => { checkboxToggle() }} 
                 className="btn focus:bg-darkpurple border-none outline-none hover:bg-darkpurple text-white text-base font-noto_sans font-medium bg-darkpurple w-fit px-10 flex items-center cursor-pointer rounded-md justify-center"
             >
-                    <p ref={selectedSeasonRef}>{ props.seasonsList[0].name } - {getReleaseDate( props.seasonsList[0].air_date )}</p>
-                    <IoPlay className="text-sm rotate-90 ml-5"/>
+                <p ref={selectedSeasonRef}>{ props.seasonsList[0].name } - {getReleaseDate( props.seasonsList[0].air_date )}</p>
+                <IoPlay className="text-sm rotate-90 ml-5"/>
             </div>
 
             <input ref={checkboxInputRef} type="checkbox" id="my_modal_6" className="modal-toggle" />

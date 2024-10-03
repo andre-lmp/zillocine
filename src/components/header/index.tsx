@@ -1,8 +1,6 @@
 'use client'
 
-import { useRef, useState, MutableRefObject, useEffect } from "react";
-
-import Link from "next/link";
+import { useRef, MutableRefObject, useEffect } from "react";
 
 import { LuSearch } from "react-icons/lu";
 import { FaUserLarge } from "react-icons/fa6";
@@ -11,6 +9,10 @@ import { TbMovie } from "react-icons/tb";
 import { BiMoviePlay } from "react-icons/bi";
 
 import MobileMenu from "./mobileMenu";
+import * as Style from './styles';
+
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 export default function Header() {
 
@@ -19,71 +21,35 @@ export default function Header() {
     const navLinks: MutableRefObject<(HTMLLIElement | null)[]> = useRef([]);
     const navBar: MutableRefObject<(HTMLUListElement | null)> = useRef(null);
     const indicatorBar: MutableRefObject<(null | HTMLDivElement)> = useRef(null);
+    const currentPathName = usePathname();
 
-    /*
-    const animationBar = ( navLinksRef: any[], navBarRef: HTMLUListElement ) => {
-        for ( let index = 0; index < navLinksRef.length; index++ ) {
-            navLinksRef[index].addEventListener('click', () => {
-                if ( navBarRef )  { 
-                    const navBarCords = navBarRef.getBoundingClientRect() ;
-                    const navLinkCords = navLinksRef[index].getBoundingClientRect();
-                    indicatorBar.current && ( indicatorBar.current.style.left = `${ navLinkCords.left - navBarCords?.left }px` );
-                    indicatorBar.current && ( indicatorBar.current.style.width = `${ navLinksRef[index].offsetWidth }px` );
+    /*Aqui atualizamos a posição da barra indicadora e tambem os stylos do link ativo sempre que o usuario muda de pagina*/
+   useEffect(() => {
+    navLinks.current.forEach( link => {
+        if ([ '/series', '/movies', '/search', '/', '/downloads' ].includes( currentPathName )) {
+            if ( currentPathName === `/${link?.id}` ) {
+                if ( link ) {
+                    const navBarCoordinates = navBar.current?.getBoundingClientRect();
+                    const linkCoordinates = link.getBoundingClientRect();
+                    if ( navBarCoordinates?.left && linkCoordinates.left && indicatorBar.current ) {
+                        const activeLinkCoordinates = linkCoordinates.left - navBarCoordinates.left;
+                        const indicatorBarStyles = {
+                            width: `${linkCoordinates.width}px`,
+                            left: `${( activeLinkCoordinates ).toFixed(0)}px`,
+                        };
+                        Object.assign( link?.style, { color: 'white' });
+                        Object.assign( indicatorBar.current?.style, indicatorBarStyles );
+                    };
                 };
-            });
-        };
-    };
-
-    const startLinksBar = ( navLinksRef: any[], navBarRef: HTMLUListElement ) => {
-        const page = Object.values(currentPage)[0];
-        if ( navBarRef ) {
-            const navCords = navBarRef.getBoundingClientRect();
-            for ( let index = 0; index < navBarRef.childElementCount; index++ ) {
-                indicatorBar.current &&
-                    page === navLinksRef[index].id && (
-                        indicatorBar.current.style.left = `${ navLinksRef[index].getBoundingClientRect().left - navCords.left }px`,
-                        indicatorBar.current.style.width = `${ navLinksRef[index].offsetWidth }px`
-                    );
+            } else {
+               link && Object.assign( link?.style, { color: '#d4d4d4' });
             };
-        };
-    };
-
-    useEffect(() => {
-        const callAnimation = () => {
-            if ( navLinks.current[1] && indicatorBar.current && navBar.current ) {
-               startLinksBar( navLinks.current, navBar.current ),
-               animationBar( navLinks.current, navBar.current )
-            } else { setTimeout(() => {
-                callAnimation();
-            }, 100)}
-            
+            return
         };
 
-        callAnimation();
-        setAuthorized(true);
-
-    }, []);
-
-    useEffect(() => {
-        const page = Object.values(currentPage)[0];
-        const paths = ['Series', 'Movies', 'Search', ''];
-        const insideSpecialRoutes = () => {
-            for (let index in paths) {
-                if (paths[index] === page) {
-                    return true;
-                }
-            }
-
-            return false;
-        };
-
-        if (!insideSpecialRoutes()) {
-            if (indicatorBar.current) {
-                indicatorBar.current.style.width = '0px';
-            }
-        }
-    }, [Object.values(currentPage)[0]]);
-    */
+        indicatorBar.current && Object.assign( indicatorBar.current?.style, { width: '0px' });
+    });
+   },[ currentPathName ]);
 
     useEffect(() => {
         if ( typeof window !== undefined ) {
@@ -106,9 +72,9 @@ export default function Header() {
     return true ? (
         <MobileMenu>
                 <header className="fixed top-0 left-0 h-36 z-20 w-full before:w-full before:absolute before:top-0 before:left-0 before:h-full before:bg-gradient-to-b from-black to-transparent before:-z-10">
-                    <nav ref={scrollDiv} className="w-full flex flex-row justify-between items-center px-4 py-5">
+                    <nav ref={scrollDiv} className="w-full flex flex-row justify-between items-center px-4 py-5 md:px-6 lg:px-8">
 
-                        <label htmlFor="my-drawer">
+                        <label htmlFor="my-drawer" className="md:hidden">
                             <nav className="flex flex-col gap-y-[6pt] justify-center items *:w-8 *:h-0.5 *:rounded-3xl *:bg-white">
                                 <div></div>
                                 <div></div>
@@ -117,43 +83,56 @@ export default function Header() {
                         </label>
 
                         <div >
-                            <h1 className="text-2xl font-bold">ZilloCine</h1>
+                            <h1 className="text-2xl font-bold md:text-[25px] ">ZilloCine</h1>
                         </div>
 
-                        <nav className="flex flex-row items-center">
-                            <ul  ref={navBar} className="flex flex-row w-fit items-center justify-end gap-x-10 *:flex-row *:items-center *:gap-x-5">
-                                <li key='home-link' id="/" className="hidden" ref={(e) => { navLinks.current[0] = e }}>
-                                    <FiHome />
-                                    Inicio
-                                </li>
-
-                                <li key='movies-link' id='movies' className="hidden" ref={(e) => { navLinks.current[1] = e }}>
-                                    <TbMovie />
-                                    Filmes
-                                </li>
-
-                                <li key='series-link' id='series' className="hidden" ref={(e) => { navLinks.current[2] = e }}>
-                                    <BiMoviePlay />
-                                    Series
-                                </li>
-
-                                <li key='search-link' id='search' className="inline w-full" ref={(e) => { navLinks.current[3] = e }}>
-                                    <Link href='/search'>
-                                        <LuSearch className="text-white text-4xl"/>
+                        <nav className="flex flex-row items-center font-poppins font-medium">
+                            <ul  ref={navBar} className="flex flex-row w-fit items-center justify-end gap-x-10 *:text-neutral-300 relative">
+                                
+                                <li key='home-link' id="" className="hidden md:flex text-lg cursor-pointer hover:text-white xl:text-[19px]" ref={(e) => { navLinks.current[0] = e }}>
+                                    <Link href='/' className="flex items-center gap-x-3">
+                                        <FiHome />
+                                        Inicio
                                     </Link>
                                 </li>
 
-                                <div ref={indicatorBar} className="hidden"></div>
+                                <li key='movies-link' id='movies' className="hidden md:inline text-lg cursor-pointer hover:text-white xl:text-[19px]" ref={(e) => { navLinks.current[1] = e }}>
+                                    <Link href='/movies' className="flex items-center gap-x-3">
+                                        <TbMovie />
+                                        Filmes
+                                    </Link>
+                                </li>
+
+                                <li key='series-link' id='series' className="hidden md:flex text-lg cursor-pointer hover:text-white xl:text-[19px]" ref={(e) => { navLinks.current[2] = e }}>
+                                    <Link href='/series' className="flex items-center gap-x-3">
+                                        <BiMoviePlay />
+                                        Series
+                                    </Link>
+                                </li>
+
+                                <li key='download-link' id="downloads" className="hidden w-full hover:text-white text-lg lg:flex xl:text-[19px]" ref={(e) => { navLinks.current[3] = e }}>
+                                    <Link href='/downloads'>
+                                        Donwloads
+                                    </Link>
+                                </li>
+
+                                <li key='search-link' id='search' className="inline w-full md:text-neutral-400 text-white hover:text-white xl:text-[19px]" ref={(e) => { navLinks.current[4] = e }}>
+                                    <Link href='/search'>
+                                        <LuSearch className="max-[768px]:text-white text-4xl md:text-2xl"/>
+                                    </Link>
+                                </li>
+
+                                <div ref={indicatorBar} className="hidden md:block absolute -bottom-[5px] w-0 h-0.5 bg-white rounded-lg left-0 duration-200 ease-in-out"></div>
                             </ul>
-
-                            <div className="flex-row hidden">
-                                <button className="w-10 h-10 rounded-full outline-none border-[1.5pt] border-white flex justify-center items-center">
-                                    <FaUserLarge className="text-gray-300 text-sm" />
-                                </button>
-                                <h3 className="hidden">Entrar</h3>
-                            </div>
-
                         </nav>
+
+                        <div className="hidden md:flex gap-x-5 items-center">
+                            <button style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }} className="w-[44px] h-[44px] rounded-full flex items-center justify-center outline-none border-none">
+                                <FaUserLarge className="text-neutral-300 text-base" />
+                            </button>
+
+                            <h3 className="hidden xl:inline text-[19px] font-poppins font-medium text-neutral-300 hover:text-white cursor-pointer">Entrar</h3>
+                        </div>
 
                     </nav>
 

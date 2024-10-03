@@ -19,3 +19,4 @@ export const HeaderContainer = styled.header`
         background-image: linear-gradient(to bottom, #080C1E, rgba(8, 12, 30, 0.5), transparent);
     }
 `;
+

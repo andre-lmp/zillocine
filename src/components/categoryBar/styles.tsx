@@ -17,9 +17,16 @@ export const CategoriesWrapper = styled.div`
         border-radius: 4px;
         height: 36px;
         display: flex;
-        color: white;
         justify-content: center;
         align-items: center;
         background-color: #16142B;
+    }
+
+    @media screen and ( width >= 768px ) {
+        padding: 24px 24px;
+    }
+
+    @media screen and ( width >= 1024px ) {
+        padding: 24px 32px;
     }
 `;

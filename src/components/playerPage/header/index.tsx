@@ -1,4 +1,5 @@
-import Image from "next/image";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/opacity.css';
 
 import * as Style from '@/components/playerPage/styles';
 import WatchTrailer from '@/components/playerPage/trailerPlayback';
@@ -25,13 +26,13 @@ export default function Header( props: headerProps ) {
         for ( let company of companiesList ) {
             if ( company.logo_path ) {
                 return (
-                    <Image 
+                    <LazyLoadImage 
                         src={`https://image.tmdb.org/t/p/original${company.logo_path}`} 
                         alt={`${company.name} logo image`} 
                         width={200}
-                        height={100}
-                        placeholder="blur"
-                        blurDataURL={`https://image.tmdb.org/t/p/w92/${company.logo_path}`}
+                        height={28}
+                        effect="opacity"
+                        placeholderSrc={`https://image.tmdb.org/t/p/w92/${company.logo_path}`}
                         className="object-cover w-fit h-7 bg-neutral-400 rounded-md"
                     />
                 )
@@ -44,7 +45,7 @@ export default function Header( props: headerProps ) {
     const getRunTime = ( runtime: number ) => {
 
         if ( runtime <= 0 ) {
-            return null
+            return
         };
 
         if ( runtime < 60 ) {
@@ -63,19 +64,16 @@ export default function Header( props: headerProps ) {
             <div className='w-full'>
                 { props.playerData?.map( item =>  (
                     <div key={item.id} className="w-full relative">
-                        <Image
+                        <LazyLoadImage
                             src={`https://image.tmdb.org/t/p/original/${item.backdrop_path ?? item.poster_path}`}
                             alt={`${item.title ?? item.name} serie/movie presentation image`}
-                            className='w-full h-[625px] object-cover z-10'
-                            width={500}
-                            height={500}
-                            placeholder="blur"
-                            blurDataURL={`https://image.tmdb.org/t/p/w500/${item.poster_path ?? item.backdrop_path}`}
-                            loading='lazy'
+                            className='w-full h-[625px] object-cover z-10 bg-darkpurple md:h-[580px]'
+                            effect="opacity"
+                            placeholderSrc={`https://image.tmdb.org/t/p/w500/${item.poster_path ?? item.backdrop_path}`}
                         />
 
-                        <div className='w-full z-20 absolute bottom-10 px-4 flex flex-col gap-y-1 items-start'>
-                            <h1 className='font-raleway font-extrabold text-3xl text-start line-clamp-1'>
+                        <div className='w-full z-20 absolute bottom-10 pl-4 flex flex-col gap-y-1 items-start md:pl-6 lg:pl-8'>
+                            <h1 className='font-raleway font-extrabold w-4/5 text-3xl text-start line-clamp-2 md:max-w-md'>
                                 { item.title ?? item.name }
                             </h1>
 

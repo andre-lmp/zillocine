@@ -21,7 +21,7 @@ export default function WatchTrailer( props: componentProps ) {
         <>
             <button 
                 onClick={() => { checkboxToggle() }} 
-                className='w-full mx-auto outline-none h-12 btn text-white rounded-md text-base font-noto_sans font-semibold bg-darkslateblue flex justify-center items-center relative '
+                className='w-full mx-auto outline-none h-12 btn text-white rounded-md text-base font-noto_sans font-semibold bg-darkslateblue flex justify-center items-center relative hover:bg-darkslateblue md:w-fit md:px-14 md:mx-0'
             >
                     <IoPlay className="text-base text-white"/>
                     Assistir ao trailer
@@ -36,8 +36,8 @@ export default function WatchTrailer( props: componentProps ) {
                             <p className="max-w-40 overflow-hidden line-clamp-1 whitespace-nowrap">{ props.showName }</p>
                             <p className="text-nowrap">- Trailer</p>
 
-                            <p className="absolute top-1/2 right-0 -translate-y-1/2" onClick={() => { checkboxToggle() }}>
-                                <IoIosClose className="text-4xl"/>
+                            <p className="absolute top-1/2 right-0 -translate-y-1/2">
+                                <IoIosClose className="text-4xl" onClick={() => { checkboxToggle() }}/>
                             </p>
                         </div>
 
