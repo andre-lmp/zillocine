@@ -47,13 +47,13 @@ export default function PlayerPage( props: PlayerPageProps ) {
     }, []);
 
     return isLoaded ? (
-        <Style.PlayerWrapper>
+        <section className='min-h-screen'>
             <Header playerData={contentData}/>
             <Main playerData={contentData} contentType={ props.contentType }/>
             { props.contentType === 'movie' ? 
                 <SimilarMovies contentId={props.contentId} contentType={props.contentType}/> :
                 <SerieSeasons serieName={contentData[0].name} serieId={props.contentId} seasons={contentData[0].seasons}/>    
             }
-        </Style.PlayerWrapper>
+        </section>
     ) : null;
 };

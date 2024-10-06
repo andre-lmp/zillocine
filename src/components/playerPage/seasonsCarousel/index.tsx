@@ -4,8 +4,9 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import 'react-lazy-load-image-component/src/effects/opacity.css';
 
 import { Swiper, SwiperSlide } from "swiper/react";
-
+import { Navigation } from "swiper/modules";
 import 'swiper/css';
+import { SwiperContainer } from "@/components/contentCarousel/styles";
 
 import { tmdbObjProps } from "@/components/contexts/tmdbContext";
 import useTmdbFetch from "@/components/hooks/tmdbHook";
@@ -74,50 +75,65 @@ export default function SerieSeansons( props: componentProps ) {
                     <p className="mb-1 text-[17px] font-medium font-roboto xl:text-lg">{props.serieName} - {seasonEpisodes?.name}</p>
                     <div className='w-full h-0.5 bg-gradient-to-r mb-3 from-orangered to-transparent'></div>
 
-                    <Swiper
-                        spaceBetween={15}
-                        slidesPerGroupAuto
-                        slidesPerView={'auto'}
-                        breakpoints={swiperBreakPoints}
-                    >
-                        { seasonEpisodes?.episodes.map(( episode: tmdbObjProps ) => (
-                            episode.still_path && (
-                                <SwiperSlide 
-                                    key={`${episode.id}-${episode._id}`} 
-                                    style={{ width: 'auto', borderRadius: '4px', overflow: 'hidden'}}
-                                >
-                                    <div className="w-80">
-                                        <LazyLoadImage
-                                            src={`https://image.tmdb.org/t/p/original/${episode.still_path}`}
-                                            alt={`${props.serieName} ${seasonEpisodes.name} presentation image`}
-                                            width={400}
-                                            height={176}
-                                            loading="lazy"
-                                            effect="opacity"
-                                            placeholderSrc={`https://image.tmdb.org/t/p/w92/${episode.poster_path ?? episode.backdrop_path}`}
-                                            className='w-80 h-44 object-cover bg-darkpurple'
-                                        />
-
-                                        <p className="font-noto_sans text-base mt-2 line-clamp-1 font-bold leading-relaxed text-neutral-100">
-                                            Ep_{ episode.episode_number && `${episode.episode_number}:` } { episode.name ?? '' }
-                                        </p>
-
-                                        <div className="my-2 flex gap-x-3">
-                                            <p className="bg-orangered rounded-[4px] flex items-center w-fit px-3 h-6 text-base font-normal font-noto_sans">
-                                                {getReleaseDate( episode.air_date )}
+                    <SwiperContainer>
+                        <Swiper
+                            spaceBetween={15}
+                            slidesPerGroupAuto
+                            slidesPerView={'auto'}
+                            navigation={{
+                                prevEl: '.slide-prev-button',
+                                nextEl: '.slide-next-button',
+                            }}
+                            modules={[ Navigation ]}
+                            breakpoints={swiperBreakPoints}
+                        >
+                            { seasonEpisodes?.episodes.map(( episode: tmdbObjProps ) => (
+                                episode.still_path && (
+                                    <SwiperSlide
+                                        key={`${episode.id}-${episode._id}`}
+                                        style={{ width: 'auto', borderRadius: '4px', overflow: 'hidden'}}
+                                    >
+                                        <div className="w-80">
+                                            <LazyLoadImage
+                                                src={`https://image.tmdb.org/t/p/original/${episode.still_path}`}
+                                                alt={`${props.serieName} ${seasonEpisodes.name} presentation image`}
+                                                width={400}
+                                                height={176}
+                                                loading="lazy"
+                                                effect="opacity"
+                                                placeholderSrc={`https://image.tmdb.org/t/p/w92/${episode.poster_path ?? episode.backdrop_path}`}
+                                                className='w-80 h-44 object-cover bg-darkpurple'
+                                            />
+                                            <p className="font-noto_sans text-base mt-2 line-clamp-1 font-bold leading-relaxed text-neutral-100">
+                                                Ep_{ episode.episode_number && `${episode.episode_number}:` } { episode.name ?? '' }
                                             </p>
-
-                                            <p>{getRunTime( episode.runtime )}</p>
+                                            <div className="my-2 flex gap-x-3">
+                                                <p className="bg-orangered rounded-[4px] flex items-center w-fit px-3 h-6 text-base font-normal font-noto_sans">
+                                                    {getReleaseDate( episode.air_date )}
+                                                </p>
+                                                <p>{getRunTime( episode.runtime )}</p>
+                                            </div>
+                        
+                                            <p className="font-noto_sans text-base line-clamp-3 font-normal leading-relaxed text-neutral-300">
+                                                { episode.overview.length > 3 ? episode.overview : 'Desculpe... não foi possível carregar a descrição deste conteúdo.' }
+                                            </p>
                                         </div>
-                                        
-                                        <p className="font-noto_sans text-base line-clamp-3 font-normal leading-relaxed text-neutral-300">
-                                            { episode.overview.length > 3 ? episode.overview : 'Desculpe... não foi possível carregar a descrição deste conteúdo.' }
-                                        </p>
-                                    </div>
-                                </SwiperSlide> 
-                            )
-                        ))}
-                    </Swiper>
+                                    </SwiperSlide>
+                                )
+                            ))}
+                        </Swiper>
+                        
+                        <div className='absolute left-0 top-1/2 -translate-y-1/2 z-50 w-[45px] h-[45px] rounded-full -translate-x-1/2 bg-deepnight cursor-pointer swiper-controllers slide-prev-button'>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="size-6 text-white">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                            </svg>
+                        </div>
+                        <div className='absolute right-0 top-1/2 -translate-y-1/2 z-50 w-[45px] h-[45px] rounded-full translate-x-1/2 bg-deepnight cursor-pointer swiper-controllers slide-next-button'>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="size-6 text-white">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                            </svg>
+                        </div>
+                    </SwiperContainer>
                 </>
             }
     </div>

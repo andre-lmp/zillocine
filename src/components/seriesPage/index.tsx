@@ -13,11 +13,19 @@ export default function SeriesPage() {
     const [ selectedGenre, setSelectedGenre ] = useState( tmdb.serieGenres.release[0] );
 
     const carouselsList =  Object.keys( tmdb.serieGenres ).map(( key, index ) => (
-        key !== 'allGenres' && <ContentCarousel key={`series-${key}`} contentGenre={ tmdb.serieGenres[selectedGenre][0] } contentType='serie' sectionTitle={ index === 0 ? tmdb.serieGenres[ selectedGenre][1] : null } pageNumber={ index + 1 }/>
+        key !== 'allGenres' && 
+            <ContentCarousel 
+                key={`series-${key}`} 
+                contentGenre={ tmdb.serieGenres[selectedGenre][0] } 
+                contentType='serie' 
+                sectionTitle={ index === 0 ? tmdb.serieGenres[ selectedGenre][1] : null } 
+                pageNumber={ index + 1 }
+                navigation={{ prevEl: `button-prev-${index}`, nextEl: `button-next-${index}` }}
+            />
     ));
 
     return (
-        <div className='w-full min-h-dvh'>
+        <div className='w-full min-h-screen'>
             <HeaderCarousel isLoaded={setIsPageLoaded} currentPage='series'/>
             { isPageLoaded && <CategoryBar genresList={tmdb.serieGenres} selectGenre={setSelectedGenre}/> }
 

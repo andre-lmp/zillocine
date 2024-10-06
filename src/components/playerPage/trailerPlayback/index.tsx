@@ -36,9 +36,9 @@ export default function WatchTrailer( props: componentProps ) {
                             <p className="max-w-40 overflow-hidden line-clamp-1 whitespace-nowrap">{ props.showName }</p>
                             <p className="text-nowrap">- Trailer</p>
 
-                            <p className="absolute top-1/2 right-0 -translate-y-1/2">
-                                <IoIosClose className="text-4xl" onClick={() => { checkboxToggle() }}/>
-                            </p>
+                            <div onClick={() =>  {checkboxToggle()}} className="absolute top-1/2 right-0 -translate-y-1/2">
+                                <IoIosClose className="text-4xl" />
+                            </div>
                         </div>
 
                         { props.showKey ? (

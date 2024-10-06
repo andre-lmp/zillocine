@@ -33,3 +33,20 @@ export const imageBox = styled.div`
     }
 
 `;
+
+export const SwiperContainer = styled.div`
+    width: 100%;
+    position: relative;
+
+    & .swiper-controllers {
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+
+    @media screen and ( width >= 768px ) {
+        &:hover .swiper-controllers {
+            display: flex;
+        }
+    }
+`;

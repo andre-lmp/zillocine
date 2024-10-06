@@ -61,7 +61,7 @@ export default function SelectSeason( props: componentProps ) {
                         ))}
                     </Style.SeasonsWrapper>
                     <div className="modal-action">
-                    <label htmlFor="my_modal_6" className="bg-white text-black h-[40px] cursor-pointer flex items-center justify-center font-noto_sans text-sm font-semibold rounded-md px-8">Cancelar</label>
+                    <button onClick={() => {checkboxToggle()}} className="bg-white text-black h-[40px] cursor-pointer flex items-center justify-center font-noto_sans text-sm font-semibold rounded-md px-8">Cancelar</button>
                     </div>
                 </div>
             </div>

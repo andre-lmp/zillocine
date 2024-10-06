@@ -67,12 +67,13 @@ export default function Header( props: headerProps ) {
                         <LazyLoadImage
                             src={`https://image.tmdb.org/t/p/original/${item.backdrop_path ?? item.poster_path}`}
                             alt={`${item.title ?? item.name} serie/movie presentation image`}
-                            className='w-full h-[625px] object-cover z-10 bg-darkpurple md:h-[580px]'
+                            width='100%'
+                            className='bg-darkpurple object-cover w-screen h-screen max-h-[660px] xl:max-h-[750px] 2xl:max-h-[800px]'
                             effect="opacity"
                             placeholderSrc={`https://image.tmdb.org/t/p/w500/${item.poster_path ?? item.backdrop_path}`}
                         />
 
-                        <div className='w-full z-20 absolute bottom-10 pl-4 flex flex-col gap-y-1 items-start md:pl-6 lg:pl-8'>
+                        <div className='w-full z-20 absolute bottom-10 px-4 flex flex-col gap-y-1 items-start md:pl-6 lg:pl-8'>
                             <h1 className='font-raleway font-extrabold w-4/5 text-3xl text-start line-clamp-2 md:max-w-md'>
                                 { item.title ?? item.name }
                             </h1>
@@ -93,6 +94,7 @@ export default function Header( props: headerProps ) {
                         </div>
 
                         <div className="overlay"></div>
+                        <div className='second-overlay'></div>
                     </div>
                 ))}
 

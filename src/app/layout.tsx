@@ -19,12 +19,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           ${ Fonts.noto_sans.variable }
           ${ Fonts.raleway.variable }
       `}>
-        <TmdbProvider>
-          <Header/>
-          { children }
-          <Footer/>
-        </TmdbProvider>
-
+        <div className="relative overflow-x-hidden max-w-[2200px] mx-auto min-h-screen flex flex-col justify-between">
+          <TmdbProvider>
+            <Header/>
+            { children }
+            <Footer/>
+          </TmdbProvider>
+        </div>
       </body>
     </html>
   );

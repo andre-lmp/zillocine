@@ -60,8 +60,8 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
                 <div className="min-w-64 bg-richblack text-gray-50 h-dvh pb-5 font-medium text-lg flex flex-col">
                     
                     <div className="w-full h-32 flex items-center bg-darkpurple pl-4 gap-x-3">
-                        <div className="w-16 h-16 flex justify-center items-center rounded-full bg-neutral-700 border-2 border-neutral-300">
-                            <FaUserLarge className="text-base text-neutral-300"/>
+                        <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }} className="w-16 h-16 flex justify-center items-center rounded-full">
+                            <FaUserLarge className="text-lg text-neutral-300"/>
                         </div>
 
                         <div className="text-neutral-300">

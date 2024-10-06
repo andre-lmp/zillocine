@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import * as Style from '@/components/headerCarousel/styles';
 
 import Link from "next/link";
@@ -56,19 +58,18 @@ export function Carousel( props: carouselProps ) {
                                 <LazyLoadImage
                                     src={`https://image.tmdb.org/t/p/original${movie.poster_path ?? movie.backdrop_path}`}
                                     alt={`${movie.title ?? movie.name} movie/serie presentation image`}
-                                    effect='opacity'                                   
                                     placeholderSrc={`https://image.tmdb.org/t/p/w92/${movie.poster_path ?? movie.backdrop_path}`}
-                                    className='h-[660px] bg-darkpurple object-cover w-screen md:h-[580px]'
+                                    className='bg-darkpurple object-cover w-screen h-screen max-h-[660px] xl:max-h-[750px] 2xl:max-h-[870px]'
                                 />
                             ) : null }
                         </div>
 
-                        <div className='w-full z-20 absolute bottom-10 pl-4 md:bottom-14 md:pl-6 lg:pl-8'>
+                        <div className='w-full z-20 absolute bottom-10 px-4 md:bottom-14 md:pl-6 lg:pl-8'>
                             <h1 className='font-raleway mx-auto w-3/4 font-extrabold text-3xl text-center line-clamp-2 sm:line-clamp-2 md:mx-0 md:text-left md:max-w-xs lg:max-w-sm xl:max-w-md'>
                                 { movie.title ?? movie.name }
                             </h1>
 
-                            <p className='bg-orangered mx-auto my-3 rounded-md w-fit px-3 py-1 text-base font-medium font-noto_sans md:mx-0'>
+                            <p className='bg-orangered mx-auto my-3 rounded-md w-fit px-3 py-1 text-base font-medium font-noto_sans md:mx-0 lg:py-0.5'>
                                     { getReleaseDate( movie.release_date ?? movie.first_air_date )}
                             </p>
 
