@@ -2,6 +2,8 @@ import React, { MutableRefObject, useState, useEffect, useRef } from "react";
 
 import Link from "next/link";
 
+import LoginFormButton from "@/components/authenticateUsers/loginModal";
+
 import { FiHome } from "react-icons/fi";
 import { TbMovie } from "react-icons/tb";
 import { BiMoviePlay } from "react-icons/bi";
@@ -66,7 +68,15 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
 
                         <div className="text-neutral-300">
                             <p className="font-semibold text-lg">Novo usuario</p>
-                            <p className="text-base font-normal">Acessar conta</p>
+                            <div onClick={() => { drawerToggle() }}>
+                                <LoginFormButton
+                                    style={{
+                                        'font-size': '16px',
+                                        'font-weight': 'normal'
+                                    }}
+                                    text="Acessar conta"
+                                />
+                            </div>
                         </div>
                     </div>
                     
@@ -94,12 +104,12 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
                         <li key='mb-none-link'></li>
                         <li key='mb-none-link-2'></li>
 
-                        <li key={'mb-downloads-link'} id="/downloads" ref={(e) => { mobileNavLinks.current[4] = e }} className="-translate-x-0.5 text-neutral-500" onClick={() => { drawerToggle() }}>
+                        <li key={'mb-downloads-link'} id="/downloads" className="-translate-x-0.5 text-neutral-500" onClick={() => { drawerToggle() }}>
                             <IoMdDownload className="text-[23px] "/>
                             <Link href={'/downloads'}>Downloads</Link>
                         </li>
 
-                        <li key={'mb-about-link'} id="/about" className="text-white" onClick={() => { drawerToggle() }}>
+                        <li  key={'mb-about-link'} id="/about" className="text-neutral-500" onClick={() => { drawerToggle() }}>
                             <CgNotes />
                             <Link href={'/about'}>Sobre o ZilloCine</Link>
                         </li>

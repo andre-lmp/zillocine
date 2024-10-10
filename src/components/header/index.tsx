@@ -9,6 +9,8 @@ import { TbMovie } from "react-icons/tb";
 import { BiMoviePlay } from "react-icons/bi";
 
 import MobileMenu from "./mobileMenu";
+import LoginFormButton from "@/components/authenticateUsers/loginModal";
+import RegisterFormButton from "@/components/authenticateUsers/registerModal";
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -140,7 +142,25 @@ export default function Header() {
                                 <FaUserLarge className="text-neutral-300 text-base" />
                             </button>
 
-                            <h3 className="hidden xl:inline text-[19px] font-poppins font-medium text-neutral-300 hover:text-white cursor-pointer">Entrar</h3>
+                            <div className="hidden xl:inline">
+                                <LoginFormButton
+                                    style={{
+                                        'font-size': '19px',
+                                        'color': '#d4d4d4',
+                                    }}
+                                    text="Entrar"
+                                />
+                            </div>   
+
+                            <div className="hidden xl:inline">
+                                <RegisterFormButton
+                                    style={{
+                                        'font-size': '19px',
+                                        'color': '#d4d4d4',
+                                    }}
+                                    text="Criar conta"
+                                />
+                            </div>                              
                         </div>
 
                     </nav>
