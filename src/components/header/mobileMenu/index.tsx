@@ -1,8 +1,8 @@
-import React, { MutableRefObject, useState, useEffect, useRef } from "react";
+import React, { MutableRefObject, useState, useEffect, useRef, useContext } from "react";
 
 import Link from "next/link";
 
-import LoginFormButton from "@/components/authenticateUsers/loginModal";
+import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
 
 import { FiHome } from "react-icons/fi";
 import { TbMovie } from "react-icons/tb";
@@ -15,9 +15,11 @@ import { IoMdDownload } from "react-icons/io";
 import { usePathname } from "next/navigation";
 
 export default function MobileMenu({ children } : { children: React.ReactNode }) {
+
     const drawerInput: MutableRefObject<( HTMLInputElement | null )> = useRef( null );
     const mobileNavLinks: MutableRefObject<(HTMLLIElement | null)[]> = useRef([]);
     const currentPathName = usePathname();
+    const globalEvents = useContext( GlobalEventsContext );
 
     /*Responsavel por mudar o estilo dos elementos do menu mobile sempre que o usuario muda de pagina*/
     const changeMenuStyle = ( pathname: string ) => {
@@ -50,73 +52,67 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
         drawerInput.current && drawerInput.current.click();
     };
 
+    const loginModalToggle = () => {
+        globalEvents.setModalsController( prev  => ({
+            ...prev,
+            isLoginModalActive: !prev.isLoginModalActive,
+        }));
+    };
+
+    const RegisterModalToggle = () => {
+        globalEvents.setModalsController( prev  => ({
+            ...prev,
+            isRegisterModalActive: !prev.isRegisterModalActive,
+        }));
+    };
+
     return (
         <div className="drawer">
             <input id="my-drawer" type="checkbox" className="drawer-toggle" ref={drawerInput}/>
             <div className="drawer-content z-30">
                 { children }
             </div>
-            <div className="drawer-side z-40">
+            <div className="drawer-side z-40">  
                 <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
-                
-                <div className="min-w-64 bg-richblack text-gray-50 h-dvh pb-5 font-medium text-lg flex flex-col">
+                <div className="w-72 text-gray-50 pb-5 font-medium text-lg flex flex-col font-roboto h-dvh bg-richblack">
                     
-                    <div className="w-full h-32 flex items-center bg-darkpurple pl-4 gap-x-3">
-                        <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }} className="w-16 h-16 flex justify-center items-center rounded-full">
-                            <FaUserLarge className="text-lg text-neutral-300"/>
-                        </div>
-
-                        <div className="text-neutral-300">
-                            <p className="font-semibold text-lg">Novo usuario</p>
-                            <div onClick={() => { drawerToggle() }}>
-                                <LoginFormButton
-                                    style={{
-                                        'font-size': '16px',
-                                        'font-weight': 'normal'
-                                    }}
-                                    text="Acessar conta"
-                                />
-                            </div>
-                        </div>
+                    <div className="px-4 mt-5">
+                        <button onClick={() => RegisterModalToggle()} className="w-full font-medium text-white bg-orangered flex items-center justify-center text-base h-12 rounded-3xl btn hover:bg-orangered">Criar conta</button>
+                        
+                        <button onClick={() => loginModalToggle()} className="w-full font-medium text-white bg-darkpurple flex items-center justify-center text-base h-12 rounded-3xl mt-2 btn hover:bg-darkpurple">Entrar</button>
                     </div>
                     
-                    <ul className="pt-7 text-lg flex flex-col gap-y- *:flex *:py-4 *:pl-4 *:items-center *:gap-x-3 *:font-roboto">
+                    <ul className="mt-8 text-lg flex flex-col gap-y- *:flex *:py-4 *:pl-4 *:items-center *:gap-x-3">
                         <li key='mb-home-link' id="/" ref={(e) => { mobileNavLinks.current[0] = e }} className="text-neutral-500" onClick={() => { drawerToggle() }}>
                             <FiHome/>
                             <Link href={'/'}>Inicio</Link>
                         </li>
-
                         <li key='mb-movies-link' id="/movies" ref={(e) => { mobileNavLinks.current[1] = e }} className="text-neutral-500" onClick={() => { drawerToggle() }}>
                             <TbMovie/>
                             <Link href={'/movies'}>Filmes</Link>
                         </li>
-
                         <li key='mb-series-link' id="/series" ref={(e) => { mobileNavLinks.current[2] = e }} className="text-neutral-500" onClick={() => { drawerToggle() }}>
                             <BiMoviePlay/>
                             <Link href={'/series'}>Series</Link>
                         </li>
-
                         <li key='mb-search-link' id="/search" ref={(e) => { mobileNavLinks.current[3] = e }} className="text-neutral-500" onClick={() => { drawerToggle() }}>
                             <LuSearch/>
                             <Link href={'/search'}>Pesquisa</Link>
                         </li>
-                        
+                    
                         <li key='mb-none-link'></li>
                         <li key='mb-none-link-2'></li>
-
                         <li key={'mb-downloads-link'} id="/downloads" className="-translate-x-0.5 text-neutral-500" onClick={() => { drawerToggle() }}>
                             <IoMdDownload className="text-[23px] "/>
                             <Link href={'/downloads'}>Downloads</Link>
                         </li>
-
                         <li  key={'mb-about-link'} id="/about" className="text-neutral-500" onClick={() => { drawerToggle() }}>
                             <CgNotes />
                             <Link href={'/about'}>Sobre o ZilloCine</Link>
                         </li>
                     </ul>
-                </div>
+                </div>      
             </div>
         </div>
-
     );
 };

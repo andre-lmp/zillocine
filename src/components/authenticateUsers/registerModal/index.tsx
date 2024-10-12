@@ -1,30 +1,35 @@
-import React, { MutableRefObject, useEffect, useRef } from "react";
+'use client';
+
+import React, { MutableRefObject, useEffect, useRef, useContext } from "react";
+
+import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
 
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 
-type registerButtonProps = {
-    style: Record<string, string>;
-    text: string;
-};
+export default function RegisterModal() {
 
-export default function RegisterFormButton( props: registerButtonProps ) {
     const checkboxInputRef: MutableRefObject<(HTMLInputElement | null)> = useRef( null );
-    const loginButtonRef: MutableRefObject<(HTMLButtonElement | null)> = useRef( null );
+    const globalEvents = useContext( GlobalEventsContext );
 
     const checkboxToggle = () => {
         checkboxInputRef.current?.click();
     };
 
     useEffect(() => {
-        loginButtonRef.current && Object.assign( loginButtonRef.current?.style, props.style );
-    },[]);
+        checkboxToggle();
+    },[ globalEvents.isRegisterModalActive ]);
+
+    const closeRegisterModal = () => {
+        globalEvents.setModalsController( prev  => ({
+            ...prev,
+            isRegisterModalActive: !prev.isRegisterModalActive
+        }));
+    };
 
     return (
         <>
-            <button ref={loginButtonRef} onClick={() => checkboxToggle()} className=" font-poppins font-medium hover:text-white cursor-pointer">{ props.text }</button>
-
             <input type="checkbox" ref={checkboxInputRef} id="my_modal_6" className="modal-toggle" />
             <div className="modal h-lvh overflow-y-scroll w-screen overflow-x-hidden" role="dialog">
                 <div className="z-50 bg-darkpurple rounded font-poppins px-4 my-10 py-5 w-[calc(100%-32px)] max-w-[420px] relative">
@@ -58,7 +63,7 @@ export default function RegisterFormButton( props: registerButtonProps ) {
                         <button className="mt-6 w-full rounded bg-darkslateblue flex items-center justify-center h-12 text-sm font-medium border-none outline-none btn hover:bg-darkslateblue text-white">Acessar conta</button>
                    </form>
 
-                    <button onClick={() => checkboxToggle()} className="modal-actio bg-darkslateblue w-10 h-10 rounded-full flex items-center justify-center absolute top-0 right-0 -translate-y-1/3 translate-x-1/3 cursor-pointer">
+                    <button onClick={() => closeRegisterModal()} className="modal-actio bg-darkslateblue w-10 h-10 rounded-full flex items-center justify-center absolute top-0 right-0 -translate-y-1/3 translate-x-1/3 cursor-pointer">
                         <IoClose className='text-xl'/>
                     </button>
                 </div>

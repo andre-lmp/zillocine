@@ -1,16 +1,18 @@
 'use client'
 
-import { useRef, MutableRefObject, useEffect } from "react";
+import { useRef, MutableRefObject, useEffect, useContext } from "react";
 
 import { LuSearch } from "react-icons/lu";
 import { FaUserLarge } from "react-icons/fa6";
 import { FiHome } from "react-icons/fi";
 import { TbMovie } from "react-icons/tb";
 import { BiMoviePlay } from "react-icons/bi";
+import { IoMdDownload } from "react-icons/io";
 
 import MobileMenu from "./mobileMenu";
-import LoginFormButton from "@/components/authenticateUsers/loginModal";
-import RegisterFormButton from "@/components/authenticateUsers/registerModal";
+
+import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
+import { ModalsControllerProps } from "@/components/contexts/globalEventsContext";
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -23,6 +25,7 @@ export default function Header() {
     const navBar: MutableRefObject<(HTMLUListElement | null)> = useRef(null);
     const indicatorBar: MutableRefObject<(null | HTMLDivElement)> = useRef(null);
     const currentPathName = usePathname();
+    const globalEvents = useContext( GlobalEventsContext );
 
     /*Aqui atualizamos a posição da barra indicadora e tambem os stylos do link ativo sempre que o usuario muda de pagina*/
    useEffect(() => {
@@ -54,31 +57,45 @@ export default function Header() {
     });
    },[ currentPathName ]);
 
+   const scrollHandler = () => {
+        if ( window.innerWidth < 768 ) {
+            if ( scrollDiv.current ) {
+                window.scrollY > 50 ? (
+                    scrollDiv.current.style.backgroundColor = 'rgba(8, 12, 30, 0.5)',
+                    scrollDiv.current.style.backdropFilter = 'blur(4px)'
+                ) : (
+                    scrollDiv.current.style.backgroundColor = 'transparent',
+                    scrollDiv.current.style.backdropFilter = 'none'
+                )
+            };
+        } else {
+            if ( scrollDiv.current ) {
+                scrollDiv.current.style.backgroundColor = 'rgba(8, 12, 30, 0.5)',
+                scrollDiv.current.style.backdropFilter = 'blur(4px)'
+            };   
+        }
+    };
+
     useEffect(() => {
         if ( typeof window !== undefined ) {
-            const scrollHandler = () => {
-                if ( window.innerWidth < 768 ) {
-                    if ( scrollDiv.current ) {
-                        window.scrollY > 50 ? (
-                            scrollDiv.current.style.backgroundColor = 'rgba(8, 12, 30, 0.5)',
-                            scrollDiv.current.style.backdropFilter = 'blur(4px)'
-                        ) : (
-                            scrollDiv.current.style.backgroundColor = 'transparent',
-                            scrollDiv.current.style.backdropFilter = 'none'
-                        )
-                    };
-                } else {
-                    if ( scrollDiv.current ) {
-                        scrollDiv.current.style.backgroundColor = 'rgba(8, 12, 30, 0.5)',
-                        scrollDiv.current.style.backdropFilter = 'blur(4px)'
-                    };   
-                }
-            };
-        
             window.addEventListener('scroll', scrollHandler);
             window.addEventListener('resize', scrollHandler);
         };
     },[]);
+
+    const loginModalToggle = () => {
+        globalEvents.setModalsController( prev  => ({
+            ...prev,
+            isLoginModalActive: !prev.isLoginModalActive,
+        }));
+    };
+
+    const RegisterModalToggle = () => {
+        globalEvents.setModalsController( prev  => ({
+            ...prev,
+            isRegisterModalActive: !prev.isRegisterModalActive,
+        }));
+    };
 
     return true ? (
         <MobileMenu>
@@ -122,7 +139,8 @@ export default function Header() {
                                 </li>
 
                                 <li key='download-link' id="downloads" className="hidden w-full text-lg lg:flex xl:text-[19px]" ref={(e) => { navLinks.current[3] = e }}>
-                                    <Link href='/downloads'>
+                                    <Link href='/downloads' className="flex items-center gap-2">
+                                        <IoMdDownload/>
                                         Donwloads
                                     </Link>
                                 </li>
@@ -138,33 +156,23 @@ export default function Header() {
                         </nav>
 
                         <div className="hidden md:flex gap-x-5 items-center">
-                            <button style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }} className="w-[44px] h-[44px] rounded-full flex items-center justify-center outline-none border-none">
-                                <FaUserLarge className="text-neutral-300 text-base" />
-                            </button>
+                            <div className="dropdown dropdown-end dropdown-hover">
 
-                            <div className="hidden xl:inline">
-                                <LoginFormButton
-                                    style={{
-                                        'font-size': '19px',
-                                        'color': '#d4d4d4',
-                                    }}
-                                    text="Entrar"
-                                />
-                            </div>   
+                                <button id="account-button" tabIndex={0} role="button" style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }} className="w-[44px] h-[44px] rounded-full flex items-center justify-center outline-none border-none">
+                                    <FaUserLarge className="text-neutral-300 text-base" />
+                                </button>
 
-                            <div className="hidden xl:inline">
-                                <RegisterFormButton
-                                    style={{
-                                        'font-size': '19px',
-                                        'color': '#d4d4d4',
-                                    }}
-                                    text="Criar conta"
-                                />
-                            </div>                              
+                                <div tabIndex={0} className="dropdown-content pt-2">
+                                    <ul tabIndex={0} className="bg-richblack rounded-box z-[1] w-60 p-4 shadow">
+                                        <li onClick={() => RegisterModalToggle()} className="px-4 h-10 rounded-3xl bg-orangered text-white font-poppins text-[15px] flex items-center justify-center font-medium cursor-pointer btn hover:bg-orangered">Criar conta</li>
+                                        
+                                        <li onClick={() => loginModalToggle()} className="px-4 h-10 rounded-3xl bg-darkpurple text-white font-poppins text-[15px] flex items-center justify-center font-medium cursor-pointer mt-2 btn hover:bg-darkpurple">Entrar</li>
+                                    </ul>
+                                </div>
+                            </div>
+
                         </div>
-
                     </nav>
-
                     <div ref={overlayRef} className="menu-overlay"></div>
                 </header>
         </MobileMenu>
