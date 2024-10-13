@@ -5,8 +5,7 @@ import Link from "next/link";
 import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
 
 import { FiHome } from "react-icons/fi";
-import { TbMovie } from "react-icons/tb";
-import { BiMoviePlay } from "react-icons/bi";
+import { BiMoviePlay, BiCameraMovie } from "react-icons/bi";
 import { LuSearch } from 'react-icons/lu';
 import { FaUserLarge } from 'react-icons/fa6';
 import { CgNotes } from "react-icons/cg";
@@ -77,20 +76,23 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
                 <div className="w-72 text-gray-50 pb-5 font-medium text-lg flex flex-col font-roboto h-dvh bg-richblack">
                     
                     <div className="px-4 mt-5">
-                        <button onClick={() => RegisterModalToggle()} className="w-full font-medium text-white bg-orangered flex items-center justify-center text-base h-12 rounded-3xl btn hover:bg-orangered">Criar conta</button>
+                        <button onClick={() => RegisterModalToggle()} className="w-full font-medium text-white bg-orangered flex items-center justify-center text-[17px] h-12 rounded-3xl btn hover:bg-orangered">Criar conta</button>
                         
-                        <button onClick={() => loginModalToggle()} className="w-full font-medium text-white bg-darkpurple flex items-center justify-center text-base h-12 rounded-3xl mt-2 btn hover:bg-darkpurple">Entrar</button>
+                        <button onClick={() => loginModalToggle()} className="w-full font-medium text-white bg-darkpurple flex items-center justify-center text-[17px] h-12 rounded-3xl mt-2 btn hover:bg-darkpurple">Entrar</button>
                     </div>
                     
                     <ul className="mt-8 text-lg flex flex-col gap-y- *:flex *:py-4 *:pl-4 *:items-center *:gap-x-3">
+                        
                         <li key='mb-home-link' id="/" ref={(e) => { mobileNavLinks.current[0] = e }} className="text-neutral-500" onClick={() => { drawerToggle() }}>
                             <FiHome/>
                             <Link href={'/'}>Inicio</Link>
                         </li>
+
                         <li key='mb-movies-link' id="/movies" ref={(e) => { mobileNavLinks.current[1] = e }} className="text-neutral-500" onClick={() => { drawerToggle() }}>
-                            <TbMovie/>
+                            <BiCameraMovie className="text-xl"/>
                             <Link href={'/movies'}>Filmes</Link>
                         </li>
+
                         <li key='mb-series-link' id="/series" ref={(e) => { mobileNavLinks.current[2] = e }} className="text-neutral-500" onClick={() => { drawerToggle() }}>
                             <BiMoviePlay/>
                             <Link href={'/series'}>Series</Link>
@@ -102,10 +104,12 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
                     
                         <li key='mb-none-link'></li>
                         <li key='mb-none-link-2'></li>
+                        
                         <li key={'mb-downloads-link'} id="/downloads" className="-translate-x-0.5 text-neutral-500" onClick={() => { drawerToggle() }}>
                             <IoMdDownload className="text-[23px] "/>
                             <Link href={'/downloads'}>Downloads</Link>
                         </li>
+
                         <li  key={'mb-about-link'} id="/about" className="text-neutral-500" onClick={() => { drawerToggle() }}>
                             <CgNotes />
                             <Link href={'/about'}>Sobre o ZilloCine</Link>

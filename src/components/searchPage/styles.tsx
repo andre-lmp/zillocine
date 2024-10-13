@@ -26,7 +26,6 @@ export const SearchResultWrapper = styled.div`
 
 export const imageBox = styled.div`
     width: 100%;
-    height: 260px;
     overflow-y: hidden;
     border-radius: 6px;
     position: relative;

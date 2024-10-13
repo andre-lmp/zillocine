@@ -42,9 +42,9 @@ export default function Header( props: headerProps ) {
         return null;
     };
 
-    const getRunTime = ( runtime: number ) => {
+    const getRunTime = ( runtime: number | null ) => {
 
-        if ( runtime <= 0 ) {
+        if ( !runtime || runtime === 0 ) {
             return
         };
 
@@ -85,7 +85,7 @@ export default function Header( props: headerProps ) {
 
                                 { item.seasons?.length > 0 && <p className="font-noto_sans whitespace-nowrap text-base font-normal text-neutral-400">{item.seasons.length} Temporada(s)</p> }
 
-                                { item.runtime && getRunTime( item.runtime )}
+                                { getRunTime( item.runtime ?? null )}
 
                                 { getCompanyLogo( item.production_companies )}
                             </div>

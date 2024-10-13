@@ -18,7 +18,9 @@ export default function RegisterModal() {
     };
 
     useEffect(() => {
-        checkboxToggle();
+        if ( globalEvents.isRegisterModalActive ) {
+            checkboxToggle();
+        }
     },[ globalEvents.isRegisterModalActive ]);
 
     const closeRegisterModal = () => {
@@ -26,6 +28,8 @@ export default function RegisterModal() {
             ...prev,
             isRegisterModalActive: !prev.isRegisterModalActive
         }));
+
+        checkboxToggle();
     };
 
     return (

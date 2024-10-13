@@ -23,10 +23,10 @@ export const CategoriesWrapper = styled.div`
     }
 
     @media screen and ( width >= 768px ) {
-        padding: 24px 24px;
+        padding: 35px 24px;
     }
 
     @media screen and ( width >= 1024px ) {
-        padding: 24px 32px;
+        padding: 30px 32px;
     }
 `;

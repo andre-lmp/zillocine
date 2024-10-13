@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const headerSlides = styled.div`
     width: 100%;
     height: auto;
-    position: relative;
 
     & .overlay {
         width: 100%;
@@ -16,19 +15,25 @@ export const headerSlides = styled.div`
     }
 
     @media screen and ( width >= 768px ) {
+        background-color: #16142B;
+        margin-top: 80px;
+        
         & .overlay {
-            height: 70%;
-            background-image: linear-gradient( to top, #020515, rgba(2, 5, 21, 0.9), rgba(2, 5, 21, 0.5), transparent);
+            left: 50%;
+            width: 90px;
+            transform: translateX(-50%);
+            background-image: linear-gradient( to right, #16142B, #16142B, transparent);
         }
 
-        & .second-overlay {
-            width: 500px;
-            height: 100%;
+        & .slide-container::after {
+            content: '';
             position: absolute;
-            bottom: 0;
-            left: 0;
-            z-index: 10;
-            background-image: linear-gradient( to right, #020515, rgba(2, 5, 21, 0.5), transparent);   
+            top: 0;
+            right: 0;
+            width: 50vw;
+            height: 100%;
+            background-image: linear-gradient( to right, #16142B, transparent);
+            z-index: 12;
         }
     }
 

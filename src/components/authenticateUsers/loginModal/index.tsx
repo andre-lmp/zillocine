@@ -18,14 +18,19 @@ export default function LoginModal() {
     };
 
     useEffect(() => {
+        if ( globalEvents.isLoginModalActive ) {
             checkboxToggle();
+        };
     },[ globalEvents.isLoginModalActive ]);
 
+    
     const closeLoginModal = () => {
         globalEvents.setModalsController( prev  => ({
             ...prev,
            isLoginModalActive: !prev.isLoginModalActive
         }));
+
+        checkboxToggle();
     };
 
     return (

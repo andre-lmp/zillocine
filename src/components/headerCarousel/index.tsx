@@ -1,11 +1,10 @@
 'use client';
 
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Carousel } from './carousel';
 
 import useTmdbFetch from '@/components/hooks/tmdbHook/index';
-import { TmdbContext } from '@/components/contexts/tmdbContext/index';
 import { tmdbObjProps } from '@/components/contexts/tmdbContext/index';
 
 import 'swiper/css';
@@ -19,71 +18,51 @@ interface CarouselProps {
 };
 
 export default function HeaderCarousel(props: CarouselProps) {
+    
     const [ contentData, setContentData ] = useState<any[]>([])
-    const tmdb = useContext( TmdbContext );
-    const { fetchAllGenres, fetchReleasedMovies } = useTmdbFetch();
+    const tmdbHook = useTmdbFetch();
 
     const checkAvailability = ( data: tmdbObjProps[] ) => {
         const filtered = data.filter( item => item.poster_path || item.backdrop_path );
         setContentData( filtered );
-        console.log( filtered );
         props.isLoaded && props.isLoaded( true );
     };
 
     /*Função que seleciona os primeiros 7 filmes ou series das lista retornada pela api*/
     const selectContent = ( data: any ) => {
-        const selectedContent = [];
+        const selectedIds = [];
         for ( let i = 0; i <= 7; i++ ) {
-            selectedContent.push( data[i] );
-        }
-
-        checkAvailability( selectedContent );
-    };
-
-    /*Função que seleciona os filmes ou series mais bem avaliados*/
-    const selectTopReviews = async ( data: any[] ) => {
-        const selectedContent = [];
-
-        const select = ( data: tmdbObjProps[] ) => {
-            let bestReview = 0;
-            let bestReviewIndex = '0';
-
-            return new Promise(( resolve ) => { 
-                for ( let index in data ) {
-                    if ( data[index].vote_average > bestReview ) {
-                        bestReviewIndex = index;
-                        bestReview = data[index].vote_average;
-                    };
-                };
-
-                resolve( data[Number(bestReviewIndex)] );
-             });
+            selectedIds.push( data[i].id );
         };
 
-        for ( let item of data ) {
-            const response = await select( item );
-            selectedContent.push( response );
+        handleSecondFetch(tmdbHook.fetchSelectedIds( selectedIds, props.currentPage === 'series' ? 'serie' : 'movie' ));
+    }; 
+    
+    const handleSecondFetch = async ( fetchResponse: Promise<any> ) => {
+        const response = await fetchResponse;
+        if ( response.length ) { 
+            checkAvailability( response );
         };
-
-        setContentData( selectedContent )
-        props.isLoaded && props.isLoaded( true )
     };
 
+    // Logo apos a pagina ser carregada, e feita uma verificação para chamar uma função de busca especifica para cada pagina.
     useEffect(() => {
-        const fetchHandler = async ( fetchResponse: Promise<any> ) => {
+
+        const handleFirstFetch = async ( fetchResponse: Promise<any> ) => {
             const response = await fetchResponse;
             if ( response.length ) { 
-                props.currentPage === 'home' ? selectContent( response ) : selectTopReviews( response );
+                selectContent( response );
             };
         };
 
        if ( props.currentPage === 'home' ) {
-            fetchHandler( fetchReleasedMovies() );
+            handleFirstFetch(tmdbHook.fetchReleasedMovies());
        } else {
             if ( props.currentPage === 'movies' ) {
-                fetchHandler( fetchAllGenres( tmdb.movieGenres.allGenres, 'movie' ))
-            } else {
-                fetchHandler( fetchAllGenres( tmdb.serieGenres.allGenres, 'serie' ))
+               handleFirstFetch(tmdbHook.fetchPopularMovies()) 
+            }
+            if ( props.currentPage === 'series' ) {
+                handleFirstFetch(tmdbHook.fetchPopularSeries());
             }
        }
     }, []);

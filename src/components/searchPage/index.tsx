@@ -22,16 +22,16 @@ export default function SearchPage() {
         const elementRef = ( e.target as HTMLButtonElement );
 
         searchButtonsRef.current.forEach( element => {
-            element?.style && Object.assign( element?.style, { backgroundColor: '#262626', color: '#f5f5f5' });
+            element?.style && Object.assign( element?.style, { backgroundColor: '#16142b', color: '#f5f5f5' });
         });
 
-        Object.assign( elementRef.style, { backgroundColor: 'white', color: 'black' });
+        Object.assign( elementRef.style, { backgroundColor: 'orangered', color: 'white' });
         setContentType( elementRef.id)
 
         if ( searchInputRef.current ) {
             if ( searchInputRef.current.value.length < 3 ) {
                 elementRef.id === 'movie' ? 
-                    fetchHandler(fetchReleasedMovies()) : fetchHandler(fetchReleasedSeries())
+                    handleFetchResponse(fetchReleasedMovies()) : handleFetchResponse(fetchReleasedSeries())
             } else {
                 fetchContentByTerm(( searchInputRef.current?.value ?? ''), elementRef.id );
             }
@@ -41,7 +41,7 @@ export default function SearchPage() {
     const fetchContentByTerm = ( e: string, fetchType: string ) => {
         if ( e.length >= 3 ) {
             fetchType === 'movie' ? 
-                fetchHandler( fetchMovieByTerm(e) ) : fetchHandler( fetchSerieByTerm(e) )
+                handleFetchResponse( fetchMovieByTerm(e) ) : handleFetchResponse( fetchSerieByTerm(e) )
         };
     };
 
@@ -50,8 +50,11 @@ export default function SearchPage() {
             Object.assign( searchInputRef.current, { value: null });
         }
 
-        contentType === 'movie' ? 
-            fetchHandler(fetchReleasedMovies()) : fetchHandler(fetchReleasedSeries())
+        if ( contentType === 'movie' ) {
+            handleFetchResponse(fetchReleasedMovies());
+        } else {
+            handleFetchResponse(fetchReleasedSeries());
+        }
     };
 
     const checkAvailability = ( data: tmdbObjProps[] ) => {
@@ -59,7 +62,7 @@ export default function SearchPage() {
         setContentData( filtered );
     };
 
-    const fetchHandler = async ( fetchResponse: Promise<any> ) => {
+    const handleFetchResponse = async ( fetchResponse: Promise<any> ) => {
         const response = await fetchResponse;
         if ( response.length ) {
             checkAvailability( response );
@@ -71,13 +74,13 @@ export default function SearchPage() {
             Object.assign( searchButtonsRef.current[0].style, { backgroundColor: 'white', color: 'black' })
         }
 
-        fetchHandler(fetchReleasedMovies());
+        handleFetchResponse(fetchReleasedMovies());
     }, []);
 
     return (
         <section className="flex flex-col px-4 w-full min-h-screen mt-32 font-roboto font-normal md:px-6 lg:px-8">
             <div className='w-full flex flex-col gap-y-3'>
-                <div className='bg-neutral-800 flex items-center rounded-md px-4 w-full'>
+                <div className='bg-darkpurple flex items-center rounded-md px-4 w-full'>
                     <FiSearch className='text-2xl text-neutral-100'/>
                     <input
                         type="text"
@@ -96,7 +99,7 @@ export default function SearchPage() {
                 <div>
                     <button 
                         ref={(e) => { searchButtonsRef.current[0] = e }} 
-                        className='h-9 px-7 rounded-md text-neutral-100 bg-neutral-800'
+                        className='h-9 px-7 rounded-md text-neutral-100 bg-darkpurple'
                         onClick={(e) => { handleSelectedButton(e) }}
                         id='movie'
                         >Filmes
@@ -104,7 +107,7 @@ export default function SearchPage() {
 
                     <button  
                         ref={(e) => { searchButtonsRef.current[1] = e }} 
-                        className='ml-3 h-9 px-7 rounded-md text-neutral-100 bg-neutral-800'
+                        className='ml-3 h-9 px-7 rounded-md text-neutral-100 bg-darkpurple'
                         onClick={(e) => { handleSelectedButton(e) }}
                         id='serie'
                         >Series

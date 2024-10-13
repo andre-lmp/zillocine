@@ -41,7 +41,7 @@ export default function ShowResults( props: componentProps ) {
                                 width='100%'
                                 effect="opacity"
                                 placeholderSrc={`https://image.tmdb.org/t/p/w92/${item.poster_path ?? item.backdrop_path}`}
-                                className="min-w-full object-cover h-full bg-darkpurple rounded-md image"
+                                className="min-w-full object-cover h-[260px] bg-darkpurple rounded-md image"
                             />
 
                             <div className="w-full description flex flex-col gap-y-1 font-normal font-noto_sans text-sm">
