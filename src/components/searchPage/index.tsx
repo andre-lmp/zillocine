@@ -71,7 +71,7 @@ export default function SearchPage() {
 
     useEffect(() => {
         if ( searchButtonsRef.current[0] && searchInputRef ) {
-            Object.assign( searchButtonsRef.current[0].style, { backgroundColor: 'white', color: 'black' })
+            Object.assign( searchButtonsRef.current[0].style, { backgroundColor: 'orangered', color: 'white' })
         }
 
         handleFetchResponse(fetchReleasedMovies());

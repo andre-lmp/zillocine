@@ -8,6 +8,8 @@ import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 
+import LoginForm from './form';
+
 export default function LoginModal() {
 
     const checkboxInputRef: MutableRefObject<(HTMLInputElement | null)> = useRef( null );
@@ -54,15 +56,7 @@ export default function LoginModal() {
                         <p className="px-3 bg-darkpurple text-sm">Ou</p>
                    </div>
 
-                   <form onSubmit={(e) => e.preventDefault()} className="flex flex-col">
-                        <label htmlFor="" className="text-sm font-medium">E-mail*</label>
-                        <input type="text" placeholder="Email cadastrado" className="font-medium placeholder:font-normal border-none outline-none text-sm placeholder:text-neutral-400 mt-2 bg-richblack rounded h-12 px-3"/>
-
-                        <label htmlFor="" className="text-sm font-medium mt-4">E-mail*</label>
-                        <input type="password" placeholder="Senha de acesso" className="font-medium placeholder:font-normal text-sm placeholder:text-neutral-400 mt-2 bg-richblack rounded h-12 px-3 border-none outline-none"/>
-
-                        <button className="mt-6 w-full rounded bg-darkslateblue flex items-center justify-center h-12 text-sm font-medium border-none outline-none btn hover:bg-darkslateblue text-white">Acessar conta</button>
-                   </form>
+                   <LoginForm/>
 
                     <button onClick={() => closeLoginModal()} className="modal-actio bg-darkslateblue w-10 h-10 rounded-full flex items-center justify-center absolute top-0 right-0 -translate-y-1/3 translate-x-1/3 cursor-pointer">
                         <IoClose className='text-xl'/>
