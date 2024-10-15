@@ -10,6 +10,7 @@ import RegisterModal from "@/components/authenticateUsers/registerModal";
 
 import { TmdbProvider } from "@/components/contexts/tmdbContext";
 import { GlobalEventsProvider } from "@/components/contexts/globalEventsContext";
+import { UserDataProvider } from "@/components/contexts/authenticationContext";
 
 export const metadata: Metadata = {
   title: "ZiloCine Filmes e Series",
@@ -19,16 +20,17 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 
   return (
     <html lang="pt-br">
-      <body className={ `${ Fonts.poppins.variable } ${ Fonts.roboto.variable } ${ Fonts.noto_sans.variable } ${ Fonts.raleway.variable }
-      `}>
+      <body className={ `${ Fonts.poppins.variable } ${ Fonts.roboto.variable } ${ Fonts.noto_sans.variable } ${ Fonts.raleway.variable } `}>
         <div className="relative overflow-x-hidden max-w-[2200px] mx-auto min-h-screen flex flex-col justify-between">
           <TmdbProvider>
             <GlobalEventsProvider>
-              <Header/>
-              <LoginModal/>
-              <RegisterModal/>
-              { children }
-              <Footer/>
+              <UserDataProvider>
+                <Header/>
+                <LoginModal/>
+                <RegisterModal/>
+                { children }
+                <Footer/>
+              </UserDataProvider>
             </GlobalEventsProvider>
           </TmdbProvider>
         </div>

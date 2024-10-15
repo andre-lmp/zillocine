@@ -1,19 +1,25 @@
 'use client';
 
-import React, { MutableRefObject, useEffect, useRef, useContext } from "react";
+import React, { MutableRefObject, useEffect, useRef, useContext, useState } from "react";
+import useFirebase from "@/components/hooks/firebaseHook";
 
 import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
+import { UserDataContext } from "@/components/contexts/authenticationContext";
 
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 
 import LoginForm from './form';
+import { LoginProps } from "./form";
 
 export default function LoginModal() {
 
+    const user = useContext( UserDataContext );
+    const { authenticateUser, signInWithGoogle } = useFirebase();
     const checkboxInputRef: MutableRefObject<(HTMLInputElement | null)> = useRef( null );
     const globalEvents = useContext( GlobalEventsContext );
+    const [ authenticateErrorMessage, setAuthenticateErrorMessage ] = useState<( null | string )>( null );
 
     const checkboxToggle = () => {
         checkboxInputRef.current?.click();
@@ -24,8 +30,26 @@ export default function LoginModal() {
             checkboxToggle();
         };
     },[ globalEvents.isLoginModalActive ]);
-
     
+    const handleFormSubmit = async ( schemaData: LoginProps ) => {
+        const response = await authenticateUser( schemaData.email, schemaData.password );
+        if ( response ) {
+            user.setUserData( prev => ({
+                ...prev,
+                isLoogedIn: true,
+                email: schemaData.email,
+                uid: response.uid ?? null,
+                name: response.name ?? null,
+                photoUrl: response.photoUrl ?? null
+            }));
+
+            closeLoginModal();
+            setAuthenticateErrorMessage( null );
+        } else {
+            setAuthenticateErrorMessage('Credenciais inválidas');
+        };
+    };
+
     const closeLoginModal = () => {
         globalEvents.setModalsController( prev  => ({
             ...prev,
@@ -33,6 +57,19 @@ export default function LoginModal() {
         }));
 
         checkboxToggle();
+        setAuthenticateErrorMessage( null );
+    };
+
+    const authenticateWithGoogle = async () => {
+        const response = await signInWithGoogle();
+        user.setUserData( prev => ({
+            ...prev,
+            isLoogedIn: true,
+            name: response.name,
+            photoUrl: response.photoUrl
+        }));
+
+        closeLoginModal();
     };
 
     return (
@@ -42,7 +79,10 @@ export default function LoginModal() {
                 <div className="z-50 bg-darkpurple rounded font-poppins px-4 py-5 w-[calc(100%-32px)] max-w-[420px] relative">
                    <h3 className="text-2xl font-semibold">Entrar</h3>
                    
-                   <button className="w-full h-12 rounded mt-7 bg-white text-black text-sm font-semibold px-3 flex items-center gap-x-2 border-none outline-none btn hover:bg-white justify-start">
+                   <button 
+                        className="w-full h-12 rounded mt-7 bg-white text-black text-sm font-semibold px-3 flex items-center gap-x-2 border-none outline-none btn hover:bg-white justify-start"
+                        onClick={authenticateWithGoogle}
+                    >
                     <FcGoogle className="text-3xl"/>
                     continuar com o google
                    </button>
@@ -56,9 +96,12 @@ export default function LoginModal() {
                         <p className="px-3 bg-darkpurple text-sm">Ou</p>
                    </div>
 
-                   <LoginForm/>
+                   <LoginForm 
+                        authenticateUser={handleFormSubmit}
+                        errorMessage={authenticateErrorMessage}
+                    />
 
-                    <button onClick={() => closeLoginModal()} className="modal-actio bg-darkslateblue w-10 h-10 rounded-full flex items-center justify-center absolute top-0 right-0 -translate-y-1/3 translate-x-1/3 cursor-pointer">
+                    <button onClick={closeLoginModal} className="modal-actio bg-darkslateblue w-10 h-10 rounded-full flex items-center justify-center absolute top-0 right-0 -translate-y-1/3 translate-x-1/3 cursor-pointer">
                         <IoClose className='text-xl'/>
                     </button>
                 </div>

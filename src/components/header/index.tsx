@@ -11,6 +11,7 @@ import { IoMdDownload } from "react-icons/io";
 import MobileMenu from "./mobileMenu";
 
 import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
+import { UserDataContext } from "../contexts/authenticationContext";
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -24,6 +25,7 @@ export default function Header() {
     const indicatorBar: MutableRefObject<(null | HTMLDivElement)> = useRef(null);
     const currentPathName = usePathname();
     const globalEvents = useContext( GlobalEventsContext );
+    const userData = useContext( UserDataContext );
 
     /*Aqui atualizamos a posição da barra indicadora e tambem os stylos do link ativo sempre que o usuario muda de pagina*/
    useEffect(() => {
@@ -130,7 +132,7 @@ export default function Header() {
                         </label>
 
                         <div >
-                            <h1 className="text-2xl font-bold md:text-[25px] ">ZilloCine</h1>
+                            <h1 className="text-2xl font-raleway font-bold md:text-[25px] ">ZilloCine</h1>
                         </div>
 
                         <nav className="flex flex-row items-center font-poppins font-medium">
@@ -175,23 +177,29 @@ export default function Header() {
                         </nav>
 
                         <div className="hidden md:flex gap-x-5 items-center">
-                            <div className="dropdown dropdown-end dropdown-hover">
-
-                                <button id="account-button" tabIndex={0} role="button" style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }} className="w-[44px] h-[44px] rounded-full flex items-center justify-center outline-none border-none">
-                                    <FaUserLarge className="text-neutral-300 text-base" />
-                                </button>
-
-                                <div tabIndex={0} className="dropdown-content pt-2">
-                                    <ul tabIndex={0} className="bg-darkpurple rounded-box z-[1] w-60 p-4 shadow">
-                                        <li onClick={() => RegisterModalToggle()} className="px-4 h-10 rounded-3xl bg-orangered text-white font-poppins text-[15px] flex items-center justify-center font-medium cursor-pointer btn hover:bg-orangered">Criar conta</li>
-                                        
-                                        <li onClick={() => loginModalToggle()} className="px-4 h-10 rounded-3xl bg-neutral-700 text-white font-poppins text-[15px] flex items-center justify-center font-medium cursor-pointer mt-2 btn hover:bg-neutral-700">Entrar</li>
-                                    </ul>
+                            <div className="flex gap-x-5 items-center">
+                                <div className="dropdown dropdown-end dropdown-hover">
+                                    <button id="account-button" tabIndex={0} role="button" style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }} className="w-[44px] h-[44px] rounded-full flex items-center justify-center outline-none border-none">
+                                        <FaUserLarge className="text-neutral-300 text-base" />
+                                    </button>
+                                    <div tabIndex={0} className="dropdown-content pt-2">
+                                        <ul tabIndex={0} className="bg-darkpurple rounded-box z-[1] w-60 p-4 shadow">
+                                            <li onClick={() => RegisterModalToggle()} className="px-4 h-10 rounded-3xl bg-orangered text-white font-poppins text-[15px] flex items-center justify-center font-medium cursor-pointer btn hover:bg-orangered">Criar conta</li>
+                            
+                                            <li onClick={() => loginModalToggle()} className="px-4 h-10 rounded-3xl bg-neutral-700 text-white font-poppins text-[15px] flex items-center justify-center font-medium cursor-pointer mt-2 btn hover:bg-neutral-700">Entrar</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
 
+                            { userData.isLoogedIn &&
+                                <div className="hidden xl:block">
+                                    <p className="text-neutral-300 font-poppins text-lg">Ola, <span className="font-medium text-neutral-100">Vitor Hugo</span></p>
+                                </div>
+                            }
                         </div>
                     </nav>
+
                     <div ref={overlayRef} className="menu-overlay"></div>
                 </header>
         </MobileMenu>

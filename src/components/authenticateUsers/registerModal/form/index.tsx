@@ -32,20 +32,21 @@ const loginSchema = z.object({
         }),
 });
 
-type LoginProps = z.infer<typeof loginSchema>
+export type RegisterProps = z.infer<typeof loginSchema>;
 
-export default function RegisterForm() {
+type componentProps = {
+    registerUser: ( schemaData: RegisterProps ) => {};
+    errorMessage: string | null;
+};
+
+export default function RegisterForm( props: componentProps ) {
     const globalEvents = useContext( GlobalEventsContext );
 
-    const { register, handleSubmit, reset, formState: { errors }, setValue }  = useForm<LoginProps>({
+    const { register, handleSubmit, reset, formState: { errors }, setError }  = useForm<RegisterProps>({
         mode: 'all',
         criteriaMode: 'all',
         resolver: zodResolver(loginSchema),
     });
-
-    const handleFormSubmit = ( schemaData: LoginProps ) => {
-        console.log(schemaData);
-    };
 
     useEffect(() => {
         if ( !globalEvents.isRegisterModalActive ) {
@@ -54,7 +55,7 @@ export default function RegisterForm() {
     },[ globalEvents.isRegisterModalActive ]);
 
     return (
-        <form onSubmit={handleSubmit(handleFormSubmit)} className="flex flex-col">
+        <form onSubmit={handleSubmit(props.registerUser)} className="flex flex-col">
             <label htmlFor="" className="text-sm font-medium">Nome*</label>
             <input 
                 type="text" 
@@ -83,8 +84,18 @@ export default function RegisterForm() {
                 }}
             />
 
-            { errors.email?.message && (
-                <p className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{errors.email.message}</p>
+            { props.errorMessage ? (
+                <p 
+                    className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{props.errorMessage}
+                </p>
+            ) : (
+                <>
+                    { errors.email?.message && (
+                        <p 
+                            className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{errors.email.message}
+                        </p>
+                    )}
+                </>   
             )}
 
             <label htmlFor="" className="text-sm font-medium mt-4">Senha*</label>
@@ -99,7 +110,8 @@ export default function RegisterForm() {
                 }}
             />
 
-            {errors.password?.message && (
+            
+            { errors.password?.message && (
                 <p className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{errors.password.message}</p>
             )}
 

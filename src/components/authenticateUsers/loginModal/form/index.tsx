@@ -25,20 +25,21 @@ const loginSchema = z.object({
         }),
 });
 
-type LoginProps = z.infer<typeof loginSchema>
+export type LoginProps = z.infer<typeof loginSchema>
 
-export default function LoginForm() {
+type componentProps = {
+    authenticateUser: ( schemaData: LoginProps ) => {};
+    errorMessage: string | null;
+}
+
+export default function LoginForm( props: componentProps ) {
     const globalEvents = useContext( GlobalEventsContext );
 
-    const { register, handleSubmit, reset, formState: { errors }, setValue }  = useForm<LoginProps>({
+    const { register, handleSubmit, reset, formState: { errors }, setError }  = useForm<LoginProps>({
         mode: 'all',
         criteriaMode: 'all',
         resolver: zodResolver(loginSchema),
     });
-
-    const handleFormSubmit = ( schemaData: LoginProps ) => {
-        console.log(schemaData);
-    };
 
     useEffect(() => {
         if ( !globalEvents.isLoginModalActive ) {
@@ -46,8 +47,15 @@ export default function LoginForm() {
         }
     },[ globalEvents.isLoginModalActive ]);
 
+    useEffect(() => {
+        if ( props.errorMessage ) {
+            setError( 'email', { message: props.errorMessage });  
+            setError( 'password', { message: props.errorMessage });   
+        }
+    },[ props.errorMessage ]);
+
     return (
-        <form onSubmit={handleSubmit(handleFormSubmit)} className="flex flex-col">
+        <form onSubmit={handleSubmit(props.authenticateUser)} className="flex flex-col">
             <label htmlFor="" className="text-sm font-medium">E-mail*</label>
             <input 
                 type="text" 
@@ -60,8 +68,18 @@ export default function LoginForm() {
                 }}
             />
 
-            {errors.email?.message && (
-                <p className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{errors.email.message}</p>
+            { props.errorMessage ? (
+                <p 
+                    className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{props.errorMessage}
+                </p>
+            ) : (
+                <>
+                    { errors.email?.message && (
+                        <p 
+                            className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{errors.email.message}
+                        </p>
+                    )}
+                </>   
             )}
 
             <label htmlFor="" className="text-sm font-medium mt-4">Senha*</label>
@@ -76,8 +94,16 @@ export default function LoginForm() {
                 }}
             />
 
-            {errors.password?.message && (
-                <p className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{errors.password.message}</p>
+            { props.errorMessage ? (
+                <p 
+                    className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{props.errorMessage}
+                </p>
+            ) : (
+                <>
+                    { errors.password?.message && (
+                        <p className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{errors.password.message}</p>
+                    )}
+                </>   
             )}
 
             <button className="mt-6 w-full rounded bg-darkslateblue flex items-center justify-center h-12 text-sm font-medium border-none outline-none btn hover:bg-darkslateblue text-white">Acessar conta</button>
