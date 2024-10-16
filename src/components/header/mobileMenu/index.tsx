@@ -26,12 +26,12 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
     /*Responsavel por mudar o estilo dos elementos do menu mobile sempre que o usuario muda de pagina*/
     const changeMenuStyle = ( pathname: string ) => {
         const activeRouteStyle = {
-            backgroundColor: '#16142B',
+            backgroundColor: '#080c1e',
             color: 'white'
         };
 
         const inactiveRouteStyle = {
-            backgroundColor: '#080C1E',
+            backgroundColor: '#020515',
             color: '#737373'
         };
 
@@ -76,7 +76,7 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
             </div>
             <div className="drawer-side z-40">  
                 <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
-                <div className="w-72 text-gray-50 pb-5 font-medium text-lg flex flex-col font-roboto h-dvh bg-richblack">
+                <div className="w-72 text-gray-50 pb-5 font-medium text-lg flex flex-col font-roboto h-dvh bg-deepnight">
                     { !userData.isLoogedIn ? (
                         <div className="px-4 py-5 bg-deepnight">
                             <button onClick={() => RegisterModalToggle()} className="w-full font-medium text-white bg-orangered flex items-center justify-center text-[17px] h-12 rounded-3xl btn hover:bg-orangered">Criar conta</button>

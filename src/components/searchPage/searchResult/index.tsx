@@ -39,6 +39,7 @@ export default function ShowResults( props: componentProps ) {
                                 alt={`${item.title ?? item.name} serie/movie presentation image`}
                                 loading="lazy"
                                 width='100%'
+                                height={253}
                                 effect="opacity"
                                 placeholderSrc={`https://image.tmdb.org/t/p/w92/${item.poster_path ?? item.backdrop_path}`}
                                 className="min-w-full object-cover h-[260px] bg-darkpurple rounded-md image"
