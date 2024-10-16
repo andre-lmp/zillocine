@@ -15,6 +15,7 @@ import { UserDataContext } from "../contexts/authenticationContext";
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export default function Header() {
 
@@ -179,22 +180,34 @@ export default function Header() {
                         <div className="hidden md:flex gap-x-5 items-center">
                             <div className="flex gap-x-5 items-center">
                                 <div className="dropdown dropdown-end dropdown-hover">
-                                    <button id="account-button" tabIndex={0} role="button" style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }} className="w-[44px] h-[44px] rounded-full flex items-center justify-center outline-none border-none">
-                                        <FaUserLarge className="text-neutral-300 text-base" />
+                                    <button id="account-button" tabIndex={0} role="button" style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }} className="w-[44px] h-[44px] rounded-full flex items-center justify-center outline-none border-none overflow-hidden">
+                                        { userData.photoUrl ? (
+                                            <LazyLoadImage
+                                                src={userData.photoUrl}
+                                                height={44}
+                                                width={44}
+                                                className="object-cover"
+                                            />
+                                        ) : (
+                                            <FaUserLarge/>
+                                        )}
                                     </button>
+
                                     <div tabIndex={0} className="dropdown-content pt-2">
-                                        <ul tabIndex={0} className="bg-darkpurple rounded-box z-[1] w-60 p-4 shadow">
-                                            <li onClick={() => RegisterModalToggle()} className="px-4 h-10 rounded-3xl bg-orangered text-white font-poppins text-[15px] flex items-center justify-center font-medium cursor-pointer btn hover:bg-orangered">Criar conta</li>
-                            
-                                            <li onClick={() => loginModalToggle()} className="px-4 h-10 rounded-3xl bg-neutral-700 text-white font-poppins text-[15px] flex items-center justify-center font-medium cursor-pointer mt-2 btn hover:bg-neutral-700">Entrar</li>
-                                        </ul>
+                                        { !userData.isLoogedIn &&
+                                            <ul tabIndex={0} className="bg-darkpurple rounded-box z-[1] w-60 p-4 shadow">
+                                                <li onClick={RegisterModalToggle} className="px-4 h-10 rounded-3xl bg-orangered text-white font-poppins text-[15px] flex items-center justify-center font-medium cursor-pointer btn hover:bg-orangered">Criar conta</li>
+                                
+                                                <li onClick={loginModalToggle} className="px-4 h-10 rounded-3xl bg-neutral-700 text-white font-poppins text-[15px] flex items-center justify-center font-medium cursor-pointer mt-2 btn hover:bg-neutral-700">Entrar</li>
+                                            </ul>
+                                        }
                                     </div>
                                 </div>
                             </div>
 
                             { userData.isLoogedIn &&
                                 <div className="hidden xl:block">
-                                    <p className="text-neutral-300 font-poppins text-lg">Ola, <span className="font-medium text-neutral-100">Vitor Hugo</span></p>
+                                    <p className="text-neutral-300 font-poppins text-lg">Ola, <span className="font-medium text-neutral-100">{ userData.name ?? 'usuario' }</span></p>
                                 </div>
                             }
                         </div>

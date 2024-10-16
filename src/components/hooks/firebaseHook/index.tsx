@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase, set, ref, get } from "firebase/database";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider } from "firebase/auth";
 
 interface UserDataOnDb {
     name: string | null,
@@ -21,11 +21,28 @@ export default function useFirebase() {
     }; 
     const app = initializeApp( firebaseConfig );
     const auth = getAuth();
-    const provider = new GoogleAuthProvider()
+    const googleProvider = new GoogleAuthProvider()
+    const githubProvider = new GithubAuthProvider();
 
     const signInWithGoogle = async (): Promise<UserDataOnDb> => {
         return new Promise(( resolve, reject ) => {
-            signInWithPopup( auth, provider ).then( result => {
+            signInWithPopup( auth, googleProvider ).then( result => {
+                const user = {
+                    name: result.user.displayName,
+                    photoUrl: result.user.photoURL
+                };
+
+                resolve( user );
+            }).catch( error =>{
+                console.error( error );
+                reject( null );
+            })
+        })
+    };
+
+    const signInWithGithub = async (): Promise<UserDataOnDb> => {
+        return new Promise(( resolve, reject ) => {
+            signInWithPopup( auth, githubProvider ).then( result => {
                 const user = {
                     name: result.user.displayName,
                     photoUrl: result.user.photoURL
@@ -104,5 +121,6 @@ export default function useFirebase() {
         authenticateUser,
         registerUser,
         signInWithGoogle,
+        signInWithGithub
     }
 };

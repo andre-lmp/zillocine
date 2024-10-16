@@ -16,7 +16,7 @@ import { RegisterProps } from "./form";
 export default function RegisterModal() {
 
     const user = useContext( UserDataContext );
-    const { registerUser, signInWithGoogle } = useFirebase();
+    const { registerUser, signInWithGoogle, signInWithGithub } = useFirebase();
     const checkboxInputRef: MutableRefObject<(HTMLInputElement | null)> = useRef( null );
     const globalEvents = useContext( GlobalEventsContext );
     const [ registerErrorMessage, setRegisterErrorMessage ] = useState<( null | string )>( null );
@@ -71,6 +71,18 @@ export default function RegisterModal() {
         closeRegisterModal()
     };
 
+    const authenticateWithGithub = async () => {
+        const response = await signInWithGithub();
+        user.setUserData( prev => ({
+            ...prev,
+            isLoogedIn: true,
+            name: response.name,
+            photoUrl: response.photoUrl
+        }));
+
+        closeRegisterModal()
+    };
+
     return (
         <>
             <input type="checkbox" ref={checkboxInputRef} id="my_modal_6" className="modal-toggle" />
@@ -86,7 +98,10 @@ export default function RegisterModal() {
                     continuar com o google
                    </button>
 
-                   <button className="w-full h-12 rounded mt-4 bg-deepnight text-white text-sm font-semibold px-3 flex items-center gap-x-2 border-none justify-start outline-none btn hover:bg-deepnight">
+                   <button 
+                        className="w-full h-12 rounded mt-4 bg-deepnight text-white text-sm font-semibold px-3 flex items-center gap-x-2 border-none justify-start outline-none btn hover:bg-deepnight"
+                        onClick={authenticateWithGithub}
+                    >
                     <FaGithub className="text-3xl"/>
                     continuar com o github
                    </button>
