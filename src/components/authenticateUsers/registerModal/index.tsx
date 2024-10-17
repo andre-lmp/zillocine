@@ -42,6 +42,7 @@ export default function RegisterModal() {
                 name: schemaData.name,
             }));
 
+            extractName( schemaData.name );
             closeRegisterModal();
             setRegisterErrorMessage( null );
         } else {
@@ -68,7 +69,8 @@ export default function RegisterModal() {
             photoUrl: response.photoUrl
         }));
 
-        closeRegisterModal()
+        extractName( response.name );
+        closeRegisterModal();
     };
 
     const authenticateWithGithub = async () => {
@@ -80,7 +82,30 @@ export default function RegisterModal() {
             photoUrl: response.photoUrl
         }));
 
-        closeRegisterModal()
+        extractName( response.name );
+        closeRegisterModal();
+    };
+
+    const extractName = ( name: string | null ) => {
+        const extractedWords = name?.split(' ');
+
+        if ( extractedWords ) {
+            if ( extractedWords.length < 3 ) {
+                user.setUserData( prev => ({
+                    ...prev,
+                    name: name
+                }));
+
+                return
+            };
+
+            const userName = [extractedWords[0], extractedWords.at(-1)].join(' ');
+            console.log(userName);
+            user.setUserData( prev => ({
+                ...prev,
+                name: userName
+            }));
+        };
     };
 
     return (

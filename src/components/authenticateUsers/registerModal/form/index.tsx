@@ -9,8 +9,8 @@ import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
 const loginSchema = z.object({
     name: z.string()
         .min(3, 'Informe um nome')
-        .max(40, 'Limite de caracteres atingido')
-        .refine(value => /^[a-zA-Z\s]+$/.test(value), {
+        .max(30, 'Limite de caracteres atingido')
+        .refine(value => /^[a-zA-Z\s^ãõç]+$/.test(value), {
         message: 'Evite numeros ou caracteres especiais'
         }),
 
@@ -59,10 +59,10 @@ export default function RegisterForm( props: componentProps ) {
             <label htmlFor="" className="text-sm font-medium">Nome*</label>
             <input 
                 type="text" 
-                placeholder="Crie um nome de usuário" 
+                placeholder="Informe um nome de usuario" 
                 className="font-medium placeholder:font-normal text-sm placeholder:text-neutral-400 mt-2 bg-richblack rounded h-12 px-3 border border-transparent outline-none"
                 { ...register('name') }
-                maxLength={41}
+                maxLength={31}
                 style={{
                     borderColor: errors.name && 'orangered'
                 }}
@@ -115,7 +115,7 @@ export default function RegisterForm( props: componentProps ) {
                 <p className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{errors.password.message}</p>
             )}
 
-            <button className="mt-6 w-full rounded bg-darkslateblue flex items-center justify-center h-12 text-sm font-medium border-none outline-none btn hover:bg-darkslateblue text-white">Acessar conta</button>
+            <button className="mt-6 w-full rounded bg-darkslateblue flex items-center justify-center h-12 text-sm font-medium border-none outline-none btn hover:bg-darkslateblue text-white">Criar conta</button>
         </form>
     );
 };

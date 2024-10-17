@@ -43,6 +43,7 @@ export default function LoginModal() {
                 photoUrl: response.photoUrl ?? null
             }));
 
+            extractName( response.name );
             closeLoginModal();
             setAuthenticateErrorMessage( null );
         } else {
@@ -69,6 +70,7 @@ export default function LoginModal() {
             photoUrl: response.photoUrl
         }));
 
+        extractName( response.name );
         closeLoginModal();
     };
 
@@ -81,7 +83,30 @@ export default function LoginModal() {
             photoUrl: response.photoUrl
         }));
 
+        extractName( response.name );
         closeLoginModal();
+    };
+
+    const extractName = ( name: string | null ) => {
+        const extractedWords = name?.split(' ');
+
+        if ( extractedWords ) {
+            if ( extractedWords.length < 3 ) {
+                user.setUserData( prev => ({
+                    ...prev,
+                    name: name
+                }));
+
+                return
+            };
+
+            const userName = [extractedWords[0], extractedWords.at(-1)].join(' ');
+            console.log(userName);
+            user.setUserData( prev => ({
+                ...prev,
+                name: userName
+            }));
+        };
     };
 
     return (
