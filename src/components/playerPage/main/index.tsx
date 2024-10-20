@@ -1,3 +1,4 @@
+// Interface de tipos para objetos retornados pela api do TMDB
 import { tmdbObjProps } from "@/components/contexts/tmdbContext";
 
 type componentProps = {

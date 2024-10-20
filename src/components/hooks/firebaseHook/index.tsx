@@ -1,5 +1,10 @@
+// Inicializador do Firebase
 import { initializeApp } from "firebase/app";
+
+// Ferramentas para interação com o Realtime DB
 import { getDatabase, set, ref, get } from "firebase/database";
+
+// Authenticação com Firebase
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider } from "firebase/auth";
 
 interface UserDataOnDb {
@@ -18,7 +23,8 @@ export default function useFirebase() {
         messagingSenderId: "140852043533",
         appId: "1:140852043533:web:a9e4b0d95a7cbd7cd69a44",
         measurementId: "G-X9CPNRWFDT"
-    }; 
+    };
+
     const app = initializeApp( firebaseConfig );
     const auth = getAuth();
     const googleProvider = new GoogleAuthProvider()
@@ -56,6 +62,7 @@ export default function useFirebase() {
         })
     };
 
+    // Adiciona algumas informações extras do usuario como, nome e id no Realtime DB
     const addUserToDb = async ( userName: string, userId: string ) => {
         const db = getDatabase(app);
 
@@ -74,7 +81,7 @@ export default function useFirebase() {
             const response = await createUserWithEmailAndPassword( auth, email, password );
             if ( response.user ) {
                 await addUserToDb( name, response.user.uid );
-                return { 
+                return {
                     uid: response.user.uid,
                 };
             }
@@ -84,6 +91,7 @@ export default function useFirebase() {
           };
     };
 
+    // Busca informações do usuario no Realtime DB com base no id
     const fetchUserOnDb = async ( userId: string ): Promise<UserDataOnDb> => {
         const db = getDatabase( app );
         const userRef = ref( db, `users/${userId}` );
@@ -105,7 +113,7 @@ export default function useFirebase() {
             const signInResponse = await signInWithEmailAndPassword( auth, email, password );
             if ( signInResponse.user ) {
                 const fetchResponse = await fetchUserOnDb( signInResponse.user.uid );
-                return { 
+                return {
                     uid: signInResponse.user.uid,
                     name: fetchResponse.name,
                     photoUrl: fetchResponse.photoUrl

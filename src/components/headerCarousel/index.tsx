@@ -2,15 +2,13 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { Carousel } from './carousel';
-
+// Hook personalizado do TMDB com funções de busca de conteudo
 import useTmdbFetch from '@/components/hooks/tmdbHook/index';
+
+// Interface de tipos para objetos retornados pela api do TMDB
 import { tmdbObjProps } from '@/components/contexts/tmdbContext/index';
 
-import 'swiper/css';
-import 'swiper/element/css/autoplay';
-import 'swiper/element/css/pagination';
-import 'swiper/element/css/navigation';
+import { Carousel } from './carousel';
 
 interface CarouselProps {
     isLoaded?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,25 +17,28 @@ interface CarouselProps {
 
 export default function HeaderCarousel(props: CarouselProps) {
     
-    const [ contentData, setContentData ] = useState<any[]>([])
+    const [ contentData, setContentData ] = useState<tmdbObjProps[]>([])
     const tmdbHook = useTmdbFetch();
 
+    // Seleciona somente o conteudo que possuir imagens disponiveis
     const checkAvailability = ( data: tmdbObjProps[] ) => {
         const filtered = data.filter( item => item.poster_path || item.backdrop_path );
         setContentData( filtered );
         props.isLoaded && props.isLoaded( true );
     };
 
-    /*Função que seleciona os primeiros 7 filmes ou series das lista retornada pela api*/
-    const selectContent = ( data: any ) => {
+    /*Função que seleciona os primeiros 7 ids de filmes ou series e faz uma nova requisição a api para buscar informações mais detalhadas sobre os ids*/
+    const selectContent = ( data: tmdbObjProps[] ) => {
         const selectedIds = [];
         for ( let i = 0; i <= 7; i++ ) {
             selectedIds.push( data[i].id );
         };
 
-        handleSecondFetch(tmdbHook.fetchSelectedIds( selectedIds, props.currentPage === 'series' ? 'serie' : 'movie' ));
+        const contentType =  props.currentPage === 'series' ? 'serie' : 'movie';
+        handleSecondFetch(tmdbHook.fetchSelectedIds( selectedIds, contentType ));
     }; 
     
+
     const handleSecondFetch = async ( fetchResponse: Promise<any> ) => {
         const response = await fetchResponse;
         if ( response.length ) { 

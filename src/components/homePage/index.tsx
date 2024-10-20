@@ -1,9 +1,9 @@
 'use client';
 
+import { useState } from "react";
+
 import HeaderCarousel from "@/components/headerCarousel";
 import Main from '@/components/homePage/main/index';
-
-import { useState } from "react";
 
 export default function HomePage() {
     const [ isPageLoaded, setIsPageLoaded ] = useState<boolean>( false )

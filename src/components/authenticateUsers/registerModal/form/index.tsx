@@ -1,9 +1,12 @@
+// Hooks
 import { useContext, useEffect } from "react";
-
 import { useForm } from "react-hook-form";
+
+// Ferramentas de validação
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
+// Contexto(s)
 import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
 
 const loginSchema = z.object({
@@ -84,6 +87,7 @@ export default function RegisterForm( props: componentProps ) {
                 }}
             />
 
+            {/* Renderiza o erro passado pela prop caso houver, se não, renderiza o erro do registerSchema */}
             { props.errorMessage ? (
                 <p 
                     className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{props.errorMessage}

@@ -1,16 +1,21 @@
 'use client';
 
+// Hooks
 import { useRef, useEffect, MutableRefObject, MouseEvent, useState } from 'react';
+import useTmdbFetch from '@/components/hooks/tmdbHook';
 
+// Componente para mostrar os resultados da pesquisa do usuario
 import ShowResults from '@/components/searchPage/searchResult';
 
-import useTmdbFetch from '@/components/hooks/tmdbHook';
+// Interface de tipos para objetos retornados pela api do TMDB
 import { tmdbObjProps } from '../contexts/tmdbContext';
 
+// Icones
 import { FiSearch } from "react-icons/fi";
 import { HiXMark } from "react-icons/hi2";
 
 export default function SearchPage() {
+
     const searchButtonsRef: MutableRefObject<(HTMLButtonElement |  null)[]> = useRef([]);
     const searchInputRef: MutableRefObject<(HTMLInputElement | null)> = useRef( null );
     const [ contentData, setContentData ] = useState<tmdbObjProps[]>([]);
@@ -18,43 +23,53 @@ export default function SearchPage() {
     const { fetchReleasedMovies, fetchReleasedSeries, fetchSerieByTerm, fetchMovieByTerm } = useTmdbFetch();
 
     /*Muda a cor do botão selecionado pelo usuario*/
-    const handleSelectedButton = ( e: MouseEvent<any>  ) => {
-        const elementRef = ( e.target as HTMLButtonElement );
+    const handleSelectedButton = ( event: MouseEvent<any>  ) => {
+        const eventRef = ( event.target as HTMLButtonElement );
 
+        // Aplicando estilo anterior ao botão não selecionado
         searchButtonsRef.current.forEach( element => {
-            element?.style && Object.assign( element?.style, { backgroundColor: '#16142b', color: '#f5f5f5' });
+            if ( element?.id !== eventRef.id ) {
+                element?.style && Object.assign( element?.style, { backgroundColor: '#16142b', color: '#f5f5f5' });
+            }
         });
 
-        Object.assign( elementRef.style, { backgroundColor: 'orangered', color: 'white' });
-        setContentType( elementRef.id)
+        // Aplicando estilo ao botão selecionado
+        Object.assign( eventRef.style, { backgroundColor: 'orangered', color: 'white' });
+        setContentType( eventRef.id)
 
+        // Verifica o valor do input e o id do botão selecionado para chamar uma função de busca de conteudo
         if ( searchInputRef.current ) {
             if ( searchInputRef.current.value.length < 3 ) {
-                elementRef.id === 'movie' ? 
-                    handleFetchResponse(fetchReleasedMovies()) : handleFetchResponse(fetchReleasedSeries())
+                if ( eventRef.id === 'movie' ) {
+                    handleFetchResponse(fetchReleasedMovies());
+                } else {
+                    handleFetchResponse(fetchReleasedSeries());
+                }
             } else {
-                fetchContentByTerm(( searchInputRef.current?.value ?? ''), elementRef.id );
+                fetchContentByTerm(( searchInputRef.current?.value ?? ''), eventRef.id );
             }
         }
     };
 
     const fetchContentByTerm = ( e: string, fetchType: string ) => {
-        if ( e.length >= 3 ) {
-            fetchType === 'movie' ? 
-                handleFetchResponse( fetchMovieByTerm(e) ) : handleFetchResponse( fetchSerieByTerm(e) )
-        };
+        if ( fetchType === 'movie' ) {
+            handleFetchResponse(fetchMovieByTerm( e ));
+        } else {
+            handleFetchResponse(fetchSerieByTerm( e ))
+        };              
     };
 
     const resetSearchInput = () => {
         if ( searchInputRef.current ) {
             Object.assign( searchInputRef.current, { value: null });
-        }
+        };
 
+        // Ao resetar o input, uma função de busca e chamada
         if ( contentType === 'movie' ) {
             handleFetchResponse(fetchReleasedMovies());
         } else {
             handleFetchResponse(fetchReleasedSeries());
-        }
+        };
     };
 
     const checkAvailability = ( data: tmdbObjProps[] ) => {
@@ -62,6 +77,7 @@ export default function SearchPage() {
         setContentData( filtered );
     };
 
+    // Lida com a promise retornarda por uma função de busca
     const handleFetchResponse = async ( fetchResponse: Promise<any> ) => {
         const response = await fetchResponse;
         if ( response.length ) {
@@ -91,7 +107,7 @@ export default function SearchPage() {
                         required
                     />
                     <HiXMark 
-                        onClick={() => { resetSearchInput() }} 
+                        onClick={resetSearchInput} 
                         className='text-neutral-100 text-2xl'
                     />
                 </div>

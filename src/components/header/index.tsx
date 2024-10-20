@@ -1,21 +1,24 @@
 'use client'
 
 import { useRef, MutableRefObject, useEffect, useContext } from "react";
+import { usePathname } from "next/navigation";
 
+// Icones do React-icons
 import { LuSearch } from "react-icons/lu";
 import { FaUserLarge } from "react-icons/fa6";
 import { FiHome } from "react-icons/fi";
 import { BiMoviePlay, BiCameraMovie } from "react-icons/bi";
 import { IoMdDownload } from "react-icons/io";
 
-import MobileMenu from "./mobileMenu";
-
 import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
-import { UserDataContext } from "../contexts/authenticationContext";
+import { UserDataContext } from "@/components/contexts/authenticationContext";
 
-import { usePathname } from "next/navigation";
-import Link from "next/link";
+// Componente para carregamento preguiçoso de imagens
 import { LazyLoadImage } from "react-lazy-load-image-component";
+
+import Link from "next/link";
+
+import MobileMenu from "./mobileMenu";
 
 export default function Header() {
 
@@ -58,6 +61,7 @@ export default function Header() {
     });
    },[ currentPathName ]);
 
+//    Atualiza o estilo do header conforme a pagina e rolada
    const scrollHandler = () => {
         if ( window.innerWidth < 768 ) {
             if ( scrollDiv.current ) {
@@ -124,6 +128,7 @@ export default function Header() {
                 <header className="fixed top-0 left-1/2 -translate-x-1/2 h-36 md:h-auto z-20 w-full before:w-full before:absolute before:top-0 before:left-0 before:h-full before:bg-gradient-to-b from-black to-transparent before:-z-10 max-w-[2200px]">
                     <nav ref={scrollDiv} className="w-full flex flex-row justify-between items-center px-4 py-5 md:px-6 md:py-0 h-20 lg:px-8">
 
+                        {/* Menu em dispositivos moveis*/}
                         <label htmlFor="my-drawer" className="md:hidden">
                             <nav className="flex flex-col gap-y-[6pt] justify-center items *:w-8 *:h-0.5 *:rounded-3xl *:bg-white">
                                 <div></div>
@@ -136,6 +141,7 @@ export default function Header() {
                             <h1 className="text-2xl font-raleway font-bold md:text-[25px] ">ZilloCine</h1>
                         </div>
 
+                        {/* Barra de navegação */}
                         <nav className="flex flex-row items-center font-poppins font-medium">
                             <ul  ref={navBar} className="flex flex-row w-fit items-center *:text-neutral-300 justify-end gap-x-10 relative">
                                 
@@ -179,7 +185,9 @@ export default function Header() {
 
                         <div className="hidden md:flex gap-x-5 items-center">
                             <div className="flex gap-x-5 items-center">
+                                {/* Dropdown */}
                                 <div className="dropdown dropdown-end dropdown-hover">
+                                    {/* Imagem do usuario caso ele tenha sido authenticado */}
                                     <button id="account-button" tabIndex={0} role="button" style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }} className="w-[44px] h-[44px] rounded-full flex items-center justify-center outline-none border-none overflow-hidden">
                                         { userData.photoUrl ? (
                                             <LazyLoadImage
@@ -193,12 +201,13 @@ export default function Header() {
                                         )}
                                     </button>
 
+                                    {/* Menu com opções de login e registro */}
                                     <div tabIndex={0} className="dropdown-content pt-2">
                                         { !userData.isLoogedIn &&
                                             <ul tabIndex={0} className="bg-darkpurple rounded-box z-[1] w-60 p-4 shadow">
-                                                <li onClick={RegisterModalToggle} className="px-4 h-10 rounded-3xl bg-orangered text-white font-poppins text-[15px] flex items-center justify-center font-medium cursor-pointer btn hover:bg-orangered">Criar conta</li>
+                                                <li onClick={RegisterModalToggle} className="px-4 h-10 rounded-3xl bg-orangered text-white font-poppins text-[15px] flex items-center justify-center font-medium cursor-pointer btn hover:bg-orangered border-0">Criar conta</li>
                                 
-                                                <li onClick={loginModalToggle} className="px-4 h-10 rounded-3xl bg-neutral-700 text-white font-poppins text-[15px] flex items-center justify-center font-medium cursor-pointer mt-2 btn hover:bg-neutral-700">Entrar</li>
+                                                <li onClick={loginModalToggle} className="px-4 h-10 rounded-3xl bg-neutral-700 text-white font-poppins text-[15px] flex items-center justify-center font-medium cursor-pointer mt-2 btn hover:bg-neutral-700 border-0">Entrar</li>
                                             </ul>
                                         }
                                     </div>

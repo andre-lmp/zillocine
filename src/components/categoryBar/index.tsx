@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, MouseEvent, SetStateAction, Dispatch, useRef, MutableRefObject, useEffect } from 'react';
-
+import { MouseEvent, SetStateAction, Dispatch, useRef, MutableRefObject, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
+// Interface de tipos para objetos retornados pela api do TMDB
 import { tmdbObjProps } from '../contexts/tmdbContext';
 
 import * as Style from '@/components/categoryBar/styles';
@@ -17,7 +17,7 @@ export default function CategoryBar( props: categoryBarProps ) {
     const currentPathName = usePathname();
     const categoryElementsRef: MutableRefObject<(HTMLLIElement | null)[]> = useRef([]);
 
-    /*Função responsavel por mudar a cor do botão quando o usuario seleciona alguma categoria*/
+    /*Muda a cor do botão quando o usuario seleciona alguma categoria*/
     const changeCategoryStyle = ( e: MouseEvent<any> ) => {
         props.selectGenre( (e.target as HTMLLIElement).id );
 
@@ -30,13 +30,12 @@ export default function CategoryBar( props: categoryBarProps ) {
     };
 
     useEffect(() => {
-
         if (  categoryElementsRef.current && categoryElementsRef.current[0]?.style ) {
             Object.assign( categoryElementsRef.current[0]?.style, { backgroundColor: '#ff4500' });
         }
-
     },[]);
 
+    // Gera uma lista de categorias que o usuario pode selecionar
     const categoriesList = Object.keys( props.genresList ).map(( key, index ) => (
        key !== 'allGenres' 
             && 

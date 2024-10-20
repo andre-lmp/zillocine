@@ -1,10 +1,12 @@
 import { MutableRefObject, useRef, MouseEvent, Dispatch, SetStateAction } from "react";
 
+// Icone com React-icons
 import { IoPlay } from "react-icons/io5";
 
-import * as Style from './styles';
-
+// Interface de tipos para objetos retornados pela api do TMDB
 import { tmdbObjProps } from "@/components/contexts/tmdbContext";
+
+import * as Style from './styles';
 
 type componentProps = {
     seasonsList: tmdbObjProps[];
@@ -15,15 +17,17 @@ export default function SelectSeason( props: componentProps ) {
     const checkboxInputRef: MutableRefObject<(HTMLInputElement | null)> = useRef( null );
     const selectedSeasonRef: MutableRefObject<(HTMLParagraphElement | null)> = useRef( null );
 
-    const getReleaseDate = ( date: any[] ) => {
+    /*Obtem o ano de lançamento de um filme ou serie*/
+    const getReleaseDate = ( date: string ) => {
         const newDate = [];
         if ( !date ) return;
         for ( let i = 0; i < 4; i++ ) {
             newDate.push( date[i] );
         }
-        return newDate;
+        return newDate.join('');
     };
 
+    // Atualiza o texto do botão com a temporada selecionada e tambem o carousel
     const updateSelector = ( e: MouseEvent<any> ) => {
         const elementRef = e.target as HTMLParagraphElement;
         selectedSeasonRef.current && Object.assign( selectedSeasonRef.current, { innerText: elementRef.innerText } );
@@ -31,6 +35,7 @@ export default function SelectSeason( props: componentProps ) {
         checkboxToggle();
     };
     
+    // Simula um click para o input que exibe/esconde o modal temporadas
     const checkboxToggle = () => {
         checkboxInputRef.current?.click();
     };
@@ -38,18 +43,22 @@ export default function SelectSeason( props: componentProps ) {
     return (
         <Style.ComponentWrapper>
             <div 
-                onClick={() => { checkboxToggle() }} 
+                onClick={checkboxToggle}
                 className="btn focus:bg-darkpurple border-none outline-none hover:bg-darkpurple text-white text-base font-noto_sans font-medium bg-darkpurple w-fit px-10 flex items-center cursor-pointer rounded-md justify-center"
             >
+                {/* Nome da temporada - Data de lançamento */}
                 <p ref={selectedSeasonRef}>{ props.seasonsList[0].name } - {getReleaseDate( props.seasonsList[0].air_date )}</p>
                 <IoPlay className="text-sm rotate-90 ml-5"/>
             </div>
 
             <input ref={checkboxInputRef} type="checkbox" id="my_modal_6" className="modal-toggle" />
+            
+            {/* Modal com todas as temporadas disponiveis */}
             <div className="modal" role="dialog">
                 <div className="modal-box z-50 rounded-md bg-darkpurple seasons-modal">
                     <p className="text-lg font-medium font-noto_sans">Selecione uma temporada:</p>
                     <Style.SeasonsWrapper>
+                        {/* Gerando as temporadas apartir da lista retornada pela api do TMDB */}
                         { props.seasonsList.map(( season, index ) => (
                             <p 
                                 key={`${season.id}-${season.still_path}`}
@@ -60,8 +69,10 @@ export default function SelectSeason( props: componentProps ) {
                             </p>
                         ))}
                     </Style.SeasonsWrapper>
+
+                    {/* Fechamento do modal */}
                     <div className="modal-action">
-                    <button onClick={() => {checkboxToggle()}} className="bg-white text-black h-[40px] cursor-pointer flex items-center justify-center font-noto_sans text-sm font-semibold rounded-md px-8">Cancelar</button>
+                    <button onClick={checkboxToggle} className="bg-white text-black h-[40px] cursor-pointer flex items-center justify-center font-noto_sans text-sm font-semibold rounded-md px-8">Cancelar</button>
                     </div>
                 </div>
             </div>

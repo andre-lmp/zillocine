@@ -1,5 +1,6 @@
 import { useRef, MutableRefObject, useState, useEffect } from "react";
 
+// Icones com React-icons
 import { IoPlay } from "react-icons/io5";
 import { IoIosClose } from "react-icons/io";
 
@@ -9,9 +10,11 @@ type componentProps = {
 };
 
 export default function WatchTrailer( props: componentProps ) {
+    
     const checkboxInputRef: MutableRefObject<(HTMLInputElement | null)> = useRef( null );
     const [ isPlayerDisable, setIsPlayerDisable ] = useState( true );
     
+    // Simula um click para o mostra/esconde o modal do trailer
     const checkboxToggle = () => {
         checkboxInputRef.current?.click();
         setIsPlayerDisable( prev => !prev );
@@ -20,8 +23,8 @@ export default function WatchTrailer( props: componentProps ) {
     return (
         <>
             <button 
-                onClick={() => { checkboxToggle() }} 
-                className='w-full mx-auto outline-none h-12 btn text-white rounded-md text-base font-noto_sans font-semibold bg-darkslateblue flex justify-center items-center relative hover:bg-darkslateblue md:w-fit md:px-14 md:mx-0'
+                onClick={checkboxToggle} 
+                className='w-full mx-auto outline-none h-12 btn text-white rounded-md text-base font-noto_sans font-semibold bg-darkslateblue flex justify-center items-center relative hover:bg-darkslateblue md:w-fit md:px-14 md:mx-0 border-none'
             >
                     <IoPlay className="text-base text-white"/>
                     Assistir ao trailer
@@ -33,10 +36,11 @@ export default function WatchTrailer( props: componentProps ) {
                     <div className="bg-darkpurple w-[calc(100%-32px)] max-w-3xl pb-2 px-2 h-auto rounded-md z-50">
                         
                         <div className="w-full flex flex-row gap-x-2 items-center py-5 px-3 text-lg text-white relative font-roboto font-medium">
-                            <p className="max-w-40 overflow-hidden line-clamp-1 whitespace-nowrap">{ props.showName }</p>
-                            <p className="text-nowrap">- Trailer</p>
+                            {/* Titulo do trailer */}
+                            <p className="overflow-hidden line-clamp-1 whitespace-nowrap">{ props.showName } - Trailer</p>
 
-                            <div onClick={() =>  {checkboxToggle()}} className="absolute top-1/2 right-0 -translate-y-1/2">
+                            {/* Fechamento do modal */}
+                            <div onClick={checkboxToggle} className="absolute top-1/2 right-0 -translate-y-1/2 cursor-pointer">
                                 <IoIosClose className="text-4xl" />
                             </div>
                         </div>

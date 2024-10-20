@@ -1,10 +1,11 @@
-import React, { MutableRefObject, useState, useEffect, useRef, useContext } from "react";
 
-import Link from "next/link";
+import React, { MutableRefObject, useEffect, useRef, useContext } from "react";
+import { usePathname } from "next/navigation";
 
 import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
-UserDataContext
+import { UserDataContext } from "@/components/contexts/authenticationContext";
 
+// Icones com React-icons
 import { FiHome } from "react-icons/fi";
 import { BiMoviePlay, BiCameraMovie } from "react-icons/bi";
 import { LuSearch } from 'react-icons/lu';
@@ -12,9 +13,10 @@ import { FaUserLarge } from 'react-icons/fa6';
 import { CgNotes } from "react-icons/cg";
 import { IoMdDownload } from "react-icons/io";
 
-import { usePathname } from "next/navigation";
-import { UserDataContext } from "@/components/contexts/authenticationContext";
+// Componente para carregamento preguiçoso de imagens
 import { LazyLoadImage } from "react-lazy-load-image-component";
+
+import Link from "next/link";
 
 export default function MobileMenu({ children } : { children: React.ReactNode }) {
 
@@ -72,19 +74,25 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
     return (
         <div className="drawer">
             <input id="my-drawer" type="checkbox" className="drawer-toggle" ref={drawerInput}/>
+            
             <div className="drawer-content z-30">
                 { children }
             </div>
+
+            {/* Container do menu mobile */}
             <div className="drawer-side z-40">  
                 <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
+                
                 <div className="w-72 text-gray-50 pb-5 font-medium text-lg flex flex-col font-roboto h-dvh bg-deepnight">
                     { !userData.isLoogedIn ? (
+                        // Opções de authenticação
                         <div className="px-4 py-5 bg-deepnight">
                             <button onClick={RegisterModalToggle} className="w-full font-medium text-white bg-orangered flex items-center justify-center text-[17px] h-12 rounded-3xl btn hover:bg-orangered">Criar conta</button>
                             
                             <button onClick={loginModalToggle} className="w-full font-medium text-white bg-darkpurple flex items-center justify-center text-[17px] h-12 rounded-3xl mt-2 btn hover:bg-darkpurple">Entrar</button>
                         </div>
                     ) : (
+                        // Informações do usuario como, foto e nome
                         <div className="w-full bg-deepnight py-7 px-4 gap-x-2 flex items-center">
                             <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }} className="w-16 h-16 rounded-full flex items-center justify-center overflow-hidden">
                                 { userData.photoUrl ? (
@@ -100,16 +108,17 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
                             </div>  
 
                             <div className="">
-                                <p className="text-lg text-neutral-400">
-                                    Ola, <span className="text-neutral-100">{ userData.name ?? 'usuario' }</span>
+                                <p className="text-[19px] text-neutral-100">
+                                    { userData.name ?? 'usuario' }
                                 </p>
 
-                                <p className="text-base text-neutral-400">acessar conta</p>
+                                <p className="text-base text-neutral-400 font-normal">Ir para o perfil</p>
                             </div>
                         </div>
                     )}
-                    <ul className="mt-8 text-lg flex flex-col gap-y- *:flex *:py-4 *:pl-4 *:items-center *:gap-x-3">
-                        
+
+                    {/* Barra de navegação */}
+                    <ul className="mt-8 text-lg flex flex-col gap-y- *:flex *:py-4 *:pl-4 *:items-center *:gap-x-3">     
                         <li key='mb-home-link' id="/" ref={(e) => { mobileNavLinks.current[0] = e }} className="text-neutral-500" onClick={drawerToggle}>
                             <FiHome/>
                             <Link href={'/'}>Inicio</Link>

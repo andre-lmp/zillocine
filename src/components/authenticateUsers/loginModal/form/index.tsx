@@ -1,6 +1,7 @@
 import { useContext, useEffect } from "react";
-
 import { useForm } from "react-hook-form";
+
+// Ferramentas de validação
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
@@ -68,6 +69,7 @@ export default function LoginForm( props: componentProps ) {
                 }}
             />
 
+            {/* Renderiza o erro passado pela prop caso houver, se não, renderiza o erro do loginSchema */}
             { props.errorMessage ? (
                 <p 
                     className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{props.errorMessage}
@@ -94,6 +96,7 @@ export default function LoginForm( props: componentProps ) {
                 }}
             />
 
+            {/* Renderiza o erro passado pela prop caso houver, se não, renderiza o erro do loginSchema */}
             { props.errorMessage ? (
                 <p 
                     className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{props.errorMessage}
