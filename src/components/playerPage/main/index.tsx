@@ -12,12 +12,11 @@ type componentProps = {
 };
 
 export default function Main( props: componentProps ) {
-    console.log(props.contentData);
 
      // Obtem o classificação geral do conteudo
     const getImdbReviews = ( vote_average: number, vote_count: number ) => {
         return (
-            <p className='text-base font-medium font-noto_sans rounded'>
+            <p className='text-[17px] font-medium font-noto_sans rounded'>
                 <span className="mr-[6px]">Imdb: </span>
 
                 <span className=' text-neutral-400 font-normal'>{ vote_average.toFixed(1) } ({ vote_count } Avaliações)</span>
@@ -58,20 +57,20 @@ export default function Main( props: componentProps ) {
 
         if ( !runtime || runtime === 0 ) {
             return (
-                <span className="font-noto_sans whitespace-nowrap text-base font-normal text-neutral-400 ">
+                <span className="font-noto_sans whitespace-nowrap text-[17px] font-normal text-neutral-400 ">
                     Duração não disponivel
                 </span>
             );
         };
 
         if ( runtime < 60 ) {
-            return <span className="font-noto_sans whitespace-nowrap text-base font-normal text-neutral-400 ">{ runtime }m</span>
+            return <span className="font-noto_sans whitespace-nowrap text-[17px] font-normal text-neutral-400 ">{ runtime }m</span>
         };
 
         const hours = ( runtime / 60 ).toFixed(0);
         const minites = runtime % 60;
 
-        return  <span className="font-noto_sans whitespace-nowrap text-base font-normal text-neutral-400 ">{ hours }h { minites }m</span>
+        return  <span className="font-noto_sans whitespace-nowrap text-[17px] font-normal text-neutral-400 ">{ hours }h { minites }m</span>
     };
 
     // Obtem o nome dos produtores do filme/serie
@@ -133,7 +132,7 @@ export default function Main( props: componentProps ) {
                         <Style.ContentDetailsWrapper>                            
                             <div>
                                 {getImdbReviews( props.contentData.vote_average, props.contentData.vote_count )}
-                                <p className="content-detail text-base font-medium rounded">
+                                <p className="content-detail text-[17px] font-medium rounded">
                                     <span className="mr-[6px]">Gêneros:</span>
 
                                     <span className="text-neutral-400 font-normal ">
@@ -142,7 +141,7 @@ export default function Main( props: componentProps ) {
                                 </p>
 
                                 { props.contentType === 'serie' ? (
-                                    <p className="content-detail text-base font-medium rounded">
+                                    <p className="content-detail text-[17px] font-medium rounded">
                                         <span className="mr-[6px]">Criado por:</span>
 
                                         <span className="text-neutral-400 font-normal ">
@@ -151,7 +150,7 @@ export default function Main( props: componentProps ) {
                                     </p>
                                 ) : null }
 
-                                <p className="content-detail text-base font-medium rounded">
+                                <p className="content-detail text-[17px] font-medium rounded">
                                     <span className="mr-[6px]">Direção:</span>
 
                                     <span className="text-neutral-400 font-normal ">
@@ -159,7 +158,7 @@ export default function Main( props: componentProps ) {
                                     </span>
                                 </p>
 
-                                <p className="content-detail text-base font-medium rounded">
+                                <p className="content-detail text-[17px] font-medium rounded">
                                     <span className="mr-[6px]">Data de lançamento:</span>
 
                                     <span className="text-neutral-400 font-normal ">
@@ -168,7 +167,7 @@ export default function Main( props: componentProps ) {
                                 </p>
 
                                 { props.contentType === 'movie' ? (
-                                    <p className="content-detail text-base font-medium rounded">
+                                    <p className="content-detail text-[17px] font-medium rounded">
                                         <span className="mr-[6px]">Orçamento:</span>
 
                                         <span className="text-neutral-400 font-normal ">
@@ -180,7 +179,7 @@ export default function Main( props: componentProps ) {
 
                             <div>
                                { props.contentType === 'movie' ? (
-                                    <p className="content-detail text-base font-medium rounded">
+                                    <p className="content-detail text-[17px] font-medium rounded">
                                         <span className="mr-[6px]">Bilheteria:</span>
 
                                         <span className="text-neutral-400 font-normal ">
@@ -189,7 +188,7 @@ export default function Main( props: componentProps ) {
                                     </p>
                                ) : null }
 
-                                <p className="content-detail text-base font-medium rounded">
+                                <p className="content-detail text-[17px] font-medium rounded">
                                     <span className="mr-[6px]">Pais de produção:</span>
 
                                     <span className="text-neutral-400 font-normal ">
@@ -197,7 +196,7 @@ export default function Main( props: componentProps ) {
                                     </span>
                                 </p>
 
-                                <p className="content-detail text-base font-medium rounded">
+                                <p className="content-detail text-[17px] font-medium rounded">
                                     <span className="mr-[6px]">Produtora(s):</span>
 
                                     <span className="text-neutral-400 font-normal ">
@@ -206,7 +205,7 @@ export default function Main( props: componentProps ) {
                                 </p>
 
                                 { props.contentType === 'movie' ? (
-                                    <p className="content-detail text-base font-medium rounded">
+                                    <p className="content-detail text-[17px] font-medium rounded">
                                         <span className="mr-[6px]">Duração:</span>
 
                                         {getRunTime( props.contentData.runtime )}
@@ -214,7 +213,7 @@ export default function Main( props: componentProps ) {
                                 ) : null }
 
                                { props.contentType === 'serie' ? (
-                                    <p className="content-detail text-base font-medium rounded">
+                                    <p className="content-detail text-[17px] font-medium rounded">
                                         <span className="mr-[6px]">Numero de temporadas:</span>
 
                                         <span className="text-neutral-400 font-normal ">
@@ -224,7 +223,7 @@ export default function Main( props: componentProps ) {
                                ) : null }
 
                                 { props.contentType === 'serie' ? (
-                                    <p className="content-detail text-base font-medium rounded">
+                                    <p className="content-detail text-[17px] font-medium rounded">
                                         <span className="mr-[6px]">Numero de episódios:</span>
 
                                         <span className="text-neutral-400 font-normal ">
