@@ -54,7 +54,7 @@ export default function PlayerPage( props: PlayerPageProps ) {
         <section className='min-h-screen'>
             <Header playerData={contentData}/>
 
-            <Main playerData={contentData} contentType={ props.contentType }/>
+            <Main contentData={contentData[0]} contentType={ props.contentType }/>
             
             { props.contentType === 'movie' ? 
                 <SimilarMovies contentId={props.contentId} contentType={props.contentType}/> :

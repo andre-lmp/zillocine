@@ -136,7 +136,7 @@ export default function SerieSeansons( props: componentProps ) {
                                             </div>
                         
                                             {/* Descrição */}
-                                            <p className="font-noto_sans text-base line-clamp-3 font-normal leading-relaxed text-neutral-300">
+                                            <p className="font-noto_sans text-base line-clamp-3 font-normal leading-relaxed text-neutral-400">
                                                 { episode.overview.length > 3 ? episode.overview : 'Desculpe... não foi possível carregar a descrição deste conteúdo.' }
                                             </p>
                                         </div>

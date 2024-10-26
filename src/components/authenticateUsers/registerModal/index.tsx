@@ -111,7 +111,6 @@ export default function RegisterModal() {
             };
 
             const userName = [extractedWords[0], extractedWords.at(-1)].join(' ');
-            console.log(userName);
             user.setUserData( prev => ({
                 ...prev,
                 name: userName

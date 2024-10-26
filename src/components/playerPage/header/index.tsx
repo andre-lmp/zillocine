@@ -84,7 +84,7 @@ export default function Header( props: headerProps ) {
                         <div className='w-full z-20 absolute bottom-10 px-4 flex flex-col gap-y-1 items-start md:pl-6 lg:pl-8'>
                             
                             {/* Titulo */}
-                            <h1 className='font-raleway font-extrabold w-4/5 text-3xl text-start line-clamp-2 md:max-w-md'>
+                            <h1 className='font-raleway font-extrabold w-4/5 text-[26px] md:text-3xl text-start line-clamp-2 md:max-w-md lg:max-w-xs'>
                                 { item.title ?? item.name }
                             </h1>
 

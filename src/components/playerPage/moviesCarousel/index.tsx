@@ -38,7 +38,6 @@ export default function SimilarMovies( props: componentProps ) {
     const fetchHandler = async ( fetchResponse: Promise<any> ) => {
         const response = await fetchResponse;
         if ( response ) {
-            console.log( response )
             checkAvailability( response );
         };
     };

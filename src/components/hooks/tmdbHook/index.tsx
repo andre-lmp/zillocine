@@ -75,7 +75,7 @@ export default function useTmdbFetch() {
     // faz uma busca mais detalhada de uma serie com o id fornecido
     const fetchSingleSerie = async ( serieId: string ) => {
         try {
-            const response = await fetch(`https://api.themoviedb.org/3/tv/${serieId}?api_key=${token}&language=pt-BR&page=1&include_image_language=pt&append_to_response=videos`);
+            const response = await fetch(`https://api.themoviedb.org/3/tv/${serieId}?api_key=${token}&language=pt-BR&page=1&include_image_language=pt&append_to_response=videos,credits`);
             if (response.ok) {
             const fetchData = await response.json();
             return fetchData;
@@ -152,7 +152,6 @@ export default function useTmdbFetch() {
                     const response = contentType === 'movie' ? await fetchSingleMovie( id ) : await fetchSingleSerie( id );
                     return response;
                 })).then( response => {
-                    console.log( response );
                     resolve( response );
                 })
             } catch (error) {

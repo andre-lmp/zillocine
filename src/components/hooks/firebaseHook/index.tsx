@@ -53,7 +53,8 @@ export default function useFirebase() {
                     name: result.user.displayName,
                     photoUrl: result.user.photoURL
                 };
-
+                
+                console.log(result.user);
                 resolve( user );
             }).catch( error =>{
                 console.error( error );
