@@ -8,7 +8,7 @@ import useTmdbFetch from '@/components/hooks/tmdbHook/index';
 // Interface de tipos para objetos retornados pela api do TMDB
 import { tmdbObjProps } from '@/components/contexts/tmdbContext/index';
 
-import { Carousel } from './carousel';
+import { Carousel } from './slides';
 
 interface CarouselProps {
     isLoaded?: React.Dispatch<React.SetStateAction<boolean>>;

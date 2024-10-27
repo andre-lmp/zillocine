@@ -1,4 +1,4 @@
-import PlayerPage from "@/components/playerPage"
+import PlayerPage from "@/components/pages/playerPage"
 
 type PlayerPageProps = {
     params: { id: string, type: string };

@@ -1,15 +1,15 @@
 'use client'
 
 // Carouseis de conteudo
-import HeaderCarousel from '@/components/headerCarousel/index';
-import ContentCarousel from '@/components/contentCarousel/index';
+import HeaderCarousel from '@/components/headerCarousel';
+import ContentCarousel from '@/components/contentCarousel';
 
 // Barra com categorias de conteudo
-import CategoryBar from '@/components/categoryBar/index';
+import CategoryBar from '@/components/categoryBar';
 
 import { useContext, useState } from 'react';
 
-import { TmdbContext } from '@/components/contexts/tmdbContext/index';
+import { TmdbContext } from '@/components/contexts/tmdbContext';
 
 export default function MoviesPage() {
 

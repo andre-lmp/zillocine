@@ -4,16 +4,20 @@ import { tmdbObjProps } from "@/components/contexts/tmdbContext";
 // Componente para carregamento preguiçoso de imagens
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
-import * as Style from '@/components/playerPage/styles';
+// Carousel com os atores principais do filme/serie
+import { MainActors } from "./actorsCarousel";
 
-type componentProps = {
+import * as Style from '@/components/pages/playerPage/styles';
+
+type ComponentProps = {
     contentData: tmdbObjProps;   
     contentType: string;
 };
 
-export default function Main( props: componentProps ) {
+export default function Main( props: ComponentProps ) {
+    console.log(props.contentData);
 
-     // Obtem o classificação geral do conteudo
+    // Obtem a nota do publico sobre o conteudo
     const getImdbReviews = ( vote_average: number, vote_count: number ) => {
         return (
             <p className='text-[17px] font-medium font-noto_sans rounded'>
@@ -107,31 +111,43 @@ export default function Main( props: componentProps ) {
 
     return (
         <div className="flex flex-col font-noto_sans">
+
+                {/* Descrição do filme/serie */}
                 <p className='text-justify w-full text-[17px] leading-loose text-neutral-300 max-w-4xl px-4 md:px-6 lg:px-8'>
                     { props.contentData.overview.length > 3 ? props.contentData.overview : `Desculpe, a descrição deste conteúdo não pode ser carregada neste momento` }
                 </p>
 
-                <div className="bg-darkpurple w-full mt-5 pt-5 pb-10 px-4 md:px-6 lg:px-8">
+                {/* seção com mais detalhes */}
+                <div className="bg-darkpurple w-full mt-5 pt-5 pb-3 sm:pb-6 px-4 md:px-6 lg:px-8">
+
+                    {/* Titulo da seção */}
                     <h2 className="text-xl lg:text-2xl font-semibold">
                         Mais sobre { props.contentType === 'movie' ? 'o filme' : 'a série' }
                     </h2>
 
-                    <div className="mt-5 relative flex flex-col gap-y-7 items-start">
+                    {/* Container com os detalhes */}
+                    <div className="mt-5 relative flex flex-col gap-y-7 items-start ">
+                        {/* Imagem do filme/serie */}
                         <div className="sm:absolute sm:left-0 h-full">
                             <LazyLoadImage
                                 src={`https://image.tmdb.org/t/p/original${props.contentData.poster_path ?? props.contentData.backdrop_path}`}
                                 alt={`${props.contentData.title ?? props.contentData.name} movie/serie presentation image`}
-                                width={240}
+                                width={'100%'}
                                 height={'100%'}
                                 effect="opacity"
                                 placeholderSrc={`https://image.tmdb.org/t/p/w92/${props.contentData.poster_path ?? props.contentData.backdrop_path}`}
-                                className='w-60  h-full object-cover bg-darkpurple image rounded'
+                                className='w-40 sm:w-60 h-full object-cover bg-darkpurple image rounded'
                             />
                         </div>
 
-                        <Style.ContentDetailsWrapper>                            
+                        <Style.ContentDetailsWrapper> 
+                            {/* Coluna 1 de informações*/}
                             <div>
+
+                                {/* Nota do publico ao conteudo */}
                                 {getImdbReviews( props.contentData.vote_average, props.contentData.vote_count )}
+                                
+                                {/* Generos */}
                                 <p className="content-detail text-[17px] font-medium rounded">
                                     <span className="mr-[6px]">Gêneros:</span>
 
@@ -140,6 +156,7 @@ export default function Main( props: componentProps ) {
                                     </span>
                                 </p>
 
+                                {/* Criador do filme/serie */}
                                 { props.contentType === 'serie' ? (
                                     <p className="content-detail text-[17px] font-medium rounded">
                                         <span className="mr-[6px]">Criado por:</span>
@@ -150,6 +167,7 @@ export default function Main( props: componentProps ) {
                                     </p>
                                 ) : null }
 
+                                {/* Direção */}
                                 <p className="content-detail text-[17px] font-medium rounded">
                                     <span className="mr-[6px]">Direção:</span>
 
@@ -158,6 +176,7 @@ export default function Main( props: componentProps ) {
                                     </span>
                                 </p>
 
+                                {/* Lançamento */}
                                 <p className="content-detail text-[17px] font-medium rounded">
                                     <span className="mr-[6px]">Data de lançamento:</span>
 
@@ -166,6 +185,7 @@ export default function Main( props: componentProps ) {
                                     </span>
                                 </p>
 
+                                {/* Orçamento */}
                                 { props.contentType === 'movie' ? (
                                     <p className="content-detail text-[17px] font-medium rounded">
                                         <span className="mr-[6px]">Orçamento:</span>
@@ -177,7 +197,10 @@ export default function Main( props: componentProps ) {
                                 ) : null }
                             </div>
 
+                            {/* Coluna 2 de informações */}
                             <div>
+
+                                {/* Bilheteria */}
                                { props.contentType === 'movie' ? (
                                     <p className="content-detail text-[17px] font-medium rounded">
                                         <span className="mr-[6px]">Bilheteria:</span>
@@ -188,6 +211,7 @@ export default function Main( props: componentProps ) {
                                     </p>
                                ) : null }
 
+                               {/* Pais de produção */}
                                 <p className="content-detail text-[17px] font-medium rounded">
                                     <span className="mr-[6px]">Pais de produção:</span>
 
@@ -196,6 +220,7 @@ export default function Main( props: componentProps ) {
                                     </span>
                                 </p>
 
+                               {/* Empresa de produção */}
                                 <p className="content-detail text-[17px] font-medium rounded">
                                     <span className="mr-[6px]">Produtora(s):</span>
 
@@ -204,6 +229,7 @@ export default function Main( props: componentProps ) {
                                     </span>
                                 </p>
 
+                               {/* Duração */}
                                 { props.contentType === 'movie' ? (
                                     <p className="content-detail text-[17px] font-medium rounded">
                                         <span className="mr-[6px]">Duração:</span>
@@ -212,6 +238,7 @@ export default function Main( props: componentProps ) {
                                     </p>
                                 ) : null }
 
+                                {/* Temporadas */}
                                { props.contentType === 'serie' ? (
                                     <p className="content-detail text-[17px] font-medium rounded">
                                         <span className="mr-[6px]">Numero de temporadas:</span>
@@ -222,6 +249,7 @@ export default function Main( props: componentProps ) {
                                     </p>
                                ) : null }
 
+                               {/* Episodios */}
                                 { props.contentType === 'serie' ? (
                                     <p className="content-detail text-[17px] font-medium rounded">
                                         <span className="mr-[6px]">Numero de episódios:</span>
@@ -235,6 +263,8 @@ export default function Main( props: componentProps ) {
                             </div>
                         </Style.ContentDetailsWrapper>
                     </div>
+
+                    <MainActors actorsData={props.contentData.credits.cast ?? []}/>
                 </div>     
         </div>
     );

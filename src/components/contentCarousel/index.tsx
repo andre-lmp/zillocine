@@ -129,7 +129,7 @@ export default function ContentCarousel( props: carouselProps ) {
                                                         <p className="bg-orangered rounded-[4px] flex items-center w-fit px-3 h-5">{getReleaseDate( item.release_date ?? item.first_air_date )}
                                                         </p>
 
-                                                        {/* Classificação geral do conteudo */}
+                                                        {/* Nota do publico ao conteudo */}
                                                         <p className="font-medium text-sm text-white">nota: {( item.vote_average).toFixed(0 )}</p>
                                                     </div>
 

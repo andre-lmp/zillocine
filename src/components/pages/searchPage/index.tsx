@@ -5,10 +5,10 @@ import { useRef, useEffect, MutableRefObject, MouseEvent, useState } from 'react
 import useTmdbFetch from '@/components/hooks/tmdbHook';
 
 // Componente para mostrar os resultados da pesquisa do usuario
-import ShowResults from '@/components/searchPage/searchResult';
+import ShowResults from '@/components/pages/searchPage/searchResult';
 
 // Interface de tipos para objetos retornados pela api do TMDB
-import { tmdbObjProps } from '../contexts/tmdbContext';
+import { tmdbObjProps } from '@/components/contexts/tmdbContext';
 
 // Icones
 import { FiSearch } from "react-icons/fi";
@@ -115,7 +115,7 @@ export default function SearchPage() {
                 <div>
                     <button 
                         ref={(e) => { searchButtonsRef.current[0] = e }} 
-                        className='h-9 px-7 rounded-md text-neutral-100 bg-darkpurple'
+                        className='h-9 px-7 rounded-md text-neutral-100 bg-darkpurple border-none outline-none'
                         onClick={(e) => { handleSelectedButton(e) }}
                         id='movie'
                         >Filmes
@@ -123,7 +123,7 @@ export default function SearchPage() {
 
                     <button  
                         ref={(e) => { searchButtonsRef.current[1] = e }} 
-                        className='ml-3 h-9 px-7 rounded-md text-neutral-100 bg-darkpurple'
+                        className='ml-3 h-9 px-7 rounded-md text-neutral-100 bg-darkpurple border-none outline-none'
                         onClick={(e) => { handleSelectedButton(e) }}
                         id='serie'
                         >Series

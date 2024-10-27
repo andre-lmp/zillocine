@@ -4,14 +4,14 @@ import { useEffect, useState } from 'react';
 
 import Header from './header';
 import Main from './main'
-import SimilarMovies from './moviesCarousel';
-import SerieSeasons from './seasonsCarousel';
+import SimilarMovies from './footerCarousel/moviesCarousel';
+import SerieSeasons from './footerCarousel/seasonsCarousel';
 
 // Hook personalizado com funções para busca de conteudo no TMDB
-import useTmdbFetch from '@/components/hooks/tmdbHook/index';
+import useTmdbFetch from '@/components/hooks/tmdbHook';
 
 // Interface de tipos para objetos retornados pela api do TMDB
-import { tmdbObjProps } from '../contexts/tmdbContext';
+import { tmdbObjProps } from '../../contexts/tmdbContext';
 
 type PlayerPageProps = {
     contentId: string;

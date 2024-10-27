@@ -8,7 +8,7 @@ import 'react-lazy-load-image-component/src/effects/opacity.css';
 // Icones
 import { PiArrowElbowDownRightBold } from "react-icons/pi";
 
-// Modulos do Swiper.js
+// Modulos do Swiper.js para carousel de slides
 import { Pagination, Autoplay, EffectFade } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -76,7 +76,7 @@ export function Carousel( props: carouselProps ) {
         return  <p className="font-noto_sans whitespace-nowrap text-base font-normal text-neutral-300">{ hours }h { minites }m</p>
     };
 
-    // Obtem o classificação geral do conteudo
+    // Obtem a nota do publico sobre o conteudo
     const getImdbReviews = ( vote_average: number, vote_count: number ) => {
         return (
             <p className='px-4 h-7 bg-darkslateblue whitespace-nowrap text-base font-normal font-noto_sans rounded flex items-center'>
@@ -113,6 +113,7 @@ export function Carousel( props: carouselProps ) {
                                         alt={`${content.title ?? content.name} movie/serie presentation image`}
                                         placeholderSrc={`https://image.tmdb.org/t/p/w92/${content.poster_path ?? content.backdrop_path}`}
                                         className='bg-darkpurple object-cover w-screen h-[660px] md:h-[400px] md:w-[50vw] xl:h-[420px]'
+                                        effect='opacity'
                                     />
                                 </div>
 
@@ -137,7 +138,7 @@ export function Carousel( props: carouselProps ) {
                                         {/* Tempo de duração */}
                                         {getRunTime( content.runtime ?? null )}
 
-                                        {/* Classificação */}
+                                        {/* Nota do publico ao conteudo */}
                                         {getImdbReviews( content.vote_average, content.vote_count )}
 
                                         {/* Logo da produtora */}
@@ -154,7 +155,7 @@ export function Carousel( props: carouselProps ) {
                                     {/* Link para o player */}
                                     <Link href={`/player/${ props.currentPage === 'home' || props.currentPage === 'movies' ? 'movie' : 'serie' }/${content.id}`}>
                                         
-                                        <button className='w-full mx-auto outline-none h-12 btn text-white rounded-md text-base font-noto_sans font-semibold bg-darkslateblue flex justify-center items-center relative md:w-fit md:px-14 md:rounded-lg md:mx-0 hover:bg-darkslateblue border-0'>
+                                        <button className='w-full mx-auto outline-none h-12 btn text-white rounded-md text-base font-noto_sans font-semibold bg-darkslateblue flex justify-center items-center relative md:w-fit md:px-14 md:rounded-lg md:mx-0 hover:bg-darkslateblue border-none'>
                                             <PiArrowElbowDownRightBold className='absolute left-3 top-1/2 -translate-y-1/2' />
                                             Ir para { props.currentPage === 'home' || props.currentPage === 'movies' ? 'o filme' : 'a serie' }
                                         </button>

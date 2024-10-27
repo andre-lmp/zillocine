@@ -54,31 +54,16 @@ export const ContentDetailsWrapper = styled.div`
         box-sizing: border-box;
     }
 
-    & p:not(:last-of-type) {
-        padding-bottom: 50px;
+    & p:not(:last-of-type), div:first-of-type p:last-of-type {
+        padding-bottom: 40px;
         position: relative;
     }
 
-    & div:first-of-type p:last-of-type {
-        padding-bottom: 50px;
-        position: relative;
-    }
-
-    & div:first-of-type p:last-of-type::before {
+    & div:first-of-type p:last-of-type::before,  p:not(:last-of-type)::before {
         content: '';
         position: absolute;
         left: 0;
-        bottom: 25px;
-        width: 100%;
-        height: 1.4pt;
-        background-color: rgba(255, 255, 255, 0.05);
-    }
-
-    & p:not(:last-of-type)::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: 25px;
+        bottom: 20px;
         width: 100%;
         height: 1.4pt;
         background-color: rgba(255, 255, 255, 0.05);
@@ -91,6 +76,11 @@ export const ContentDetailsWrapper = styled.div`
     @media screen and (width >= 1024px) {
         flex-direction: row;
 
+        & div:first-of-type, div:last-of-type {
+            width: 50%;
+            max-width: 400px;
+        }
+
         & div:first-of-type p:last-of-type {
             padding-bottom: 0;
         }
@@ -100,4 +90,30 @@ export const ContentDetailsWrapper = styled.div`
         }
     }
 
+`;
+
+export const ActorsCarouselWrapper = styled.div`
+    position: relative;
+    
+    & .swiper-controllers {
+        width: 65px;
+        height: 100%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+    }   
+
+    & .swiper-prev-slide {
+        background-image: linear-gradient(to right, #16142b, rgba(22, 20, 43, 0.8), transparent );
+    }
+
+    & .swiper-next-slide {
+        background-image: linear-gradient(to left, #16142b, rgba(22, 20, 43, 0.8), transparent );
+    }
+
+    @media screen and ( width >= 768px ) {
+        &:hover .swiper-controllers {
+            display: flex;
+        }
+    }
 `;

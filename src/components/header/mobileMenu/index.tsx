@@ -87,9 +87,9 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
                     { !userData.isLoogedIn ? (
                         // Opções de authenticação
                         <div className="px-4 py-5 bg-deepnight">
-                            <button onClick={RegisterModalToggle} className="w-full font-medium text-white bg-orangered flex items-center justify-center text-[17px] h-12 rounded-3xl btn hover:bg-orangered">Criar conta</button>
+                            <button onClick={RegisterModalToggle} className="w-full font-medium text-white bg-orangered flex items-center justify-center text-[17px] h-12 rounded-3xl btn hover:bg-orangered border-none outline-none">Criar conta</button>
                             
-                            <button onClick={loginModalToggle} className="w-full font-medium text-white bg-darkpurple flex items-center justify-center text-[17px] h-12 rounded-3xl mt-2 btn hover:bg-darkpurple">Entrar</button>
+                            <button onClick={loginModalToggle} className="w-full font-medium text-white bg-darkpurple flex items-center justify-center text-[17px] h-12 rounded-3xl mt-2 btn hover:bg-darkpurple border-none outline-none">Entrar</button>
                         </div>
                     ) : (
                         // Informações do usuario como, foto e nome

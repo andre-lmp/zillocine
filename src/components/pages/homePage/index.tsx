@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import HeaderCarousel from "@/components/headerCarousel";
-import Main from '@/components/homePage/main/index';
+import Main from '@/components/pages/homePage/main';
 
 export default function HomePage() {
     const [ isPageLoaded, setIsPageLoaded ] = useState<boolean>( false )

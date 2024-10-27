@@ -3,12 +3,12 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/opacity.css';
 
 // Modal que exibe o trailer do conteudo
-import WatchTrailer from '@/components/playerPage/trailerPlayback';
+import WatchTrailer from '@/components/pages/playerPage/header/trailerPlayback';
 
 // Interface de tipos para objetos retornados pela api do TMDB
 import { tmdbObjProps } from "@/components/contexts/tmdbContext";
 
-import * as Style from '@/components/playerPage/styles';
+import * as Style from '@/components/pages/playerPage/styles';
 
 type headerProps = {
     playerData: tmdbObjProps[];   

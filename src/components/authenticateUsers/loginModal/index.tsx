@@ -156,7 +156,7 @@ export default function LoginModal() {
                     />
 
                     {/* Botão de fechamento do modal */}
-                    <button onClick={closeLoginModal} className="modal-actio bg-darkslateblue w-10 h-10 rounded-full flex items-center justify-center absolute top-0 right-0 -translate-y-1/3 translate-x-1/3 cursor-pointer">
+                    <button onClick={closeLoginModal} className="modal-actio bg-darkslateblue w-10 h-10 rounded-full flex items-center justify-center absolute top-0 right-0 -translate-y-1/3 translate-x-1/3 cursor-pointer border-none outline-none">
                         <IoClose className='text-xl'/>
                     </button>
                 </div>

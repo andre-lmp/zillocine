@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import 'react-lazy-load-image-component/src/effects/opacity.css';
 
-// Componentes do Swiper.js
+// Componentes do Swiper.js para carousel de slides
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import 'swiper/css';
@@ -17,7 +17,7 @@ import { tmdbObjProps } from "@/components/contexts/tmdbContext";
 import useTmdbFetch from "@/components/hooks/tmdbHook";
 
 // Modal que exibe as opções de temporadas da serie
-import SelectSeason from "../seasonSelector";
+import SelectSeason from "./seasonSelector";
 
 type componentProps = {
     seasons: tmdbObjProps[];

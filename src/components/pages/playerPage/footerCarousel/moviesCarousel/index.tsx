@@ -106,7 +106,7 @@ export default function SimilarMovies( props: componentProps ) {
                                                         <p className="bg-orangered rounded-[4px] flex movies-center w-fit px-3 h-5">{ getReleaseDate( movie.release_date ?? movie.first_air_date )}
                                                         </p>
 
-                                                        {/* Classificação geral */}
+                                                        {/* Nota do publico ao conteudo */}
                                                         <p className="font-medium text-sm text-white">nota: {( movie.vote_average).toFixed(0 )}</p>
                                                     </div>
                                                     
