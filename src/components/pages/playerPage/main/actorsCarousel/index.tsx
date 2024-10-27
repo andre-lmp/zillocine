@@ -44,7 +44,7 @@ export function MainActors( props: ComponentProps ) {
                 >
                     { props.actorsData.map(( actor: tmdbObjProps ) => (
                         actor.profile_path ? (
-                            <SwiperSlide style={{ width: 'auto' }}>
+                            <SwiperSlide key={ actor.id } style={{ width: 'auto' }}>
                                 <div className="flex flex-col gap-y-5 items-center w-20">
                                     <div className="w-20 h-20 rounded-full overflow-hidden lg:w-24 lg:h-24">
                                         
