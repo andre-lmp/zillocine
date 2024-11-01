@@ -15,14 +15,14 @@ interface UserDataOnDb {
 export default function useFirebase() {
 
     const firebaseConfig = {
-        apiKey: "AIzaSyD9meOKD4rYE1IOIHdn64hHsjwBSNk8hPU",
-        authDomain: "zillocine.firebaseapp.com",
-        databaseURL: "https://zillocine-default-rtdb.firebaseio.com",
-        projectId: "zillocine",
-        storageBucket: "zillocine.appspot.com",
-        messagingSenderId: "140852043533",
-        appId: "1:140852043533:web:a9e4b0d95a7cbd7cd69a44",
-        measurementId: "G-X9CPNRWFDT"
+        apiKey: process.env.NEXT_PUBLIC_API_KEY,
+        authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+        databaseURL: process.env.NEXT_PUBLIC_DATABASE_URL,
+        projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+        storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+        messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
+        appId: process.env.NEXT_PUBLIC_APP_ID,
+        measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID
     };
 
     const app = initializeApp( firebaseConfig );

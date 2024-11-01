@@ -1,6 +1,6 @@
 
 export default function useTmdbFetch() {
-    const token = '00f20ee77fc33a18892241c0f8c7d763';
+    const token = process.env.NEXT_PUBLIC_TMDB_API_KEY;
     const newDate = new Date().toISOString().split('T')[0];
 
     // busca series populares entre os usuarios do TMDB
