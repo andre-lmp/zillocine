@@ -29,8 +29,7 @@ const loginSchema = z.object({
 export type LoginProps = z.infer<typeof loginSchema>
 
 type componentProps = {
-    authenticateUser: ( schemaData: LoginProps ) => {};
-    errorMessage: string | null;
+    authenticateUser: ( schemaData: LoginProps ) => void;
 }
 
 export default function LoginForm( props: componentProps ) {
@@ -48,13 +47,6 @@ export default function LoginForm( props: componentProps ) {
         }
     },[ globalEvents.isLoginModalActive ]);
 
-    useEffect(() => {
-        if ( props.errorMessage ) {
-            setError( 'email', { message: props.errorMessage });  
-            setError( 'password', { message: props.errorMessage });   
-        }
-    },[ props.errorMessage ]);
-
     return (
         <form onSubmit={handleSubmit(props.authenticateUser)} className="flex flex-col">
             <label htmlFor="" className="text-sm font-medium">E-mail*</label>
@@ -65,14 +57,14 @@ export default function LoginForm( props: componentProps ) {
                 maxLength={41}
                 className="font-medium placeholder:font-normal border border-transparent outline-none text-sm placeholder:text-neutral-400 mt-2 bg-richblack rounded h-12 px-3"
                 style={{
-                    borderColor: errors.email && 'orangered'
+                    borderColor: errors.password || globalEvents.loginErrorMessage ? 'orangered' : 'transparent'
                 }}
             />
 
-            {/* Renderiza o erro passado pela prop caso houver, se não, renderiza o erro do loginSchema */}
-            { props.errorMessage ? (
+            {/* Renderiza o erro passado pelo contexto caso houver, se não, renderiza o erro do loginSchema */}
+            { globalEvents.loginErrorMessage ? (
                 <p 
-                    className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{props.errorMessage}
+                    className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{globalEvents.loginErrorMessage}
                 </p>
             ) : (
                 <>
@@ -92,14 +84,14 @@ export default function LoginForm( props: componentProps ) {
                 maxLength={11}
                 className="font-medium placeholder:font-normal text-sm placeholder:text-neutral-400 border-transparent mt-2 bg-richblack rounded h-12 px-3 border outline-none"
                 style={{
-                    borderColor: errors.password && 'orangered'
+                    borderColor: errors.password || globalEvents.loginErrorMessage ? 'orangered' : 'transparent'
                 }}
             />
 
-            {/* Renderiza o erro passado pela prop caso houver, se não, renderiza o erro do loginSchema */}
-            { props.errorMessage ? (
+            {/* Renderiza o erro passado pelo contexto caso houver, se não, renderiza o erro do loginSchema */}
+            { globalEvents.loginErrorMessage ? (
                 <p 
-                    className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{props.errorMessage}
+                    className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{globalEvents.loginErrorMessage}
                 </p>
             ) : (
                 <>

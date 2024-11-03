@@ -1,11 +1,22 @@
+'use client';
+
+// Hooks
+import { useState, useEffect } from "react";
+
 // Icones com React-icons
 import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
 
 import Link from "next/link";
 
 export default function Footer() {
+    const [ isLoading, setIsLoading ] = useState( true );
+
+    useEffect(() => {
+        setIsLoading( false );
+    } , []);
+
     return (
-        <div className="flex w-full gap-x-10 gap-y-5 flex-wrap-reverse bg-darkpurple justify-between items-center px-4 py-5 sm:flex-nowrap sm:py-6 md:px-6 lg:px-8">
+        <div style={{ opacity: isLoading ? 0 : 1 }} className="flex w-full gap-x-10 gap-y-5 flex-wrap-reverse bg-darkpurple justify-between items-center px-4 py-5 sm:flex-nowrap sm:py-6 md:px-6 lg:px-8 ease-linear duration-200">
             <p className="text-xl font-medium font-roboto order-1 whitespace-nowrap">Vitor Hugo</p>
             <div className="flex gap-x-5 items-center *:text-2xl order-2  sm:*:text-xl">
                 {/* Meu linkedin */}

@@ -33,6 +33,7 @@ type carouselProps = {
 export default function ContentCarousel( props: carouselProps ) {
 
     const [ contentData, setContentData ] = useState<tmdbObjProps[]>([]);
+    const [ isLoading, setIsLoading ] = useState( true );
     const swiperBreakPoints = { 1024: { spaceBetween: 17 }};
     const { fetchMovies, fetchReleasedMovies, fetchSeries, fetchReleasedSeries } = useTmdbFetch();
 
@@ -60,7 +61,11 @@ export default function ContentCarousel( props: carouselProps ) {
             }
        };
 
-    }, [props.contentGenre ]);
+    }, [ props.contentGenre ]);
+
+    useEffect(() => {
+        setIsLoading( false );
+    }, []);
 
     /*Função que obtem o ano de lançamento de um filme ou serie*/
     const getReleaseDate = ( date: string ) => {
@@ -78,7 +83,7 @@ export default function ContentCarousel( props: carouselProps ) {
     };
 
     return contentData.length ? (
-        <div className='px-4 w-full md:px-6 lg:px-8'>
+        <div style={{ opacity: isLoading ? 0 : 1 }} className='px-4 w-full md:px-6 lg:px-8 ease-linear duration-200'>
 
             { props.sectionTitle && <p className="mb-1 text-[17px] font-medium font-roboto xl:text-lg">{ props.sectionTitle }</p> }
 

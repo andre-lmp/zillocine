@@ -1,0 +1,125 @@
+// Hooks
+import { useContext } from "react";
+import useFirebase from "@/components/hooks/firebaseHook";
+
+// Icones do React-icons
+import { FaUserLarge, FaPencil } from "react-icons/fa6";
+import { AiFillDelete } from "react-icons/ai";
+import { BsDoorOpenFill } from "react-icons/bs";
+import { FaHeart } from "react-icons/fa";
+import { MdAccountCircle } from "react-icons/md";
+import { CgNotes } from "react-icons/cg";
+
+// Componente para carregamento preguiçoso de imagens
+import { LazyLoadImage } from "react-lazy-load-image-component";
+
+import { UserDataContext } from "@/components/contexts/authenticationContext";
+import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
+
+export default function AccountDropdown() {
+
+    const userData = useContext( UserDataContext );
+    const globalEvents = useContext( GlobalEventsContext );
+    const { deleteCurrrentUser, signOutUser } = useFirebase();
+
+    const ModalToggle = ( modalType: string ) => {
+        globalEvents.setModalsController( prev  => ({
+            ...prev,
+            isLoginModalActive: modalType === 'login' ? !prev.isLoginModalActive : prev.isLoginModalActive,
+            isRegisterModalActive: modalType === 'register' ? !prev.isRegisterModalActive : prev.isRegisterModalActive,
+            loginErrorMessage: null,
+            registerErrorMessage: null,
+            googleAuthErrorMessage: null,
+            githubAuthErrorMessage: null,
+            formInstructionsMessage: null
+        }));
+    };
+
+    return (
+        /* Dropdown */
+        <div className="hidden md:block dropdown dropdown-end dropdown-hover font-poppins">
+            {/* Imagem do usuario caso ele tenha sido authenticado */}
+            <div className="flex gap-x-5 items-center">
+                <button id="account-button" tabIndex={0} role="button" className="w-[44px] h-[44px] rounded-full flex items-center justify-center outline-none border-none overflow-hidden bg-white/20">
+                    { userData.photoUrl ? (
+                        <LazyLoadImage
+                            src={userData.photoUrl}
+                            height={44}
+                            width={44}
+                            className="object-cover"
+                        />
+                    ) : (
+                        <FaUserLarge/>
+                    )}
+                </button>
+                { userData.isLoogedIn && userData.name ? (
+                    <div className="hidden xl:block">
+                        <p className="text-neutral-300 text-lg">Ola, <span className="font-medium text-neutral-100">{ userData.name }</span></p>
+                    </div>
+                ) : (
+                    <p className="text-lg font-medium text-neutral-300">
+                        Conta
+                    </p>
+                )}
+            </div>
+
+            {/* Container do conteudo do dropdown */}
+            <div tabIndex={0} className="dropdown-content pt-2">
+                {/* Menu com opções de login e registro caso o usuario nao esteja logado */}
+                { !userData.isLoogedIn ? (
+                    <ul tabIndex={0} className="bg-darkpurple rounded-box z-[1] w-60 p-4 shadow">
+                        <li key='li-element-6' onClick={() => {ModalToggle('register')}} className="px-4 h-7 rounded-3xl bg-orangered text-white text-[15px] flex items-center justify-center font-medium cursor-pointer btn hover:bg-orangered border-0">Registrar</li>
+        
+                        <li key='li-element-7' onClick={() => {ModalToggle('login')}} className="px-4 h-7 rounded-3xl bg-white/10 text-white text-[15px] flex items-center justify-center font-medium cursor-pointer mt-2 btn hover:bg-white/10 border-0">Entrar</li>
+                    </ul>
+                ) : (
+                    <div className="bg-darkpurple rounded-box overflow-hidden">
+                        { userData.name ? (
+                            <div className="xl:hidden p-4 hover:bg-white/10 cursor-pointer">
+                                <p className="font-medium text-lg">{userData.name}</p>
+
+                                <div className="flex flex-row items-center gap-x-2 text-neutral-500 text-sm">
+                                    <FaPencil className=""/>
+                                    <p>Editar perfil</p>
+                                </div>
+                            </div>
+                        ) : null }
+
+                        {/* Opções para usuarios logados */}
+                        <ul className="w-full flex flex-col items-start *:px-6 *:whitespace-nowrap *:gap-x-3 *:border-none *:outline-none font-medium">
+                            
+                            <li key='li-element-8' className="hidden text-neutral-300 hover:bg-white/10 cursor-pointer h-16 w-full xl:flex items-center">
+                                Editar perfil
+                                <MdAccountCircle className="text-2xl"/>
+                            </li>
+
+                            <li key='li-element-9' className="w-[calc(100%-32px)] hidden mx-auto h-px bg-white/5 my-4"></li>
+
+                            <li key='li-element-10' className="text-neutral-300 hidden hover:bg-white/10 cursor-pointer h-12 w-full">
+                                Favoritos
+                                <FaHeart className="text-lg"/>
+                            </li>
+
+                            <li key='li-element-11' className="text-neutral-300 hidden hover:bg-white/10 cursor-pointer h-12 w-full">
+                                Sobre o Zillocine
+                                <CgNotes className="text-lg"/>
+                            </li>
+
+                            <li key='li-element-12' className="w-[calc(100%-32px)] mx-auto h-px bg-neutral-700 my-4 "></li>
+
+                            <li onClick={signOutUser} key='li-element-13' className="text-error hover:bg-white/10 cursor-pointer h-12 w-full flex items-center flex-row-reverse xl:flex-row justify-end xl:justify-start">
+                                Sair
+                                <BsDoorOpenFill className="text-lg"/>
+                            </li>
+
+                            <li key='li-element-14' onClick={deleteCurrrentUser} className="text-error hover:bg-white/10 cursor-pointer h-12 w-full flex items-center flex-row-reverse xl:flex-row justify-end xl:justify-start">
+                                Excluir conta
+                                <AiFillDelete className="text-[19px]"/>
+                            </li>
+                        </ul>
+                    </div>
+                ) }
+            </div>
+        </div>
+    );
+};

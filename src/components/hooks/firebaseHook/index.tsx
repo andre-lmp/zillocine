@@ -1,3 +1,6 @@
+// Hooks
+import { useContext } from "react";
+
 // Inicializador do Firebase
 import { initializeApp } from "firebase/app";
 
@@ -5,7 +8,11 @@ import { initializeApp } from "firebase/app";
 import { getDatabase, set, ref, get } from "firebase/database";
 
 // Authenticação com Firebase
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider, onAuthStateChanged, deleteUser, signOut, updateProfile } from "firebase/auth";
+
+// Contextos
+import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
+import { UserDataContext } from "@/components/contexts/authenticationContext";
 
 interface UserDataOnDb {
     name: string | null,
@@ -13,6 +20,9 @@ interface UserDataOnDb {
 };
 
 export default function useFirebase() {
+
+    const userData = useContext( UserDataContext );
+    const globalEvents = useContext( GlobalEventsContext );
 
     const firebaseConfig = {
         apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -27,44 +37,143 @@ export default function useFirebase() {
 
     const app = initializeApp( firebaseConfig );
     const auth = getAuth();
+    auth.useDeviceLanguage();
     const googleProvider = new GoogleAuthProvider()
     const githubProvider = new GithubAuthProvider();
 
-    const signInWithGoogle = async (): Promise<UserDataOnDb> => {
-        return new Promise(( resolve, reject ) => {
-            signInWithPopup( auth, googleProvider ).then( result => {
-                const user = {
-                    name: result.user.displayName,
-                    photoUrl: result.user.photoURL
-                };
 
-                resolve( user );
-            }).catch( error =>{
-                console.error( error );
-                reject( null );
-            })
-        })
+
+    // Extrai o primeiro e ultimo nome de usuario e atualiza o contexto
+    const extractName = ( name: string | null ) => {
+        const extractedWords = name?.split(' ');
+
+        if ( extractedWords ) {
+            if ( extractedWords.length < 3 ) {
+                userData.setUserData( prev => ({
+                    ...prev,
+                    name: name
+                }));
+
+                return
+            };
+
+            const userName = [extractedWords[0], extractedWords.at(-1)].join(' ');
+            userData.setUserData( prev => ({
+                ...prev,
+                name: userName
+            }));
+        };
     };
 
-    const signInWithGithub = async (): Promise<UserDataOnDb> => {
-        return new Promise(( resolve, reject ) => {
-            signInWithPopup( auth, githubProvider ).then( result => {
-                const user = {
-                    name: result.user.displayName,
-                    photoUrl: result.user.photoURL
-                };
-                
-                console.log(result.user);
-                resolve( user );
-            }).catch( error =>{
+    const updateUserProfile = ( newName: string ) => {
+        const user = auth.currentUser;
+
+        if ( user ) {
+            updateProfile( user, { displayName: newName }).then(() => {
+                // Fecha o modal de registro apos a alteração do nome do usuario
+                globalEvents.setModalsController( prev => ({
+                    ...prev,
+                    isRegisterModalActive: !prev.isRegisterModalActive
+                }));
+
+            }).catch( error => {
+                console.error( error.message );
+            });            
+        }
+    };
+
+    onAuthStateChanged(auth, (user) => {
+        if ( user ) {
+            // Atualiza o contexto com os dados do usuario
+            if ( !userData.isLoogedIn || !userData.name ) {
+                userData.setUserData(() => ({
+                    isLoogedIn: true,
+                    name: null,
+                    photoUrl: user.photoURL ?? null,
+                    email: user.email ?? null,
+                    uid: user.uid
+                }));
+
+                extractName( user.displayName );
+            };
+
+        } else {
+            if ( userData.isLoogedIn ) {
+                userData.setUserData(() => ({
+                    isLoogedIn: false,
+                    name: null,
+                    photoUrl: null,
+                    email: null,
+                    uid: null
+                }));
+            };
+        };;
+    });
+
+    const deleteCurrrentUser = () => {
+        const user = auth.currentUser;
+
+        if ( user ) {
+            deleteUser( user ).then(() => {
+            }).catch(( error ) => {
                 console.error( error );
-                reject( null );
-            })
-        })
+                globalEvents.setModalsController( prev => ({
+                    ...prev,
+                    isLoginModalActive: !prev.isLoginModalActive,
+                    formInstructionsMessage: 'Faça login novamente para encerrar a conta.'
+                }));
+            });
+        };
+    };
+
+    const signOutUser = () => {
+        signOut( auth ).then(() => {
+        }).catch( error => {
+            console.error( error );
+        });
+    };
+
+    const signInWithGoogle = ( modalType: string ) => {
+        signInWithPopup( auth, googleProvider ).then(() => {
+            // Fecha o modal que estiver aberto apos o login
+            globalEvents.setModalsController( prev => ({
+                ...prev,
+                isLoginModalActive: modalType === 'login' ? !prev.isLoginModalActive : prev.isLoginModalActive,
+                isRegisterModalActive: modalType === 'register' ? !prev.isRegisterModalActive : prev.isRegisterModalActive,
+            }));
+        }).catch( error => {
+            console.error( error );
+
+            // Lança uma mensagem de erro ao modal para indicar que houve um erro com a operação
+            globalEvents.setModalsController( prev => ({
+                ...prev,
+                googleAuthErrorMessage: error.message
+            }))
+        });
+    };
+
+
+    const signInWithGithub = ( modalType: string ) => {
+        signInWithPopup( auth, githubProvider ).then(() => {
+            // Fecha o modal que estiver aberto apos o login
+            globalEvents.setModalsController( prev => ({
+                ...prev,
+                isLoginModalActive: modalType === 'login' ? !prev.isLoginModalActive : prev.isLoginModalActive,
+                isRegisterModalActive: modalType === 'register' ? !prev.isRegisterModalActive : prev.isRegisterModalActive,
+            }));
+        }).catch( error => {
+            console.error( error );
+
+            // Lança uma mensagem de erro ao modal para indicar que houve um erro com a operação
+            globalEvents.setModalsController( prev => ({
+                ...prev,
+                githubAuthErrorMessage: error.message
+            }))
+        });
     };
 
     // Adiciona algumas informações extras do usuario como, nome e id no Realtime DB
-    const addUserToDb = async ( userName: string, userId: string ) => {
+    const addUserToDb = ( userName: string, userId: string ) => {
         const db = getDatabase(app);
 
         return new Promise( resolve  => {
@@ -77,20 +186,20 @@ export default function useFirebase() {
         })
     };
 
-    const registerUser = async ( name: string, email: string, password: string ) => {
-        try {
-            const response = await createUserWithEmailAndPassword( auth, email, password );
-            if ( response.user ) {
-                await addUserToDb( name, response.user.uid );
-                return {
-                    uid: response.user.uid,
-                };
-            }
-          } catch ( error ) {
-              console.error( error );
-              return null;
-          };
+    const registerUser = ( name: string, email: string, password: string ) => {
+        createUserWithEmailAndPassword( auth, email, password ).then(() => {
+            updateUserProfile( name );
+        }).catch( error => {
+            console.error( error.message );
+
+            // Lança uma mensagem de erro ao modal para indicar que houve um erro com a operação
+            globalEvents.setModalsController( prev => ({
+                ...prev,
+                registerErrorMessage: error.message
+            }))
+        });
     };
+        
 
     // Busca informações do usuario no Realtime DB com base no id
     const fetchUserOnDb = async ( userId: string ): Promise<UserDataOnDb> => {
@@ -109,27 +218,31 @@ export default function useFirebase() {
         })
     };
 
-    const authenticateUser = async ( email: string, password: string ) => {
-        try {
-            const signInResponse = await signInWithEmailAndPassword( auth, email, password );
-            if ( signInResponse.user ) {
-                const fetchResponse = await fetchUserOnDb( signInResponse.user.uid );
-                return {
-                    uid: signInResponse.user.uid,
-                    name: fetchResponse.name,
-                    photoUrl: fetchResponse.photoUrl
-                };
-            };
-        } catch ( error ) {
+    const authenticateUser = async ( email: string, password: string, modalType: string ) => {
+        signInWithEmailAndPassword( auth, email, password ).then(() => {
+            // Fecha o modal que estiver aberto apos o login ou registro
+            globalEvents.setModalsController( prev => ({
+                ...prev,
+                isLoginModalActive: modalType === 'login' ? !prev.isLoginModalActive : prev.isLoginModalActive,
+                isRegisterModalActive: modalType === 'register' ? !prev.isRegisterModalActive : prev.isRegisterModalActive,
+            }));
+        }).catch( error => {
             console.error( error );
-            return null
-        };
+
+            // Lança uma mensagem ao modal para indicar que houve um erro com a operação
+            globalEvents.setModalsController( prev => ({
+                ...prev,
+                loginErrorMessage: error.message
+            }))
+        });
     };
 
     return {
         authenticateUser,
         registerUser,
         signInWithGoogle,
-        signInWithGithub
+        signInWithGithub,
+        deleteCurrrentUser,
+        signOutUser
     }
 };

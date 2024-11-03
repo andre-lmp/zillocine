@@ -6,7 +6,6 @@ import React, { MutableRefObject, useEffect, useRef, useContext, useState } from
 import useFirebase from "@/components/hooks/firebaseHook";
 
 import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
-import { UserDataContext } from "@/components/contexts/authenticationContext";
 
 // Icones com React-icons
 import { FcGoogle } from "react-icons/fc";
@@ -21,11 +20,9 @@ import { LoginProps } from "./form";
 
 export default function LoginModal() {
 
-    const user = useContext( UserDataContext );
     const { authenticateUser, signInWithGoogle, signInWithGithub } = useFirebase();
     const checkboxInputRef: MutableRefObject<(HTMLInputElement | null)> = useRef( null );
     const globalEvents = useContext( GlobalEventsContext );
-    const [ authenticateErrorMessage, setAuthenticateErrorMessage ] = useState<( null | string )>( null );
 
     // Simula um click para o input que exibe/esconde o modal de login
     const checkboxToggle = () => {
@@ -33,30 +30,12 @@ export default function LoginModal() {
     };
 
     useEffect(() => {
-        if ( globalEvents.isLoginModalActive ) {
-            checkboxToggle();
-        };
+        checkboxToggle();
     },[ globalEvents.isLoginModalActive ]);
     
     // Tenta authenticar o usuario, se for sucesso, atualiza os dados do usuario dentro do contexto e fecha o modal
-    const handleFormSubmit = async ( schemaData: LoginProps ) => {
-        const response = await authenticateUser( schemaData.email, schemaData.password );
-        if ( response ) {
-            user.setUserData( prev => ({
-                ...prev,
-                isLoogedIn: true,
-                email: schemaData.email,
-                uid: response.uid ?? null,
-                name: response.name ?? null,
-                photoUrl: response.photoUrl ?? null
-            }));
-
-            extractName( response.name );
-            closeLoginModal();
-            setAuthenticateErrorMessage( null );
-        } else {
-            setAuthenticateErrorMessage('Credenciais inválidas');
-        };
+    const handleFormSubmit = ( schemaData: LoginProps ) => {
+        authenticateUser( schemaData.email, schemaData.password, 'login' );
     };
 
     const closeLoginModal = () => {
@@ -64,59 +43,6 @@ export default function LoginModal() {
             ...prev,
            isLoginModalActive: !prev.isLoginModalActive
         }));
-
-        checkboxToggle();
-        setAuthenticateErrorMessage( null );
-    };
-
-    // Chama a função authenticateWithGoogle de src/components/hooks/firebaseHook
-    const authenticateWithGoogle = async () => {
-        const response = await signInWithGoogle();
-        user.setUserData( prev => ({
-            ...prev,
-            isLoogedIn: true,
-            name: response.name,
-            photoUrl: response.photoUrl
-        }));
-
-        extractName( response.name );
-        closeLoginModal();
-    };
-
-    // chama a função authenticateWithGithub de src/components/hooks/firebaseHook
-    const authenticateWithGithub = async () => {
-        const response = await signInWithGithub();
-        user.setUserData( prev => ({
-            ...prev,
-            isLoogedIn: true,
-            name: response.name,
-            photoUrl: response.photoUrl
-        }));
-
-        extractName( response.name );
-        closeLoginModal();
-    };
-
-    // Extrai o primeiro e ultimo nome de usuario e atualiza o contexto
-    const extractName = ( name: string | null ) => {
-        const extractedWords = name?.split(' ');
-
-        if ( extractedWords ) {
-            if ( extractedWords.length < 3 ) {
-                user.setUserData( prev => ({
-                    ...prev,
-                    name: name
-                }));
-
-                return
-            };
-
-            const userName = [extractedWords[0], extractedWords.at(-1)].join(' ');
-            user.setUserData( prev => ({
-                ...prev,
-                name: userName
-            }));
-        };
     };
 
     return (
@@ -126,24 +52,43 @@ export default function LoginModal() {
                 {/* Conteudo do modal */}
                 <div className="z-50 bg-darkpurple rounded font-poppins px-4 py-5 w-[calc(100%-32px)] max-w-[420px] relative">
                    <h3 className="text-2xl font-semibold">Entrar</h3>
+
+                   { globalEvents.formInstructionsMessage ? (
+                        <p 
+                            className="text-orangered font-normal mt-1 text-base max-[620px]:static">{globalEvents.formInstructionsMessage}
+                        </p>
+                    ) : null } 
                    
                    {/* Botão de login com google */}
                    <button 
                         className="w-full h-12 rounded mt-7 bg-white text-black text-sm font-semibold px-3 flex items-center gap-x-2 border-none outline-none btn hover:bg-white justify-start"
-                        onClick={authenticateWithGoogle}
+                        onClick={() => {signInWithGoogle('login')}}
                     >
                     <FcGoogle className="text-3xl"/>
                     continuar com o google
                    </button>
 
+                   { globalEvents.googleAuthErrorMessage ? (
+                        <p 
+                            className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{globalEvents.googleAuthErrorMessage}
+                        </p>
+                    ) : null } 
+
                     {/* Botão de login com github */}
                    <button 
                         className="w-full h-12 rounded mt-4 bg-deepnight text-white text-sm font-semibold px-3 flex items-center gap-x-2 border-none justify-start outline-none btn hover:bg-deepnight"
-                        onClick={authenticateWithGithub}
+                        onClick={() => {signInWithGithub('login')}}
                     >
                     <FaGithub className="text-3xl"/>
                     continuar com o github
                    </button>
+
+                   {/* Renderiza o erro passado pelo contexto caso houver, se não, renderiza o erro do loginSchema */}
+                    { globalEvents.githubAuthErrorMessage ? (
+                        <p 
+                            className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{globalEvents.githubAuthErrorMessage}
+                        </p>
+                    ) : null } 
 
                    <div className="my-6 w-full roude relative before:w-full before:h-0.5 before:rounded-xl before:bg-darkslateblue before:absolute flex items-center justify-center before:-z-10">
                         <p className="px-3 bg-darkpurple text-sm">Ou</p>
@@ -152,7 +97,6 @@ export default function LoginModal() {
                     {/* Formulario de login em src/components/authenticateUsers/loginModal/form */}
                    <LoginForm 
                         authenticateUser={handleFormSubmit}
-                        errorMessage={authenticateErrorMessage}
                     />
 
                     {/* Botão de fechamento do modal */}
@@ -162,7 +106,7 @@ export default function LoginModal() {
                 </div>
 
                 {/* overlay*/}
-                <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)' }} className="fixed top-0 left-0 w-full h-dvh"></div>
+                <div className="fixed top-0 left-0 w-full h-dvh bg-black/80"></div>
             </div>
         </>
     );

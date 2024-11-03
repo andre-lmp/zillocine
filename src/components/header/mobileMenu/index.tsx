@@ -1,6 +1,7 @@
 
 import React, { MutableRefObject, useEffect, useRef, useContext } from "react";
 import { usePathname } from "next/navigation";
+import useFirebase from "@/components/hooks/firebaseHook";
 
 import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
 import { UserDataContext } from "@/components/contexts/authenticationContext";
@@ -9,9 +10,12 @@ import { UserDataContext } from "@/components/contexts/authenticationContext";
 import { FiHome } from "react-icons/fi";
 import { BiMoviePlay, BiCameraMovie } from "react-icons/bi";
 import { LuSearch } from 'react-icons/lu';
-import { FaUserLarge } from 'react-icons/fa6';
+import { FaUserLarge, FaPencil } from 'react-icons/fa6';
 import { CgNotes } from "react-icons/cg";
 import { IoMdDownload } from "react-icons/io";
+import { AiFillDelete } from "react-icons/ai";
+import { BsDoorOpenFill } from "react-icons/bs";
+import { FaHeart } from "react-icons/fa";
 
 // Componente para carregamento preguiçoso de imagens
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -25,6 +29,7 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
     const currentPathName = usePathname();
     const globalEvents = useContext( GlobalEventsContext );
     const userData = useContext( UserDataContext );
+    const { signOutUser, deleteCurrrentUser } = useFirebase();
 
     /*Responsavel por mudar o estilo dos elementos do menu mobile sempre que o usuario muda de pagina*/
     const changeMenuStyle = ( pathname: string ) => {
@@ -57,17 +62,16 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
         drawerInput.current && drawerInput.current.click();
     };
 
-    const loginModalToggle = () => {
+    const ModalToggle = ( modalType: string ) => {
         globalEvents.setModalsController( prev  => ({
             ...prev,
-            isLoginModalActive: !prev.isLoginModalActive,
-        }));
-    };
-
-    const RegisterModalToggle = () => {
-        globalEvents.setModalsController( prev  => ({
-            ...prev,
-            isRegisterModalActive: !prev.isRegisterModalActive,
+            isLoginModalActive: modalType === 'login' ? !prev.isLoginModalActive : prev.isLoginModalActive,
+            isRegisterModalActive: modalType === 'register' ? !prev.isRegisterModalActive : prev.isRegisterModalActive,
+            loginErrorMessage: null,
+            registerErrorMessage: null,
+            googleAuthErrorMessage: null,
+            githubAuthErrorMessage: null,
+            formInstructionsMessage: null
         }));
     };
 
@@ -83,18 +87,18 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
             <div className="drawer-side z-40">  
                 <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
                 
-                <div className="w-72 text-gray-50 pb-5 font-medium text-lg flex flex-col font-roboto h-dvh bg-deepnight">
+                <div className="w-72 text-gray-50 pb-5 font-medium text-lg flex flex-col font-roboto min-h-screen bg-deepnight">
                     { !userData.isLoogedIn ? (
                         // Opções de authenticação
-                        <div className="px-4 py-5 bg-deepnight">
-                            <button onClick={RegisterModalToggle} className="w-full font-medium text-white bg-orangered flex items-center justify-center text-[17px] h-12 rounded-3xl btn hover:bg-orangered border-none outline-none">Criar conta</button>
+                        <div className="px-4 pt-5 bg-deepnight">
+                            <button onClick={() => {ModalToggle('register')}} className="w-full font-medium text-white bg-orangered flex items-center justify-center text-[17px] h-12 rounded-3xl btn hover:bg-orangered border-none outline-none">Criar conta</button>
                             
-                            <button onClick={loginModalToggle} className="w-full font-medium text-white bg-darkpurple flex items-center justify-center text-[17px] h-12 rounded-3xl mt-2 btn hover:bg-darkpurple border-none outline-none">Entrar</button>
+                            <button onClick={() => {ModalToggle('login')}} className="w-full font-medium text-white bg-darkpurple flex items-center justify-center text-[17px] h-12 rounded-3xl mt-2 btn hover:bg-darkpurple border-none outline-none">Entrar</button>
                         </div>
                     ) : (
                         // Informações do usuario como, foto e nome
-                        <div className="w-full bg-deepnight py-7 px-4 gap-x-2 flex items-center">
-                            <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }} className="w-16 h-16 rounded-full flex items-center justify-center overflow-hidden">
+                        <div className="w-full bg-deepnight pt-7 px-4 gap-x-3 flex items-center">
+                            <div className="w-16 h-16 rounded-full flex items-center justify-center overflow-hidden bg-white/20">
                                 { userData.photoUrl ? (
                                     <LazyLoadImage
                                         src={userData.photoUrl}
@@ -106,50 +110,88 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
                                     <FaUserLarge/>
                                 )}
                             </div>  
+                            
+                            { userData.name ? (
+                                <div className="">
+                                    <p className="text-[19px] text-neutral-100">
+                                        { userData.name }
+                                    </p>
 
-                            <div className="">
-                                <p className="text-[19px] text-neutral-100">
-                                    { userData.name ?? 'usuario' }
-                                </p>
-
-                                <p className="text-base text-neutral-400 font-normal">Ir para o perfil</p>
-                            </div>
+                                    <p className="text-base text-neutral-400 font-normal flex items-center gap-x-2 flex-row-reverse">
+                                        Editar perfil
+                                        <FaPencil className='text-sm'/>
+                                    </p>
+                                </div>
+                            ) : null }
                         </div>
                     )}
 
+                    <div  className="w-full mx-auto h-px bg-neutral-900 rounded-3xl mt-7 mb-4"></div>
+
                     {/* Barra de navegação */}
-                    <ul className="mt-8 text-lg flex flex-col gap-y- *:flex *:py-4 *:pl-4 *:items-center *:gap-x-3">     
-                        <li key='mb-home-link' id="/" ref={(e) => { mobileNavLinks.current[0] = e }} className="text-neutral-500" onClick={drawerToggle}>
+                    <ul className="mt- text-lg flex flex-col gap-y- *:flex *:pl-4 *:items-center *:gap-x-3">  
+
+                        {/* Link para pagina de inicio    */}
+                        <li key='li-element-15' id="/" ref={(e) => { mobileNavLinks.current[0] = e }} className="text-neutral-500 py-4" onClick={drawerToggle}>
                             <FiHome/>
                             <Link href={'/'}>Inicio</Link>
                         </li>
 
-                        <li key='mb-movies-link' id="/movies" ref={(e) => { mobileNavLinks.current[1] = e }} className="text-neutral-500" onClick={drawerToggle}>
+                        {/* Link para pagina de filmes */}
+                        <li key='li-element-16' id="/movies" ref={(e) => { mobileNavLinks.current[1] = e }} className="text-neutral-500 py-4" onClick={drawerToggle}>
                             <BiCameraMovie className="text-xl"/>
                             <Link href={'/movies'}>Filmes</Link>
                         </li>
 
-                        <li key='mb-series-link' id="/series" ref={(e) => { mobileNavLinks.current[2] = e }} className="text-neutral-500" onClick={drawerToggle}>
+                        {/* Link para a pagina de series */}
+                        <li key='li-element-17' id="/series" ref={(e) => { mobileNavLinks.current[2] = e }} className="text-neutral-500 py-4" onClick={drawerToggle}>
                             <BiMoviePlay/>
                             <Link href={'/series'}>Series</Link>
                         </li>
-                        <li key='mb-search-link' id="/search" ref={(e) => { mobileNavLinks.current[3] = e }} className="text-neutral-500" onClick={drawerToggle}>
+
+                        {/* Link para a pagina de pesquisa */}
+                        <li key='li-element-18' id="/search" ref={(e) => { mobileNavLinks.current[3] = e }} className="text-neutral-500 py-4" onClick={drawerToggle}>
                             <LuSearch/>
                             <Link href={'/search'}>Pesquisa</Link>
                         </li>
-                    
-                        <li key='mb-none-link'></li>
-                        <li key='mb-none-link-2'></li>
-                        
-                        <li key={'mb-downloads-link'} id="/downloads" className="-translate-x-0.5 text-neutral-500" onClick={drawerToggle}>
+
+                        {/* Link para a pagina de downloads */}
+                        <li key='li-element-19' id="/downloads" ref={(e) => { mobileNavLinks.current[4] = e }} className="-translate-x-0.5 text-neutral-500 py-4" onClick={drawerToggle}>
                             <IoMdDownload className="text-[23px] "/>
                             <Link href={'/downloads'}>Downloads</Link>
                         </li>
+                    
+                        <li key='li-element-20' className="w-full mx-auto h-px bg-neutral-900 rounded-3xl my-4"></li>
 
-                        <li  key={'mb-about-link'} id="/about" className="text-neutral-500" onClick={drawerToggle}>
-                            <CgNotes />
-                            <Link href={'/about'}>Sobre o ZilloCine</Link>
+                        {/* Link para o modal de favoritos */}
+                        <li key='li-element-21' className="text-neutral-500 py-4">
+                            <FaHeart className="text-lg"/>
+                            Favoritos
                         </li>
+
+                        {/* Link para a pagina sobre o projeto */}
+                        <li  key='li-element-22' id="/about/zillocine" ref={(e) => { mobileNavLinks.current[5] = e }} className="text-neutral-500 py-4" onClick={drawerToggle}>
+                            <CgNotes />
+                            <Link href={'/about/zillocine'}>Sobre o ZilloCine</Link>
+                        </li>
+
+
+                        { userData.isLoogedIn ? (
+                            <>
+                                <li key='li-element-23' className="w-full h-px bg-neutral-900 rounded-3xl my-4"></li>
+
+                                {/* Botão para se desconectar da conta */}
+                                <li onClick={signOutUser} key='li-element-24' className="text-error py-4">
+                                    <BsDoorOpenFill className="text-[17px]"/>
+                                    Sair
+                                </li>
+
+                                <li onClick={deleteCurrrentUser} key='li-element-25' className="text-error py-4">
+                                    <AiFillDelete className="text-[19px]"/>
+                                    Excluir conta
+                                </li>
+                            </>
+                        ) : null }
                     </ul>
                 </div>      
             </div>

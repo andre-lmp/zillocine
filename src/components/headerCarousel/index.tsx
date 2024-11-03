@@ -68,11 +68,9 @@ export default function HeaderCarousel(props: CarouselProps) {
        }
     }, []);
 
-    return (
-        contentData.length ? (
+    return contentData.length ? (
            <Carousel contentData={contentData} currentPage={props.currentPage}/>
-        ) : null
-    );
+    ) : null
 };
 
 

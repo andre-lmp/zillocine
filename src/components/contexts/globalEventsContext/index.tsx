@@ -5,6 +5,11 @@ import React, { createContext, ReactNode, useState } from "react";
 export interface ModalsControllerProps {
     isRegisterModalActive: boolean;
     isLoginModalActive: boolean; 
+    loginErrorMessage: null | string;
+    registerErrorMessage: null,
+    formInstructionsMessage: null | string;
+    googleAuthErrorMessage: null,
+    githubAuthErrorMessage: null,
 };
 
 interface GlobalEventsContextType extends ModalsControllerProps {
@@ -14,7 +19,12 @@ interface GlobalEventsContextType extends ModalsControllerProps {
 export const GlobalEventsContext = createContext<GlobalEventsContextType>({
     isRegisterModalActive: false,
     isLoginModalActive: false,
-    setModalsController: () => {},
+    loginErrorMessage: null,
+    registerErrorMessage: null,
+    formInstructionsMessage: null,
+    googleAuthErrorMessage: null,
+    githubAuthErrorMessage: null,
+    setModalsController: () => {}
 });
 
 export const GlobalEventsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -22,6 +32,11 @@ export const GlobalEventsProvider: React.FC<{ children: ReactNode }> = ({ childr
     const [ modalsController, setModalsController ] = useState<ModalsControllerProps>({
         isRegisterModalActive: false,
         isLoginModalActive: false,
+        loginErrorMessage: null,
+        registerErrorMessage: null,
+        formInstructionsMessage: null,
+        googleAuthErrorMessage: null,
+        githubAuthErrorMessage: null,
     });
     
     return (

@@ -4,6 +4,13 @@ export const headerSlides = styled.div`
     width: 100%;
     height: auto;
 
+    @keyframes FadeIn {
+        from { opacity: 0 }
+        to { opacity: 1 }   
+    }
+
+    animation: FadeIn .2s linear;
+
     & .overlay {
         width: 100%;
         height: 100%;

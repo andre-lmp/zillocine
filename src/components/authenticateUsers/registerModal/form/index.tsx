@@ -38,8 +38,7 @@ const loginSchema = z.object({
 export type RegisterProps = z.infer<typeof loginSchema>;
 
 type componentProps = {
-    registerUser: ( schemaData: RegisterProps ) => {};
-    errorMessage: string | null;
+    registerUser: ( schemaData: RegisterProps ) => void;
 };
 
 export default function RegisterForm( props: componentProps ) {
@@ -67,7 +66,7 @@ export default function RegisterForm( props: componentProps ) {
                 { ...register('name') }
                 maxLength={31}
                 style={{
-                    borderColor: errors.name && 'orangered'
+                    borderColor: errors.name ? 'orangered' : 'transparent'
                 }}
             />
 
@@ -83,14 +82,14 @@ export default function RegisterForm( props: componentProps ) {
                 { ...register('email') }
                 className="font-medium placeholder:font-normal border border-transparent outline-none text-sm placeholder:text-neutral-400 mt-2 bg-richblack rounded h-12 px-3"
                 style={{
-                    borderColor: errors.email && 'orangered'
+                    borderColor: errors.email || globalEvents.registerErrorMessage ? 'orangered' : 'transparent'
                 }}
             />
 
-            {/* Renderiza o erro passado pela prop caso houver, se não, renderiza o erro do registerSchema */}
-            { props.errorMessage ? (
+            {/* Renderiza o erro passado pelo contexto caso houver, se não, renderiza o erro do registerSchema */}
+            { globalEvents.registerErrorMessage ? (
                 <p 
-                    className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{props.errorMessage}
+                    className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{globalEvents.registerErrorMessage}
                 </p>
             ) : (
                 <>

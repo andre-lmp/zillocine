@@ -1,24 +1,18 @@
 'use client'
 
-import { useRef, MutableRefObject, useEffect, useContext } from "react";
+import { useRef, MutableRefObject, useEffect, useContext, useState } from "react";
 import { usePathname } from "next/navigation";
 
 // Icones do React-icons
 import { LuSearch } from "react-icons/lu";
-import { FaUserLarge } from "react-icons/fa6";
 import { FiHome } from "react-icons/fi";
 import { BiMoviePlay, BiCameraMovie } from "react-icons/bi";
 import { IoMdDownload } from "react-icons/io";
 
-import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
-import { UserDataContext } from "@/components/contexts/authenticationContext";
-
-// Componente para carregamento preguiçoso de imagens
-import { LazyLoadImage } from "react-lazy-load-image-component";
-
 import Link from "next/link";
 
 import MobileMenu from "./mobileMenu";
+import AccountDropdown from "./dropdownMenu";
 
 export default function Header() {
 
@@ -28,8 +22,7 @@ export default function Header() {
     const navBar: MutableRefObject<(HTMLUListElement | null)> = useRef(null);
     const indicatorBar: MutableRefObject<(null | HTMLDivElement)> = useRef(null);
     const currentPathName = usePathname();
-    const globalEvents = useContext( GlobalEventsContext );
-    const userData = useContext( UserDataContext );
+    const [ isLoading, setIsLoading ] = useState( true );
 
     /*Aqui atualizamos a posição da barra indicadora e tambem os stylos do link ativo sempre que o usuario muda de pagina*/
    useEffect(() => {
@@ -107,25 +100,14 @@ export default function Header() {
             window.addEventListener('scroll', scrollHandler);
             window.addEventListener('resize', scrollHandler);
         };
+
+        setIsLoading( false );
     },[]);
 
-    const loginModalToggle = () => {
-        globalEvents.setModalsController( prev  => ({
-            ...prev,
-            isLoginModalActive: !prev.isLoginModalActive,
-        }));
-    };
 
-    const RegisterModalToggle = () => {
-        globalEvents.setModalsController( prev  => ({
-            ...prev,
-            isRegisterModalActive: !prev.isRegisterModalActive,
-        }));
-    };
-
-    return true ? (
+    return (
         <MobileMenu>
-                <header className="fixed top-0 left-1/2 -translate-x-1/2 h-36 md:h-auto z-20 w-full before:w-full before:absolute before:top-0 before:left-0 before:h-full before:bg-gradient-to-b from-black to-transparent before:-z-10 max-w-[2200px]">
+                <header style={{ opacity: !isLoading ? 1 : 0 }} className="fixed top-0 left-1/2 -translate-x-1/2 h-36 md:h-auto z-20 w-full before:w-full before:absolute before:top-0 before:left-0 before:h-full before:bg-gradient-to-b from-black to-transparent before:-z-10 max-w-[2200px] ease-linear duration-200">
                     <nav ref={scrollDiv} className="w-full flex flex-row justify-between items-center px-4 py-5 md:px-6 md:py-0 h-20 lg:px-8">
 
                         {/* Menu em dispositivos moveis*/}
@@ -145,35 +127,35 @@ export default function Header() {
                         <nav className="flex flex-row items-center font-poppins font-medium">
                             <ul  ref={navBar} className="flex flex-row w-fit items-center *:text-neutral-300 justify-end gap-x-10 relative">
                                 
-                                <li key='home-link' id="" className="hidden md:flex text-lg cursor-pointer 2xl:text-[19px]" ref={(e) => { navLinks.current[0] = e }}>
+                                <li key='li-element-1' id="" className="hidden md:flex text-lg cursor-pointer 2xl:text-[19px]" ref={(e) => { navLinks.current[0] = e }}>
                                     <Link href='/' className="flex items-center gap-x-2">
                                         <FiHome />
                                         Inicio
                                     </Link>
                                 </li>
 
-                                <li key='movies-link' id='movies' className="hidden md:inline text-lg cursor-pointer 2xl:text-[19px]" ref={(e) => { navLinks.current[1] = e }}>
+                                <li key='li-element-2' id='movies' className="hidden md:inline text-lg cursor-pointer 2xl:text-[19px]" ref={(e) => { navLinks.current[1] = e }}>
                                     <Link href='/movies' className="flex items-center gap-x-2">
                                         <BiCameraMovie className="text-xl"/>
                                         Filmes
                                     </Link>
                                 </li>
 
-                                <li key='series-link' id='series' className="hidden md:flex text-lg cursor-pointer 2xl:text-[19px]" ref={(e) => { navLinks.current[2] = e }}>
+                                <li key='li-element-3' id='series' className="hidden md:flex text-lg cursor-pointer 2xl:text-[19px]" ref={(e) => { navLinks.current[2] = e }}>
                                     <Link href='/series' className="flex items-center gap-x-2">
                                         <BiMoviePlay />
                                         Series
                                     </Link>
                                 </li>
 
-                                <li key='download-link' id="downloads" className="hidden w-full text-lg lg:flex 2xl:text-[19px]" ref={(e) => { navLinks.current[3] = e }}>
+                                <li key='li-element-4' id="downloads" className="hidden w-full text-lg lg:flex 2xl:text-[19px]" ref={(e) => { navLinks.current[3] = e }}>
                                     <Link href='/downloads' className="flex items-center gap-x-2">
                                         <IoMdDownload/>
                                         Donwloads
                                     </Link>
                                 </li>
 
-                                <li key='search-link' id='search' className="inline w-full md:text-neutral-400 text-white 2xl:text-[19px]" ref={(e) => { navLinks.current[4] = e }}>
+                                <li key='li-element-5' id='search' className="inline w-full md:text-neutral-400 text-white 2xl:text-[19px]" ref={(e) => { navLinks.current[4] = e }}>
                                     <Link href='/search'>
                                         <LuSearch className="max-[768px]:text-white text-4xl md:text-2xl"/>
                                     </Link>
@@ -183,48 +165,14 @@ export default function Header() {
                             </ul>
                         </nav>
 
-                        <div className="hidden md:flex gap-x-5 items-center">
-                            <div className="flex gap-x-5 items-center">
-                                {/* Dropdown */}
-                                <div className="dropdown dropdown-end dropdown-hover">
-                                    {/* Imagem do usuario caso ele tenha sido authenticado */}
-                                    <button id="account-button" tabIndex={0} role="button" style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }} className="w-[44px] h-[44px] rounded-full flex items-center justify-center outline-none border-none overflow-hidden">
-                                        { userData.photoUrl ? (
-                                            <LazyLoadImage
-                                                src={userData.photoUrl}
-                                                height={44}
-                                                width={44}
-                                                className="object-cover"
-                                            />
-                                        ) : (
-                                            <FaUserLarge/>
-                                        )}
-                                    </button>
-
-                                    {/* Menu com opções de login e registro */}
-                                    <div tabIndex={0} className="dropdown-content pt-2">
-                                        { !userData.isLoogedIn &&
-                                            <ul tabIndex={0} className="bg-darkpurple rounded-box z-[1] w-60 p-4 shadow">
-                                                <li onClick={RegisterModalToggle} className="px-4 h-10 rounded-3xl bg-orangered text-white font-poppins text-[15px] flex items-center justify-center font-medium cursor-pointer btn hover:bg-orangered border-0">Criar conta</li>
-                                
-                                                <li onClick={loginModalToggle} className="px-4 h-10 rounded-3xl bg-neutral-700 text-white font-poppins text-[15px] flex items-center justify-center font-medium cursor-pointer mt-2 btn hover:bg-neutral-700 border-0">Entrar</li>
-                                            </ul>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-
-                            { userData.isLoogedIn &&
-                                <div className="hidden xl:block">
-                                    <p className="text-neutral-300 font-poppins text-lg">Ola, <span className="font-medium text-neutral-100">{ userData.name ?? 'usuario' }</span></p>
-                                </div>
-                            }
-                        </div>
+                        {/* Menu de opções para acessar a conta */}
+                        <AccountDropdown/>
                     </nav>
 
                     <div ref={overlayRef} className="menu-overlay"></div>
+                    
                 </header>
         </MobileMenu>
-    ) : null;
+    )
 };
 

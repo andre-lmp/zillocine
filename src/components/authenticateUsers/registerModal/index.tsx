@@ -6,7 +6,6 @@ import React, { MutableRefObject, useEffect, useRef, useContext, useState } from
 import useFirebase from "@/components/hooks/firebaseHook";
 
 import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
-import { UserDataContext } from "@/components/contexts/authenticationContext";
 
 // Icones com React-icons
 import { FcGoogle } from "react-icons/fc";
@@ -21,11 +20,9 @@ import { RegisterProps } from "./form";
 
 export default function RegisterModal() {
 
-    const user = useContext( UserDataContext );
     const { registerUser, signInWithGoogle, signInWithGithub } = useFirebase();
     const checkboxInputRef: MutableRefObject<(HTMLInputElement | null)> = useRef( null );
     const globalEvents = useContext( GlobalEventsContext );
-    const [ registerErrorMessage, setRegisterErrorMessage ] = useState<( null | string )>( null );
 
     // Simula um click para o input que exibe/esconde o modal de regitro
     const checkboxToggle = () => {
@@ -33,89 +30,19 @@ export default function RegisterModal() {
     };
 
     useEffect(() => {
-        if ( globalEvents.isRegisterModalActive ) {
-            checkboxToggle();
-        }
+        checkboxToggle();
     },[ globalEvents.isRegisterModalActive ]);
 
     // Tenta registrar o usuario, se for sucesso, atualiza os dados do usuario dentro do contexto e fecha o modal
-    const handleFormSubmit = async ( schemaData: RegisterProps ) => {
-        const response = await registerUser( schemaData.name, schemaData.email, schemaData.password );
-        if ( response ) {
-            user.setUserData( prev => ({
-                ...prev,
-                isLoogedIn: true,
-                email: schemaData.email,
-                uid: response.uid ?? null,
-                name: schemaData.name,
-            }));
-
-            extractName( schemaData.name );
-            closeRegisterModal();
-            setRegisterErrorMessage( null );
-        } else {
-            setRegisterErrorMessage('Email já cadastrado');
-        };
+    const handleFormSubmit = ( schemaData: RegisterProps ) => {
+        registerUser( schemaData.name, schemaData.email, schemaData.password );
     };
 
     const closeRegisterModal = () => {
-        globalEvents.setModalsController( prev  => ({
+        globalEvents.setModalsController( prev => ({
             ...prev,
-            isRegisterModalActive: !prev.isRegisterModalActive
+            isRegisterModalActive: !prev.isRegisterModalActive,
         }));
-
-        checkboxToggle();
-        setRegisterErrorMessage( null );
-    };
-
-    // Chama a função authenticateWithGoogle de src/components/hooks/firebaseHook
-    const authenticateWithGoogle = async () => {
-        const response = await signInWithGoogle();
-        user.setUserData( prev => ({
-            ...prev,
-            isLoogedIn: true,
-            name: response.name,
-            photoUrl: response.photoUrl
-        }));
-
-        extractName( response.name );
-        closeRegisterModal();
-    };
-
-    // Chama a função authenticateWithGoogle de src/components/hooks/firebaseHook
-    const authenticateWithGithub = async () => {
-        const response = await signInWithGithub();
-        user.setUserData( prev => ({
-            ...prev,
-            isLoogedIn: true,
-            name: response.name,
-            photoUrl: response.photoUrl
-        }));
-
-        extractName( response.name );
-        closeRegisterModal();
-    };
-
-    // Extrai o primeiro e ultimo nome de usuario e atualiza o contexto
-    const extractName = ( name: string | null ) => {
-        const extractedWords = name?.split(' ');
-
-        if ( extractedWords ) {
-            if ( extractedWords.length < 3 ) {
-                user.setUserData( prev => ({
-                    ...prev,
-                    name: name
-                }));
-
-                return
-            };
-
-            const userName = [extractedWords[0], extractedWords.at(-1)].join(' ');
-            user.setUserData( prev => ({
-                ...prev,
-                name: userName
-            }));
-        };
     };
 
     return (
@@ -129,20 +56,34 @@ export default function RegisterModal() {
                    {/* Botão de login com google */}
                    <button 
                         className="w-full h-12 rounded mt-7 bg-white text-black text-sm font-semibold px-3 flex items-center gap-x-2 border-none outline-none btn hover:bg-white justify-start"
-                        onClick={authenticateWithGoogle}
+                        onClick={() => {signInWithGoogle('register')}}
                     >
                     <FcGoogle className="text-3xl"/>
                     continuar com o google
                    </button>
 
+                   {/* Renderiza o erro passado pelo contexto caso houver, se não, renderiza o erro do registerSchema */}
+                   { globalEvents.googleAuthErrorMessage ? (
+                        <p 
+                            className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{globalEvents.googleAuthErrorMessage}
+                        </p>
+                    ) : null }
+
                     {/* Botão de login com github */}
                    <button 
                         className="w-full h-12 rounded mt-4 bg-deepnight text-white text-sm font-semibold px-3 flex items-center gap-x-2 border-none justify-start outline-none btn hover:bg-deepnight"
-                        onClick={authenticateWithGithub}
+                        onClick={() => {signInWithGithub('register')}}
                     >
                     <FaGithub className="text-3xl"/>
                     continuar com o github
                    </button>
+
+                    {/* Renderiza o erro passado pelo contexto caso houver, se não, renderiza o erro do registerSchema */}
+                    { globalEvents.githubAuthErrorMessage ? (
+                        <p 
+                            className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{globalEvents.githubAuthErrorMessage}
+                        </p>
+                    ) : null }
 
                    <div className="my-6 w-full roude relative before:w-full before:h-0.5 before:rounded-xl before:bg-darkslateblue before:absolute flex items-center justify-center before:-z-10">
                         <p className="px-3 bg-darkpurple text-sm">Ou</p>
@@ -151,7 +92,6 @@ export default function RegisterModal() {
                     {/* Formulario de registro em src/components/authenticateUsers/registerModal/form */}
                    <RegisterForm
                         registerUser={handleFormSubmit}
-                        errorMessage={registerErrorMessage}
                    />
 
                     {/* Botão de fechamento do modal */}
@@ -161,7 +101,7 @@ export default function RegisterModal() {
                 </div>
 
                 {/* Overlay */}
-                <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)' }} className="w-screen min-h-screen fixed top-0 left-0"></div>
+                <div className="w-screen min-h-screen fixed top-0 left-0 bg-black/80"></div>
             </div>
         </>
     );

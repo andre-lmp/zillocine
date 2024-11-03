@@ -1,3 +1,6 @@
+// Hooks
+import { useEffect, useState } from 'react';
+
 // Componente para carregamento preguiçoso de imagens
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/opacity.css';
@@ -15,6 +18,8 @@ type headerProps = {
 };
 
 export default function Header( props: headerProps ) {
+    const [ isLoading, setIsLoading ] = useState( true );
+
     
     /*Função que obtem o ano de lançamento de um filme ou serie*/
     const getReleaseDate = ( date: string ) => {
@@ -64,10 +69,14 @@ export default function Header( props: headerProps ) {
         return  <p className="font-noto_sans whitespace-nowrap text-base font-normal text-neutral-300">{ hours }h { minites }m</p>
     };
 
+    useEffect(() => {
+        setIsLoading( false );
+    }, []);
+
     
     return (
         <Style.HeaderWrapper>
-            <div className='w-full'>
+            <div style={{ opacity: isLoading ? 0 : 1 }} className='w-full ease-linear duration-200'>
                 { props.playerData?.map( item =>  (
                     <div key={item.id} className="w-full relative">
                         {/* Imagem do filme/serie */}

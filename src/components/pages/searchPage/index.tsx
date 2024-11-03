@@ -20,6 +20,7 @@ export default function SearchPage() {
     const searchInputRef: MutableRefObject<(HTMLInputElement | null)> = useRef( null );
     const [ contentData, setContentData ] = useState<tmdbObjProps[]>([]);
     const [ contentType, setContentType ] = useState<string>( 'movie' );
+    const [ isLoading, setIsLoading ] = useState( true );
     const { fetchReleasedMovies, fetchReleasedSeries, fetchSerieByTerm, fetchMovieByTerm } = useTmdbFetch();
 
     /*Muda a cor do botão selecionado pelo usuario*/
@@ -91,10 +92,11 @@ export default function SearchPage() {
         }
 
         handleFetchResponse(fetchReleasedMovies());
+        setIsLoading( false );
     }, []);
 
     return (
-        <section className="flex flex-col px-4 w-full min-h-screen mt-32 font-roboto font-normal md:px-6 lg:px-8">
+        <section style={{ opacity: isLoading ? 0 : 1 }} className="flex flex-col px-4 w-full min-h-screen mt-32 font-roboto font-normal md:px-6 lg:px-8 ease-linear duration-200">
             <div className='w-full flex flex-col gap-y-3'>
                 <div className='bg-darkpurple flex items-center rounded-md px-4 w-full'>
                     <FiSearch className='text-2xl text-neutral-100'/>
@@ -135,5 +137,5 @@ export default function SearchPage() {
                 <ShowResults typeOfId={contentType} fetchData={contentData}/>
             </div>
         </section>
-    );
+    )
 };
