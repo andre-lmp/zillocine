@@ -3,7 +3,7 @@
 import React, { createContext, Dispatch, ReactNode, useState } from "react";
 
 interface UserDataProps {
-    isLoogedIn: boolean;
+    isLoggedIn: boolean;
     name: null | string;
     email: null | string;
     photoUrl: null | string;
@@ -15,7 +15,7 @@ interface ContextProps extends UserDataProps {
 };
 
 export const UserDataContext = createContext<ContextProps>({
-    isLoogedIn: false,
+    isLoggedIn: false,
     name: null,
     email: null,
     photoUrl: null,
@@ -26,7 +26,7 @@ export const UserDataContext = createContext<ContextProps>({
 export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
     const [ userData, setUserData ] = useState<UserDataProps>({
-        isLoogedIn: false,
+        isLoggedIn: false,
         name: null,
         email: null,
         photoUrl: null,

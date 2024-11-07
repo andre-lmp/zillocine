@@ -75,6 +75,13 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
         }));
     };
 
+    const openProfileModal = () => {
+        globalEvents.setModalsController( prev => ({
+            ...prev,
+            isProfileModalActive: !prev.isProfileModalActive
+        }));
+    };
+
     return (
         <div className="drawer">
             <input id="my-drawer" type="checkbox" className="drawer-toggle" ref={drawerInput}/>
@@ -88,7 +95,7 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
                 <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
                 
                 <div className="w-72 text-gray-50 pb-5 font-medium text-lg flex flex-col font-roboto min-h-screen bg-deepnight">
-                    { !userData.isLoogedIn ? (
+                    { !userData.isLoggedIn ? (
                         // Opções de authenticação
                         <div className="px-4 pt-5 bg-deepnight">
                             <button onClick={() => {ModalToggle('register')}} className="w-full font-medium text-white bg-orangered flex items-center justify-center text-[17px] h-12 rounded-3xl btn hover:bg-orangered border-none outline-none">Criar conta</button>
@@ -97,7 +104,7 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
                         </div>
                     ) : (
                         // Informações do usuario como, foto e nome
-                        <div className="w-full bg-deepnight pt-7 px-4 gap-x-3 flex items-center">
+                        <div onClick={openProfileModal} className="w-full bg-deepnight pt-7 px-4 gap-x-3 flex items-center">
                             <div className="w-16 h-16 rounded-full flex items-center justify-center overflow-hidden bg-white/20">
                                 { userData.photoUrl ? (
                                     <LazyLoadImage
@@ -176,7 +183,7 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
                         </li>
 
 
-                        { userData.isLoogedIn ? (
+                        { userData.isLoggedIn ? (
                             <>
                                 <li key='li-element-23' className="w-full h-px bg-neutral-900 rounded-3xl my-4"></li>
 

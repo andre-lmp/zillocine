@@ -12,6 +12,7 @@ import { CgNotes } from "react-icons/cg";
 
 // Componente para carregamento preguiçoso de imagens
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import 'react-lazy-load-image-component/src/effects/opacity.css';
 
 import { UserDataContext } from "@/components/contexts/authenticationContext";
 import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
@@ -35,6 +36,13 @@ export default function AccountDropdown() {
         }));
     };
 
+    const openProfileModal = () => {
+        globalEvents.setModalsController( prev => ({
+            ...prev,
+            isProfileModalActive: !prev.isProfileModalActive
+        }));
+    };
+
     return (
         /* Dropdown */
         <div className="hidden md:block dropdown dropdown-end dropdown-hover font-poppins">
@@ -46,13 +54,14 @@ export default function AccountDropdown() {
                             src={userData.photoUrl}
                             height={44}
                             width={44}
-                            className="object-cover"
+                            effect="opacity"
+                            className="object-cover h-11 w-11 overflow-hidden"
                         />
                     ) : (
                         <FaUserLarge/>
                     )}
                 </button>
-                { userData.isLoogedIn && userData.name ? (
+                { userData.isLoggedIn && userData.name ? (
                     <div className="hidden xl:block">
                         <p className="text-neutral-300 text-lg">Ola, <span className="font-medium text-neutral-100">{ userData.name }</span></p>
                     </div>
@@ -66,7 +75,7 @@ export default function AccountDropdown() {
             {/* Container do conteudo do dropdown */}
             <div tabIndex={0} className="dropdown-content pt-2">
                 {/* Menu com opções de login e registro caso o usuario nao esteja logado */}
-                { !userData.isLoogedIn ? (
+                { !userData.isLoggedIn ? (
                     <ul tabIndex={0} className="bg-darkpurple rounded-box z-[1] w-60 p-4 shadow">
                         <li key='li-element-6' onClick={() => {ModalToggle('register')}} className="px-4 h-7 rounded-3xl bg-orangered text-white text-[15px] flex items-center justify-center font-medium cursor-pointer btn hover:bg-orangered border-0">Registrar</li>
         
@@ -78,7 +87,7 @@ export default function AccountDropdown() {
                             <div className="xl:hidden p-4 hover:bg-white/10 cursor-pointer">
                                 <p className="font-medium text-lg">{userData.name}</p>
 
-                                <div className="flex flex-row items-center gap-x-2 text-neutral-500 text-sm">
+                                <div onClick={openProfileModal} className="flex flex-row items-center gap-x-2 text-neutral-500 text-sm">
                                     <FaPencil className=""/>
                                     <p>Editar perfil</p>
                                 </div>
@@ -88,7 +97,7 @@ export default function AccountDropdown() {
                         {/* Opções para usuarios logados */}
                         <ul className="w-full flex flex-col items-start *:px-6 *:whitespace-nowrap *:gap-x-3 *:border-none *:outline-none font-medium">
                             
-                            <li key='li-element-8' className="hidden text-neutral-300 hover:bg-white/10 cursor-pointer h-16 w-full xl:flex items-center">
+                            <li onClick={openProfileModal} key='li-element-8' className="hidden text-neutral-300 hover:bg-white/10 cursor-pointer h-16 w-full xl:flex items-center">
                                 Editar perfil
                                 <MdAccountCircle className="text-2xl"/>
                             </li>

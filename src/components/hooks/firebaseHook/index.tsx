@@ -4,10 +4,13 @@ import { useContext } from "react";
 // Inicializador do Firebase
 import { initializeApp } from "firebase/app";
 
-// Ferramentas para interação com o Realtime DB
-import { getDatabase, set, ref, get } from "firebase/database";
+// Ferramentas para interação com o Firebase Realtime Database
+import { getDatabase, set, ref as getDatabaseRef, get } from "firebase/database";
 
-// Authenticação com Firebase
+import { getDownloadURL, uploadBytes, getStorage } from "firebase/storage";
+import { ref as getStorageRef } from "firebase/storage";
+
+// Ferramentas para interação com o Firebase Authentication
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider, onAuthStateChanged, deleteUser, signOut, updateProfile } from "firebase/auth";
 
 // Contextos
@@ -37,9 +40,11 @@ export default function useFirebase() {
 
     const app = initializeApp( firebaseConfig );
     const auth = getAuth();
-    auth.useDeviceLanguage();
+    const storage = getStorage( app );
     const googleProvider = new GoogleAuthProvider()
     const githubProvider = new GithubAuthProvider();
+
+    auth.useDeviceLanguage();
 
 
 
@@ -65,11 +70,87 @@ export default function useFirebase() {
         };
     };
 
-    const updateUserProfile = ( newName: string ) => {
+    // Busca a imagem de perfil do usuario no Firebase Storage
+    const getUserImageOnStorage = ( storageRef: any ) => {
+
         const user = auth.currentUser;
 
         if ( user ) {
-            updateProfile( user, { displayName: newName }).then(() => {
+            getDownloadURL( storageRef ).then( url => {
+                // Atualiza a url da imagem de perfil do usuario
+                updateProfile( user, { photoURL: url } ).then(() => {
+                    // Atualiza o contexto com a 'url' da nova imagem de perfil
+                    userData.setUserData( prev => ({
+                        ...prev,
+                        photoUrl: url
+                    }));
+
+                    // Desativa o loading apos o sucesso da operação
+                    globalEvents.setModalsController( prev => ({
+                        ...prev,
+                        isProfilePhotoUpdating: false
+                    }));
+                }).catch( error => {
+                    console.error( error.message );
+
+                    // Desativa o loading caso ocorra erros na operação
+                    globalEvents.setModalsController( prev => ({
+                        ...prev,
+                        isProfilePhotoUpdating: false
+                    }));
+                });
+
+            }).catch( error => {
+                console.error( error.message );
+
+                // Desativa o loading caso ocorra erros na operação
+                globalEvents.setModalsController( prev => ({
+                    ...prev,
+                    isProfilePhotoUpdating: false
+                }));
+            })
+        }
+    
+    };
+
+    // Manda a imagem de perfil do usuario para o Firebase Storage
+    const uploadUserImage = ( imageFile: File ) => {
+        const user = auth.currentUser;
+
+        // Aciona um elemento de loading durante o processo de upload da nova imgem de perfil para o Firebase Storage
+        globalEvents.setModalsController( prev => ({
+            ...prev,
+            isProfilePhotoUpdating: true
+        }));
+
+        if ( user ) {
+            const storageRef = getStorageRef( storage, `users/${user.uid}/profilePhoto` );
+
+            uploadBytes( storageRef, imageFile ).then(( snapshot ) => {
+                getUserImageOnStorage( snapshot.ref );
+            }).catch( error => {
+                console.error( error.message );
+
+                // Desativa o loading caso ocorra erros na operação
+                globalEvents.setModalsController( prev => ({
+                    ...prev,
+                    isProfilePhotoUpdating: false
+                }));
+            });
+        };
+
+    };
+
+    const updateUserProfile = ( newName: string | null = null, newPhoto: string | null = null ) => {
+        const user = auth.currentUser;
+
+        if ( user ) {
+            const newUserData = {
+                displayName: newName ? newName : user.displayName,
+                photoUrl: newPhoto ? newPhoto : user.photoURL
+            };
+
+            updateProfile( user, newUserData).then(() => {
                 // Fecha o modal de registro apos a alteração do nome do usuario
                 globalEvents.setModalsController( prev => ({
                     ...prev,
@@ -85,12 +166,12 @@ export default function useFirebase() {
     onAuthStateChanged(auth, (user) => {
         if ( user ) {
             // Atualiza o contexto com os dados do usuario
-            if ( !userData.isLoogedIn || !userData.name ) {
-                userData.setUserData(() => ({
-                    isLoogedIn: true,
-                    name: null,
-                    photoUrl: user.photoURL ?? null,
-                    email: user.email ?? null,
+            if ( !userData.isLoggedIn ) {
+                userData.setUserData( prev => ({
+                    ...prev,
+                    isLoggedIn: true,
+                    photoUrl: user.photoURL,
+                    email: user.email,
                     uid: user.uid
                 }));
 
@@ -98,9 +179,9 @@ export default function useFirebase() {
             };
 
         } else {
-            if ( userData.isLoogedIn ) {
+            if ( userData.isLoggedIn ) {
                 userData.setUserData(() => ({
-                    isLoogedIn: false,
+                    isLoggedIn: false,
                     name: null,
                     photoUrl: null,
                     email: null,
@@ -117,6 +198,7 @@ export default function useFirebase() {
             deleteUser( user ).then(() => {
             }).catch(( error ) => {
                 console.error( error );
+                
                 globalEvents.setModalsController( prev => ({
                     ...prev,
                     isLoginModalActive: !prev.isLoginModalActive,
@@ -177,7 +259,7 @@ export default function useFirebase() {
         const db = getDatabase(app);
 
         return new Promise( resolve  => {
-            set(ref( db, `users/${userId}` ), {
+            set(getDatabaseRef( db, `users/${userId}` ), {
                 name: userName,
                 photo: ''
             }).then(() => {
@@ -204,7 +286,7 @@ export default function useFirebase() {
     // Busca informações do usuario no Realtime DB com base no id
     const fetchUserOnDb = async ( userId: string ): Promise<UserDataOnDb> => {
         const db = getDatabase( app );
-        const userRef = ref( db, `users/${userId}` );
+        const userRef = getDatabaseRef( db, `users/${userId}` );
 
         return new Promise(( resolve, reject ) => {
             get( userRef ).then(( snapshot ) => {
@@ -243,6 +325,7 @@ export default function useFirebase() {
         signInWithGoogle,
         signInWithGithub,
         deleteCurrrentUser,
-        signOutUser
+        signOutUser,
+        uploadUserImage
     }
 };

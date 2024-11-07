@@ -7,6 +7,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import LoginModal from "@/components/authenticateUsers/loginModal";
 import RegisterModal from "@/components/authenticateUsers/registerModal";
+import ProfileModal from "@/components/profileModal";
 
 import { TmdbProvider } from "@/components/contexts/tmdbContext";
 import { GlobalEventsProvider } from "@/components/contexts/globalEventsContext";
@@ -23,15 +24,16 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className={ `${ Fonts.poppins.variable } ${ Fonts.roboto.variable } ${ Fonts.noto_sans.variable } ${ Fonts.raleway.variable } `}>
         <div className="relative overflow-x-hidden max-w-[2200px] mx-auto min-h-screen flex flex-col justify-between">
           <TmdbProvider>
-            <GlobalEventsProvider>
               <UserDataProvider>
-                <Header/>
-                <LoginModal/>
-                <RegisterModal/>
-                { children }
-                <Footer/>
+                <GlobalEventsProvider>
+                  <Header/>
+                  <LoginModal/>
+                  <RegisterModal/>
+                  <ProfileModal/>
+                  { children }
+                  <Footer/>
+                </GlobalEventsProvider>
               </UserDataProvider>
-            </GlobalEventsProvider>
           </TmdbProvider>
         </div>
       </body>

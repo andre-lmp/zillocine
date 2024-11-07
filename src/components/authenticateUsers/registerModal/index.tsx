@@ -26,7 +26,14 @@ export default function RegisterModal() {
 
     // Simula um click para o input que exibe/esconde o modal de regitro
     const checkboxToggle = () => {
-        checkboxInputRef.current?.click();
+        if ( globalEvents.clicksCount >= 1 ) {
+            checkboxInputRef.current?.click();
+        };
+
+        globalEvents.setModalsController( prev => ({
+            ...prev,
+            clicksCount: prev.clicksCount + 1
+        }));
     };
 
     useEffect(() => {
