@@ -12,6 +12,7 @@ export interface ModalsControllerProps {
     googleAuthErrorMessage: null | string;
     githubAuthErrorMessage: null | string;
     isProfilePhotoUpdating: boolean;
+    IsVerificationLinkSent: boolean;
     clicksCount: number;
 };
 
@@ -29,6 +30,7 @@ export const GlobalEventsContext = createContext<GlobalEventsContextType>({
     googleAuthErrorMessage: null,
     githubAuthErrorMessage: null,
     isProfilePhotoUpdating: false,
+    IsVerificationLinkSent: false,
     clicksCount: 0,
     setModalsController: () => {}
 });
@@ -45,6 +47,7 @@ export const GlobalEventsProvider: React.FC<{ children: ReactNode }> = ({ childr
         googleAuthErrorMessage: null,
         githubAuthErrorMessage: null,
         isProfilePhotoUpdating: false,
+        IsVerificationLinkSent: false,
         clicksCount: 0
     });
     

@@ -9,7 +9,7 @@ import { z } from "zod";
 // Contexto(s)
 import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
 
-const loginSchema = z.object({
+export const registerSchema = z.object({
     name: z.string()
         .min(3, 'Informe um nome')
         .max(30, 'Limite de caracteres atingido')
@@ -35,7 +35,7 @@ const loginSchema = z.object({
         }),
 });
 
-export type RegisterProps = z.infer<typeof loginSchema>;
+export type RegisterProps = z.infer<typeof registerSchema>;
 
 type componentProps = {
     registerUser: ( schemaData: RegisterProps ) => void;
@@ -47,7 +47,7 @@ export default function RegisterForm( props: componentProps ) {
     const { register, handleSubmit, reset, formState: { errors }, setError }  = useForm<RegisterProps>({
         mode: 'all',
         criteriaMode: 'all',
-        resolver: zodResolver(loginSchema),
+        resolver: zodResolver(registerSchema),
     });
 
     useEffect(() => {
@@ -78,9 +78,10 @@ export default function RegisterForm( props: componentProps ) {
             <input 
                 type="text" 
                 placeholder="Informe um email" 
+               
+                className="font-medium placeholder:font-normal border border-transparent outline-none text-sm placeholder:text-neutral-400 mt-2 bg-richblack rounded h-12 px-3"
                 maxLength={41}
                 { ...register('email') }
-                className="font-medium placeholder:font-normal border border-transparent outline-none text-sm placeholder:text-neutral-400 mt-2 bg-richblack rounded h-12 px-3"
                 style={{
                     borderColor: errors.email || globalEvents.registerErrorMessage ? 'orangered' : 'transparent'
                 }}

@@ -11,11 +11,13 @@ import { getDownloadURL, uploadBytes, getStorage } from "firebase/storage";
 import { ref as getStorageRef } from "firebase/storage";
 
 // Ferramentas para interação com o Firebase Authentication
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider, onAuthStateChanged, deleteUser, signOut, updateProfile } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider, onAuthStateChanged, deleteUser, signOut, updateProfile, updateEmail, verifyBeforeUpdateEmail, User as UserInterface } from "firebase/auth";
 
 // Contextos
 import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
 import { UserDataContext } from "@/components/contexts/authenticationContext";
+
+import { toast } from "react-toastify";
 
 interface UserDataOnDb {
     name: string | null,
@@ -48,26 +50,51 @@ export default function useFirebase() {
 
 
 
+
+    const updateUserContext = ( user: UserInterface ) => {
+        userData.setUserData( prev => ({
+            ...prev,
+            isLoggedIn: true,
+            photoUrl: user.photoURL,
+            email: user.email,
+            uid: user.uid
+        }));
+    };
+
+    const resetUserContext = () => {
+        userData.setUserData(() => ({
+            isLoggedIn: false,
+            name: null,
+            photoUrl: null,
+            email: null,
+            uid: null
+        }));
+    };
+
     // Extrai o primeiro e ultimo nome de usuario e atualiza o contexto
-    const extractName = ( name: string | null ) => {
+    const extractName = async ( name: string | null ) => {
         const extractedWords = name?.split(' ');
 
-        if ( extractedWords ) {
-            if ( extractedWords.length < 3 ) {
+        return new Promise(( resolve, reject ) => {
+            if ( extractedWords ) {
+                if ( extractedWords.length < 3 ) {
+                    userData.setUserData( prev => ({
+                        ...prev,
+                        name: name
+                    }));
+    
+                    resolve( name );
+                };
+    
+                const userName = [extractedWords[0], extractedWords.at(-1)].join(' ');
                 userData.setUserData( prev => ({
                     ...prev,
-                    name: name
+                    name: userName
                 }));
 
-                return
+                resolve( userName );
             };
-
-            const userName = [extractedWords[0], extractedWords.at(-1)].join(' ');
-            userData.setUserData( prev => ({
-                ...prev,
-                name: userName
-            }));
-        };
+        });
     };
 
     // Busca a imagem de perfil do usuario no Firebase Storage
@@ -90,6 +117,11 @@ export default function useFirebase() {
                         ...prev,
                         isProfilePhotoUpdating: false
                     }));
+
+                    toast.success('Imagem de perfil atualizada', { 
+                        position: 'bottom-right',
+                        autoClose: 3000,
+                     });
                 }).catch( error => {
                     console.error( error.message );
 
@@ -141,52 +173,19 @@ export default function useFirebase() {
 
     };
 
-    const updateUserProfile = ( newName: string | null = null, newPhoto: string | null = null ) => {
-        const user = auth.currentUser;
-
-        if ( user ) {
-            const newUserData = {
-                displayName: newName ? newName : user.displayName,
-                photoUrl: newPhoto ? newPhoto : user.photoURL
-            };
-
-            updateProfile( user, newUserData).then(() => {
-                // Fecha o modal de registro apos a alteração do nome do usuario
-                globalEvents.setModalsController( prev => ({
-                    ...prev,
-                    isRegisterModalActive: !prev.isRegisterModalActive
-                }));
-
-            }).catch( error => {
-                console.error( error.message );
-            });            
-        }
-    };
-
     onAuthStateChanged(auth, (user) => {
         if ( user ) {
             // Atualiza o contexto com os dados do usuario
             if ( !userData.isLoggedIn ) {
-                userData.setUserData( prev => ({
-                    ...prev,
-                    isLoggedIn: true,
-                    photoUrl: user.photoURL,
-                    email: user.email,
-                    uid: user.uid
-                }));
+                // Atualiza o contexto com os dados do usuario
+                updateUserContext( user );
 
                 extractName( user.displayName );
             };
 
         } else {
             if ( userData.isLoggedIn ) {
-                userData.setUserData(() => ({
-                    isLoggedIn: false,
-                    name: null,
-                    photoUrl: null,
-                    email: null,
-                    uid: null
-                }));
+                resetUserContext();
             };
         };;
     });
@@ -196,6 +195,10 @@ export default function useFirebase() {
 
         if ( user ) {
             deleteUser( user ).then(() => {
+                toast.success('Conta excluida', { 
+                    position: 'bottom-right',
+                    autoClose: 3000
+                 });
             }).catch(( error ) => {
                 console.error( error );
                 
@@ -210,19 +213,32 @@ export default function useFirebase() {
 
     const signOutUser = () => {
         signOut( auth ).then(() => {
+            toast.success('Conta desconectada', { 
+                position: 'bottom-right',
+                autoClose: 3000
+             });
         }).catch( error => {
             console.error( error );
         });
     };
 
     const signInWithGoogle = ( modalType: string ) => {
-        signInWithPopup( auth, googleProvider ).then(() => {
+        signInWithPopup( auth, googleProvider ).then( user => {
             // Fecha o modal que estiver aberto apos o login
             globalEvents.setModalsController( prev => ({
                 ...prev,
                 isLoginModalActive: modalType === 'login' ? !prev.isLoginModalActive : prev.isLoginModalActive,
                 isRegisterModalActive: modalType === 'register' ? !prev.isRegisterModalActive : prev.isRegisterModalActive,
             }));
+
+            // Mensagem de boas vindas ao usuario
+            extractName( user.user.displayName ).then(( name ) => {
+                toast.success(`Bem-vindo de volta ${name}!`, {
+                    position: 'bottom-right',
+                    autoClose: 3000
+                });
+            })
+
         }).catch( error => {
             console.error( error );
 
@@ -236,13 +252,22 @@ export default function useFirebase() {
 
 
     const signInWithGithub = ( modalType: string ) => {
-        signInWithPopup( auth, githubProvider ).then(() => {
+        signInWithPopup( auth, githubProvider ).then( user => {
             // Fecha o modal que estiver aberto apos o login
             globalEvents.setModalsController( prev => ({
                 ...prev,
                 isLoginModalActive: modalType === 'login' ? !prev.isLoginModalActive : prev.isLoginModalActive,
                 isRegisterModalActive: modalType === 'register' ? !prev.isRegisterModalActive : prev.isRegisterModalActive,
             }));
+
+            // Mensagem de boas vindas ao usuario
+            extractName( user.user.displayName ).then(( name ) => {
+                toast.success(`Bem-vindo de volta ${name}!`, {
+                    position: 'bottom-right',
+                    autoClose: 3000
+                });
+            })
+
         }).catch( error => {
             console.error( error );
 
@@ -269,8 +294,29 @@ export default function useFirebase() {
     };
 
     const registerUser = ( name: string, email: string, password: string ) => {
-        createUserWithEmailAndPassword( auth, email, password ).then(() => {
-            updateUserProfile( name );
+        // Cria o usuario
+        createUserWithEmailAndPassword( auth, email, password ).then(( createdUser ) => {
+            // Depois de criado, o nome de usuario e atualizado
+            updateProfile( createdUser.user, { displayName: name }).then(() => {
+                // Atualiza o contexto com os dados do usuario
+                if ( auth.currentUser ) {
+                    updateUserContext( auth.currentUser );
+
+                    // Mensagem de boas vindas ao usuario
+                    extractName( auth.currentUser.displayName ).then(( name ) => {
+                        toast.success(`Parabéns ${name}, sua conta foi criada!`, {
+                            position: 'bottom-right',
+                            autoClose: 3000
+                        });
+                    })
+                }
+
+                // Fecha o modal do formulario de registro
+                globalEvents.setModalsController( prev => ({
+                    ...prev,
+                    isRegisterModalActive: !prev.isRegisterModalActive
+                }));
+            });
         }).catch( error => {
             console.error( error.message );
 
@@ -301,13 +347,21 @@ export default function useFirebase() {
     };
 
     const authenticateUser = async ( email: string, password: string, modalType: string ) => {
-        signInWithEmailAndPassword( auth, email, password ).then(() => {
+        signInWithEmailAndPassword( auth, email, password ).then(( user ) => {
             // Fecha o modal que estiver aberto apos o login ou registro
             globalEvents.setModalsController( prev => ({
                 ...prev,
                 isLoginModalActive: modalType === 'login' ? !prev.isLoginModalActive : prev.isLoginModalActive,
                 isRegisterModalActive: modalType === 'register' ? !prev.isRegisterModalActive : prev.isRegisterModalActive,
             }));
+
+            // Mensagem de boas vindas ao usuario
+            extractName( user.user.displayName ).then(( name ) => {
+                toast.success(`Bem-vindo de volta ${name}!`, {
+                    position: 'bottom-right',
+                    autoClose: 3000
+                });
+            })
         }).catch( error => {
             console.error( error );
 
@@ -319,6 +373,48 @@ export default function useFirebase() {
         });
     };
 
+    const updateUserData = ( newEmail: string, newName: string ) => {
+        // Verifica o novo email do usuario
+        newEmail !== userData.email && verifyNewUserEmail( newEmail );
+
+        if ( auth.currentUser ) {
+            // Atualiza o nome vinculado a conta do usuario 
+            newName !== auth.currentUser.displayName && updateProfile( auth.currentUser, { displayName: newName }).then(() => {
+            // Atualiza o contexto do usuario com o nome editado
+                auth.currentUser && extractName( auth.currentUser.displayName ).then( name => {
+                    toast.success('Nome de usuário alterado', {
+                        position: 'bottom-right',
+                        autoClose: 3000
+                    })
+                });
+            })
+        }
+    };
+
+    const verifyNewUserEmail = ( newEmail: string ) => {
+        const user = auth.currentUser;
+
+        if ( user ) {
+            verifyBeforeUpdateEmail( user, newEmail ).then(() => {
+                // Aciona o componente de verificação do novo email
+                globalEvents.setModalsController( prev => ({
+                    ...prev,
+                    IsVerificationLinkSent: true
+                }));    
+            }).catch( error => {
+                console.error( error.message );
+
+                // Avisa o usuario de que e preciso se authenticar novamente
+                globalEvents.setModalsController( prev => ({
+                    ...prev,
+                    isLoginModalActive: !prev.isLoginModalActive,
+                    isProfileModalActive: !prev.isProfileModalActive,
+                    formInstructionsMessage: 'Faça login novamente para solicitar um link de atualização de email'
+                }));
+            })
+        }
+    };
+
     return {
         authenticateUser,
         registerUser,
@@ -326,6 +422,7 @@ export default function useFirebase() {
         signInWithGithub,
         deleteCurrrentUser,
         signOutUser,
-        uploadUserImage
+        uploadUserImage,
+        updateUserData,
     }
 };

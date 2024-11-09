@@ -42,7 +42,7 @@ export default function RegisterModal() {
 
     // Tenta registrar o usuario, se for sucesso, atualiza os dados do usuario dentro do contexto e fecha o modal
     const handleFormSubmit = ( schemaData: RegisterProps ) => {
-        registerUser( schemaData.name, schemaData.email, schemaData.password );
+        registerUser( schemaData.name.trimEnd(), schemaData.email.trimEnd(), schemaData.password.trimEnd() );
     };
 
     const closeRegisterModal = () => {

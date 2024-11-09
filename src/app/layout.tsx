@@ -9,9 +9,13 @@ import LoginModal from "@/components/authenticateUsers/loginModal";
 import RegisterModal from "@/components/authenticateUsers/registerModal";
 import ProfileModal from "@/components/profileModal";
 
+// Contextos
 import { TmdbProvider } from "@/components/contexts/tmdbContext";
 import { GlobalEventsProvider } from "@/components/contexts/globalEventsContext";
 import { UserDataProvider } from "@/components/contexts/authenticationContext";
+
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/ReactToastify.css';
 
 export const metadata: Metadata = {
   title: "ZiloCine Filmes e Series",
@@ -30,6 +34,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                   <LoginModal/>
                   <RegisterModal/>
                   <ProfileModal/>
+                  <ToastContainer/>
                   { children }
                   <Footer/>
                 </GlobalEventsProvider>

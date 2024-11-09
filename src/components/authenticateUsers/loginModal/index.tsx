@@ -42,7 +42,7 @@ export default function LoginModal() {
     
     // Tenta authenticar o usuario, se for sucesso, atualiza os dados do usuario dentro do contexto e fecha o modal
     const handleFormSubmit = ( schemaData: LoginProps ) => {
-        authenticateUser( schemaData.email, schemaData.password, 'login' );
+        authenticateUser( schemaData.email.trimEnd(), schemaData.password.trimEnd(), 'login' );
     };
 
     const closeLoginModal = () => {

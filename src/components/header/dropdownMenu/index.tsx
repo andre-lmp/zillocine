@@ -17,6 +17,8 @@ import 'react-lazy-load-image-component/src/effects/opacity.css';
 import { UserDataContext } from "@/components/contexts/authenticationContext";
 import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
 
+import { toast } from "react-toastify";
+
 export default function AccountDropdown() {
 
     const userData = useContext( UserDataContext );
