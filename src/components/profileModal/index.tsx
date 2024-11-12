@@ -67,12 +67,6 @@ export default function ProfileModal() {
         returnToFirstSlide( 300 );
     }, [ userData.name ]);
 
-    useEffect(() => {
-        if ( globalEvents.IsVerificationLinkSent ) {
-            returnToFirstSlide( 6000 );
-        };
-    }, [ globalEvents.IsVerificationLinkSent ])
-
     return (
         <>
             {/* Input que controla a abertura/fechamento do modal */}

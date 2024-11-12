@@ -2,16 +2,15 @@
 import { useContext } from "react";
 
 // Inicializador do Firebase
-import { initializeApp } from "firebase/app";
+import { initializeApp, FirebaseError } from "firebase/app";
 
 // Ferramentas para interação com o Firebase Realtime Database
-import { getDatabase, set, ref as getDatabaseRef, get } from "firebase/database";
+import { getDatabase, set, ref as getDatabaseRef, get, remove } from "firebase/database";
 
-import { getDownloadURL, uploadBytes, getStorage } from "firebase/storage";
-import { ref as getStorageRef } from "firebase/storage";
+import { getDownloadURL, uploadBytes, getStorage, ref as getStorageRef, deleteObject, getMetadata } from "firebase/storage";
 
 // Ferramentas para interação com o Firebase Authentication
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider, onAuthStateChanged, deleteUser, signOut, updateProfile, updateEmail, verifyBeforeUpdateEmail, User as UserInterface } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider, onAuthStateChanged, deleteUser, signOut, updateProfile, verifyBeforeUpdateEmail, User as UserInterface, fetchSignInMethodsForEmail } from "firebase/auth";
 
 // Contextos
 import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
@@ -23,6 +22,35 @@ interface UserDataOnDb {
     name: string | null,
     photoUrl: string | null,
 };
+
+const firebaseErrorMessages = {
+    "auth/invalid-email": "O endereço de e-mail fornecido é inválido.",
+    "auth/weak-password": "A senha é muito fraca. Por favor, escolha uma senha mais forte.",
+    "auth/email-already-in-use": "O endereço de e-mail já está em uso por outra conta.",
+    "auth/invalid-password": "A senha fornecida está incorreta.",
+    "auth/user-disabled": "Esta conta foi desativada.",
+    "auth/user-not-found": "Nenhuma conta foi encontrada com este endereço de e-mail.",
+    "auth/wrong-password": "A senha fornecida está incorreta.",
+    "auth/too-many-requests": "Muitas solicitações foram feitas. Por favor, tente novamente mais tarde.",
+    "auth/operation-not-allowed": "Esta operação não é permitida.",
+    "auth/requires-recent-login": "É necessário fazer login recentemente para realizar esta ação.",
+    "auth/invalid-credential": "As credenciais fornecidas são inválidas.",
+    "auth/user-token-expired": "O token do usuário expirou. Por favor, faça login novamente.",
+    "auth/network-request-failed": "Falha na solicitação de rede.",
+    "auth/popup-blocked": "A janela pop-up foi bloqueada.",
+    "auth/cancelled-popup-request": "A solicitação de pop-up foi cancelada.",
+    "auth/credential-already-in-use": "As credenciais fornecidas já estão em uso.",
+    "auth/invalid-phone-number": "O número de telefone fornecido é inválido.",
+    "auth/phone-number-already-exists": "O número de telefone fornecido já está em uso por outra conta.",
+    "auth/quota-exceeded": "O limite de cota foi excedido.",
+    "auth/invalid-persistence-type": "O tipo de persistência fornecido é inválido.",
+    "auth/invalid-dynamic-link-domain": "O domínio do link dinâmico é inválido.",
+    "auth/too-many-attempts-try-later": "Muitas tentativas. Por favor, tente novamente mais tarde.",
+    "auth/unexpected-response": "Resposta inesperada do servidor.",
+    "auth/email-already-exists": "O endereço de e-mail já existe.",
+    "auth/reset-password-exceed-limit": "O limite de redefinição de senha foi excedido.",
+};
+  
 
 export default function useFirebase() {
 
@@ -49,8 +77,6 @@ export default function useFirebase() {
     auth.useDeviceLanguage();
 
 
-
-
     const updateUserContext = ( user: UserInterface ) => {
         userData.setUserData( prev => ({
             ...prev,
@@ -71,117 +97,108 @@ export default function useFirebase() {
         }));
     };
 
-    // Extrai o primeiro e ultimo nome de usuario e atualiza o contexto
-    const extractName = async ( name: string | null ) => {
-        const extractedWords = name?.split(' ');
+    // Extrai o primeiro e último nome do usuário e atualiza o contexto
+    const extractName = async ( name: string | null ): Promise<string | undefined> => {
+        if ( !name ) return;
 
-        return new Promise(( resolve, reject ) => {
-            if ( extractedWords ) {
-                if ( extractedWords.length < 3 ) {
-                    userData.setUserData( prev => ({
-                        ...prev,
-                        name: name
-                    }));
-    
-                    resolve( name );
-                };
-    
-                const userName = [extractedWords[0], extractedWords.at(-1)].join(' ');
-                userData.setUserData( prev => ({
-                    ...prev,
-                    name: userName
-                }));
+        const extractedWords = name.split(' ');
+        let userName;
 
-                resolve( userName );
-            };
-        });
+        if ( extractedWords.length < 3 ) {
+            userName = name;
+        } else {
+            userName = `${extractedWords[0]} ${extractedWords.at(-1)}`;
+        };
+
+        // Atualiza o contexto com o nome formatado
+        userData.setUserData( prev => ({
+            ...prev,
+            name: userName
+        }));
+
+        return userName;
     };
 
-    // Busca a imagem de perfil do usuario no Firebase Storage
-    const getUserImageOnStorage = ( storageRef: any ) => {
 
+   // Busca a imagem de perfil do usuário no Firebase Storage
+    const getUserImageOnStorage = async ( storageRef: any ): Promise<void> => {
         const user = auth.currentUser;
 
         if ( user ) {
-            getDownloadURL( storageRef ).then( url => {
-                // Atualiza a url da imagem de perfil do usuario
-                updateProfile( user, { photoURL: url } ).then(() => {
-                    // Atualiza o contexto com a 'url' da nova imagem de perfil
-                    userData.setUserData( prev => ({
-                        ...prev,
-                        photoUrl: url
-                    }));
+            try {
+                // Obtém a URL de download da imagem de perfil no Storage
+                const url = await getDownloadURL( storageRef );
 
-                    // Desativa o loading apos o sucesso da operação
-                    globalEvents.setModalsController( prev => ({
-                        ...prev,
-                        isProfilePhotoUpdating: false
-                    }));
+                // Atualiza o perfil do usuário com a nova URL da imagem
+                await updateProfile( user, { photoURL: url });
 
-                    toast.success('Imagem de perfil atualizada', { 
-                        position: 'bottom-right',
-                        autoClose: 3000,
-                     });
-                }).catch( error => {
-                    console.error( error.message );
+                // Atualiza o contexto com a nova URL da imagem de perfil
+                userData.setUserData( prev => ({
+                    ...prev,
+                    photoUrl: url
+                }));
 
-                    // Desativa o loading caso ocorra erros na operação
-                    globalEvents.setModalsController( prev => ({
-                        ...prev,
-                        isProfilePhotoUpdating: false
-                    }));
-                });
-
-            }).catch( error => {
-                console.error( error.message );
-
-                // Desativa o loading caso ocorra erros na operação
+                // Desativa o loading após a operação bem-sucedida
                 globalEvents.setModalsController( prev => ({
                     ...prev,
                     isProfilePhotoUpdating: false
                 }));
-            })
-        }
-    
+
+                // Exibe mensagem de sucesso
+                toast.success( 'Imagem de perfil atualizada', { 
+                    position: 'bottom-right',
+                    autoClose: 3000,
+                });
+
+            } catch ( error ) {
+                throw new Error("Erro ao buscar ou atualizar a imagem de perfil" + error);
+            };
+        };
     };
 
-    // Manda a imagem de perfil do usuario para o Firebase Storage
-    const uploadUserImage = ( imageFile: File ) => {
+
+    // Manda a imagem de perfil do usuário para o Firebase Storage
+    const uploadUserImage = async ( imageFile: File ): Promise<void> => {
         const user = auth.currentUser;
 
-        // Aciona um elemento de loading durante o processo de upload da nova imgem de perfil para o Firebase Storage
+        // Aciona um elemento de loading durante o processo de upload da nova imagem de perfil para o Firebase Storage
         globalEvents.setModalsController( prev => ({
             ...prev,
             isProfilePhotoUpdating: true
         }));
 
-        if ( user ) {
+        if (user) {
             const storageRef = getStorageRef( storage, `users/${user.uid}/profilePhoto` );
 
-            uploadBytes( storageRef, imageFile ).then(( snapshot ) => {
-                getUserImageOnStorage( snapshot.ref );
-            }).catch( error => {
-                console.error( error.message );
+            try {
+                // Faz o upload da imagem para o Firebase Storage
+                const snapshot = await uploadBytes( storageRef, imageFile );
 
-                // Desativa o loading caso ocorra erros na operação
+                // Busca e atualiza a imagem de perfil no armazenamento
+                await getUserImageOnStorage( snapshot.ref );
+
+            } catch ( error ) {
+                console.error("Erro ao fazer upload da imagem:", error);
+
+                // Desativa o loading caso ocorra um erro na operação
                 globalEvents.setModalsController( prev => ({
                     ...prev,
                     isProfilePhotoUpdating: false
                 }));
-            });
+            };
         };
-
     };
+
 
     onAuthStateChanged(auth, (user) => {
         if ( user ) {
-            // Atualiza o contexto com os dados do usuario
-            if ( !userData.isLoggedIn ) {
-                // Atualiza o contexto com os dados do usuario
-                updateUserContext( user );
-
-                extractName( user.displayName );
-            };
+            user.reload().then(() => {
+                if ( !userData.isLoggedIn ) {
+                    // Atualiza o contexto com os dados do usuario
+                    updateUserContext( user );
+                    extractName( user.displayName );
+                };
+            })
 
         } else {
             if ( userData.isLoggedIn ) {
@@ -190,229 +207,423 @@ export default function useFirebase() {
         };;
     });
 
-    const deleteCurrrentUser = () => {
+    const deleteCurrentUser = async () => {
         const user = auth.currentUser;
-
+    
         if ( user ) {
-            deleteUser( user ).then(() => {
-                toast.success('Conta excluida', { 
+            try {
+                await deleteCurrentUserOnDb( user.uid );
+                await deleteCurrentUserOnStorage( user.uid );
+                await deleteUser( user );
+
+                toast.success('Conta excluída', {
                     position: 'bottom-right',
                     autoClose: 3000
-                 });
-            }).catch(( error ) => {
+                });  
+
+            } catch ( error ) {
                 console.error( error );
-                
-                globalEvents.setModalsController( prev => ({
-                    ...prev,
-                    isLoginModalActive: !prev.isLoginModalActive,
-                    formInstructionsMessage: 'Faça login novamente para encerrar a conta.'
-                }));
-            });
+
+                if ( error instanceof FirebaseError ) {    
+                    globalEvents.setModalsController(prev => ({
+                        ...prev,
+                        isLoginModalActive: !prev.isLoginModalActive,
+                        formInstructionsMessage: firebaseErrorMessages[ error.code as keyof typeof firebaseErrorMessages ] || 'Faça login novamente para encerrar a conta.'
+                    }));
+                } else {
+                    toast.error('Não foi possível encerrar sua conta, tente novamente', {
+                        position: 'bottom-right',
+                        autoClose: 3000
+                    });
+                };
+
+            };
         };
     };
 
-    const signOutUser = () => {
-        signOut( auth ).then(() => {
+    const deleteCurrentUserOnDb = async ( userId: string ) => {
+        const db = getDatabase( app );
+        const userRef = getDatabaseRef( db, `users/${userId}` )
+
+        try {
+            await remove( userRef );
+        } catch ( error ) {
+            console.error('Erro ao deletar dados do usuário no firebase realtime database' + error);
+            return false;
+        };
+    };
+
+    const deleteCurrentUserOnStorage = async ( userId: string ) => {
+        const storageRef = getStorageRef( storage, `users/${userId}/profilePhoto` );
+
+        try {
+            await deleteObject( storageRef );  
+        } catch ( error ) {
+            console.error( 'Erro ao deletar dados do usuário no firebase storage' + error );
+        } 
+    };
+    
+
+    const signOutUser = async () => {
+        try {
+            await signOut( auth );
+
             toast.success('Conta desconectada', { 
                 position: 'bottom-right',
                 autoClose: 3000
-             });
-        }).catch( error => {
-            console.error( error );
-        });
-    };
-
-    const signInWithGoogle = ( modalType: string ) => {
-        signInWithPopup( auth, googleProvider ).then( user => {
-            // Fecha o modal que estiver aberto apos o login
-            globalEvents.setModalsController( prev => ({
-                ...prev,
-                isLoginModalActive: modalType === 'login' ? !prev.isLoginModalActive : prev.isLoginModalActive,
-                isRegisterModalActive: modalType === 'register' ? !prev.isRegisterModalActive : prev.isRegisterModalActive,
-            }));
-
-            // Mensagem de boas vindas ao usuario
-            extractName( user.user.displayName ).then(( name ) => {
-                toast.success(`Bem-vindo de volta ${name}!`, {
-                    position: 'bottom-right',
-                    autoClose: 3000
-                });
-            })
-
-        }).catch( error => {
-            console.error( error );
-
-            // Lança uma mensagem de erro ao modal para indicar que houve um erro com a operação
-            globalEvents.setModalsController( prev => ({
-                ...prev,
-                googleAuthErrorMessage: error.message
-            }))
-        });
-    };
-
-
-    const signInWithGithub = ( modalType: string ) => {
-        signInWithPopup( auth, githubProvider ).then( user => {
-            // Fecha o modal que estiver aberto apos o login
-            globalEvents.setModalsController( prev => ({
-                ...prev,
-                isLoginModalActive: modalType === 'login' ? !prev.isLoginModalActive : prev.isLoginModalActive,
-                isRegisterModalActive: modalType === 'register' ? !prev.isRegisterModalActive : prev.isRegisterModalActive,
-            }));
-
-            // Mensagem de boas vindas ao usuario
-            extractName( user.user.displayName ).then(( name ) => {
-                toast.success(`Bem-vindo de volta ${name}!`, {
-                    position: 'bottom-right',
-                    autoClose: 3000
-                });
-            })
-
-        }).catch( error => {
-            console.error( error );
-
-            // Lança uma mensagem de erro ao modal para indicar que houve um erro com a operação
-            globalEvents.setModalsController( prev => ({
-                ...prev,
-                githubAuthErrorMessage: error.message
-            }))
-        });
-    };
-
-    // Adiciona algumas informações extras do usuario como, nome e id no Realtime DB
-    const addUserToDb = ( userName: string, userId: string ) => {
-        const db = getDatabase(app);
-
-        return new Promise( resolve  => {
-            set(getDatabaseRef( db, `users/${userId}` ), {
-                name: userName,
-                photo: ''
-            }).then(() => {
-                resolve( null );
             });
-        })
+        } catch ( error ) {
+            if ( error instanceof FirebaseError ) {
+                console.error( error.message );
+
+                const customErrorMessage = firebaseErrorMessages[ error.code as keyof typeof firebaseErrorMessages ] || 'Não foi possível desconectar sua conta, tente novamente';
+
+                toast.success(`${customErrorMessage}`, { 
+                    position: 'bottom-right',
+                    autoClose: 3000
+                });
+            };
+        };
     };
 
-    const registerUser = ( name: string, email: string, password: string ) => {
-        // Cria o usuario
-        createUserWithEmailAndPassword( auth, email, password ).then(( createdUser ) => {
-            // Depois de criado, o nome de usuario e atualizado
-            updateProfile( createdUser.user, { displayName: name }).then(() => {
-                // Atualiza o contexto com os dados do usuario
-                if ( auth.currentUser ) {
-                    updateUserContext( auth.currentUser );
-
-                    // Mensagem de boas vindas ao usuario
-                    extractName( auth.currentUser.displayName ).then(( name ) => {
-                        toast.success(`Parabéns ${name}, sua conta foi criada!`, {
-                            position: 'bottom-right',
-                            autoClose: 3000
-                        });
-                    })
+    const signInWithGoogle = async ( modalType: string ) => {
+        try {
+            const user = await signInWithPopup( auth, googleProvider );
+            
+            if ( user.user ) {
+                // Verifica se o usuário já existe no banco de dados
+                const userExists = await fetchUserOnDb( user.user.uid );
+                
+                if ( !userExists ) {
+                    // Adiciona o usuário ao banco de dados
+                    await addUserToDb( '', user.user.uid );
                 }
+                
+                // Fecha o modal que estiver aberto após o login
+                globalEvents.setModalsController(prev => ({
+                    ...prev,
+                    isLoginModalActive: modalType === 'login' ? !prev.isLoginModalActive : prev.isLoginModalActive,
+                    isRegisterModalActive: modalType === 'register' ? !prev.isRegisterModalActive : prev.isRegisterModalActive,
+                }));
+                
+                // Exibe mensagem de boas-vindas ao usuário
+                const userName = await extractName( user.user.displayName );
+                toast.success(`Bem-vindo ${userName}!`, {
+                    position: 'bottom-right',
+                    autoClose: 3000
+                });
+            };
+            
+        } catch ( error ) {
+            if ( error instanceof FirebaseError ) {
+                console.error( error.message );
+                
+                // Atualiza o modal com a mensagem de erro
+                globalEvents.setModalsController( prev => ({
+                    ...prev,
+                    githubAuthErrorMessage: error.message
+                }));
+            };
+        };
+    };
+   
+    const signInWithGithub = async ( modalType: string ) => {
+        try {
+            const user = await signInWithPopup( auth, githubProvider );
+            
+            if ( user.user ) {
+                // Verifica se o usuário já existe no banco de dados
+                const userExists = await fetchUserOnDb( user.user.uid );
+                
+                if ( !userExists ) {
+                    // Adiciona o usuário ao banco de dados
+                    await addUserToDb( '', user.user.uid );
+                }
+                
+                // Fecha o modal que estiver aberto após o login
+                globalEvents.setModalsController(prev => ({
+                    ...prev,
+                    isLoginModalActive: modalType === 'login' ? !prev.isLoginModalActive : prev.isLoginModalActive,
+                    isRegisterModalActive: modalType === 'register' ? !prev.isRegisterModalActive : prev.isRegisterModalActive,
+                }));
+                
+                // Exibe mensagem de boas-vindas ao usuário
+                const userName = await extractName( user.user.displayName );
+                toast.success(`Bem-vindo ${userName}!`, {
+                    position: 'bottom-right',
+                    autoClose: 3000
+                });
+            };
+            
+        } catch ( error ) {
+            if ( error instanceof FirebaseError ) {
+                console.error( error.message );
+                
+                // Atualiza o modal com a mensagem de erro
+                globalEvents.setModalsController( prev => ({
+                    ...prev,
+                    githubAuthErrorMessage: error.message
+                }));
+            };
+        };
+    };
+    
 
-                // Fecha o modal do formulario de registro
+    // Adiciona algumas informações extras do usuário como, nome e id no Realtime DB
+    const addUserToDb = async ( userEmail: string, userId: string ): Promise<void> => {
+        const db = getDatabase( app );
+        const userRef = getDatabaseRef( db, `users/${userId}` );
+
+        try {
+            // Adiciona os dados do usuário ao Realtime DB
+            await set( userRef, {
+                email: userEmail
+            });
+
+        } catch ( error ) {
+            throw new Error("Erro ao adicionar usuário ao banco de dados" + error);
+        };
+    };
+
+
+    const registerUser = async ( name: string, email: string, password: string ) => {
+        // Controla uma animação de carregamento
+        globalEvents.setModalsController( prev => ({
+            ...prev,
+            isUserCreatingAnAccount: true
+        }));
+
+        try {
+            // Cria o usuário
+            const response = await createUserWithEmailAndPassword( auth, email, password );
+            
+            if ( response && auth.currentUser ) {
+                // Atualiza o nome de usuário
+                await updateProfile( auth.currentUser, { displayName: name });
+
+                // Verifica se o usuário já existe no banco de dados
+                const userExists = await fetchUserOnDb( auth.currentUser.uid );
+                
+                if ( !userExists ) {
+                    // Adiciona o usuário ao banco de dados
+                    await addUserToDb( email, auth.currentUser.uid );
+                };
+        
+                // Atualiza o contexto com os dados do usuário
+                updateUserContext( auth.currentUser );
+                
+                // Exibe mensagem de boas-vindas
+                const userName = await extractName( auth.currentUser?.displayName ?? name );
+                toast.success( `Parabéns ${userName}, sua conta foi criada!`, {
+                    position: 'bottom-right',
+                    autoClose: 3000
+                });
+                
+                // Fecha o modal do formulário de registro
                 globalEvents.setModalsController( prev => ({
                     ...prev,
                     isRegisterModalActive: !prev.isRegisterModalActive
                 }));
-            });
-        }).catch( error => {
-            console.error( error.message );
 
-            // Lança uma mensagem de erro ao modal para indicar que houve um erro com a operação
+                // Controla uma animação de carregamento
+                globalEvents.setModalsController( prev => ({
+                    ...prev,
+                    isUserCreatingAnAccount: false
+                }));
+
+            } else {
+                // Atualiza o modal com a mensagem de erro
+                globalEvents.setModalsController(prev => ({
+                    ...prev,
+                    registerErrorMessage: 'Não foi possível criar sua conta, tente novamente'
+                }));
+
+                // Controla uma animação de carregamento
+                globalEvents.setModalsController( prev => ({
+                    ...prev,
+                    isUserCreatingAnAccount: false
+                }));
+            };
+        
+        } catch ( error ) {
+            if ( error instanceof FirebaseError ) {
+
+                if ( error.code !== "auth/network-request-failed" ) {        
+                    // Atualiza o modal com a mensagem de erro
+                    globalEvents.setModalsController(prev => ({
+                        ...prev,
+                        registerErrorMessage: firebaseErrorMessages[error.code as keyof typeof firebaseErrorMessages] || 'Não foi possível criar sua conta, tente novamente'
+                    }));
+                }
+            };
+
+            // Controla uma animação de carregamento
             globalEvents.setModalsController( prev => ({
                 ...prev,
-                registerErrorMessage: error.message
-            }))
-        });
+                isUserCreatingAnAccount: false
+            }));
+        };
     };
-        
 
     // Busca informações do usuario no Realtime DB com base no id
-    const fetchUserOnDb = async ( userId: string ): Promise<UserDataOnDb> => {
-        const db = getDatabase( app );
-        const userRef = getDatabaseRef( db, `users/${userId}` );
+    const fetchUserOnDb = async ( userId: string ) => {
+        try {
+            const db = getDatabase( app );
+            const userRef = getDatabaseRef( db, `users/${userId}` );
+            const snapshot = await get( userRef );
 
-        return new Promise(( resolve, reject ) => {
-            get( userRef ).then(( snapshot ) => {
-                if ( snapshot.exists() ) {
-                    const response = snapshot.val();
-                    resolve( response );
-                } else {
-                    reject( null )
-                }
-            })
-        })
+            if ( snapshot.exists() ) {
+                return snapshot.val() as UserDataOnDb;
+            }
+
+            return null;
+        
+        } catch ( error ) {
+            throw new Error('Erro ao buscar os dados do usuário' + error );
+        };
     };
 
-    const authenticateUser = async ( email: string, password: string, modalType: string ) => {
-        signInWithEmailAndPassword( auth, email, password ).then(( user ) => {
-            // Fecha o modal que estiver aberto apos o login ou registro
-            globalEvents.setModalsController( prev => ({
-                ...prev,
-                isLoginModalActive: modalType === 'login' ? !prev.isLoginModalActive : prev.isLoginModalActive,
-                isRegisterModalActive: modalType === 'register' ? !prev.isRegisterModalActive : prev.isRegisterModalActive,
-            }));
+    const authenticateUser = async ( email: string, password: string, modalType: string ): Promise<void> => {
+        // Controla uma animação de carregamento
+        globalEvents.setModalsController( prev => ({
+            ...prev,
+            isUserLoggingIntoAccount: true
+        }));
 
-            // Mensagem de boas vindas ao usuario
-            extractName( user.user.displayName ).then(( name ) => {
-                toast.success(`Bem-vindo de volta ${name}!`, {
+        try {
+            // Autentica o usuário com email e senha
+            const response = await signInWithEmailAndPassword( auth, email, password );
+
+            if ( response && auth.currentUser ) {
+                // Verifica se o usuário já existe no banco de dados
+                const userExists = await fetchUserOnDb( auth.currentUser.uid );
+                
+                if ( !userExists ) {
+                    // Adiciona o usuário ao banco de dados
+                    await addUserToDb( email, auth.currentUser.uid );
+                };
+
+                // Fecha o modal de login ou registro com base no tipo
+                globalEvents.setModalsController( prev => ({
+                    ...prev,
+                    isLoginModalActive: modalType === 'login' ? !prev.isLoginModalActive : prev.isLoginModalActive,
+                    isRegisterModalActive: modalType === 'register' ? !prev.isRegisterModalActive : prev.isRegisterModalActive,
+                }));
+        
+                // Exibe mensagem de boas-vindas ao usuário
+                const name = await extractName( auth.currentUser.displayName );
+                toast.success( `Bem-vindo de volta ${name}!`, {
                     position: 'bottom-right',
                     autoClose: 3000
                 });
-            })
-        }).catch( error => {
-            console.error( error );
 
-            // Lança uma mensagem ao modal para indicar que houve um erro com a operação
+                // Controla uma animação de carregamento
+                globalEvents.setModalsController( prev => ({
+                    ...prev,
+                    isUserLoggingIntoAccount: false
+                }));
+
+            } else {
+                // Atualiza o modal com a mensagem de erro
+                globalEvents.setModalsController(prev => ({
+                    ...prev,
+                    loginErrorMessage: 'Não foi possível acessar sua conta, tente novamente'
+                }));
+
+                // Controla uma animação de carregamento
+                globalEvents.setModalsController( prev => ({
+                    ...prev,
+                    isUserLoggingIntoAccount: false
+                }));
+            };;
+            
+        } catch ( error ) {
+            if ( error instanceof FirebaseError ) {
+                console.error(error);
+    
+                if ( error.code !== "auth/network-request-failed" ) {
+                    // Lança uma mensagem ao modal para indicar erro na operação
+                    globalEvents.setModalsController(prev => ({
+                        ...prev,
+                        loginErrorMessage: firebaseErrorMessages[error.code as keyof typeof firebaseErrorMessages] || 'Não foi possível acessar sua conta, tente novamente' 
+                    }));
+                };
+            };
+
+            // Controla uma animação de carregamento
             globalEvents.setModalsController( prev => ({
                 ...prev,
-                loginErrorMessage: error.message
-            }))
-        });
-    };
+                isUserLoggingIntoAccount: false
+            }));
+        };
+    };    
 
-    const updateUserData = ( newEmail: string, newName: string ) => {
-        // Verifica o novo email do usuario
-        newEmail !== userData.email && verifyNewUserEmail( newEmail );
-
-        if ( auth.currentUser ) {
-            // Atualiza o nome vinculado a conta do usuario 
-            newName !== auth.currentUser.displayName && updateProfile( auth.currentUser, { displayName: newName }).then(() => {
-            // Atualiza o contexto do usuario com o nome editado
-                auth.currentUser && extractName( auth.currentUser.displayName ).then( name => {
-                    toast.success('Nome de usuário alterado', {
-                        position: 'bottom-right',
-                        autoClose: 3000
-                    })
-                });
-            })
-        }
-    };
-
-    const verifyNewUserEmail = ( newEmail: string ) => {
-        const user = auth.currentUser;
-
-        if ( user ) {
-            verifyBeforeUpdateEmail( user, newEmail ).then(() => {
-                // Aciona o componente de verificação do novo email
-                globalEvents.setModalsController( prev => ({
-                    ...prev,
-                    IsVerificationLinkSent: true
-                }));    
-            }).catch( error => {
+    const updateUserData = async ( newEmail: string | null, newName: string | null ): Promise<void> => {
+        try {
+            // Verifica o novo email do usuário
+            if ( newEmail && newEmail !== userData.email ) {
+                const results = await fetchSignInMethodsForEmail( auth, newEmail );
+                
+                if ( results.length > 0 ) {
+                    globalEvents.setModalsController( prev => ({
+                        ...prev,
+                        verificationErrorMessage: 'Já existe uma conta vinculada a este email'
+                    }));
+                } else {
+                    await verifyNewUserEmail( newEmail );
+                }
+            };
+    
+            // Verifica o usuário atual para atualização de perfil
+            if ( auth.currentUser ) {
+                // Atualiza o nome vinculado à conta do usuário
+                if ( newName && newName !== auth.currentUser.displayName ) {
+                    await updateProfile( auth.currentUser, { displayName: newName });
+                    
+                    // Atualiza o contexto do usuário com o nome editado
+                    if ( auth.currentUser.displayName ) {
+                        await extractName( auth.currentUser.displayName );
+                        toast.success( 'Nome de usuário alterado', {
+                            position: 'bottom-right',
+                            autoClose: 3000
+                        });
+                    };
+                };
+            };
+        } catch ( error ) {
+            if ( error instanceof FirebaseError ) {
                 console.error( error.message );
+            };
+        };
+    };    
 
-                // Avisa o usuario de que e preciso se authenticar novamente
-                globalEvents.setModalsController( prev => ({
-                    ...prev,
-                    isLoginModalActive: !prev.isLoginModalActive,
-                    isProfileModalActive: !prev.isProfileModalActive,
-                    formInstructionsMessage: 'Faça login novamente para solicitar um link de atualização de email'
-                }));
-            })
-        }
+    const verifyNewUserEmail = async ( newEmail: string ) => {
+        // const user = auth.currentUser;
+    
+        // if ( user ) {
+        //     try {      
+        //         await verifyBeforeUpdateEmail( user, newEmail );
+                
+        //         // Notifica o usuário sobre o envio do link de verificação
+        //         toast.success(`Link de verificação enviado para ${newEmail}`, {
+        //             position: 'bottom-right',
+        //             autoClose: 3000
+        //         });
+
+        //     } catch ( error ) {
+        //         if ( error instanceof FirebaseError ) {
+        //             console.error(error.message);
+    
+        //             // Avisa o usuário de que é preciso se autenticar novamente
+        //             globalEvents.setModalsController(prev => ({
+        //                 ...prev,
+        //                 isLoginModalActive: !prev.isLoginModalActive,
+        //                 isProfileModalActive: !prev.isProfileModalActive,
+        //                 formInstructionsMessage: 'Faça login novamente para solicitar um link de atualização de email'
+        //             }));
+        //         };
+        //     };
+        // };
     };
 
     return {
@@ -420,7 +631,7 @@ export default function useFirebase() {
         registerUser,
         signInWithGoogle,
         signInWithGithub,
-        deleteCurrrentUser,
+        deleteCurrentUser,
         signOutUser,
         uploadUserImage,
         updateUserData,

@@ -49,22 +49,8 @@ export default function EditEmail( props: EditEmailProps ) {
 
     // Recebe os dados do schema apos o formulario ser submetido
     const handleFormSubmit = ( schemaData: editEmailSchemaProps ) => {
-        if ( userData.name ) {
-            updateUserData( schemaData.email, userData.name );        
-        };
+        updateUserData( schemaData.email, null );        
     };
-
-    // Define um tempo para que o aviso sobre o link verificação de email saia da tela
-    useEffect(() => {
-        if ( globalEvents.IsVerificationLinkSent ) {
-            setTimeout(() => {
-                globalEvents.setModalsController( prev => ({
-                    ...prev,
-                    IsVerificationLinkSent: false
-                }));
-            }, 6000);
-        }
-    }, [ globalEvents.IsVerificationLinkSent ]);
 
 
     return (
@@ -87,14 +73,15 @@ export default function EditEmail( props: EditEmailProps ) {
                 />
                 
                 { errors.email?.message ? (
-                    <p className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{errors.email.message}</p>
-                ) : ( globalEvents.IsVerificationLinkSent ? (
-                        <p className="text-orangered font-light mt-1 text-base max-[620px]:static">
-                            Um link de verificação foi enviado ao email informado no campo acima
+                    <p className="text-orangered font-normal mt-1 text-[15px] max-[620px]:static md:text-base">{errors.email.message}</p>
+                ) : ( globalEvents.verificationErrorMessage ? (
+                        <p className="text-success font-normal mt-1 text-[15px] max-[620px]:static md:text-base">
+                            {/* mensagem de erro sobre a verificação do email */}
+                            { globalEvents.verificationErrorMessage }
                         </p>
                     ) : (
                         userData.email !== formValues.email ? (
-                            <p className="text-orangered font-light mt-1 text-base max-[620px]:static">
+                            <p className="text-orangered font-normal mt-1 text-[15px] max-[620px]:static md:text-base">
                                 Para registrar um novo email será necessário verificá-lo
                             </p>
                         ) : null
@@ -118,7 +105,7 @@ export default function EditEmail( props: EditEmailProps ) {
                         className="btn bg-darkslateblue hover:bg-darkslateblue text-white px-7 rounded-lg font-normal text-base border-none outline-none ease-linear duration-200"
                         style={{
                             pointerEvents: formValues.email !== userData.email ? 'auto' : 'none',
-                            backgroundColor: formValues.email !== userData.email ? 'darkslateblue' : 'rgba(72, 61, 139, 0.4)'
+                            backgroundColor: formValues.email !== userData.email ? 'darkslateblue' : 'rgba(72, 61, 139, 0.4)',
                         }}
                         >
                             Atualizar

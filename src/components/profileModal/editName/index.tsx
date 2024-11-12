@@ -44,9 +44,7 @@ export default function EditName( props: EditNameProps ) {
 
     // Recebe os dados do schema apos o formulario ser submetido
     const handleFormSubmit = ( schemaData: EditNameSchemaProps ) => {
-        if ( userData.email ) {
-            updateUserData( userData.email, schemaData.name.trimEnd() );        
-        };
+        updateUserData( null, schemaData.name.trimEnd() ); 
     };
 
     return (
@@ -68,7 +66,7 @@ export default function EditName( props: EditNameProps ) {
                     }}
                 />
                 { errors.name?.message && (
-                    <p className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{errors.name.message}</p>
+                    <p className="text-orangered font-normal mt-1 text-[15px] max-[620px]:static md:text-base">{errors.name.message}</p>
                 )}
 
                 {/* // Confirmação da edição do nome de usuario */}

@@ -17,13 +17,11 @@ import 'react-lazy-load-image-component/src/effects/opacity.css';
 import { UserDataContext } from "@/components/contexts/authenticationContext";
 import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
 
-import { toast } from "react-toastify";
-
 export default function AccountDropdown() {
 
     const userData = useContext( UserDataContext );
     const globalEvents = useContext( GlobalEventsContext );
-    const { deleteCurrrentUser, signOutUser } = useFirebase();
+    const { deleteCurrentUser, signOutUser } = useFirebase();
 
     const ModalToggle = ( modalType: string ) => {
         globalEvents.setModalsController( prev  => ({
@@ -123,7 +121,7 @@ export default function AccountDropdown() {
                                 <BsDoorOpenFill className="text-lg"/>
                             </li>
 
-                            <li key='li-element-14' onClick={deleteCurrrentUser} className="text-error hover:bg-white/10 cursor-pointer h-12 w-full flex items-center flex-row-reverse xl:flex-row justify-end xl:justify-start">
+                            <li key='li-element-14' onClick={deleteCurrentUser} className="text-error hover:bg-white/10 cursor-pointer h-12 w-full flex items-center flex-row-reverse xl:flex-row justify-end xl:justify-start">
                                 Excluir conta
                                 <AiFillDelete className="text-[19px]"/>
                             </li>

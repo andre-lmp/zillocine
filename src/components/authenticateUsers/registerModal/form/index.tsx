@@ -71,7 +71,7 @@ export default function RegisterForm( props: componentProps ) {
             />
 
             { errors.name?.message && (
-                <p className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{errors.name.message}</p>
+                <p className="text-orangered font-normal mt-1 text-[15px] max-[620px]:static">{errors.name.message}</p>
             )}
 
             <label htmlFor="" className="text-sm font-medium mt-4">E-mail*</label>
@@ -90,13 +90,13 @@ export default function RegisterForm( props: componentProps ) {
             {/* Renderiza o erro passado pelo contexto caso houver, se não, renderiza o erro do registerSchema */}
             { globalEvents.registerErrorMessage ? (
                 <p 
-                    className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{globalEvents.registerErrorMessage}
+                    className="text-orangered font-normal mt-1 text-[15px] max-[620px]:static">{globalEvents.registerErrorMessage}
                 </p>
             ) : (
                 <>
                     { errors.email?.message && (
                         <p 
-                            className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{errors.email.message}
+                            className="text-orangered font-normal mt-1 text-[15px] max-[620px]:static">{errors.email.message}
                         </p>
                     )}
                 </>   
@@ -116,10 +116,27 @@ export default function RegisterForm( props: componentProps ) {
 
             
             { errors.password?.message && (
-                <p className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{errors.password.message}</p>
+                <p className="text-orangered font-normal mt-1 text-[15px] max-[620px]:static">{errors.password.message}</p>
             )}
 
-            <button className="mt-6 w-full rounded bg-darkslateblue flex items-center justify-center h-12 text-sm font-medium border-none outline-none btn hover:bg-darkslateblue text-white">Criar conta</button>
+            <button 
+                className="mt-6 w-full rounded bg-darkslateblue flex items-center justify-center h-12 font-medium border-none outline-none btn hover:bg-darkslateblue text-white ease-linear duration-150"
+                style={{ 
+                    backgroundColor: !globalEvents.isUserCreatingAnAccount ? 'darkslateblue' : 'rgba(72, 61, 139, 0.4)',
+                    fontSize: !globalEvents.isUserCreatingAnAccount ? '14px' : '15px'
+                }}
+            >
+                { globalEvents.isUserCreatingAnAccount ? (
+                    <>
+                        Criando conta
+                        <span className="loading loading-bars loading-md"></span>
+                    </>
+                ) : (
+                    <>
+                        Criar conta                    
+                    </>
+                )}
+            </button>
         </form>
     );
 };

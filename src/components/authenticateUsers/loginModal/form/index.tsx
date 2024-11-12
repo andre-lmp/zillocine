@@ -64,13 +64,13 @@ export default function LoginForm( props: componentProps ) {
             {/* Renderiza o erro passado pelo contexto caso houver, se não, renderiza o erro do loginSchema */}
             { globalEvents.loginErrorMessage ? (
                 <p 
-                    className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{globalEvents.loginErrorMessage}
+                    className="text-orangered font-normal mt-1 text-[15px] max-[620px]:static">{globalEvents.loginErrorMessage}
                 </p>
             ) : (
                 <>
                     { errors.email?.message && (
                         <p 
-                            className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{errors.email.message}
+                            className="text-orangered font-normal mt-1 text-[15px] max-[620px]:static">{errors.email.message}
                         </p>
                     )}
                 </>   
@@ -91,17 +91,34 @@ export default function LoginForm( props: componentProps ) {
             {/* Renderiza o erro passado pelo contexto caso houver, se não, renderiza o erro do loginSchema */}
             { globalEvents.loginErrorMessage ? (
                 <p 
-                    className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{globalEvents.loginErrorMessage}
+                    className="text-orangered font-normal mt-1 text-[15px] max-[620px]:static">{globalEvents.loginErrorMessage}
                 </p>
             ) : (
                 <>
                     { errors.password?.message && (
-                        <p className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{errors.password.message}</p>
+                        <p className="text-orangered font-normal mt-1 text-[15px] max-[620px]:static">{errors.password.message}</p>
                     )}
                 </>   
             )}
 
-            <button className="mt-6 w-full rounded bg-darkslateblue flex items-center justify-center h-12 text-sm font-medium border-none outline-none btn hover:bg-darkslateblue text-white">Acessar conta</button>
+            <button 
+                className="mt-6 w-full rounded bg-darkslateblue flex items-center justify-center h-12 text-sm font-medium border-none outline-none btn hover:bg-darkslateblue text-white"
+                style={{ 
+                    backgroundColor: !globalEvents.isUserLoggingIntoAccount ? 'darkslateblue' : 'rgba(72, 61, 139, 0.4)',
+                    fontSize: !globalEvents.isUserLoggingIntoAccount ? '14px' : '15px'
+                }}
+            >
+                { globalEvents.isUserLoggingIntoAccount ? (
+                    <>
+                        Conectando
+                        <span className="loading loading-bars loading-md"></span>
+                    </>
+                ) : (
+                    <>
+                        Acessar conta                    
+                    </>
+                )}
+            </button>
         </form>
     );
 };

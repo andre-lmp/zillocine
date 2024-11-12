@@ -29,7 +29,7 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
     const currentPathName = usePathname();
     const globalEvents = useContext( GlobalEventsContext );
     const userData = useContext( UserDataContext );
-    const { signOutUser, deleteCurrrentUser } = useFirebase();
+    const { signOutUser, deleteCurrentUser } = useFirebase();
 
     /*Responsavel por mudar o estilo dos elementos do menu mobile sempre que o usuario muda de pagina*/
     const changeMenuStyle = ( pathname: string ) => {
@@ -111,7 +111,7 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
                                         src={userData.photoUrl}
                                         height={64}
                                         width={64}
-                                        className="object-cover"
+                                        className="object-cover h-16 w-16 overflow-hidden"
                                     />
                                 ) : (
                                     <FaUserLarge/>
@@ -119,7 +119,7 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
                             </div>  
                             
                             { userData.name ? (
-                                <div className="">
+                                <div className="flex flex-col items-start">
                                     <p className="text-[19px] text-neutral-100">
                                         { userData.name }
                                     </p>
@@ -193,7 +193,7 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
                                     Sair
                                 </li>
 
-                                <li onClick={deleteCurrrentUser} key='li-element-25' className="text-error py-4">
+                                <li onClick={deleteCurrentUser} key='li-element-25' className="text-error py-4">
                                     <AiFillDelete className="text-[19px]"/>
                                     Excluir conta
                                 </li>
