@@ -1,3 +1,5 @@
+// Interface de tipos para objetos retornados pela api do TMDB
+import { tmdbObjProps } from "@/components/contexts/tmdbContext";
 
 export default function useTmdbFetch() {
     const token = process.env.NEXT_PUBLIC_TMDB_API_KEY;
@@ -144,6 +146,40 @@ export default function useTmdbFetch() {
         }); 
     };
 
+    // Busca multiplos filmes a partir de uma lista de ids
+    const fetchMultipleMovies = async ( idsList: string[] ): Promise<tmdbObjProps[]> => {
+        return new Promise(( resolve, reject ) => {
+            try {
+                Promise.all(idsList.map(async ( id ) => {
+                    const response = await fetchSingleMovie( id );
+                    return response;
+                })).then( result => {
+                    resolve( result );
+                });
+            } catch (error) {
+                console.error( error );  
+                reject( error ); 
+            }
+        });
+    };
+
+    // Busca multiplas series a partir de uma lista de ids
+    const fetchMultipleSeries = async ( idsList: string[] ): Promise<tmdbObjProps[]> => {
+        return new Promise(( resolve, reject ) => {
+            try {
+                Promise.all(idsList.map(async ( id ) => {
+                    const response = await fetchSingleSerie( id );
+                    return response;
+                })).then( result => {
+                    resolve( result );
+                });
+            } catch (error) {
+                console.error( error );  
+                reject( error ); 
+            }
+        });
+    };
+
     // Busca uma lista de ids selecionados
     const fetchSelectedIds = async ( idsList: string[], contentType: string ) => {
         return new Promise(( resolve, reject ) => {
@@ -216,6 +252,8 @@ export default function useTmdbFetch() {
         fetchSerieSeasons,
         fetchPopularMovies,
         fetchReleasedSeries,
-        fetchSelectedIds
+        fetchSelectedIds,
+        fetchMultipleMovies,
+        fetchMultipleSeries
     };
 };

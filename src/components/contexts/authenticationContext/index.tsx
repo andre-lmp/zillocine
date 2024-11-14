@@ -7,6 +7,8 @@ interface UserDataProps {
     name: null | string;
     email: null | string;
     photoUrl: null | string;
+    favoriteMovies: null | string[];
+    favoriteSeries: null | string[];
     uid: null | string;
 };
 
@@ -19,6 +21,8 @@ export const UserDataContext = createContext<ContextProps>({
     name: null,
     email: null,
     photoUrl: null,
+    favoriteMovies: null,
+    favoriteSeries: null,
     uid: null,
     setUserData: () => {}
 });
@@ -30,6 +34,8 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
         name: null,
         email: null,
         photoUrl: null,
+        favoriteMovies: null,
+        favoriteSeries: null,
         uid: null
     });
 

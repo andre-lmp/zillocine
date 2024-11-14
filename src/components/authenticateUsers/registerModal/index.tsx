@@ -59,6 +59,12 @@ export default function RegisterModal() {
                 {/* Conteudo do modal */}
                 <div className="z-50 bg-darkpurple rounded font-poppins px-4 my-10 py-5 w-[calc(100%-32px)] max-w-[420px] relative">
                    <h3 className="text-2xl font-semibold">Registre-se</h3>
+
+                   { globalEvents.formInstructionsMessage ? (
+                        <p 
+                            className="text-orangered font-normal mt-1 text-base max-[620px]:static">{globalEvents.formInstructionsMessage}
+                        </p>
+                    ) : null } 
                    
                    {/* Botão de login com google */}
                    <button 

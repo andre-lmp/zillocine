@@ -39,8 +39,8 @@ export default function HeaderCarousel(props: CarouselProps) {
     }; 
     
 
-    const handleSecondFetch = async ( fetchResponse: Promise<any> ) => {
-        const response = await fetchResponse;
+    const handleSecondFetch = async ( promise: Promise<any> ) => {
+        const response = await promise;
         if ( response.length ) { 
             checkAvailability( response );
         };
@@ -49,8 +49,8 @@ export default function HeaderCarousel(props: CarouselProps) {
     // Logo apos a pagina ser carregada, e feita uma verificação para chamar uma função de busca especifica para cada pagina.
     useEffect(() => {
 
-        const handleFirstFetch = async ( fetchResponse: Promise<any> ) => {
-            const response = await fetchResponse;
+        const handleFirstFetch = async ( promise: Promise<any> ) => {
+            const response = await promise;
             if ( response.length ) { 
                 selectContent( response );
             };

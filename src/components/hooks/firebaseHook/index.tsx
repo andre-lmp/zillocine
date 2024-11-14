@@ -1,16 +1,16 @@
 // Hooks
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 // Inicializador do Firebase
 import { initializeApp, FirebaseError } from "firebase/app";
 
 // Ferramentas para interação com o Firebase Realtime Database
-import { getDatabase, set, ref as getDatabaseRef, get, remove } from "firebase/database";
+import { getDatabase, set, ref as getDatabaseRef, get, remove, update } from "firebase/database";
 
-import { getDownloadURL, uploadBytes, getStorage, ref as getStorageRef, deleteObject, getMetadata } from "firebase/storage";
+import { getDownloadURL, uploadBytes, getStorage, ref as getStorageRef, deleteObject } from "firebase/storage";
 
 // Ferramentas para interação com o Firebase Authentication
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider, onAuthStateChanged, deleteUser, signOut, updateProfile, verifyBeforeUpdateEmail, User as UserInterface, fetchSignInMethodsForEmail } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider, deleteUser, signOut, updateProfile, User as UserInterface, fetchSignInMethodsForEmail } from "firebase/auth";
 
 // Contextos
 import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
@@ -76,19 +76,46 @@ export default function useFirebase() {
 
     auth.useDeviceLanguage();
 
+    const getCurrentUser = async () => {
+        try {
+            await auth.authStateReady();
+            
+            if ( auth.currentUser ) {
+                if ( !userData.isLoggedIn || auth.currentUser.uid !== userData.uid ) {
+                    updateUserContext( auth.currentUser );
+                    getUserFavoritesOnDb();
+                };
+            };
+        } catch (error) {
+            console.error( error );   
+        };
+    };
 
-    const updateUserContext = ( user: UserInterface ) => {
-        userData.setUserData( prev => ({
-            ...prev,
-            isLoggedIn: true,
-            photoUrl: user.photoURL,
-            email: user.email,
-            uid: user.uid
-        }));
+    // Observa mudanças no estado de authenticação do usuario
+    useEffect(() => {
+        getCurrentUser();
+    }, [])
+
+    const updateUserContext = async ( user: UserInterface ) => {
+        try {
+            const name = await extractName( user.displayName );
+            userData.setUserData( prev => ({
+                ...prev,
+                isLoggedIn: true,
+                name: name,
+                photoUrl: user.photoURL,
+                email: user.email,
+                uid: user.uid
+            }));
+
+        } catch (error) {
+            console.error( 'Erro ao atualizar o contexto com os dados do usuario' + error );
+        }
     };
 
     const resetUserContext = () => {
-        userData.setUserData(() => ({
+        userData.setUserData( prev => ({
+            ...prev,
             isLoggedIn: false,
             name: null,
             photoUrl: null,
@@ -98,8 +125,8 @@ export default function useFirebase() {
     };
 
     // Extrai o primeiro e último nome do usuário e atualiza o contexto
-    const extractName = async ( name: string | null ): Promise<string | undefined> => {
-        if ( !name ) return;
+    const extractName = async ( name: string | null ): Promise<string | null> => {
+        if ( !name ) return null;
 
         const extractedWords = name.split(' ');
         let userName;
@@ -109,12 +136,6 @@ export default function useFirebase() {
         } else {
             userName = `${extractedWords[0]} ${extractedWords.at(-1)}`;
         };
-
-        // Atualiza o contexto com o nome formatado
-        userData.setUserData( prev => ({
-            ...prev,
-            name: userName
-        }));
 
         return userName;
     };
@@ -189,24 +210,6 @@ export default function useFirebase() {
         };
     };
 
-
-    onAuthStateChanged(auth, (user) => {
-        if ( user ) {
-            user.reload().then(() => {
-                if ( !userData.isLoggedIn ) {
-                    // Atualiza o contexto com os dados do usuario
-                    updateUserContext( user );
-                    extractName( user.displayName );
-                };
-            })
-
-        } else {
-            if ( userData.isLoggedIn ) {
-                resetUserContext();
-            };
-        };;
-    });
-
     const deleteCurrentUser = async () => {
         const user = auth.currentUser;
     
@@ -215,6 +218,8 @@ export default function useFirebase() {
                 await deleteCurrentUserOnDb( user.uid );
                 await deleteCurrentUserOnStorage( user.uid );
                 await deleteUser( user );
+
+                resetUserContext();
 
                 toast.success('Conta excluída', {
                     position: 'bottom-right',
@@ -268,6 +273,8 @@ export default function useFirebase() {
         try {
             await signOut( auth );
 
+            resetUserContext();
+
             toast.success('Conta desconectada', { 
                 position: 'bottom-right',
                 autoClose: 3000
@@ -298,6 +305,9 @@ export default function useFirebase() {
                     // Adiciona o usuário ao banco de dados
                     await addUserToDb( '', user.user.uid );
                 }
+
+                // Atualiza o contexto com os dados do usuário
+                updateUserContext( user.user );
                 
                 // Fecha o modal que estiver aberto após o login
                 globalEvents.setModalsController(prev => ({
@@ -339,6 +349,9 @@ export default function useFirebase() {
                     // Adiciona o usuário ao banco de dados
                     await addUserToDb( '', user.user.uid );
                 }
+
+                // Atualiza o contexto com os dados do usuário
+                updateUserContext( user.user );
                 
                 // Fecha o modal que estiver aberto após o login
                 globalEvents.setModalsController(prev => ({
@@ -503,6 +516,9 @@ export default function useFirebase() {
                     await addUserToDb( email, auth.currentUser.uid );
                 };
 
+                // Atualiza o contexto com os dados do usuário
+                updateUserContext( auth.currentUser );
+
                 // Fecha o modal de login ou registro com base no tipo
                 globalEvents.setModalsController( prev => ({
                     ...prev,
@@ -626,6 +642,112 @@ export default function useFirebase() {
         // };
     };
 
+    const getUserFavoritesOnDb = async () => {
+        try {
+            const db = getDatabase( app );
+            const user = auth.currentUser;
+            const userRef = getDatabaseRef( db, `users/${user?.uid}` );
+            const snapshot = await get( userRef );
+            const userDataOnDb = snapshot.val();
+
+            userData.setUserData( prev => ({
+                ...prev,
+                favoriteMovies: userDataOnDb.favoriteMovies ? userDataOnDb.favoriteMovies : null
+            }));
+
+            userData.setUserData( prev => ({
+                ...prev,
+                favoriteSeries: userDataOnDb.favoriteSeries ? userDataOnDb.favoriteSeries : null
+            }));
+            
+        } catch (error) {
+            console.error( 'Erro ao buscar os favoritos do usuario' + error );
+        }
+    };
+
+    // Adiciona os filmes/series favoritos do usuario ao banco de dados
+    const addUserFavoritesToDb = async ( contentId: string, contentType: string ): Promise<void> => {
+        try {
+            const db = getDatabase( app );
+            const user = auth.currentUser;
+            const userRef = getDatabaseRef( db, `users/${user?.uid}` );
+
+            if ( contentType === 'movie' ) {
+                const snapshot = await get( userRef );
+                const userDataOnDb = snapshot.val()
+
+                if ( userDataOnDb.favoriteMovies ) {
+                    await update( userRef, {
+                        favoriteMovies: [contentId, ...userDataOnDb.favoriteMovies]
+                    });
+                } else {
+                    await update( userRef, {
+                        favoriteMovies: [contentId]
+                    });
+                };
+            };   
+
+            if ( contentType === 'serie' ) {
+                const snapshot = await get( userRef );
+                const userDataOnDb = snapshot.val()
+
+                if ( userDataOnDb.favoriteSeries ) {
+                    await update( userRef, {
+                        favoriteSeries: [contentId, ...userDataOnDb.favoriteSeries]
+                    });
+                } else {
+                    await update( userRef, {
+                        favoriteSeries: [contentId]
+                    });
+                };
+            };   
+
+            getUserFavoritesOnDb();
+
+        } catch (error) {
+            throw new Error( 'Erro ao adicionar item aos favoritos do usuario' + error );
+        }
+    };
+
+    const deleteUserFavoritesOnDb = async ( contentId: string, contentType: string ): Promise<void> => {
+        try {
+            const db = getDatabase( app );
+            const user = auth.currentUser;
+            const userRef = getDatabaseRef( db, `users/${user?.uid}` );
+
+            if ( contentType === 'movie' ) {
+                const snapshot = await get( userRef );
+                const userDataOnDb = snapshot.val()
+
+                if ( userDataOnDb.favoriteMovies ) {
+                    await update( userRef, {
+                        favoriteMovies: userDataOnDb.favoriteMovies.filter(( id: string ) => id !== contentId )
+                    });
+                };
+            };   
+
+            if ( contentType === 'serie' ) {
+                const snapshot = await get( userRef );
+                const userDataOnDb = snapshot.val()
+
+                if ( userDataOnDb.favoriteSeries ) {
+                    await update( userRef, {
+                        favoriteSeries: userDataOnDb.favoriteSeries.filter(( id: string ) => id !== contentId )
+                    });
+                } else {
+                    await update( userRef, {
+                        favoriteSeries: [contentId]
+                    });
+                };
+            };   
+
+            getUserFavoritesOnDb();
+
+        } catch (error) {
+            throw new Error( 'Erro ao deletar item dos favoritos do usuario' + error );
+        }
+    };
+
     return {
         authenticateUser,
         registerUser,
@@ -635,5 +757,7 @@ export default function useFirebase() {
         signOutUser,
         uploadUserImage,
         updateUserData,
+        addUserFavoritesToDb,
+        deleteUserFavoritesOnDb
     }
 };

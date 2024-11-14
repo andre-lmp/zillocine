@@ -15,7 +15,7 @@ import { CgNotes } from "react-icons/cg";
 import { IoMdDownload } from "react-icons/io";
 import { AiFillDelete } from "react-icons/ai";
 import { BsDoorOpenFill } from "react-icons/bs";
-import { FaHeart } from "react-icons/fa";
+import { FaRegHeart } from "react-icons/fa";
 
 // Componente para carregamento preguiçoso de imagens
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -158,22 +158,21 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
 
                         {/* Link para a pagina de pesquisa */}
                         <li key='li-element-18' id="/search" ref={(e) => { mobileNavLinks.current[3] = e }} className="text-neutral-500 py-4" onClick={drawerToggle}>
-                            <LuSearch/>
+                            <LuSearch className="text-xl"/>
                             <Link href={'/search'}>Pesquisa</Link>
                         </li>
 
-                        {/* Link para a pagina de downloads */}
-                        <li key='li-element-19' id="/downloads" ref={(e) => { mobileNavLinks.current[4] = e }} className="-translate-x-0.5 text-neutral-500 py-4" onClick={drawerToggle}>
-                            <IoMdDownload className="text-[23px] "/>
-                            <Link href={'/downloads'}>Downloads</Link>
+                        <li key='li-element-19' id="/favorites" ref={(e) => { mobileNavLinks.current[4] = e }} className="-translate-x-0.5 text-neutral-500 py-4 hidden lg:inline" onClick={drawerToggle}>
+                            <FaRegHeart className="text-[17px]"/>
+                            <Link href={'/favorites'}>Favoritos</Link>
                         </li>
                     
                         <li key='li-element-20' className="w-full mx-auto h-px bg-neutral-900 rounded-3xl my-4"></li>
 
                         {/* Link para o modal de favoritos */}
                         <li key='li-element-21' className="text-neutral-500 py-4">
-                            <FaHeart className="text-lg"/>
-                            Favoritos
+                            <IoMdDownload className="text-[23px] "/>
+                            <Link href={'/downloads'}>Downloads</Link>
                         </li>
 
                         {/* Link para a pagina sobre o projeto */}

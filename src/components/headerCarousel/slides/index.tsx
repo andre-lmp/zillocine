@@ -104,7 +104,7 @@ export function Carousel( props: carouselProps ) {
                     // Gera o slide caso tenha imagens disponiveis
                     content.backdrop_path || content.backdrop_path ? (
                         // Container do slide
-                        <SwiperSlide key={ `${props.currentPage}-${index}` }>
+                        <SwiperSlide key={ `${props.currentPage}-${content.id}` }>
                             <div className='flex flex-row-reverse slide-container'>
                                 <div className=''>
                                     {/* Imagem do slide */}

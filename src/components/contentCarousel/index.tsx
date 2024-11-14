@@ -1,11 +1,13 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, MouseEvent, MutableRefObject, useRef, useContext } from "react";
+import { useRouter } from 'next/navigation';
 
 // Hook personalizado do TMDB com funções de busca de conteudo
 import useTmdbFetch from "@/components/hooks/tmdbHook";
+import useFirebase from "@/components/hooks/firebaseHook";
 
-// Componentes do Swiper.js
+// Componentes do Swiper.js para carousel de slides
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import 'swiper/css';
@@ -15,8 +17,14 @@ import 'swiper/css/navigation';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/opacity.css';
 
+// Icones com React-icons
+import { FaRegHeart, FaHeart, FaPlay } from "react-icons/fa";
+
 // // Interface de tipo para objetos retornados pela api do TMDB
 import { tmdbObjProps } from "../contexts/tmdbContext";
+
+import { UserDataContext } from "../contexts/authenticationContext";
+import { GlobalEventsContext } from "../contexts/globalEventsContext";
 
 import Link from "next/link";
 
@@ -36,8 +44,12 @@ export default function ContentCarousel( props: carouselProps ) {
     const [ isLoading, setIsLoading ] = useState( true );
     const swiperBreakPoints = { 1024: { spaceBetween: 17 }};
     const { fetchMovies, fetchReleasedMovies, fetchSeries, fetchReleasedSeries } = useTmdbFetch();
+    const userData = useContext( UserDataContext );
+    const { addUserFavoritesToDb, deleteUserFavoritesOnDb } = useFirebase();
+    const globalEvents = useContext( GlobalEventsContext );
+    const router = useRouter(); 
 
-     // Lida com a promise retornada por uma função de busca do useTmdbFetch
+    // Lida com a promise retornada por uma função de busca do useTmdbFetch
     const fetchHandler = async ( fetchContent: Promise<any> ) => {
         const response = await fetchContent;
         if ( response.length ) {
@@ -82,6 +94,25 @@ export default function ContentCarousel( props: carouselProps ) {
         setContentData( filtered );
     };
 
+    // Define se o filme/serie e favorito ou nao, caso seja, salva no banco de dados
+    const toggleFavoriteButton = ( e: MouseEvent<HTMLButtonElement>, contentId: string ) => {
+        if ( userData.isLoggedIn ) {
+            if ( !e.currentTarget.classList.contains('favorite-button')) {
+                addUserFavoritesToDb( contentId, props.contentType );
+            } else {
+                deleteUserFavoritesOnDb( contentId, props.contentType );
+            };
+    
+            e.currentTarget.classList.toggle('favorite-button');
+        } else {
+            globalEvents.setModalsController( prev => ({
+                ...prev,
+                isRegisterModalActive: !prev.isRegisterModalActive,
+                formInstructionsMessage: 'Faça login ou crie uma conta para adicionar filmes e series aos seus favoritos'
+            }));
+        }
+    };
+
     return contentData.length ? (
         <div style={{ opacity: isLoading ? 0 : 1 }} className='px-4 w-full md:px-6 lg:px-8 ease-linear duration-200'>
 
@@ -101,49 +132,68 @@ export default function ContentCarousel( props: carouselProps ) {
                     }}
                     breakpoints={swiperBreakPoints}
                     modules={[ Navigation ]}
+                    resistanceRatio={0.1}
                 >
 
                     {/* Gerando slides a partir de um array de objetos retornados pela api do TMDB */}
                     { contentData.map(( item ) => (
-                        <SwiperSlide key={ item.id } style={{ width: 'auto', borderRadius: '4px', overflow: 'hidden'}}>
+
+                        <SwiperSlide 
+                            key={ item.id } 
+                            style={{ 
+                                width: 'auto', 
+                                borderRadius: '4px', 
+                                overflow: 'hidden'
+                            }}
+                        >
                                 {
                                     item.poster_path || item.backdrop_path ? (
-                                        <Link href={`/player/${ props.contentType }/${item.id}`}>
-                                            <Style.imageBox>
+                                        // <Link href={`/player/${ props.contentType }/${item.id}`}>
 
+                                        <Style.imageBox>
+
+                                            {/* Opção para adicionar o filme/serie aos favoritos */}
+                                            <button 
+                                                onClick={(e) => toggleFavoriteButton(e, item.id)} 
+                                                className={`${userData.favoriteMovies?.includes(item.id) || userData.favoriteSeries?.includes(item.id) ? 'favorite-button' : ''} absolute right-0 top-0 w-16 h-16 flex items-start justify-end z-30`}
+                                            >
+                                                <FaRegHeart className="not-favorited text-2xl text-white/70 absolute top-3 right-3 md:text-[22px]"/>
+
+                                                <FaHeart className="favorited text-2xl text-orangered absolute top-3 right-3  md:text-[22px]"/>
+                                            </button>
+                                            
+                                            <div className="slide-wrapper" onClick={() => router.push(`/player/${props.contentType}/${item.id}`)}>
                                                 {/* Imagem do conteudo a ser exibido */}
-                                                <LazyLoadImage
-                                                    src={`https://image.tmdb.org/t/p/original${item.poster_path ?? item.backdrop_path}`}
-                                                    alt={`${item.title ?? item.name} movie/serie presentation image`}
-                                                    width={176}
-                                                    height={260}
-                                                    effect="opacity"
-                                                    placeholderSrc={`https://image.tmdb.org/t/p/w92/${item.poster_path ?? item.backdrop_path}`}
-                                                    className='w-44 h-[267px] object-cover bg-darkpurple image rounded'
-                                                />
-                
+                                                <div className="relative image-container cursor-pointer">
+                                                    <LazyLoadImage
+                                                        src={`https://image.tmdb.org/t/p/original${item.poster_path ?? item.backdrop_path}`}
+                                                        alt={`${item.title ?? item.name} movie/serie presentation image`}
+                                                        width={176}
+                                                        height={260}
+                                                        effect="opacity"
+                                                        placeholderSrc={`https://image.tmdb.org/t/p/w92/${item.poster_path ?? item.backdrop_path}`}
+                                                        className='image w-44 h-[267px] object-cover bg-darkpurple rounded'
+                                                    />
+                                                    <FaPlay className="play-icon text-4xl absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"/>
+                                                </div>
                                                 {/* Container de informações sobre o conteudo */}
                                                 <div className="w-44 description flex flex-col gap-y-1 font-normal font-noto_sans text-sm">
-                                                    
                                                     {/* Titulo */}
                                                     <p className="font-raleway font-bold text-[15px] text-white line-clamp-1">{ item.title ?? item.name }
                                                     </p>
-
                                                     <div className="flex items-center gap-x-3">
                                                         {/* Data de lançamento */}
                                                         <p className="bg-orangered rounded-[4px] flex items-center w-fit px-3 h-5">{getReleaseDate( item.release_date ?? item.first_air_date )}
                                                         </p>
-
                                                         {/* Nota do publico ao conteudo */}
                                                         <p className="font-medium text-sm text-white">nota: {( item.vote_average).toFixed(0 )}</p>
                                                     </div>
-
                                                     {/* Descrição */}
                                                     <p className="line-clamp-2 text-neutral-200 leading-relaxed text-justif ">{ item.overview.length > 3 ? item.overview : 'Desculpe... não foi possível carregar a descrição deste conteúdo.' }
                                                     </p>
                                                 </div>
-                                            </Style.imageBox>
-                                        </Link>
+                                            </div>
+                                        </Style.imageBox>    
                                     ) : null
                                 }
                         </SwiperSlide>

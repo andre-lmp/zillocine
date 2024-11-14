@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { LuSearch } from "react-icons/lu";
 import { FiHome } from "react-icons/fi";
 import { BiMoviePlay, BiCameraMovie } from "react-icons/bi";
-import { IoMdDownload } from "react-icons/io";
+import { FaRegHeart } from "react-icons/fa";
 
 import Link from "next/link";
 
@@ -27,7 +27,7 @@ export default function Header() {
     /*Aqui atualizamos a posição da barra indicadora e tambem os stylos do link ativo sempre que o usuario muda de pagina*/
    useEffect(() => {
     navLinks.current.forEach( link => {
-        if ([ '/series', '/movies', '/search', '/', '/downloads' ].includes( currentPathName )) {
+        if ([ '/series', '/movies', '/search', '/', '/favorites' ].includes( currentPathName )) {
             if ( currentPathName === `/${link?.id}` ) {
                 if ( link ) {
                     const navBarCoordinates = navBar.current?.getBoundingClientRect();
@@ -148,10 +148,10 @@ export default function Header() {
                                     </Link>
                                 </li>
 
-                                <li key='li-element-4' id="downloads" className="hidden w-full text-lg lg:flex 2xl:text-[19px]" ref={(e) => { navLinks.current[3] = e }}>
-                                    <Link href='/downloads' className="flex items-center gap-x-2">
-                                        <IoMdDownload/>
-                                        Donwloads
+                                <li key='li-element-4' id="favorites" className="hidden w-full text-lg lg:flex 2xl:text-[19px]" ref={(e) => { navLinks.current[3] = e }}>
+                                    <Link href='/favorites' className="flex items-center gap-x-2">
+                                        <FaRegHeart />
+                                        Favoritos
                                     </Link>
                                 </li>
 
