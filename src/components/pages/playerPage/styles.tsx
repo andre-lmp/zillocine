@@ -117,3 +117,16 @@ export const ActorsCarouselWrapper = styled.div`
         }
     }
 `;
+
+export const CommentOptions = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    column-gap: 20px;
+
+    & button {
+        border: none;
+        outline: none;
+    }
+`;

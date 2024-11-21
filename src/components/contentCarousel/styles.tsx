@@ -4,10 +4,8 @@ export const imageBox = styled.div`
     width: 100%;
     height: 100%;
     background-color: #16142b;
-
-    & .slide-wrapper {
-        position: relative;
-    }
+    position: relative;
+    overflow: hidden;
 
     & .slide-wrapper::before {
         content: '';
@@ -19,7 +17,6 @@ export const imageBox = styled.div`
         right: 0;
         transform: translate(50%, -50%);
         background-image: radial-gradient( ellipse, #16142b, transparent, transparent );
-        /* background-image: radial-gradient( 225deg, #16142b, #16142b, transparent ); */
         z-index: 10;
     }
 
@@ -29,20 +26,7 @@ export const imageBox = styled.div`
 
     & .play-icon {
         transition: opacity .2s linear .2s;
-    }
-
-    & .play-icon {
         opacity: 0;
-    }
-
-    & .description {
-        position: absolute;
-        bottom: 6px;
-        padding: 0px 6px;
-        left: 0;
-        opacity: 0;
-        transform: translateY(100%);
-        transition: transform .2s ease-in-out; 
     }
 
     & .favorited {
@@ -59,6 +43,16 @@ export const imageBox = styled.div`
 
     & .favorite-button .not-favorited {
         display: none;
+    }
+
+    & .description {
+        position: absolute;
+        bottom: 6px;
+        padding: 0px 6px;
+        left: 0;
+        opacity: 0;
+        transform: translateY(100%);
+        transition: transform .2s ease-in-out; 
     }
 
     @media screen and ( width >= 768px ) {

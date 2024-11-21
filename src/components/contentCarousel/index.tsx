@@ -26,8 +26,6 @@ import { tmdbObjProps } from "../contexts/tmdbContext";
 import { UserDataContext } from "../contexts/authenticationContext";
 import { GlobalEventsContext } from "../contexts/globalEventsContext";
 
-import Link from "next/link";
-
 import * as Style from './styles';
 
 type carouselProps = {
@@ -139,16 +137,11 @@ export default function ContentCarousel( props: carouselProps ) {
                     { contentData.map(( item ) => (
 
                         <SwiperSlide 
-                            key={ item.id } 
-                            style={{ 
-                                width: 'auto', 
-                                borderRadius: '4px', 
-                                overflow: 'hidden'
-                            }}
+                            key={`main-slides-${item.id}`} 
+                            style={{ width: 'auto', borderRadius: '4px', overflow: 'hidden'}}
                         >
                                 {
                                     item.poster_path || item.backdrop_path ? (
-                                        // <Link href={`/player/${ props.contentType }/${item.id}`}>
 
                                         <Style.imageBox>
 
@@ -174,6 +167,7 @@ export default function ContentCarousel( props: carouselProps ) {
                                                         placeholderSrc={`https://image.tmdb.org/t/p/w92/${item.poster_path ?? item.backdrop_path}`}
                                                         className='image w-44 h-[267px] object-cover bg-darkpurple rounded'
                                                     />
+                                                    
                                                     <FaPlay className="play-icon text-4xl absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"/>
                                                 </div>
                                                 {/* Container de informações sobre o conteudo */}

@@ -17,6 +17,7 @@ import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
 import { UserDataContext } from "@/components/contexts/authenticationContext";
 
 import { toast } from "react-toastify";
+import { CommentProps } from "@/components/pages/playerPage/main/commentsSection";
 
 interface UserDataOnDb {
     name: string | null,
@@ -480,11 +481,11 @@ export default function useFirebase() {
 
     // Busca informações do usuario no Realtime DB com base no id
     const fetchUserOnDb = async ( userId: string ) => {
-        try {
-            const db = getDatabase( app );
-            const userRef = getDatabaseRef( db, `users/${userId}` );
-            const snapshot = await get( userRef );
+        const db = getDatabase( app );
+        const userRef = getDatabaseRef( db, `users/${userId}` );
+        const snapshot = await get( userRef );
 
+        try {
             if ( snapshot.exists() ) {
                 return snapshot.val() as UserDataOnDb;
             }
@@ -598,7 +599,13 @@ export default function useFirebase() {
                     
                     // Atualiza o contexto do usuário com o nome editado
                     if ( auth.currentUser.displayName ) {
-                        await extractName( auth.currentUser.displayName );
+                        const extractedName = await extractName( auth.currentUser.displayName );
+
+                        userData.setUserData( prev => ({
+                            ...prev, 
+                            name: extractedName
+                        }));
+
                         toast.success( 'Nome de usuário alterado', {
                             position: 'bottom-right',
                             autoClose: 3000
@@ -643,21 +650,21 @@ export default function useFirebase() {
     };
 
     const getUserFavoritesOnDb = async () => {
-        try {
-            const db = getDatabase( app );
-            const user = auth.currentUser;
-            const userRef = getDatabaseRef( db, `users/${user?.uid}` );
-            const snapshot = await get( userRef );
-            const userDataOnDb = snapshot.val();
+        const db = getDatabase( app );
+        const user = auth.currentUser;
+        const userRef = getDatabaseRef( db, `users/${user?.uid}` );
+        const snapshot = await get( userRef );
+        const userDataOnDb = snapshot.val();
 
+        try {
             userData.setUserData( prev => ({
                 ...prev,
-                favoriteMovies: userDataOnDb.favoriteMovies ? userDataOnDb.favoriteMovies : null
+                favoriteMovies: userDataOnDb.favoriteMovies ?? null
             }));
 
             userData.setUserData( prev => ({
                 ...prev,
-                favoriteSeries: userDataOnDb.favoriteSeries ? userDataOnDb.favoriteSeries : null
+                favoriteSeries: userDataOnDb.favoriteSeries ?? null
             }));
             
         } catch (error) {
@@ -667,11 +674,11 @@ export default function useFirebase() {
 
     // Adiciona os filmes/series favoritos do usuario ao banco de dados
     const addUserFavoritesToDb = async ( contentId: string, contentType: string ): Promise<void> => {
-        try {
-            const db = getDatabase( app );
-            const user = auth.currentUser;
-            const userRef = getDatabaseRef( db, `users/${user?.uid}` );
+        const db = getDatabase( app );
+        const user = auth.currentUser;
+        const userRef = getDatabaseRef( db, `users/${user?.uid}` );
 
+        try {
             if ( contentType === 'movie' ) {
                 const snapshot = await get( userRef );
                 const userDataOnDb = snapshot.val()
@@ -710,11 +717,11 @@ export default function useFirebase() {
     };
 
     const deleteUserFavoritesOnDb = async ( contentId: string, contentType: string ): Promise<void> => {
-        try {
-            const db = getDatabase( app );
-            const user = auth.currentUser;
-            const userRef = getDatabaseRef( db, `users/${user?.uid}` );
+        const db = getDatabase( app );
+        const user = auth.currentUser;
+        const userRef = getDatabaseRef( db, `users/${user?.uid}` );
 
+        try {
             if ( contentType === 'movie' ) {
                 const snapshot = await get( userRef );
                 const userDataOnDb = snapshot.val()
@@ -748,6 +755,95 @@ export default function useFirebase() {
         }
     };
 
+    const addUserCommentsToDb = async ( commentData: CommentProps, contentId: string ): Promise<void> => {
+        const db = getDatabase( app );
+        const commentRef = getDatabaseRef( db, `comments/${contentId}/${commentData.id}` );
+        const query = getDatabaseRef( db, `comments/${contentId}` );
+
+        try {
+            const snapshot = await get( query );
+            if (snapshot.exists()) {
+                await update( commentRef, {
+                    comment: commentData
+                });
+
+            } else {
+                await set( commentRef, {
+                    comment: commentData
+                });
+            }
+
+        } catch (error) {
+            throw new Error( 'Erro ao adicionar comentario ao banco de dados' + error );
+        };
+    };
+
+    const getCommentsOnDb = async ( contentId: string ) => {
+        const db = getDatabase( app );
+        const commentRef = getDatabaseRef( db, `comments/${contentId}` );
+
+        try {
+            const snapshot = await get( commentRef );
+
+            if (snapshot.exists()) {
+                return snapshot.val();
+            };
+
+            return null;
+
+        } catch (error) {
+            console.error( error );
+        };
+    };
+
+    const getUserReactionOnDb = async ( ...commentsIds: string[] ): Promise<Record<string, any>[]> => {
+        const db = getDatabase( app );
+        const user = auth.currentUser;
+        
+        return new Promise(( resolve, reject ) => {
+            try {
+                Promise.all(commentsIds.map(async ( id ) => {
+                    const reactionRef = getDatabaseRef( db, `reactions/${id}/${user?.uid}` );
+                    const userReaction = await get( reactionRef );
+                    return { 
+                        id: id,
+                        userReaction: userReaction.exists() ? userReaction.val().reaction : null
+                    };
+                })).then(( reaction ) => {
+                    resolve( reaction );
+                });
+
+            } catch (error) {
+                reject( error );
+            };
+        });
+    };
+
+    const updateUserReactionOnDb = async ( commentId: string, reaction: string ) => {
+        const user = auth.currentUser;
+        const db = getDatabase( app );
+        const reactionRef = getDatabaseRef( db, `reactions/${commentId}/${user?.uid}` );
+
+        try {
+            const snapshot = await get( reactionRef );
+            const prevUserReaction = snapshot.val();
+
+            if ( prevUserReaction && prevUserReaction.reaction === reaction ) {
+                await update( reactionRef, { reaction: null });
+            };
+
+            if (( prevUserReaction && prevUserReaction.reaction !== reaction ) || !prevUserReaction ) {
+                await update( reactionRef, { reaction });
+            };
+
+            const userReaction = await getUserReactionOnDb( commentId );
+            return userReaction;
+
+        } catch (error) {
+            throw new Error( 'Erro ao adicionar reação do usuario ao banco de dados' + error );
+        }
+    };
+
     return {
         authenticateUser,
         registerUser,
@@ -758,6 +854,10 @@ export default function useFirebase() {
         uploadUserImage,
         updateUserData,
         addUserFavoritesToDb,
-        deleteUserFavoritesOnDb
+        deleteUserFavoritesOnDb,
+        addUserCommentsToDb,
+        getCommentsOnDb,
+        updateUserReactionOnDb,
+        getUserReactionOnDb
     }
 };

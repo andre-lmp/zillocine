@@ -86,7 +86,7 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
         <div className="drawer">
             <input id="my-drawer" type="checkbox" className="drawer-toggle" ref={drawerInput}/>
             
-            <div className="drawer-content z-30">
+            <div className="drawer-content z-40">
                 { children }
             </div>
 

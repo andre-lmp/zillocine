@@ -7,6 +7,9 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 // Carousel com os atores principais do filme/serie
 import { MainActors } from "./actorsCarousel";
 
+// Seção de comentarios e avaliações de usuarios sobre o filme/serie
+import UsersComments from "./commentsSection";
+
 import * as Style from '@/components/pages/playerPage/styles';
 
 type ComponentProps = {
@@ -15,7 +18,6 @@ type ComponentProps = {
 };
 
 export default function Main( props: ComponentProps ) {
-    console.log(props.contentData);
 
     // Obtem a nota do publico sobre o conteudo
     const getImdbReviews = ( vote_average: number, vote_count: number ) => {
@@ -265,7 +267,10 @@ export default function Main( props: ComponentProps ) {
                     </div>
 
                     <MainActors actorsData={props.contentData.credits.cast ?? []}/>
-                </div>     
+
+                </div>
+
+                <UsersComments/>
         </div>
     );
 };

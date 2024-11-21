@@ -160,59 +160,57 @@ export default function FavoritesPage() {
                     {/* Seção de aprensentação do filmes e series favoritos */}
                     <section className="flex flex-col gap-y-7 items-start mt-10">
                         { contentData.map( content => (
-                            content.backdrop_path || content.backdrop_path ? (
-                                // Container de apresentação com informações do filme/serie
-                                <div key={`favorites-${content.id}`} className="w-full flex flex-row gap-x-3">
-                                    <div className="w-1/3 max-w-md max-h-56 aspect-[16/9] rounded-md overflow-hidden">
-                                        {/* Imagem do filme/serie */}
-                                        <LazyLoadImage
-                                            src={`https://image.tmdb.org/t/p/original${content.poster_path ?? content.backdrop_path}`}
-                                            alt={`${content.title ?? content.name} movie/serie presentation image`}
-                                            width={'100%'}
-                                            height={'100%'}
-                                            placeholderSrc={`https://image.tmdb.org/t/p/w92/${content.poster_path ?? content.backdrop_path}`}
-                                            className='bg-darkpurple object-cover w-full h-full'
-                                            effect='opacity'
-                                        />
-                                    </div>
+                            // Container de apresentação com informações do filme/serie
+                            <div key={`favorites-${content.id}`} className="w-full flex flex-row gap-x-3">
+                                <div className="w-1/3 max-w-md max-h-56 aspect-[16/9] rounded-md overflow-hidden">
+                                    {/* Imagem do filme/serie */}
+                                    <LazyLoadImage
+                                        src={`https://image.tmdb.org/t/p/original${content.poster_path ?? content.backdrop_path}`}
+                                        alt={`${content.title ?? content.name} movie/serie presentation image`}
+                                        width={'100%'}
+                                        height={'100%'}
+                                        placeholderSrc={`https://image.tmdb.org/t/p/w92/${content.poster_path ?? content.backdrop_path}`}
+                                        className='bg-darkpurple object-cover w-full h-full'
+                                        effect='opacity'
+                                    />
+                                </div>
 
-                                    {/* Detalhes do filme/serie */}
-                                    <div className="w-2/3 flex flex-col items-start">
-                                        <h3 className="font-raleway font-bold text-xl line-clamp-1">{ content.title ?? content.name }</h3>
+                                {/* Detalhes do filme/serie */}
+                                <div className="w-2/3 flex flex-col items-start">
+                                    <h3 className="font-raleway font-bold text-xl line-clamp-1">{ content.title ?? content.name }</h3>
 
-                                        <div className='flex gap-x-4 sm:gap-x-6 gap-y-3 flex-nowrap items-center mt-2 overflow-hidden justify-center md:justify-start'>
+                                    <div className='flex gap-x-4 sm:gap-x-6 gap-y-3 flex-nowrap items-center mt-2 overflow-hidden justify-center md:justify-start'>
 
-                                            {/* Ano de lançamento */}
-                                            <p className='bg-orangered rounded-md w-fit px-3 h-7 flex items-center text-base font-normal font-noto_sans md:mx-0'>
-                                                { getReleaseDate( content.release_date ?? content.first_air_date )}
-                                            </p>
+                                        {/* Ano de lançamento */}
+                                        <p className='bg-orangered rounded-md w-fit px-3 h-7 flex items-center text-base font-normal font-noto_sans md:mx-0'>
+                                            { getReleaseDate( content.release_date ?? content.first_air_date )}
+                                        </p>
 
-                                            {/* Numero de temporadas */}
-                                            { content.seasons?.length > 0 && <p className="hidden sm:inline font-noto_sans whitespace-nowrap text-base font-normal text-neutral-400">{content.seasons.length} Temporada(s)</p> }
+                                        {/* Numero de temporadas */}
+                                        { content.seasons?.length > 0 && <p className="hidden sm:inline font-noto_sans whitespace-nowrap text-base font-normal text-neutral-400">{content.seasons.length} Temporada(s)</p> }
 
-                                            {/* Tempo de duração */}
-                                            {getRunTime( content.runtime ?? null )}
+                                        {/* Tempo de duração */}
+                                        {getRunTime( content.runtime ?? null )}
 
-                                            {/* Nota do publico ao conteudo */}
-                                            {getImdbReviews( content.vote_average, content.vote_count )}
+                                        {/* Nota do publico ao conteudo */}
+                                        {getImdbReviews( content.vote_average, content.vote_count )}
 
-                                            {/* Logo da produtora */}
-                                            <div className='hidden 2xl:inline'>
-                                                {getCompanyLogo( content.production_companies )}
-                                            </div>
-
-                                            <AiFillDelete className="text-2xl text-orangered/60 md:hover:text-orangered cursor-pointer" onClick={() => {deleteFavorite( content )}}/>
+                                        {/* Logo da produtora */}
+                                        <div className='hidden 2xl:inline'>
+                                            {getCompanyLogo( content.production_companies )}
                                         </div>
 
-                                        <p className="my-3 text-[17px] font-noto_sans font-normal text-neutral-400 leading-relaxed line-clamp-3">{ content.overview }</p>
-
-                                        <button onClick={() => {nextNavigate( content )}} className="px-20 btn bg-white/10 hover:bg-white/10 text-[17px] font-noto_sans font-normal text-white border-none outline-none rounded-md cursor-pointer">
-                                            <FaPlay className="text-[15px]"/>
-                                            Assitir
-                                        </button>
+                                        <AiFillDelete className="text-2xl text-orangered/60 md:hover:text-orangered cursor-pointer" onClick={() => {deleteFavorite( content )}}/>
                                     </div>
+
+                                    <p className="my-3 text-[17px] font-noto_sans font-normal text-neutral-400 leading-relaxed line-clamp-3">{ content.overview }</p>
+
+                                    <button onClick={() => {nextNavigate( content )}} className="px-20 btn bg-white/10 hover:bg-white/10 text-[17px] font-noto_sans font-normal text-white border-none outline-none rounded-md cursor-pointer">
+                                        <FaPlay className="text-[15px]"/>
+                                        Assitir
+                                    </button>
                                 </div>
-                            ) : null
+                            </div>
                         ))}
                     </section>
                 </div>

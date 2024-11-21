@@ -9,7 +9,7 @@ import 'react-lazy-load-image-component/src/effects/opacity.css';
 import { PiArrowElbowDownRightBold } from "react-icons/pi";
 
 // Modulos do Swiper.js para carousel de slides
-import { Pagination, Autoplay, EffectFade } from 'swiper/modules';
+import { Pagination, Autoplay, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
@@ -97,7 +97,11 @@ export function Carousel( props: carouselProps ) {
                 loop={true}
                 direction='horizontal'
                 pagination={{ clickable: true }}
-                modules={[ Pagination, Autoplay, EffectFade ]}
+                navigation={{
+                    prevEl: '.header-slides-prev',
+                    nextEl: '.header-slides-next'
+                }}
+                modules={[ Pagination, Autoplay, Navigation ]}
             >
                 {/* Gerando slides com base na resposta da api do TMDB */}
                 { props.contentData.map(( content, index ) => (
@@ -169,6 +173,20 @@ export function Carousel( props: carouselProps ) {
                 ))}
 
             </Swiper>
+
+            {/* Botão para o slide anterior */}
+            <div className='header-slides-prev absolute left-0 top-1/2 -translate-y-1/2 z-30 w-[45px] h-[45px] rounded-full -translate-x-1/2 cursor-pointer swiper-controllers items-center justify-center'>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="size-6 text-white">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                </svg>
+            </div>
+
+            {/* Botão para o proximo slide */}
+            <div className='header-slides-next absolute right-0 top-1/2 -translate-y-1/2 z-30 w-[45px] h-[45px] rounded-full translate-x-1/2 cursor-pointer swiper-controllers items-center justify-center'>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="size-6 text-white">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+            </div>
 
         </Style.headerSlides>
     );
