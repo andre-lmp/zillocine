@@ -4,8 +4,11 @@ import { useContext, useEffect } from "react";
 // Inicializador do Firebase
 import { initializeApp, FirebaseError } from "firebase/app";
 
+// Ferramentas para interação com o Firebase Realtime cloud functions;
+import { getFunctions, httpsCallable } from "firebase/functions";
+
 // Ferramentas para interação com o Firebase Realtime Database
-import { getDatabase, set, ref as getDatabaseRef, get, remove, update } from "firebase/database";
+import { getDatabase, set, ref as getDatabaseRef, get, remove, update, onValue } from "firebase/database";
 
 import { getDownloadURL, uploadBytes, getStorage, ref as getStorageRef, deleteObject } from "firebase/storage";
 
@@ -22,6 +25,15 @@ import { CommentProps } from "@/components/pages/playerPage/main/commentsSection
 interface UserDataOnDb {
     name: string | null,
     photoUrl: string | null,
+};
+
+type RequestData = {
+    path: string;
+}; 
+
+type ResponseData = {
+    sucess: boolean;
+    updatedData?: CommentProps;
 };
 
 const firebaseErrorMessages = {
@@ -70,11 +82,12 @@ export default function useFirebase() {
     };
 
     const app = initializeApp( firebaseConfig );
+    const functions = getFunctions( app );
     const auth = getAuth();
     const storage = getStorage( app );
     const googleProvider = new GoogleAuthProvider()
     const githubProvider = new GithubAuthProvider();
-
+    const interactAndNotify = httpsCallable<RequestData, Response>( functions, 'interactAndNotify' );
     auth.useDeviceLanguage();
 
     const getCurrentUser = async () => {
@@ -650,26 +663,26 @@ export default function useFirebase() {
     };
 
     const getUserFavoritesOnDb = async () => {
-        const db = getDatabase( app );
-        const user = auth.currentUser;
-        const userRef = getDatabaseRef( db, `users/${user?.uid}` );
-        const snapshot = await get( userRef );
-        const userDataOnDb = snapshot.val();
+        // const db = getDatabase( app );
+        // const user = auth.currentUser;
+        // const userRef = getDatabaseRef( db, `users/${user?.uid}` );
+        // const snapshot = await get( userRef );
+        // const userDataOnDb = snapshot.val();
 
-        try {
-            userData.setUserData( prev => ({
-                ...prev,
-                favoriteMovies: userDataOnDb.favoriteMovies ?? null
-            }));
+        // try {
+        //     userData.setUserData( prev => ({
+        //         ...prev,
+        //         favoriteMovies: userDataOnDb.favoriteMovies ?? null
+        //     }));
 
-            userData.setUserData( prev => ({
-                ...prev,
-                favoriteSeries: userDataOnDb.favoriteSeries ?? null
-            }));
+        //     userData.setUserData( prev => ({
+        //         ...prev,
+        //         favoriteSeries: userDataOnDb.favoriteSeries ?? null
+        //     }));
             
-        } catch (error) {
-            console.error( 'Erro ao buscar os favoritos do usuario' + error );
-        }
+        // } catch (error) {
+        //     console.error( 'Erro ao buscar os favoritos do usuario' + error );
+        // }
     };
 
     // Adiciona os filmes/series favoritos do usuario ao banco de dados
@@ -755,44 +768,58 @@ export default function useFirebase() {
         }
     };
 
-    const addUserCommentsToDb = async ( commentData: CommentProps, contentId: string ): Promise<void> => {
+    const addUserCommentsToDb = async ( commentData: CommentProps, contentId: string ) => {
         const db = getDatabase( app );
-        const commentRef = getDatabaseRef( db, `comments/${contentId}/${commentData.id}` );
-        const query = getDatabaseRef( db, `comments/${contentId}` );
+        const commentRef = getDatabaseRef( db, `comments/${commentData.id}` );
+        const commentIdsListRef = getDatabaseRef( db, `commentIdsList/${contentId}` );
 
         try {
-            const snapshot = await get( query );
+            await update( commentRef, { comment: commentData });
+            const snapshot = await get( commentIdsListRef );
+            
             if (snapshot.exists()) {
-                await update( commentRef, {
-                    comment: commentData
-                });
-
+                const list = snapshot.val();
+                await update( commentIdsListRef, { idsList: [...list.idsList, commentData.id]});
             } else {
-                await set( commentRef, {
-                    comment: commentData
-                });
-            }
+                await update ( commentIdsListRef, { idsList: [commentData.id] });
+            };
+
+            const commentsList = await getCommentsOnDb( contentId );
+            return commentsList;
 
         } catch (error) {
             throw new Error( 'Erro ao adicionar comentario ao banco de dados' + error );
         };
     };
 
-    const getCommentsOnDb = async ( contentId: string ) => {
+    const getCommentsOnDb = async ( contentId: string ): Promise<any> => {
         const db = getDatabase( app );
-        const commentRef = getDatabaseRef( db, `comments/${contentId}` );
+        const commentIdsListRef = getDatabaseRef( db, `commentIdsList/${contentId}` );
 
         try {
-            const snapshot = await get( commentRef );
-
+            const snapshot = await get( commentIdsListRef );
             if (snapshot.exists()) {
-                return snapshot.val();
+                const list = snapshot.val();
+                
+                return new Promise(( resolve, reject ) => {
+                    try {
+                        Promise.all( list.idsList.map( async ( commentId: string ) => {
+                            const commentRef = getDatabaseRef( db, `comments/${commentId}` );
+                            const commentData = await get( commentRef );
+                            return commentData.val().comment;
+                        })).then( result => {
+                            resolve( result );
+                        });
+                    } catch (error) {
+                        reject( error );
+                    };
+                });
+            } else {
+                return;
             };
 
-            return null;
-
         } catch (error) {
-            console.error( error );
+            console.error( 'Erro ao buscar comentario no banco de dados' + error );
         };
     };
 
@@ -836,8 +863,21 @@ export default function useFirebase() {
                 await update( reactionRef, { reaction });
             };
 
-            const userReaction = await getUserReactionOnDb( commentId );
-            return userReaction;
+            const updatedReaction = (await get( reactionRef )).val();
+            const response = await fetch(' https://updatereactionscount-6lpci3axsq-uc.a.run.app', {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ path: 'reactions', commentId, userId: auth.currentUser?.uid })
+            });
+
+            if ( response.ok ) {
+                const { updatedComment } = await response.json();
+                if ( !updatedReaction ) {
+                    return [updatedComment, updatedReaction];
+                };
+
+                return [updatedComment, updatedReaction.reaction];
+            };
 
         } catch (error) {
             throw new Error( 'Erro ao adicionar reação do usuario ao banco de dados' + error );
