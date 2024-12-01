@@ -94,7 +94,7 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
             <div className="drawer-side z-40">  
                 <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
                 
-                <div className="w-72 text-gray-50 pb-5 font-medium text-lg flex flex-col font-roboto min-h-screen bg-deepnight">
+                <div className="w-72 text-gray-50 pb-5 font-medium text-lg flex flex-col font-noto_sans min-h-screen bg-deepnight">
                     { !userData.isLoggedIn ? (
                         // Opções de authenticação
                         <div className="px-4 pt-5 bg-deepnight">
@@ -136,7 +136,7 @@ export default function MobileMenu({ children } : { children: React.ReactNode })
                     <div  className="w-full mx-auto h-px bg-neutral-900 rounded-3xl mt-7 mb-4"></div>
 
                     {/* Barra de navegação */}
-                    <ul className="mt- text-lg flex flex-col gap-y- *:flex *:pl-4 *:items-center *:gap-x-3">  
+                    <ul className="text-[17px] lg:text-lg flex flex-col gap-y- *:flex *:pl-4 *:items-center *:gap-x-3">  
 
                         {/* Link para pagina de inicio    */}
                         <li key='li-element-15' id="/" ref={(e) => { mobileNavLinks.current[0] = e }} className="text-neutral-500 py-4" onClick={drawerToggle}>

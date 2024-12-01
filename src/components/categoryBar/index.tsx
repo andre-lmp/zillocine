@@ -54,7 +54,7 @@ export default function CategoryBar( props: categoryBarProps ) {
 
     return (
         <Style.CategoriesWrapper>
-            <ul style={{ opacity: isLoading ? 0 : 1 }} className='font-roboto font-medium text-base *:cursor-pointer text-neutral-200 ease-linear duration-200'>
+            <ul style={{ opacity: isLoading ? 0 : 1 }} className='font-noto_sans font-medium text-base *:cursor-pointer text-neutral-200 ease-linear duration-200'>
                 { categoriesList }
             </ul>
         </Style.CategoriesWrapper>

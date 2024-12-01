@@ -72,7 +72,7 @@ export default function ProfileModal() {
             {/* Input que controla a abertura/fechamento do modal */}
             <input ref={checkboxInputRef} type="checkbox" id="my_modal_7" className="modal-toggle" />
 
-            <div className="modal font-poppins" role="dialog">
+            <div className="modal font-noto_sans" role="dialog">
                 <div className="relative max-w-[calc(100vw-32px)] w-[500px] bg-darkpurple rounded-xl">
                     {/* Conteudo do modal */}
                         <Swiper

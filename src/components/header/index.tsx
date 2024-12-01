@@ -124,7 +124,7 @@ export default function Header() {
                         </div>
 
                         {/* Barra de navegação */}
-                        <nav className="flex flex-row items-center font-poppins font-medium">
+                        <nav className="flex flex-row items-center font-noto_sans font-semibold">
                             <ul  ref={navBar} className="flex flex-row w-fit items-center *:text-neutral-300 justify-end gap-x-10 relative">
                                 
                                 <li key='li-element-1' id="" className="hidden md:flex text-lg cursor-pointer 2xl:text-[19px]" ref={(e) => { navLinks.current[0] = e }}>

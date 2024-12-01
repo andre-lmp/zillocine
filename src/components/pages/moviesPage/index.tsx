@@ -35,7 +35,7 @@ export default function MoviesPage() {
             
             { isPageLoaded && <CategoryBar genresList={tmdb.movieGenres} selectGenre={setSelectedGenre}/> }
 
-            { isPageLoaded && <div className='flex flex-col gap-y-5 pb-6'>
+            { isPageLoaded && <div className='flex flex-col gap-y-[30px] pb-6 mt-2'>
                 { carouselsList }
             </div> }
         </div>

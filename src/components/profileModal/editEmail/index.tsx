@@ -64,7 +64,7 @@ export default function EditEmail( props: EditEmailProps ) {
                     type="email"
                     id="user-email"
                     placeholder={userData.email ?? ''}
-                    className="font-medium border border-transparent outline-none text-sm placeholder:text-neutral-400 mt-2 bg-richblack rounded h-12 px-3 w-full"
+                    className="font-medium border border-transparent outline-none text-[15px] placeholder:text-neutral-400 mt-2 bg-richblack rounded h-12 px-3 w-full"
                     {...register('email')}
                     maxLength={41}
                     style={{

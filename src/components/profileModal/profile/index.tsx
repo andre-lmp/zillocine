@@ -128,7 +128,7 @@ export default function Profile( props: ProfileProps ) {
         {/* Editar nome de usuario  */}
         <p className="text-[17px] font-medium w-full text-left mt-10">*Nome de usuário</p>
 
-        <div className="flex items-center justify-start font-medium border border-transparent outline-none text-sm text-neutral-400 mt-2 bg-richblack rounded h-12 px-3 w-full relative">
+        <div className="flex items-center justify-start font-medium border border-transparent outline-none text-[15px] text-neutral-400 mt-2 bg-richblack rounded h-12 px-3 w-full relative">
             <p>{ userData.name }</p>
 
             <FaPencil 
@@ -145,7 +145,7 @@ export default function Profile( props: ProfileProps ) {
             <>
                 <p className="text-[17px] font-medium w-full text-left mt-4">*Email</p>
 
-                <div className="flex items-center justify-start font-medium border border-transparent outline-none text-sm text-neutral-400 mt-2 bg-richblack rounded h-12 px-3 w-full relative">
+                <div className="flex items-center justify-start font-medium border border-transparent outline-none text-[15px] text-neutral-400 mt-2 bg-richblack rounded h-12 px-3 w-full relative">
                     <p>{ userData.email }</p>
 
                     <FaPencil 

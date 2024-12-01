@@ -21,7 +21,7 @@ export default function Main() {
     ));
 
     return (
-        <div className="py-6 px- flex flex-col gap-y-7">
+        <div className="py-6 flex flex-col gap-y-[30px]">
             { carouselsList }
         </div> 
     )

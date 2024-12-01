@@ -36,7 +36,7 @@ export default function SeriesPage() {
             <HeaderCarousel isLoaded={setIsPageLoaded} currentPage='series'/>
             { isPageLoaded && <CategoryBar genresList={tmdb.serieGenres} selectGenre={setSelectedGenre}/> }
 
-            { isPageLoaded && <div className='flex flex-col gap-y-5 pb-6'>
+            { isPageLoaded && <div className='flex flex-col gap-y-[30px] pb-6 mt-2'>
                 { carouselsList }
             </div> }
         </div>

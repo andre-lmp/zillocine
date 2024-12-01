@@ -57,18 +57,18 @@ export default function RegisterModal() {
             <input type="checkbox" ref={checkboxInputRef} id="my_modal_6" className="modal-toggle" />
             <div className="modal h-lvh overflow-y-scroll w-screen overflow-x-hidden" role="dialog">
                 {/* Conteudo do modal */}
-                <div className="z-50 bg-darkpurple rounded font-poppins px-4 my-10 py-5 w-[calc(100%-32px)] max-w-[420px] relative">
-                   <h3 className="text-2xl font-semibold">Registre-se</h3>
+                <div className="z-50 bg-darkpurple rounded-md font-noto_sans px-4 my-10 py-5 w-[calc(100%-32px)] max-w-[420px] relative">
+                   <h3 className="text-2xl font-raleway font-bold">Registre-se</h3>
 
                    { globalEvents.formInstructionsMessage ? (
                         <p 
-                            className="text-orangered font-normal mt-1 text-base max-[620px]:static">{globalEvents.formInstructionsMessage}
+                            className="text-orangered font-normal mt-1 text-[17px] max-[620px]:static">{globalEvents.formInstructionsMessage}
                         </p>
                     ) : null } 
                    
                    {/* Botão de login com google */}
                    <button 
-                        className="w-full h-12 rounded mt-7 bg-white text-black text-sm font-semibold px-3 flex items-center gap-x-2 border-none outline-none btn hover:bg-white justify-start"
+                        className="w-full h-12 rounded-md mt-7 bg-white text-black text-base font-semibold px-3 flex items-center gap-x-2 border-none outline-none btn hover:bg-white justify-start"
                         onClick={() => {signInWithGoogle('register')}}
                     >
                     <FcGoogle className="text-3xl"/>
@@ -78,13 +78,13 @@ export default function RegisterModal() {
                    {/* Renderiza o erro passado pelo contexto caso houver, se não, renderiza o erro do registerSchema */}
                    { globalEvents.googleAuthErrorMessage ? (
                         <p 
-                            className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{globalEvents.googleAuthErrorMessage}
+                            className="text-orangered font-medium mt-1 text-base max-[620px]:static">{globalEvents.googleAuthErrorMessage}
                         </p>
                     ) : null }
 
                     {/* Botão de login com github */}
                    <button 
-                        className="w-full h-12 rounded mt-4 bg-deepnight text-white text-sm font-semibold px-3 flex items-center gap-x-2 border-none justify-start outline-none btn hover:bg-deepnight"
+                        className="w-full h-12 rounded-md mt-4 bg-deepnight text-white text-base font-semibold px-3 flex items-center gap-x-2 border-none justify-start outline-none btn hover:bg-deepnight"
                         onClick={() => {signInWithGithub('register')}}
                     >
                     <FaGithub className="text-3xl"/>
@@ -94,12 +94,12 @@ export default function RegisterModal() {
                     {/* Renderiza o erro passado pelo contexto caso houver, se não, renderiza o erro do registerSchema */}
                     { globalEvents.githubAuthErrorMessage ? (
                         <p 
-                            className="text-orangered font-normal mt-1 text-sm max-[620px]:static">{globalEvents.githubAuthErrorMessage}
+                            className="text-orangered font-medium mt-1 text-base max-[620px]:static">{globalEvents.githubAuthErrorMessage}
                         </p>
                     ) : null }
 
                    <div className="my-6 w-full roude relative before:w-full before:h-0.5 before:rounded-xl before:bg-darkslateblue before:absolute flex items-center justify-center before:-z-10">
-                        <p className="px-3 bg-darkpurple text-sm">Ou</p>
+                        <p className="px-3 bg-darkpurple text-[15px]">Ou</p>
                    </div>
 
                     {/* Formulario de registro em src/components/authenticateUsers/registerModal/form */}

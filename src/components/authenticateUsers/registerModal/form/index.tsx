@@ -11,14 +11,14 @@ import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
 
 export const registerSchema = z.object({
     name: z.string()
-        .min(3, 'Informe um nome')
+        .min(3, 'Campo obrigatório')
         .max(30, 'Limite de caracteres atingido')
         .refine(value => /^[a-zA-Z\s^ãõç]+$/.test(value), {
         message: 'Evite numeros ou caracteres especiais'
         }),
 
     email: z.string()
-        .min(1, 'Informe um email')
+        .min(1, 'Campo obrigatório')
         .max(40, 'Limite de caracteres atingido')
         .refine(value => /^[^\s@]+@[a-zA-Z]+(\.[a-zA-Z]+)+$/.test(value), {
         message: 'Informe um email vàlido'
@@ -28,7 +28,7 @@ export const registerSchema = z.object({
         }),
 
     password: z.string()
-        .min(8, 'Caracteres minimos 8')
+        .min(8, 'Campo obrigatório')
         .max(10, 'Limite de caracteres atingido')
         .refine(value => /^[a-zA-Z0-9@.]+$/.test(value), {
             message: 'Evite caracteres especiais'
@@ -58,11 +58,11 @@ export default function RegisterForm( props: componentProps ) {
 
     return (
         <form onSubmit={handleSubmit(props.registerUser)} className="flex flex-col">
-            <label htmlFor="" className="text-sm font-medium">Nome*</label>
+            <label htmlFor="" className="text-base font-medium">Nome*</label>
             <input 
                 type="text" 
                 placeholder="Informe um nome de usuario" 
-                className="font-medium placeholder:font-normal text-sm placeholder:text-neutral-400 mt-2 bg-richblack rounded h-12 px-3 border border-transparent outline-none"
+                className="font-medium placeholder:font-normal text-base placeholder:text-neutral-400 mt-2 bg-richblack rounded-md h-12 px-3 border border-transparent outline-none"
                 { ...register('name') }
                 maxLength={31}
                 style={{
@@ -71,15 +71,15 @@ export default function RegisterForm( props: componentProps ) {
             />
 
             { errors.name?.message && (
-                <p className="text-orangered font-normal mt-1 text-[15px] max-[620px]:static">{errors.name.message}</p>
+                <p className="text-orangered font-medium mt-1 text-base max-[620px]:static">{errors.name.message}</p>
             )}
 
-            <label htmlFor="" className="text-sm font-medium mt-4">E-mail*</label>
+            <label htmlFor="" className="text-base font-medium mt-4">E-mail*</label>
             <input 
                 type="text" 
                 placeholder="Informe um email" 
                
-                className="font-medium placeholder:font-normal border border-transparent outline-none text-sm placeholder:text-neutral-400 mt-2 bg-richblack rounded h-12 px-3"
+                className="font-medium placeholder:font-normal border border-transparent outline-none text-base placeholder:text-neutral-400 mt-2 bg-richblack rounded-md h-12 px-3"
                 maxLength={41}
                 { ...register('email') }
                 style={{
@@ -90,23 +90,23 @@ export default function RegisterForm( props: componentProps ) {
             {/* Renderiza o erro passado pelo contexto caso houver, se não, renderiza o erro do registerSchema */}
             { globalEvents.registerErrorMessage ? (
                 <p 
-                    className="text-orangered font-normal mt-1 text-[15px] max-[620px]:static">{globalEvents.registerErrorMessage}
+                    className="text-orangered font-medium mt-1 text-base max-[620px]:static">{globalEvents.registerErrorMessage}
                 </p>
             ) : (
                 <>
                     { errors.email?.message && (
                         <p 
-                            className="text-orangered font-normal mt-1 text-[15px] max-[620px]:static">{errors.email.message}
+                            className="text-orangered font-medium mt-1 text-base max-[620px]:static">{errors.email.message}
                         </p>
                     )}
                 </>   
             )}
 
-            <label htmlFor="" className="text-sm font-medium mt-4">Senha*</label>
+            <label htmlFor="" className="text-base font-medium mt-4">Senha*</label>
             <input 
                 type="password" 
                 placeholder="Crie uma senha forte" 
-                className="font-medium placeholder:font-normal text-sm placeholder:text-neutral-400 mt-2 bg-richblack rounded h-12 px-3 border border-transparent outline-none"
+                className="font-medium placeholder:font-normal text-base placeholder:text-neutral-400 mt-2 bg-richblack rounded-md h-12 px-3 border border-transparent outline-none"
                 { ...register('password') }
                 maxLength={11}
                 style={{
@@ -116,14 +116,14 @@ export default function RegisterForm( props: componentProps ) {
 
             
             { errors.password?.message && (
-                <p className="text-orangered font-normal mt-1 text-[15px] max-[620px]:static">{errors.password.message}</p>
+                <p className="text-orangered font-medium mt-1 text-base max-[620px]:static">{errors.password.message}</p>
             )}
 
             <button 
-                className="mt-6 w-full rounded bg-darkslateblue flex items-center justify-center h-12 font-medium border-none outline-none btn hover:bg-darkslateblue text-white ease-linear duration-150"
+                className="mt-6 w-full rounded-md bg-darkslateblue flex items-center justify-center h-12 font-semibold border-none outline-none btn hover:bg-darkslateblue text-white ease-linear duration-150"
                 style={{ 
                     backgroundColor: !globalEvents.isUserCreatingAnAccount ? 'darkslateblue' : 'rgba(72, 61, 139, 0.4)',
-                    fontSize: !globalEvents.isUserCreatingAnAccount ? '14px' : '15px'
+                    fontSize: !globalEvents.isUserCreatingAnAccount ? '16px' : '17px'
                 }}
             >
                 { globalEvents.isUserCreatingAnAccount ? (

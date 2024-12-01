@@ -9,7 +9,7 @@ import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
 
 const loginSchema = z.object({
     email: z.string()
-        .min(1, 'Informe um email')
+        .min(1, 'Campo obrigatório')
         .max(40, 'Limite de caracteres atingido')
         .refine(value => /^[^\s@]+@[a-zA-Z]+(\.[a-zA-Z]+)+$/.test(value), {
         message: 'Informe um email vàlido'
@@ -19,7 +19,7 @@ const loginSchema = z.object({
         }),
 
     password: z.string()
-        .min(8, 'Caracteres minimos 8')
+        .min(8, 'Campo obrigatório')
         .max(10, 'Limite de caracteres atingido')
         .refine(value => /^[a-zA-Z0-9@.]+$/.test(value), {
             message: 'Evite caracteres especiais'
@@ -49,13 +49,13 @@ export default function LoginForm( props: componentProps ) {
 
     return (
         <form onSubmit={handleSubmit(props.authenticateUser)} className="flex flex-col">
-            <label htmlFor="" className="text-sm font-medium">E-mail*</label>
+            <label htmlFor="" className="text-base font-medium">E-mail*</label>
             <input 
                 type="text" 
                 placeholder="Email cadastrado" 
                 { ...register('email') }
                 maxLength={41}
-                className="font-medium placeholder:font-normal border border-transparent outline-none text-sm placeholder:text-neutral-400 mt-2 bg-richblack rounded h-12 px-3"
+                className="font-medium placeholder:font-normal border border-transparent outline-none text-base placeholder:text-neutral-400 mt-2 bg-richblack rounded-md h-12 px-3"
                 style={{
                     borderColor: errors.password || globalEvents.loginErrorMessage ? 'orangered' : 'transparent'
                 }}
@@ -64,25 +64,25 @@ export default function LoginForm( props: componentProps ) {
             {/* Renderiza o erro passado pelo contexto caso houver, se não, renderiza o erro do loginSchema */}
             { globalEvents.loginErrorMessage ? (
                 <p 
-                    className="text-orangered font-normal mt-1 text-[15px] max-[620px]:static">{globalEvents.loginErrorMessage}
+                    className="text-orangered font-medium mt-1 text-base max-[620px]:static">{globalEvents.loginErrorMessage}
                 </p>
             ) : (
                 <>
                     { errors.email?.message && (
                         <p 
-                            className="text-orangered font-normal mt-1 text-[15px] max-[620px]:static">{errors.email.message}
+                            className="text-orangered font-medium mt-1 text-base max-[620px]:static">{errors.email.message}
                         </p>
                     )}
                 </>   
             )}
 
-            <label htmlFor="" className="text-sm font-medium mt-4">Senha*</label>
+            <label htmlFor="" className="text-base font-medium mt-4">Senha*</label>
             <input 
                 type="password" 
                 placeholder="Senha de acesso"
                 { ...register('password') } 
                 maxLength={11}
-                className="font-medium placeholder:font-normal text-sm placeholder:text-neutral-400 border-transparent mt-2 bg-richblack rounded h-12 px-3 border outline-none"
+                className="font-medium placeholder:font-normal text-base placeholder:text-neutral-400 border-transparent mt-2 bg-richblack rounded-md h-12 px-3 border outline-none"
                 style={{
                     borderColor: errors.password || globalEvents.loginErrorMessage ? 'orangered' : 'transparent'
                 }}
@@ -91,21 +91,21 @@ export default function LoginForm( props: componentProps ) {
             {/* Renderiza o erro passado pelo contexto caso houver, se não, renderiza o erro do loginSchema */}
             { globalEvents.loginErrorMessage ? (
                 <p 
-                    className="text-orangered font-normal mt-1 text-[15px] max-[620px]:static">{globalEvents.loginErrorMessage}
+                    className="text-orangered font-medium mt-1 text-base max-[620px]:static">{globalEvents.loginErrorMessage}
                 </p>
             ) : (
                 <>
                     { errors.password?.message && (
-                        <p className="text-orangered font-normal mt-1 text-[15px] max-[620px]:static">{errors.password.message}</p>
+                        <p className="text-orangered font-medium mt-1 text-base max-[620px]:static">{errors.password.message}</p>
                     )}
                 </>   
             )}
 
             <button 
-                className="mt-6 w-full rounded bg-darkslateblue flex items-center justify-center h-12 text-sm font-medium border-none outline-none btn hover:bg-darkslateblue text-white"
+                className="mt-6 w-full rounded-md bg-darkslateblue flex items-center justify-center h-12 font-semibold border-none outline-none btn hover:bg-darkslateblue text-white"
                 style={{ 
                     backgroundColor: !globalEvents.isUserLoggingIntoAccount ? 'darkslateblue' : 'rgba(72, 61, 139, 0.4)',
-                    fontSize: !globalEvents.isUserLoggingIntoAccount ? '14px' : '15px'
+                    fontSize: !globalEvents.isUserLoggingIntoAccount ? '16px' : '17px'
                 }}
             >
                 { globalEvents.isUserLoggingIntoAccount ? (
