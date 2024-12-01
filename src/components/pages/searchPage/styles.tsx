@@ -7,7 +7,8 @@ export const SearchResultWrapper = styled.div`
         width: 100%;
         display: grid;
         grid-template-columns: repeat( auto-fill, minmax(130px, 1fr) );
-        gap: 15px;
+        column-gap: 15px;
+        row-gap: 30px;
     }
 
     @media screen and ( min-width: 640px ) {
@@ -19,7 +20,7 @@ export const SearchResultWrapper = styled.div`
     @media screen and ( width >= 1024px ) {
         & .result-container {
             grid-template-columns: repeat( auto-fill, minmax(170px, 1fr) );
-            gap: 17px;
+            column-gap: 20px;
         }
     }
 `;

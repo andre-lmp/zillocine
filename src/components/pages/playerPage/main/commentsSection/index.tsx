@@ -4,7 +4,7 @@ import useFirebase from "@/components/hooks/firebaseHook";
 import { usePathname } from "next/navigation";
 
 // Icones do React-icons
-import { FaUserLarge } from "react-icons/fa6";
+import { FaUserLarge, FaRegComments } from "react-icons/fa6";
 import { TfiCommentsSmiley } from "react-icons/tfi";
 import { BiDislike, BiLike, BiSolidDislike, BiSolidLike } from "react-icons/bi";
 
@@ -313,7 +313,7 @@ export default function UsersComments() {
     }, [ userData.isLoggedIn ]);
 
     return (
-        <section className="w-full px-4 md:px-6 lg:px-8 mt-7 mb-3 font-noto_sans">
+        <section className="w-full rounded-md mt-7 mb-3 font-noto_sans">
             <h2 className="text-xl lg:text-2xl font-semibold">Avaliação dos usuários</h2>
 
             { !isLoading ? (
@@ -353,13 +353,14 @@ export default function UsersComments() {
                                 </div>
                             ))
                         ) : (
-                            <>
-                                <TfiCommentsSmiley className="text-5xl"/>
+                            <div className="bg-darkpurple p-3 rounded-lg">
+                                <FaRegComments className="text-4xl"/>
                                 <p className="text-neutral-400 text-[17px]">Seja o primeiro a comentar</p>
-                            </>
+                            </div>
                         )}
                     </div>
-                    <form onSubmit={addComment} className="mt-7 bg-darkpurple rounded-lg p-3 w-full max-w-screen-sm">
+
+                    <form onSubmit={addComment} className="mt-7 rounded-lg w-full max-w-[500px] p-3 bg-darkpurple">
                         <textarea name="comment" onInput={(e) => handleTextArea(e)} rows={1} className="w-full resize-y h-auto border-none outline-none rounded-lg bg-darkpurple text-white placeholder:text-neutral-400 font-normal text-[17px] overflow-y-hidden" required placeholder="Adicione um comentário"/>
                     
                         <button type="submit" className="w-full btn bg-darkslateblue hover:bg-darkslateblue rounded-lg text-white border-none outline-none mt-4 font-medium text-[17px]">Publicar</button>

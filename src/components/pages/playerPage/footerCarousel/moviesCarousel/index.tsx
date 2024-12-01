@@ -17,14 +17,12 @@ import { tmdbObjProps } from "@/components/contexts/tmdbContext";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import 'react-lazy-load-image-component/src/effects/opacity.css';
 
-import Link from "next/link";
-
 // Contextos
 import { UserDataContext } from "@/components/contexts/authenticationContext";
 import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
 
 // Icones com React-icons
-import { FaRegHeart, FaHeart, FaPlay } from "react-icons/fa";
+import { FaRegHeart, FaHeart, FaPlay, FaStar } from "react-icons/fa";
 
 import * as Style from '@/components/contentCarousel/styles';
 
@@ -90,10 +88,10 @@ export default function SimilarMovies( props: componentProps ) {
         }
     };
 
-    return contentData?.length && (
+    return contentData?.length ? (
         <div className='px-4 w-full pt-8 pb-6 md:px-6 lg:px-8 font-noto_sans'>
 
-            <p className="mb-1 text-[17px] font-medium xl:text-lg">Você pode gostar...</p>
+            <p className="mb-1 text-[17px] font-medium xl:text-lg">Recomendamos para você</p>
 
             <div className='w-full h-0.5 bg-gradient-to-r mb-3 from-orangered to-transparent'></div>
 
@@ -114,55 +112,56 @@ export default function SimilarMovies( props: componentProps ) {
                                 {
                                     // Link para o player
                                     movie.poster_path || movie.backdrop_path ? (
-                                        <Style.imageBox>
+                                        <div className="max-w-44 overflow-hidden">
+                                            <Style.imageBox>
+                                                {/* Opção para adicionar o filme/serie aos favoritos */}
+                                                <button
+                                                    onClick={(e) => toggleFavoriteButton(e, movie.id)}
+                                                    className={`${userData.favoriteMovies?.includes(movie.id) || userData.favoriteSeries?.includes(movie.id) ? 'favorite-button' : ''} absolute right-0 top-0 w-16 h-16 flex movies-start justify-end z-30`}
+                                                >
+                                                    <FaRegHeart className="not-favorited text-2xl text-white absolute top-3 right-3 md:text-[22px]"/>
+                                                    <FaHeart className="favorited text-2xl text-orangered absolute top-3 right-3  md:text-[22px]"/>
+                                                </button>
 
-                                            {/* Opção para adicionar o filme/serie aos favoritos */}
-                                            <button 
-                                                onClick={(e) => toggleFavoriteButton(e, movie.id)} 
-                                                className={`${userData.favoriteMovies?.includes(movie.id) || userData.favoriteSeries?.includes(movie.id) ? 'favorite-button' : ''} absolute right-0 top-0 w-16 h-16 flex movies-start justify-end z-30`}
-                                            >
-                                                <FaRegHeart className="not-favorited text-2xl text-white/70 absolute top-3 right-3 md:text-[22px]"/>
+                                                <FaPlay className="play-icon" onClick={() => router.push(`/player/${props.contentType}/${movie.id}`)}/>
 
-                                                <FaHeart className="favorited text-2xl text-orangered absolute top-3 right-3  md:text-[22px]"/>
-                                            </button>
-
-                                            <div className="slide-wrapper" onClick={() => router.push(`/player/movie/${movie.id}`)}>
-                                                <div className="relative image-container cursor-pointer">
+                                                <div className="w-full relative cursor-pointer h-60 md:h-64"
+                                                onClick={() => router.push(`/player/${props.contentType}/${movie.id}`)}
+                                                >
                                                     {/* Imagem do filme */}
                                                     <LazyLoadImage
                                                         src={`https://image.tmdb.org/t/p/original/${movie.poster_path ?? movie.backdrop_path}`}
                                                         alt={`${movie.title} movie presentation image`}
                                                         width={176}
-                                                        height={260}
-                                                        loading="lazy"
+                                                        height={'100%'}
                                                         effect="opacity"
                                                         placeholderSrc={`https://image.tmdb.org/t/p/w92/${movie.poster_path ?? movie.backdrop_path}`}
-                                                        className='w-44 h-[270px] object-cover image bg-darkpurple'
+                                                        className='image w-44 object-cover bg-darkpurple rounded-md'
                                                     />
-
-                                                    <FaPlay className="play-icon text-4xl absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"/>
                                                 </div>
-                                                
-                                                {/* Informações do filme */}
-                                                <div className="w-44 description flex flex-col gap-y-1 font-normal font-noto_sans text-sm">
-                                                
-                                                    {/* Titulo */}
-                                                    <p className="font-raleway font-bold text-[15px] text-white line-clamp-1">{ movie.title ?? movie.name }
+                                            </Style.imageBox>
+
+                                             {/* Container de informações sobre o conteudo */}
+                                             <div className="mt-2 relative pl-3">
+                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5/6 bg-orangered rounded-md"></div>
+
+                                                {/* Titulo */}
+                                                <p className="font-raleway font-bold text-[15px] text-white line-clamp-1">{ movie.title ?? movie.name }</p>
+
+                                                <div className="flex movies-center gap-x-3 font-normal font-noto_sans text-neutral-400">
+                                                    {/* Data de lançamento */}
+                                                    <p className="text-[15px]">
+                                                        {getReleaseDate( movie.release_date ?? movie.first_air_date )}
                                                     </p>
-                                                    <div className="flex movies-center gap-x-3">
-                                                        {/* Data de lançamento */}
-                                                        <p className="bg-orangered rounded-[4px] flex movies-center w-fit px-3 h-5">{ getReleaseDate( movie.release_date ?? movie.first_air_date )}
-                                                        </p>
-                                                        {/* Nota do publico ao conteudo */}
-                                                        <p className="font-medium text-sm text-white">nota: {( movie.vote_average).toFixed(0 )}</p>
-                                                    </div>
-                                                
-                                                    {/* Descrição */}
-                                                    <p className="line-clamp-2 text-neutral-300 leading-relaxed text-justif ">{ movie.overview.length > 3 ? movie.overview : 'Desculpe... não foi possível carregar a descrição deste conteúdo.' }
+
+                                                    {/* Nota do publico ao conteudo */}
+                                                    <p className="text-[15px] flex movies-center gap-x-1">
+                                                        <FaStar className=""/> 
+                                                        {( movie.vote_average).toFixed(0 )}/10
                                                     </p>
                                                 </div>
                                             </div>
-                                        </Style.imageBox>
+                                        </div>
                                     ) : null
                                 }
                         </SwiperSlide>
@@ -184,5 +183,5 @@ export default function SimilarMovies( props: componentProps ) {
                 </div>
             </Style.SwiperContainer>
         </div>
-    );
+    ) : null
 };

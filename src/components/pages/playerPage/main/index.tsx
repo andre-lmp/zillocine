@@ -112,158 +112,160 @@ export default function Main( props: ComponentProps ) {
     };
 
     return (
-        <div className="flex flex-col font-noto_sans">
+        <div className="flex flex-col font-noto_sans px-4 md:px-6 lg:px-8">
 
                 {/* Descrição do filme/serie */}
-                <p className='text-justify w-full text-[17px] leading-loose text-neutral-300 max-w-4xl px-4 md:px-6 lg:px-8'>
+                <p className='text-justify w-full text-[17px] leading-loose text-neutral-300 max-w-4xl'>
                     { props.contentData.overview.length > 3 ? props.contentData.overview : `Desculpe, a descrição deste conteúdo não pode ser carregada neste momento` }
                 </p>
 
                 {/* seção com mais detalhes */}
-                <div className="bg-darkpurple w-full mt-5 pt-5 pb-3 sm:pb-6 px-4 md:px-6 lg:px-8">
-
-                    {/* Titulo da seção */}
-                    <h2 className="text-xl lg:text-2xl font-semibold">
-                        Mais sobre { props.contentType === 'movie' ? 'o filme' : 'a série' }
-                    </h2>
-
-                    {/* Container com os detalhes */}
-                    <div className="mt-5 relative flex flex-col gap-y-7 items-start ">
-                        {/* Imagem do filme/serie */}
-                        <div className="sm:absolute sm:left-0 h-full">
-                            <LazyLoadImage
-                                src={`https://image.tmdb.org/t/p/original${props.contentData.poster_path ?? props.contentData.backdrop_path}`}
-                                alt={`${props.contentData.title ?? props.contentData.name} movie/serie presentation image`}
-                                width={'100%'}
-                                height={'100%'}
-                                effect="opacity"
-                                placeholderSrc={`https://image.tmdb.org/t/p/w92/${props.contentData.poster_path ?? props.contentData.backdrop_path}`}
-                                className='w-40 sm:w-60 h-full object-cover bg-darkpurple image rounded'
-                            />
+                <div className="bg-darkpurple w-full mt-5 pt-5 pb-3 sm:pb-6 rounded-md">
+                    <div className="px-3">
+    
+                        {/* Titulo da seção */}
+                        <h2 className="text-xl lg:text-2xl font-semibold">
+                            Mais sobre { props.contentType === 'movie' ? 'o filme' : 'a série' }
+                        </h2>
+    
+                        {/* Container com os detalhes */}
+                        <div className="mt-5 relative flex flex-col gap-y-7 items-start">
+                            {/* Imagem do filme/serie */}
+                            <div className="sm:absolute sm:left-0 h-full">
+                                <LazyLoadImage
+                                    src={`https://image.tmdb.org/t/p/original${props.contentData.poster_path ?? props.contentData.backdrop_path}`}
+                                    alt={`${props.contentData.title ?? props.contentData.name} movie/serie presentation image`}
+                                    width={'100%'}
+                                    height={'100%'}
+                                    effect="opacity"
+                                    placeholderSrc={`https://image.tmdb.org/t/p/w92/${props.contentData.poster_path ?? props.contentData.backdrop_path}`}
+                                    className='w-40 sm:w-60 h-full object-cover bg-darkpurple image rounded'
+                                />
+                            </div>
+    
+                            <Style.ContentDetailsWrapper>
+                                {/* Coluna 1 de informações*/}
+                                <div>
+    
+                                    {/* Nota do publico ao conteudo */}
+                                    {getImdbReviews( props.contentData.vote_average, props.contentData.vote_count )}
+    
+                                    {/* Generos */}
+                                    <p className="content-detail text-[17px] font-medium rounded">
+                                        <span className="mr-[6px]">Gêneros:</span>
+    
+                                        <span className="text-neutral-400 font-normal ">
+                                            { props.contentData.genres.map(( genre: Record<string, (string | number)> ) => genre.name ).join(', ')}
+                                        </span>
+                                    </p>
+    
+                                    {/* Criador do filme/serie */}
+                                    { props.contentType === 'serie' ? (
+                                        <p className="content-detail text-[17px] font-medium rounded">
+                                            <span className="mr-[6px]">Criado por:</span>
+    
+                                            <span className="text-neutral-400 font-normal ">
+                                                {getContentCreator( props.contentData.created_by )}
+                                            </span>
+                                        </p>
+                                    ) : null }
+    
+                                    {/* Direção */}
+                                    <p className="content-detail text-[17px] font-medium rounded">
+                                        <span className="mr-[6px]">Direção:</span>
+    
+                                        <span className="text-neutral-400 font-normal ">
+                                            {getContentProducers( props.contentData.credits.crew )}
+                                        </span>
+                                    </p>
+    
+                                    {/* Lançamento */}
+                                    <p className="content-detail text-[17px] font-medium rounded">
+                                        <span className="mr-[6px]">Data de lançamento:</span>
+    
+                                        <span className="text-neutral-400 font-normal ">
+                                            { props.contentData.release_date ?? props.contentData.first_air_date }
+                                        </span>
+                                    </p>
+    
+                                    {/* Orçamento */}
+                                    { props.contentType === 'movie' ? (
+                                        <p className="content-detail text-[17px] font-medium rounded">
+                                            <span className="mr-[6px]">Orçamento:</span>
+    
+                                            <span className="text-neutral-400 font-normal ">
+                                                {handleBudgetAndRevenue( props.contentData.budget )}
+                                            </span>
+                                        </p>
+                                    ) : null }
+                                </div>
+    
+                                {/* Coluna 2 de informações */}
+                                <div>
+    
+                                    {/* Bilheteria */}
+                                   { props.contentType === 'movie' ? (
+                                        <p className="content-detail text-[17px] font-medium rounded">
+                                            <span className="mr-[6px]">Bilheteria:</span>
+    
+                                            <span className="text-neutral-400 font-normal ">
+                                                {handleBudgetAndRevenue( props.contentData.revenue )}
+                                            </span>
+                                        </p>
+                                   ) : null }
+    
+                                   {/* Pais de produção */}
+                                    <p className="content-detail text-[17px] font-medium rounded">
+                                        <span className="mr-[6px]">Pais de produção:</span>
+    
+                                        <span className="text-neutral-400 font-normal ">
+                                            { props.contentData.production_countries.map(( genre: Record<string, (string | number)> ) => genre.name ).join(', ')}
+                                        </span>
+                                    </p>
+    
+                                   {/* Empresa de produção */}
+                                    <p className="content-detail text-[17px] font-medium rounded">
+                                        <span className="mr-[6px]">Produtora(s):</span>
+    
+                                        <span className="text-neutral-400 font-normal ">
+                                            { props.contentData.production_companies.map(( company: Record<string, (string | number)> ) => company.name ).join(', ')}
+                                        </span>
+                                    </p>
+    
+                                   {/* Duração */}
+                                    { props.contentType === 'movie' ? (
+                                        <p className="content-detail text-[17px] font-medium rounded">
+                                            <span className="mr-[6px]">Duração:</span>
+    
+                                            {getRunTime( props.contentData.runtime )}
+                                        </p>
+                                    ) : null }
+    
+                                    {/* Temporadas */}
+                                   { props.contentType === 'serie' ? (
+                                        <p className="content-detail text-[17px] font-medium rounded">
+                                            <span className="mr-[6px]">Numero de temporadas:</span>
+    
+                                            <span className="text-neutral-400 font-normal ">
+                                                { props.contentData.number_of_seasons }
+                                            </span>
+                                        </p>
+                                   ) : null }
+    
+                                   {/* Episodios */}
+                                    { props.contentType === 'serie' ? (
+                                        <p className="content-detail text-[17px] font-medium rounded">
+                                            <span className="mr-[6px]">Numero de episódios:</span>
+    
+                                            <span className="text-neutral-400 font-normal ">
+                                                { props.contentData.number_of_episodes }
+                                            </span>
+                                        </p>
+                                   ) : null }
+    
+                                </div>
+                            </Style.ContentDetailsWrapper>
                         </div>
-
-                        <Style.ContentDetailsWrapper> 
-                            {/* Coluna 1 de informações*/}
-                            <div>
-
-                                {/* Nota do publico ao conteudo */}
-                                {getImdbReviews( props.contentData.vote_average, props.contentData.vote_count )}
-                                
-                                {/* Generos */}
-                                <p className="content-detail text-[17px] font-medium rounded">
-                                    <span className="mr-[6px]">Gêneros:</span>
-
-                                    <span className="text-neutral-400 font-normal ">
-                                        { props.contentData.genres.map(( genre: Record<string, (string | number)> ) => genre.name ).join(', ')}
-                                    </span>
-                                </p>
-
-                                {/* Criador do filme/serie */}
-                                { props.contentType === 'serie' ? (
-                                    <p className="content-detail text-[17px] font-medium rounded">
-                                        <span className="mr-[6px]">Criado por:</span>
-
-                                        <span className="text-neutral-400 font-normal ">
-                                            {getContentCreator( props.contentData.created_by )}
-                                        </span>
-                                    </p>
-                                ) : null }
-
-                                {/* Direção */}
-                                <p className="content-detail text-[17px] font-medium rounded">
-                                    <span className="mr-[6px]">Direção:</span>
-
-                                    <span className="text-neutral-400 font-normal ">
-                                        {getContentProducers( props.contentData.credits.crew )}
-                                    </span>
-                                </p>
-
-                                {/* Lançamento */}
-                                <p className="content-detail text-[17px] font-medium rounded">
-                                    <span className="mr-[6px]">Data de lançamento:</span>
-
-                                    <span className="text-neutral-400 font-normal ">
-                                        { props.contentData.release_date ?? props.contentData.first_air_date }
-                                    </span>
-                                </p>
-
-                                {/* Orçamento */}
-                                { props.contentType === 'movie' ? (
-                                    <p className="content-detail text-[17px] font-medium rounded">
-                                        <span className="mr-[6px]">Orçamento:</span>
-
-                                        <span className="text-neutral-400 font-normal ">
-                                            {handleBudgetAndRevenue( props.contentData.budget )}
-                                        </span>
-                                    </p>
-                                ) : null }
-                            </div>
-
-                            {/* Coluna 2 de informações */}
-                            <div>
-
-                                {/* Bilheteria */}
-                               { props.contentType === 'movie' ? (
-                                    <p className="content-detail text-[17px] font-medium rounded">
-                                        <span className="mr-[6px]">Bilheteria:</span>
-
-                                        <span className="text-neutral-400 font-normal ">
-                                            {handleBudgetAndRevenue( props.contentData.revenue )}
-                                        </span>
-                                    </p>
-                               ) : null }
-
-                               {/* Pais de produção */}
-                                <p className="content-detail text-[17px] font-medium rounded">
-                                    <span className="mr-[6px]">Pais de produção:</span>
-
-                                    <span className="text-neutral-400 font-normal ">
-                                        { props.contentData.production_countries.map(( genre: Record<string, (string | number)> ) => genre.name ).join(', ')}
-                                    </span>
-                                </p>
-
-                               {/* Empresa de produção */}
-                                <p className="content-detail text-[17px] font-medium rounded">
-                                    <span className="mr-[6px]">Produtora(s):</span>
-
-                                    <span className="text-neutral-400 font-normal ">
-                                        { props.contentData.production_companies.map(( company: Record<string, (string | number)> ) => company.name ).join(', ')}
-                                    </span>
-                                </p>
-
-                               {/* Duração */}
-                                { props.contentType === 'movie' ? (
-                                    <p className="content-detail text-[17px] font-medium rounded">
-                                        <span className="mr-[6px]">Duração:</span>
-
-                                        {getRunTime( props.contentData.runtime )}
-                                    </p>
-                                ) : null }
-
-                                {/* Temporadas */}
-                               { props.contentType === 'serie' ? (
-                                    <p className="content-detail text-[17px] font-medium rounded">
-                                        <span className="mr-[6px]">Numero de temporadas:</span>
-
-                                        <span className="text-neutral-400 font-normal ">
-                                            { props.contentData.number_of_seasons }
-                                        </span>
-                                    </p>
-                               ) : null }
-
-                               {/* Episodios */}
-                                { props.contentType === 'serie' ? (
-                                    <p className="content-detail text-[17px] font-medium rounded">
-                                        <span className="mr-[6px]">Numero de episódios:</span>
-
-                                        <span className="text-neutral-400 font-normal ">
-                                            { props.contentData.number_of_episodes }
-                                        </span>
-                                    </p>
-                               ) : null }
-                                    
-                            </div>
-                        </Style.ContentDetailsWrapper>
                     </div>
 
                     <MainActors actorsData={props.contentData.credits.cast ?? []}/>

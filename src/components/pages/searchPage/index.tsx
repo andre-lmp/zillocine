@@ -96,7 +96,7 @@ export default function SearchPage() {
     }, []);
 
     return (
-        <section style={{ opacity: isLoading ? 0 : 1 }} className="flex flex-col px-4 w-full min-h-screen mt-32 font-roboto font-normal md:px-6 lg:px-8 ease-linear duration-200">
+        <section style={{ opacity: isLoading ? 0 : 1 }} className="flex flex-col px-4 w-full min-h-screen mt-32 font-noto_sans font-normal md:px-6 lg:px-8 ease-linear duration-200">
             <div className='w-full flex flex-col gap-y-3'>
                 <div className='bg-darkpurple flex items-center rounded-md px-4 w-full'>
                     <FiSearch className='text-2xl text-neutral-100'/>
@@ -105,7 +105,7 @@ export default function SearchPage() {
                         ref={searchInputRef}
                         onChange={(e) => { fetchContentByTerm( e.target.value, contentType ) }}
                         placeholder='O que você esta procurando ?'
-                        className='w-full h-[56px] bg-transparent text-neutral-100 placeholder:text-neutral-300 px-4 text-lg border-none outline-none'
+                        className='w-full h-[56px] bg-transparent text-white placeholder:text-neutral-300 px-4  text-[17px] lg:text-lg border-none outline-none'
                         required
                     />
                     <HiXMark 
@@ -114,7 +114,7 @@ export default function SearchPage() {
                     />
                 </div>
 
-                <div>
+                <div className='text-[17px] lg:text-lg'>
                     <button 
                         ref={(e) => { searchButtonsRef.current[0] = e }} 
                         className='h-9 px-7 rounded-md text-neutral-100 bg-darkpurple border-none outline-none'

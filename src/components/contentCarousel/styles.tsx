@@ -2,12 +2,12 @@ import styled from "styled-components";
 
 export const imageBox = styled.div`
     width: 100%;
-    height: 100%;
     background-color: #16142b;
     position: relative;
+    border-radius: 6px;
     overflow: hidden;
 
-    & .slide-wrapper::before {
+    & div:first-of-type::before {
         content: '';
         position: absolute;
         width: 400px;
@@ -20,13 +20,20 @@ export const imageBox = styled.div`
         z-index: 10;
     }
 
-    & .image, .image-container {
-        transition: transform .2s ease-in-out; 
-    }
+    & div:first-of-type {
+        transition: all .2s linear;
+    };
 
     & .play-icon {
-        transition: opacity .2s linear .2s;
+        transition: all .2s linear;
         opacity: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: scale(0) translate(-50%, -50%);
+        z-index: 20;
+        font-size: 36px;
+        cursor: pointer;
     }
 
     & .favorited {
@@ -61,17 +68,18 @@ export const imageBox = styled.div`
             transform: translateY(0%);
         } 
 
-        &:hover .image-container {
-            transform: translate(-20%, -20%) scale(0.5);
-            border-radius: 6px;
-        }
+       &:hover div:first-of-type {
+            transform: scale(1.5);
+            filter: blur(3px);
+       }       
 
-        &:hover .image {
+       &:hover div:first-of-type .image {
             opacity: 50%;
-        }
+       }
 
         &:hover .play-icon {
             opacity: 100%;
+            transform: scale(1) translate(-50%, -50%);
         }
 
         & .slide-wrapper::before {
@@ -80,7 +88,7 @@ export const imageBox = styled.div`
 
         & button {
             transform: translateX(100%);
-            transition: all .2s ease-in-out;
+            transition: all .2s linear;
         }
 
         &:hover button {

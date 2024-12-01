@@ -18,7 +18,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/opacity.css';
 
 // Icones com React-icons
-import { FaRegHeart, FaHeart, FaPlay } from "react-icons/fa";
+import { FaRegHeart, FaHeart, FaPlay, FaStar } from "react-icons/fa";
 
 // // Interface de tipo para objetos retornados pela api do TMDB
 import { tmdbObjProps } from "../contexts/tmdbContext";
@@ -40,7 +40,7 @@ export default function ContentCarousel( props: carouselProps ) {
 
     const [ contentData, setContentData ] = useState<tmdbObjProps[]>([]);
     const [ isLoading, setIsLoading ] = useState( true );
-    const swiperBreakPoints = { 1024: { spaceBetween: 17 }};
+    const swiperBreakPoints = { 1024: { spaceBetween: 20 }};
     const { fetchMovies, fetchReleasedMovies, fetchSeries, fetchReleasedSeries } = useTmdbFetch();
     const userData = useContext( UserDataContext );
     const { addUserFavoritesToDb, deleteUserFavoritesOnDb } = useFirebase();
@@ -114,7 +114,9 @@ export default function ContentCarousel( props: carouselProps ) {
     return contentData.length ? (
         <div style={{ opacity: isLoading ? 0 : 1 }} className='px-4 w-full md:px-6 lg:px-8 ease-linear duration-200'>
 
-            { props.sectionTitle && <p className="mb-1 text-[17px] font-medium font-roboto xl:text-lg">{ props.sectionTitle }</p> }
+            { props.sectionTitle && (
+                <p className="mb-1 text-[17px] font-medium font-noto_sans xl:text-lg">{ props.sectionTitle }</p>
+            )}
 
             <div className='w-full h-0.5 bg-gradient-to-r mb-3 from-orangered to-transparent'></div>
 
@@ -143,51 +145,54 @@ export default function ContentCarousel( props: carouselProps ) {
                                 {
                                     item.poster_path || item.backdrop_path ? (
 
-                                        <Style.imageBox>
+                                        <div className="max-w-44 overflow-hidden">
+                                            <Style.imageBox>
+                                                {/* Opção para adicionar o filme/serie aos favoritos */}
+                                                <button
+                                                    onClick={(e) => toggleFavoriteButton(e, item.id)}
+                                                    className={`${userData.favoriteMovies?.includes(item.id) || userData.favoriteSeries?.includes(item.id) ? 'favorite-button' : ''} absolute right-0 top-0 w-16 h-16 flex items-start justify-end z-30`}
+                                                >
+                                                    <FaRegHeart className="not-favorited text-white absolute top-3 right-3 text-[22px]"/>
+                                                    <FaHeart className="favorited text-orangered absolute top-3 right-3 text-[22px]"/>
+                                                </button>
 
-                                            {/* Opção para adicionar o filme/serie aos favoritos */}
-                                            <button 
-                                                onClick={(e) => toggleFavoriteButton(e, item.id)} 
-                                                className={`${userData.favoriteMovies?.includes(item.id) || userData.favoriteSeries?.includes(item.id) ? 'favorite-button' : ''} absolute right-0 top-0 w-16 h-16 flex items-start justify-end z-30`}
-                                            >
-                                                <FaRegHeart className="not-favorited text-2xl text-white/70 absolute top-3 right-3 md:text-[22px]"/>
-
-                                                <FaHeart className="favorited text-2xl text-orangered absolute top-3 right-3  md:text-[22px]"/>
-                                            </button>
+                                                <FaPlay className="play-icon" onClick={() => router.push(`/player/${props.contentType}/${item.id}`)}/>
                                             
-                                            <div className="slide-wrapper" onClick={() => router.push(`/player/${props.contentType}/${item.id}`)}>
                                                 {/* Imagem do conteudo a ser exibido */}
-                                                <div className="relative image-container cursor-pointer">
+                                                <div className="w-full relative cursor-pointer h-60 md:h-64" onClick={() => router.push(`/player/${props.contentType}/${item.id}`)}>
                                                     <LazyLoadImage
                                                         src={`https://image.tmdb.org/t/p/original${item.poster_path ?? item.backdrop_path}`}
                                                         alt={`${item.title ?? item.name} movie/serie presentation image`}
                                                         width={176}
-                                                        height={260}
                                                         effect="opacity"
+                                                        height={'100%'}
                                                         placeholderSrc={`https://image.tmdb.org/t/p/w92/${item.poster_path ?? item.backdrop_path}`}
-                                                        className='image w-44 h-[267px] object-cover bg-darkpurple rounded'
+                                                        className='image w-44 object-cover bg-darkpurple rounded-md'
                                                     />
-                                                    
-                                                    <FaPlay className="play-icon text-4xl absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"/>
                                                 </div>
-                                                {/* Container de informações sobre o conteudo */}
-                                                <div className="w-44 description flex flex-col gap-y-1 font-normal font-noto_sans text-sm">
-                                                    {/* Titulo */}
-                                                    <p className="font-raleway font-bold text-[15px] text-white line-clamp-1">{ item.title ?? item.name }
+                                            </Style.imageBox>
+
+                                            {/* Container de informações sobre o conteudo */}
+                                            <div className="mt-2 relative pl-3">
+                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5/6 bg-orangered rounded-md"></div>
+
+                                                {/* Titulo */}
+                                                <p className="font-raleway font-bold text-[15px] text-white line-clamp-1">{ item.title ?? item.name }</p>
+
+                                                <div className="flex items-center gap-x-3 font-normal font-noto_sans text-neutral-400">
+                                                    {/* Data de lançamento */}
+                                                    <p className="text-[15px]">
+                                                        {getReleaseDate( item.release_date ?? item.first_air_date )}
                                                     </p>
-                                                    <div className="flex items-center gap-x-3">
-                                                        {/* Data de lançamento */}
-                                                        <p className="bg-orangered rounded-[4px] flex items-center w-fit px-3 h-5">{getReleaseDate( item.release_date ?? item.first_air_date )}
-                                                        </p>
-                                                        {/* Nota do publico ao conteudo */}
-                                                        <p className="font-medium text-sm text-white">nota: {( item.vote_average).toFixed(0 )}</p>
-                                                    </div>
-                                                    {/* Descrição */}
-                                                    <p className="line-clamp-2 text-neutral-200 leading-relaxed text-justif ">{ item.overview.length > 3 ? item.overview : 'Desculpe... não foi possível carregar a descrição deste conteúdo.' }
+
+                                                    {/* Nota do publico ao conteudo */}
+                                                    <p className="text-[15px] flex items-center gap-x-1">
+                                                        <FaStar className=""/> 
+                                                        {( item.vote_average).toFixed(0 )}/10
                                                     </p>
                                                 </div>
                                             </div>
-                                        </Style.imageBox>    
+                                        </div> 
                                     ) : null
                                 }
                         </SwiperSlide>
@@ -195,14 +200,14 @@ export default function ContentCarousel( props: carouselProps ) {
                 </Swiper>
 
                 {/* Botão para o slide anterior */}
-                <div className={`absolute left-0 top-1/2 -translate-y-1/2 z-50 w-[45px] h-[45px] rounded-full -translate-x-1/2 bg-deepnight cursor-pointer swiper-controllers ${props.navigation.prevEl}`}>
+                <div className={`absolute left-0 top-[260px] -translate-y-[140px] z-50 w-[45px] h-[45px] rounded-full -translate-x-1/2 bg-deepnight cursor-pointer swiper-controllers ${props.navigation.prevEl}`}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="size-6 text-white">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                     </svg>
                 </div>
 
                 {/* Botão para o proximo slide */}
-                <div className={`absolute right-0 top-1/2 -translate-y-1/2 z-50 w-[45px] h-[45px] rounded-full translate-x-1/2 bg-deepnight cursor-pointer swiper-controllers ${props.navigation.nextEl}`}>
+                <div className={`absolute right-0 top-[260px] -translate-y-[140px] z-50 w-[45px] h-[45px] rounded-full translate-x-1/2 bg-deepnight cursor-pointer swiper-controllers ${props.navigation.nextEl}`}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="size-6 text-white">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                     </svg>

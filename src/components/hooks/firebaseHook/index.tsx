@@ -663,26 +663,26 @@ export default function useFirebase() {
     };
 
     const getUserFavoritesOnDb = async () => {
-        // const db = getDatabase( app );
-        // const user = auth.currentUser;
-        // const userRef = getDatabaseRef( db, `users/${user?.uid}` );
-        // const snapshot = await get( userRef );
-        // const userDataOnDb = snapshot.val();
+        const db = getDatabase( app );
+        const user = auth.currentUser;
+        const userRef = getDatabaseRef( db, `users/${user?.uid}` );
+        const snapshot = await get( userRef );
+        const userDataOnDb = snapshot.val();
 
-        // try {
-        //     userData.setUserData( prev => ({
-        //         ...prev,
-        //         favoriteMovies: userDataOnDb.favoriteMovies ?? null
-        //     }));
+        try {
+            userData.setUserData( prev => ({
+                ...prev,
+                favoriteMovies: userDataOnDb.favoriteMovies ?? null
+            }));
 
-        //     userData.setUserData( prev => ({
-        //         ...prev,
-        //         favoriteSeries: userDataOnDb.favoriteSeries ?? null
-        //     }));
+            userData.setUserData( prev => ({
+                ...prev,
+                favoriteSeries: userDataOnDb.favoriteSeries ?? null
+            }));
             
-        // } catch (error) {
-        //     console.error( 'Erro ao buscar os favoritos do usuario' + error );
-        // }
+        } catch (error) {
+            console.error( 'Erro ao buscar os favoritos do usuario' + error );
+        }
     };
 
     // Adiciona os filmes/series favoritos do usuario ao banco de dados

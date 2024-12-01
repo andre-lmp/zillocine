@@ -9,13 +9,14 @@ import 'react-lazy-load-image-component/src/effects/opacity.css';
 import { PiArrowElbowDownRightBold } from "react-icons/pi";
 
 // Modulos do Swiper.js para carousel de slides
-import { Pagination, Autoplay, Navigation } from 'swiper/modules';
+import { Pagination, Autoplay, Navigation, EffectFade } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
 import 'swiper/element/css/autoplay';
 import 'swiper/element/css/pagination';
 import 'swiper/element/css/navigation';
+import 'swiper/css/effect-fade';
 
 import * as Style from '@/components/headerCarousel/styles';
 
@@ -101,10 +102,12 @@ export function Carousel( props: carouselProps ) {
                     prevEl: '.header-slides-prev',
                     nextEl: '.header-slides-next'
                 }}
-                modules={[ Pagination, Autoplay, Navigation ]}
+                modules={[ Pagination, Autoplay, Navigation, EffectFade ]}
+                effect='fade'
+                fadeEffect={{ crossFade: true }}
             >
                 {/* Gerando slides com base na resposta da api do TMDB */}
-                { props.contentData.map(( content, index ) => (
+                { props.contentData.map(( content ) => (
                     // Gera o slide caso tenha imagens disponiveis
                     content.backdrop_path || content.backdrop_path ? (
                         // Container do slide
@@ -152,7 +155,7 @@ export function Carousel( props: carouselProps ) {
                                     </div>
 
                                     {/* Descrição */}
-                                    <p className='line-clamp-2 text-center w-full mb-4 md:mb-7 mt-2 font-noto_sans text-base md:max-w-full md:text-left text-neutral-200 xl:max-w-md lg:text-[17px] lg:line-clamp-3 lg:max-w-sm leading-relaxed 2xl:max-w-lg'>
+                                    <p className='line-clamp-2 text-center w-full mb-4 md:mb-7 mt-2 font-noto_sans text-base md:max-w-full md:text-left text-neutral-300 xl:max-w-md lg:text-[17px] lg:line-clamp-3 lg:max-w-sm leading-relaxed 2xl:max-w-lg'>
                                         { content.overview.length > 3 ? content.overview : `O lançamento de um dos mais aguardados filmes de uma sequencia de sucesso` }
                                     </p>
 

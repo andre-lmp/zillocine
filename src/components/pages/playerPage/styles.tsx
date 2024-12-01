@@ -96,12 +96,8 @@ export const ActorsCarouselWrapper = styled.div`
     position: relative;
     
     & .swiper-controllers {
-        width: 65px;
-        height: 100%;
         display: none;
-        align-items: center;
-        justify-content: center;
-    }   
+    } 
 
     & .swiper-prev-slide {
         background-image: linear-gradient(to right, #16142b, rgba(22, 20, 43, 0.8), transparent );
