@@ -1,9 +1,9 @@
-16:17:04.682 [NamespaceSystem-akka.actor.default-dispatcher-6] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
-16:17:05.103 [main] INFO com.firebase.server.forge.App$ - Listening at 127.0.0.1:9001
-16:17:14.084 [NamespaceSystem-akka.actor.default-dispatcher-6] INFO com.firebase.core.namespace.NamespaceActor - zillocine-default-rtdb successfully activated FBKV (SurveyIdle(0)) wait: 493ms, init: 0ms
-16:17:14.276 [NamespaceSystem-blocking-namespace-operation-dispatcher-8] INFO com.firebase.core.namespace.StateManager - Namespace zillocine-default-rtdb status Active to Active
-16:17:26.983 [FirebaseWorkerPool-1-3] WARN com.firebase.core.persistence.backend.dummy.EmulatorMetadataPersistence - Multiple projectIds are not recommended in single project mode. Requested 
+17:34:23.995 [NamespaceSystem-akka.actor.default-dispatcher-6] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+17:34:24.372 [main] INFO com.firebase.server.forge.App$ - Listening at 127.0.0.1:9001
+17:34:33.090 [NamespaceSystem-akka.actor.default-dispatcher-6] INFO com.firebase.core.namespace.NamespaceActor - zillocine-default-rtdb successfully activated FBKV (SurveyIdle(0)) wait: 408ms, init: 0ms
+17:34:33.258 [NamespaceSystem-blocking-namespace-operation-dispatcher-8] INFO com.firebase.core.namespace.StateManager - Namespace zillocine-default-rtdb status Active to Active
+17:36:25.196 [FirebaseWorkerPool-1-3] WARN com.firebase.core.persistence.backend.dummy.EmulatorMetadataPersistence - Multiple projectIds are not recommended in single project mode. Requested 
 namespace zillocine, but the emulator is configured for zillocine-default-rtdb. To 
 opt-out of single project mode add/set the singleProjectMode: false property in 
 the firebase.json emulators config. 
-16:17:27.050 [NamespaceSystem-akka.actor.default-dispatcher-7] INFO com.firebase.core.namespace.NamespaceActor - zillocine successfully activated FBKV (SurveyIdle(0)) wait: 13ms, init: 0ms
+17:36:25.632 [NamespaceSystem-akka.actor.default-dispatcher-10] INFO com.firebase.core.namespace.NamespaceActor - zillocine successfully activated FBKV (SurveyIdle(0)) wait: 0ms, init: 0ms

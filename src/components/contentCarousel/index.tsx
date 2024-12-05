@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, MouseEvent, MutableRefObject, useRef, useContext } from "react";
+import { useEffect, useState, MouseEvent, useContext } from "react";
 import { useRouter } from 'next/navigation';
 
 // Hook personalizado do TMDB com funções de busca de conteudo

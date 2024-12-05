@@ -20,7 +20,7 @@ import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
 import { UserDataContext } from "@/components/contexts/authenticationContext";
 
 import { toast } from "react-toastify";
-import { CommentProps } from "@/components/pages/playerPage/main/commentsSection";
+import { CommentProps, ReplyProps } from "@/components/pages/playerPage/main/commentsSection";
 
 interface UserDataOnDb {
     name: string | null,
@@ -864,10 +864,10 @@ export default function useFirebase() {
             };
 
             const updatedReaction = (await get( reactionRef )).val();
-            const response = await fetch(' https://updatereactionscount-6lpci3axsq-uc.a.run.app', {
+            const response = await fetch('https://updatereactionscount-6lpci3axsq-uc.a.run.app', {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ path: 'reactions', commentId, userId: auth.currentUser?.uid })
+                body: JSON.stringify({  commentId, userId: auth.currentUser?.uid })
             });
 
             if ( response.ok ) {
@@ -884,6 +884,44 @@ export default function useFirebase() {
         }
     };
 
+    const addUserReplyToDb = async ( replyData: ReplyProps ) => {
+        const db = getDatabase( app );
+        const commentRef = getDatabaseRef( db, `replies/${replyData.replyingId}/${replyData.id}` );
+
+        try {
+            await update( commentRef, { reply: replyData });
+            const response = await fetch('https://updaterepliescount-6lpci3axsq-uc.a.run.app', {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({  commentId: replyData.replyingId, userId: auth.currentUser?.uid })
+            });
+
+            if ( response.ok ) {
+                const { updatedComment } = await response.json();
+                console.log(updatedComment);
+                return updatedComment;
+            };
+
+        } catch (error) {
+            throw new Error( 'Erro ao adicionar comentario ao banco de dados' + error );
+        };
+    };
+
+    const getRepliesOnDb = async ( commentId: string ) => {
+        const db = getDatabase( app );
+        const repliesRef = getDatabaseRef( db, `replies/${commentId}` );
+
+        try {
+            const snapshot = await get( repliesRef );
+            const repliesList = snapshot.val();
+            return repliesList;
+
+        } catch (error) {
+            console.error( 'Erro ao buscar respostas no banco de dados' + error );
+        }
+    };
+
+
     return {
         authenticateUser,
         registerUser,
@@ -898,6 +936,8 @@ export default function useFirebase() {
         addUserCommentsToDb,
         getCommentsOnDb,
         updateUserReactionOnDb,
-        getUserReactionOnDb
+        getUserReactionOnDb,
+        addUserReplyToDb,
+        getRepliesOnDb
     }
 };
