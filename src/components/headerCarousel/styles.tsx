@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const headerSlides = styled.div`
+export const HeaderSlides = styled.div`
     width: 100%;
     height: auto;
     position: relative;

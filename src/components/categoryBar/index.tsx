@@ -1,5 +1,3 @@
-'use client'
-
 import { MouseEvent, SetStateAction, Dispatch, useRef, MutableRefObject, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
@@ -15,7 +13,6 @@ type categoryBarProps = {
 
 export default function CategoryBar( props: categoryBarProps ) {
 
-    const [ isLoading, setIsLoading ] = useState( true )
     const currentPathName = usePathname();
     const categoryElementsRef: MutableRefObject<(HTMLLIElement | null)[]> = useRef([]);
 
@@ -35,8 +32,6 @@ export default function CategoryBar( props: categoryBarProps ) {
         if (  categoryElementsRef.current && categoryElementsRef.current[0]?.style ) {
             Object.assign( categoryElementsRef.current[0]?.style, { backgroundColor: '#ff4500' });
         }
-
-        setIsLoading( false );
     },[]);
 
     // Gera uma lista de categorias que o usuario pode selecionar
@@ -54,7 +49,8 @@ export default function CategoryBar( props: categoryBarProps ) {
 
     return (
         <Style.CategoriesWrapper>
-            <ul style={{ opacity: isLoading ? 0 : 1 }} className='font-noto_sans font-medium text-base *:cursor-pointer text-neutral-200 ease-linear duration-200'>
+            <ul className='font-noto_sans font-medium text-[15px] lg:text-base *:cursor-pointer text-neutral-200 ease-linear duration-200'
+            >
                 { categoriesList }
             </ul>
         </Style.CategoriesWrapper>

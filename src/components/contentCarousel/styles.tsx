@@ -1,3 +1,5 @@
+'use client';
+
 import styled from "styled-components";
 
 export const imageBox = styled.div`
@@ -95,7 +97,6 @@ export const imageBox = styled.div`
             transform: translateX(0);
         }
     }
-
 `;
 
 export const SwiperContainer = styled.div`
@@ -113,4 +114,13 @@ export const SwiperContainer = styled.div`
             display: flex;
         }
     }
+`;
+
+export const ContentWrapper = styled.section`
+    @keyframes FadeIn {
+        from { opacity: 0 }
+        to { opacity: 100% }
+    };
+
+    animation: FadeIn 0.2s linear;
 `;

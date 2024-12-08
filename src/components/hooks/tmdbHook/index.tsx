@@ -116,7 +116,7 @@ export default function useTmdbFetch() {
     };
 
     // Busca filmes com base no genero fornecido
-    const fetchMovies = async ( genre: string, page: number = 1 ) => {
+    const fetchMovies = async ( genre: string, page: number = 1 ): Promise<tmdbObjProps[] | undefined> => {
         try {
             const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${token}&with_genres=${genre}&language=pt-BR&include_image_language=pt&page=${page}`);
             if ( response.ok ) {
@@ -126,7 +126,7 @@ export default function useTmdbFetch() {
 
         } catch (error) {
             console.error(error);
-            return false;
+            return;
         }
     };
 
@@ -182,7 +182,7 @@ export default function useTmdbFetch() {
 
     // Busca uma lista de ids selecionados
     const fetchSelectedIds = async ( idsList: string[], contentType: string ) => {
-        return new Promise(( resolve, reject ) => {
+        const result: tmdbObjProps[] = await new Promise(( resolve, reject ) => {
             try {
                 Promise.all(idsList.map( async ( id ) => {
                     const response = contentType === 'movie' ? await fetchSingleMovie( id ) : await fetchSingleSerie( id );
@@ -194,6 +194,8 @@ export default function useTmdbFetch() {
                 reject( error );
             }
         })
+
+        return result;
     };
 
     // faz uma busca mais detalhada de um filme com o id fornecido

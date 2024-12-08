@@ -1,72 +1,90 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
+'use server';
 
 // Hook personalizado do TMDB com funções de busca de conteudo
 import useTmdbFetch from '@/components/hooks/tmdbHook/index';
 
+import React from 'react';
+
 // Interface de tipos para objetos retornados pela api do TMDB
 import { tmdbObjProps } from '@/components/contexts/tmdbContext/index';
 
-import { Carousel } from './slides';
+import dynamic from 'next/dynamic';
+const Carousel = dynamic(() => import('./swiper/index'), { ssr: false });
 
 interface CarouselProps {
-    isLoaded?: React.Dispatch<React.SetStateAction<boolean>>;
     currentPage: string;
 };
 
-export default function HeaderCarousel(props: CarouselProps) {
+export default async function HeaderCarousel( props: CarouselProps ) {
     
-    const [ contentData, setContentData ] = useState<tmdbObjProps[]>([])
+    const contentData: tmdbObjProps[] = [];
     const tmdbHook = useTmdbFetch();
+    const contentType =  props.currentPage === 'series' ? 'serie' : 'movie';
 
     // Seleciona somente o conteudo que possuir imagens disponiveis
-    const checkAvailability = ( data: tmdbObjProps[] ) => {
-        const filtered = data.filter( item => item.poster_path || item.backdrop_path );
-        setContentData( filtered );
-        props.isLoaded && props.isLoaded( true );
+    const checkAvailability = async ( data: tmdbObjProps[] ) => {
+        const filteredContent: tmdbObjProps[] = await new Promise( resolve => {
+            const filtered = data.filter( item => item.poster_path || item.backdrop_path );
+            resolve( filtered );
+        });
+
+        return filteredContent;
+    };
+
+    const fetchContentByIdList = async ( idsList: string[], type: string ) => {
+        try {
+            const response = await tmdbHook.fetchSelectedIds( idsList, type );
+            return response;
+        } catch (error) {
+            throw new Error( 'Erro ao buscar conteudo' + error );   
+        };
     };
 
     /*Função que seleciona os primeiros 7 ids de filmes ou series e faz uma nova requisição a api para buscar informações mais detalhadas sobre os ids*/
-    const selectContent = ( data: tmdbObjProps[] ) => {
-        const selectedIds = [];
-        for ( let i = 0; i <= 7; i++ ) {
-            selectedIds.push( data[i].id );
-        };
+    const selectContent = async ( data: tmdbObjProps[] ) => {
+        const selectedIds: string[] = await new Promise( resolve => {
+            const idsList = [];
+            for ( let i = 0; i <= 7; i++ ) {
+                idsList.push( data[i].id );
+            };
+            resolve( idsList );
+        });
 
-        const contentType =  props.currentPage === 'series' ? 'serie' : 'movie';
-        handleSecondFetch(tmdbHook.fetchSelectedIds( selectedIds, contentType ));
+        return selectedIds;
     }; 
-    
 
-    const handleSecondFetch = async ( promise: Promise<any> ) => {
-        const response = await promise;
-        if ( response.length ) { 
-            checkAvailability( response );
+    const handleFetchPromise = async ( promise: Promise<any> ) => {
+        try {
+            const response = await promise;
+            return response;
+        } catch (error) {
+            throw new Error( 'Erro ao buscar conteudo' + error );   
         };
     };
 
-    // Logo apos a pagina ser carregada, e feita uma verificação para chamar uma função de busca especifica para cada pagina.
-    useEffect(() => {
+    if ( props.currentPage === 'home' ) {
+        const releasedMovies = await handleFetchPromise(tmdbHook.fetchReleasedMovies());
+        const selectedIds = await selectContent( releasedMovies );
+        const content = await fetchContentByIdList( selectedIds, contentType );
+        const filteredContent = await checkAvailability( content );
+        contentData.push( ...filteredContent );
+    };
+    
+    if ( props.currentPage === 'movies' ) {
+        const popularMovies = await handleFetchPromise(tmdbHook.fetchPopularMovies());
+        const selectedIds = await selectContent( popularMovies );
+        const content = await fetchContentByIdList( selectedIds, contentType );
+        const filteredContent = await checkAvailability( content );
+        contentData.push( ...filteredContent );
+    };
 
-        const handleFirstFetch = async ( promise: Promise<any> ) => {
-            const response = await promise;
-            if ( response.length ) { 
-                selectContent( response );
-            };
-        };
-
-       if ( props.currentPage === 'home' ) {
-            handleFirstFetch(tmdbHook.fetchReleasedMovies());
-       } else {
-            if ( props.currentPage === 'movies' ) {
-               handleFirstFetch(tmdbHook.fetchPopularMovies()) 
-            }
-            if ( props.currentPage === 'series' ) {
-                handleFirstFetch(tmdbHook.fetchPopularSeries());
-            }
-       }
-    }, []);
+    if ( props.currentPage === 'series' ) {
+        const popularSeries = await handleFetchPromise(tmdbHook.fetchPopularSeries());
+        const selectedIds = await selectContent( popularSeries );
+        const content = await fetchContentByIdList( selectedIds, contentType );
+        const filteredContent = await checkAvailability( content );
+        contentData.push( ...filteredContent );
+    };           
 
     return contentData.length ? (
            <Carousel contentData={contentData} currentPage={props.currentPage}/>

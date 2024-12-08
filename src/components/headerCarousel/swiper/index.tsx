@@ -1,3 +1,5 @@
+'use client';
+
 // Interface de tipos para objetos retornados pela api do TMDB
 import { tmdbObjProps } from '@/components/contexts/tmdbContext';
 
@@ -18,9 +20,9 @@ import 'swiper/element/css/pagination';
 import 'swiper/element/css/navigation';
 import 'swiper/css/effect-fade';
 
-import * as Style from '@/components/headerCarousel/styles';
-
 import Link from "next/link";
+
+import { HeaderSlides } from '../styles';
 
 type contentDataProps = Record<string, any>;
 
@@ -29,7 +31,7 @@ type carouselProps = {
     contentData: contentDataProps[];
 };
 
-export function Carousel( props: carouselProps ) {
+export default function Carousel( props: carouselProps ) {
    
     /*Função que obtem o ano de lançamento de um filme ou serie*/
     const getReleaseDate = ( date: string ) => {
@@ -88,7 +90,7 @@ export function Carousel( props: carouselProps ) {
     };
 
     return (
-        <Style.headerSlides>
+        <HeaderSlides>
             <Swiper
                 slidesPerView={1}
                 spaceBetween={0}
@@ -128,7 +130,7 @@ export function Carousel( props: carouselProps ) {
                                 <div className='w-full z-20 absolute bottom-10 px-4 md:bottom-14 md:pl-6 lg:pl-8 md:static md:w-1/2 md:flex md:items-start md:flex-col md:justify-center'>
                                     
                                     {/* Titulo */}
-                                    <h1 className='font-raleway mx-auto w-3/4 font-extrabold text-[26px] text-center line-clamp-2 sm:line-clamp-2 md:mx-0 md:text-left md:max-w-xs lg:max-w-sm xl:max-w-md md:text-3xl'>
+                                    <h1 className='font-raleway mx-auto w-3/4 font-extrabold text-[26px] text-center line-clamp-1 md:mx-0 md:text-left md:max-w-xs lg:max-w-sm xl:max-w-md md:text-3xl'>
                                         { content.title ?? content.name }
                                     </h1>
 
@@ -191,6 +193,6 @@ export function Carousel( props: carouselProps ) {
                 </svg>
             </div>
 
-        </Style.headerSlides>
+        </HeaderSlides>
     );
 };

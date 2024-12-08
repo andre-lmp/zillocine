@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { useRef, MutableRefObject, useEffect, useContext, useState } from "react";
+import { useRef, MutableRefObject, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
 // Icones do React-icons
@@ -54,7 +54,7 @@ export default function Header() {
     });
    },[ currentPathName ]);
 
-//    Atualiza o estilo do header conforme a pagina e rolada
+    //Atualiza o estilo do header conforme a pagina e rolada
    const scrollHandler = () => {
         if ( window.innerWidth < 768 ) {
             if ( scrollDiv.current ) {
