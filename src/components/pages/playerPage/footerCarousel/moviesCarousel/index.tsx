@@ -91,7 +91,7 @@ export default function SimilarMovies( props: componentProps ) {
     return contentData?.length ? (
         <div className='px-4 w-full pt-8 pb-6 md:px-6 lg:px-8 font-noto_sans'>
 
-            <p className="mb-1 text-[17px] font-medium xl:text-lg">Recomendamos para você</p>
+            <p className="mb-1 text-lg font-semibold font-raleway">Recomendamos para você</p>
 
             <div className='w-full h-0.5 bg-gradient-to-r mb-3 from-orangered to-transparent'></div>
 

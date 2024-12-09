@@ -45,8 +45,6 @@ export function MainActors( props: ComponentProps ) {
         updateSwiperState( swiperRef.current );
     }, []);
 
-    console.log(props.actorsData);
-
     return props.actorsData.some( actor => actor.profile_path) ? (
         <div className="mt-20 font-noto_sans sm:mt-10 relative px-3">
             <h3 className="text-xl font-semibold mb-6">Atores principais</h3>

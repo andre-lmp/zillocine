@@ -11,7 +11,7 @@ export default function MoviesPage() {
 
     // Animação de carregamento da pagina
     const loading = (
-        <div className='w-screen h-screen fixed z-[400] flex justify-center items-center'>
+        <div className='w-full h-screen fixed z-[400] flex justify-center items-center'>
             <span className="loading loading-spinner loading-lg text-neutral-400"></span>
         </div>
     );
