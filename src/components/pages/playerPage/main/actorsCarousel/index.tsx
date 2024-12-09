@@ -45,6 +45,8 @@ export function MainActors( props: ComponentProps ) {
         updateSwiperState( swiperRef.current );
     }, []);
 
+    console.log(props.actorsData);
+
     return props.actorsData.some( actor => actor.profile_path) ? (
         <div className="mt-20 font-noto_sans sm:mt-10 relative px-3">
             <h3 className="text-xl font-semibold mb-6">Atores principais</h3>
@@ -80,7 +82,11 @@ export function MainActors( props: ComponentProps ) {
                                             className="object-cover w-20 h-20 lg:w-24 lg:h-24"
                                         />
                                     </div>
-                                    <p className="text-center font-normal text-neutral-300">{ actor.name ?? '' }</p>
+
+                                    <p className="text-center font-normal text-neutral-300 flex flex-col gap-1">
+                                        { actor.name ?? '' }
+                                        <span className="text-orangered">{ actor.character ?? '' }</span>
+                                    </p>
                                 </div>
                             </SwiperSlide>
                     ) : null
