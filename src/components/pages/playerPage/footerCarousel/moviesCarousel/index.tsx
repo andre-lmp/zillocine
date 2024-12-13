@@ -143,7 +143,7 @@ export default function SimilarMovies( props: componentProps ) {
 
                                              {/* Container de informações sobre o conteudo */}
                                              <div className="mt-2 relative pl-3">
-                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5/6 bg-orangered rounded-md"></div>
+                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5/6 bg-neutral-400 rounded-md"></div>
 
                                                 {/* Titulo */}
                                                 <p className="font-raleway font-bold text-[15px] text-white line-clamp-1">{ movie.title ?? movie.name }</p>
