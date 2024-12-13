@@ -16,11 +16,11 @@ export default function WatchButton( props: WatchButtonProps ) {
         const contentObjKeys = Object.keys( content );
 
         if (contentObjKeys.includes( 'first_air_date' )) {
-            router.push(`player/serie/${content.id}`);
+            router.push(`player/serie/${content.id}`, { scroll: true });
         };
 
         if (!contentObjKeys.includes( 'first_air_date' )) {
-            router.push(`player/movie/${content.id}`);
+            router.push(`player/movie/${content.id}`, { scroll: true });
         };
     };
 

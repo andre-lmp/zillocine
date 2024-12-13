@@ -113,10 +113,10 @@ export default function Carousel( props: CarouselProps ) {
                                                     <FaHeart className="favorited text-orangered absolute top-3 right-3 text-[22px]"/>
                                                 </button>
 
-                                                <FaPlay className="play-icon" onClick={() => router.push(`/player/${props.contentType}/${item.id}`)}/>
+                                                <FaPlay className="play-icon" onClick={() => router.push(`/player/${props.contentType}/${item.id}`, {scroll: true})}/>
                                             
                                                 {/* Imagem do conteudo a ser exibido */}
-                                                <div className="w-full relative cursor-pointer h-60 md:h-64" onClick={() => router.push(`/player/${props.contentType}/${item.id}`)}>
+                                                <div className="w-full relative cursor-pointer h-60 md:h-64" onClick={() => router.push(`/player/${props.contentType}/${item.id}`, {scroll: true})}>
                                                     <LazyLoadImage
                                                         src={`https://image.tmdb.org/t/p/original${item.poster_path ?? item.backdrop_path}`}
                                                         alt={`${item.title ?? item.name} movie/serie presentation image`}

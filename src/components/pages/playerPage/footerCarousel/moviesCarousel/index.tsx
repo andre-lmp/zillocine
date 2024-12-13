@@ -123,10 +123,10 @@ export default function SimilarMovies( props: componentProps ) {
                                                     <FaHeart className="favorited text-2xl text-orangered absolute top-3 right-3  md:text-[22px]"/>
                                                 </button>
 
-                                                <FaPlay className="play-icon" onClick={() => router.push(`/player/${props.contentType}/${movie.id}`)}/>
+                                                <FaPlay className="play-icon" onClick={() => router.push(`/player/${props.contentType}/${movie.id}`, {scroll: true})}/>
 
                                                 <div className="w-full relative cursor-pointer h-60 md:h-64"
-                                                onClick={() => router.push(`/player/${props.contentType}/${movie.id}`)}
+                                                onClick={() => router.push(`/player/${props.contentType}/${movie.id}`, {scroll: true})}
                                                 >
                                                     {/* Imagem do filme */}
                                                     <LazyLoadImage
