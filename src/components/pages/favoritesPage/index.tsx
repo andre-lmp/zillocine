@@ -1,24 +1,22 @@
 'use client';
 
-// Hooks
 import { useState, useEffect, useContext } from "react";
 import useTmdbFetch from "@/components/hooks/tmdbHook";
 import useFirebase from "@/components/hooks/firebaseHook";
 import { useRouter } from "next/navigation";
 
-// Componente para carregamento preguiçoso de imagens
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/opacity.css';
 
 // Interface de tipos para objetos retornados pela api do TMDB
 import { tmdbObjProps } from "@/components/contexts/tmdbContext";
 
-// Icons com React-icons
 import { FaPlay } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
 
-// Contextos
 import { UserDataContext } from "@/components/contexts/authenticationContext";
+
+import { FavoritesContainer } from "./style";
 
 export default function FavoritesPage() {
 
@@ -158,7 +156,7 @@ export default function FavoritesPage() {
                     <div className="w-full h-0.5 rounded-3xl bg-white/10 mt-1"></div>
 
                     {/* Seção de aprensentação do filmes e series favoritos */}
-                    <section className="flex flex-col gap-y-7 items-start mt-10">
+                    <FavoritesContainer>
                         { contentData.map( content => (
                             // Container de apresentação com informações do filme/serie
                             <div key={`favorites-${content.id}`} className="w-full flex flex-row gap-x-3">
@@ -212,7 +210,7 @@ export default function FavoritesPage() {
                                 </div>
                             </div>
                         ))}
-                    </section>
+                    </FavoritesContainer>
                 </div>
             ) : (
                 // Caso a lista de favoritos esteja vazia
@@ -228,5 +226,10 @@ export default function FavoritesPage() {
                 <p className="font-noto_sans font-normal text-[17px] text-neutral-400">Faça login ou crie uma conta para ver seus favoritos.</p>
             </div>
         )
-    ) : null
+    ) : (
+        // Animação de loading durante o carregamento dos dados
+        <div className='w-full h-screen fixed z-30 flex justify-center items-center'>
+            <span className="loading loading-spinner loading-lg text-neutral-400"></span>
+        </div>
+    )
 };
