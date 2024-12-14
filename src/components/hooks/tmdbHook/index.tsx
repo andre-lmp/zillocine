@@ -203,13 +203,13 @@ export default function useTmdbFetch() {
         try {
           const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${token}&language=pt-BR&page=1&include_image_language=pt&append_to_response=videos,credits`);
           if ( response.ok ){
-            const fetchData = await response.json();
-            return fetchData;
-          }
+            const data = await response.json();
+            return data;
+          };
     
         } catch (error) {
           console.log(error);
-        }
+        };
     };
 
     // busca filmes com base em palavras chaves

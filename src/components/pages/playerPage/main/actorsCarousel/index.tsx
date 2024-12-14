@@ -1,3 +1,5 @@
+'use client';
+
 import { useRef, useState, useEffect } from "react";
 
 // Componente para carregamento preguiçoso de imagens
@@ -19,7 +21,7 @@ type ComponentProps = {
     actorsData: tmdbObjProps[];
 };
 
-export function MainActors( props: ComponentProps ) {
+export default function MainActors( props: ComponentProps ) {
 
     const swiperRef = useRef<SwiperRef | null>( null );
     const [ swiperState, setSwiperState ] = useState({

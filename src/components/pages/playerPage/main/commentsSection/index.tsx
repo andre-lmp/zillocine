@@ -1,4 +1,5 @@
-// Hooks
+'use client';
+
 import React, { useState, FormEvent, useContext, useEffect, useRef, MutableRefObject, MouseEvent } from "react";
 import useFirebase from "@/components/hooks/firebaseHook";
 import { usePathname } from "next/navigation";

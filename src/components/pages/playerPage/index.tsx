@@ -1,63 +1,48 @@
-'use client'
-
-import { useEffect, useState } from 'react';
-
-import Header from './header';
-import Main from './main'
 import SimilarMovies from './footerCarousel/moviesCarousel';
-import SerieSeasons from './footerCarousel/seasonsCarousel';
 
 // Hook personalizado com funções para busca de conteudo no TMDB
 import useTmdbFetch from '@/components/hooks/tmdbHook';
 
 // Interface de tipos para objetos retornados pela api do TMDB
 import { tmdbObjProps } from '../../contexts/tmdbContext';
+import dynamic from 'next/dynamic';
 
 type PlayerPageProps = {
     contentId: string;
     contentType: string;
 };
 
-export default function PlayerPage( props: PlayerPageProps ) {
+const Header = dynamic(() => import('./header/index'), { ssr: false });
+const SerieSeasons = dynamic(() => import('./footerCarousel/seasonsCarousel'), { ssr: false });
+import Main from './main/index';
+
+export default async function PlayerPage( props: PlayerPageProps ) {
 
     const { fetchSingleMovie, fetchSingleSerie } = useTmdbFetch();
-    const [ isLoaded, setIsLoaded ] = useState( false );
-    const [ contentData, setContentData ] = useState<tmdbObjProps[]>([]);
+    const contentData: tmdbObjProps[] = [];
 
-    const checkAvailability = ( data: tmdbObjProps ) => {
-        if ( data.backdrop_path || data.poster_path ) {
-            setIsLoaded( true )
-            setContentData([ data ]);
-            return;
-        }
-
-        return;
-    };
-
-    // Lida com a promise retornada por uma função de busca do useTmdbFetch
-    const fetchHandler = async ( fetchResponse: Promise<any> ) => {
-        const response = await fetchResponse;
-        if ( response) {
-            checkAvailability( response );
+    if ( props.contentType === 'movie' ) {
+        const movie: tmdbObjProps | undefined = await fetchSingleMovie(props.contentId);
+        if ( movie ) {
+            contentData.push( movie );
         };
     };
 
-    useEffect(() => {
-        if ( props.contentType === 'movie' ) {
-            fetchHandler(fetchSingleMovie( props.contentId ));
-        } else {
-            fetchHandler(fetchSingleSerie( props.contentId ));
-        };                
-    }, []);
+    if ( props.contentType === 'serie' ) {
+        const serie: tmdbObjProps | undefined = await fetchSingleSerie(props.contentId);
+        if ( serie ) {
+            contentData.push( serie );
+        };
+    };
 
-    return isLoaded ? (
-        <section className='min-h-screen'>
+    return contentData.length ? (
+        <section className='min-h-screen mb-6'>
             <Header playerData={contentData}/>
 
             <Main contentData={contentData[0]} contentType={ props.contentType }/>
             
             { props.contentType === 'movie' ? 
-                <SimilarMovies contentId={props.contentId} contentType={props.contentType}/> :
+                <SimilarMovies movieId={props.contentId}/> :
                 <SerieSeasons serieName={contentData[0].name} serieId={props.contentId} seasons={contentData[0].seasons}/>    
             }
         </section>

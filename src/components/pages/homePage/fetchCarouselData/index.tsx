@@ -44,31 +44,23 @@ export default async function FetchCarouselData( props: carouselProps ) {
         };
     };
 
-        // Define qual o tipo do conteudo a ser buscado com base na pagina atual
-       if ( props.contentType === 'movie' ) {
-            const movies: tmdbObjProps[] = [];
+    // Define qual o tipo do conteudo a ser buscado com base na pagina atual
+    if ( props.contentType === 'movie' ) {
+        const movies: tmdbObjProps[] = [];
 
-            if ( props.contentGenre !== 'release' ) {
-                const response = await handleFetchPromise(fetchMovies( props.contentGenre, props.pageNumber ));
-                if ( response ) movies.push( ...response );
-            } else {
-                const response = await handleFetchPromise(fetchReleasedMovies( props.pageNumber ));
-                if ( response ) movies.push( ...response );
-            };
+        if ( props.contentGenre !== 'release' ) {
+            const response = await handleFetchPromise(fetchMovies( props.contentGenre, props.pageNumber ));
+            if ( response ) movies.push( ...response );
+        } else {
+            const response = await handleFetchPromise(fetchReleasedMovies( props.pageNumber ));
+            if ( response ) movies.push( ...response );
+        };
 
-            if ( movies.length ) {
-                const filteredMovies = await checkAvailability( movies );
-                contentData.push( ...filteredMovies );
-            };
-       }; 
-       
-    //    if () {
-    //         if ( props.contentGenre !== 'release' ) {
-    //             handleFetchPromise(fetchSeries( props.contentGenre, props.pageNumber ));
-    //         } else {
-    //             handleFetchPromise(fetchReleasedSeries( props.pageNumber ));
-    //         }
-    //    };
+        if ( movies.length ) {
+            const filteredMovies = await checkAvailability( movies );
+            contentData.push( ...filteredMovies );
+        };
+    }; 
 
     return contentData.length ? (
         <ContentWrapper>
