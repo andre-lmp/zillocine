@@ -11,5 +11,5 @@ export const FavoritesContainer = styled.section`
     row-gap: 28px;
     align-items: start;
     margin-top: 40px;
-    animation: FadeIn 1s linear;
+    animation: FadeIn .2s linear;
 `;

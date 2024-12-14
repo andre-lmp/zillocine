@@ -46,7 +46,7 @@ const firebaseErrorMessages = {
     "auth/wrong-password": "A senha fornecida está incorreta.",
     "auth/too-many-requests": "Muitas solicitações foram feitas. Por favor, tente novamente mais tarde.",
     "auth/operation-not-allowed": "Esta operação não é permitida.",
-    "auth/requires-recent-login": "É necessário fazer login recentemente para realizar esta ação.",
+    "auth/requires-recent-login": "Faça login novamente para encerrar sua conta.",
     "auth/invalid-credential": "As credenciais fornecidas são inválidas.",
     "auth/user-token-expired": "O token do usuário expirou. Por favor, faça login novamente.",
     "auth/network-request-failed": "Falha na solicitação de rede.",
@@ -247,7 +247,7 @@ export default function useFirebase() {
                     globalEvents.setModalsController(prev => ({
                         ...prev,
                         isLoginModalActive: !prev.isLoginModalActive,
-                        formInstructionsMessage: firebaseErrorMessages[ error.code as keyof typeof firebaseErrorMessages ] || 'Faça login novamente para encerrar a conta.'
+                        formInstructionsMessage: firebaseErrorMessages[ error.code as keyof typeof firebaseErrorMessages ] || 'Faça login novamente para encerrar sua conta.'
                     }));
                 } else {
                     toast.error('Não foi possível encerrar sua conta, tente novamente', {
@@ -604,7 +604,7 @@ export default function useFirebase() {
                 }
             };
     
-            // Verifica o usuário atual para atualização de perfil
+            // Verifica se o usuario atual esta authenticado
             if ( auth.currentUser ) {
                 // Atualiza o nome vinculado à conta do usuário
                 if ( newName && newName !== auth.currentUser.displayName ) {
@@ -626,6 +626,7 @@ export default function useFirebase() {
                     };
                 };
             };
+
         } catch ( error ) {
             if ( error instanceof FirebaseError ) {
                 console.error( error.message );
@@ -666,20 +667,24 @@ export default function useFirebase() {
         const db = getDatabase( app );
         const user = auth.currentUser;
         const userRef = getDatabaseRef( db, `users/${user?.uid}` );
-        const snapshot = await get( userRef );
-        const userDataOnDb = snapshot.val();
 
         try {
-            userData.setUserData( prev => ({
-                ...prev,
-                favoriteMovies: userDataOnDb.favoriteMovies ?? null
-            }));
+            const snapshot = await get( userRef );
+            const userDataOnDb = snapshot.val();
 
-            userData.setUserData( prev => ({
-                ...prev,
-                favoriteSeries: userDataOnDb.favoriteSeries ?? null
-            }));
-            
+            if ( userDataOnDb ) {
+                 userData.setUserData( prev => ({
+                    ...prev,
+                    favoriteMovies: userDataOnDb.favoriteMovies ?? null
+                }));
+
+                userData.setUserData( prev => ({
+                    ...prev,
+                    favoriteSeries: userDataOnDb.favoriteSeries ?? null
+                }));
+
+            };
+
         } catch (error) {
             console.error( 'Erro ao buscar os favoritos do usuario' + error );
         }
@@ -692,35 +697,33 @@ export default function useFirebase() {
         const userRef = getDatabaseRef( db, `users/${user?.uid}` );
 
         try {
-            if ( contentType === 'movie' ) {
-                const snapshot = await get( userRef );
-                const userDataOnDb = snapshot.val()
+            const snapshot = await get( userRef );
+            const userDataOnDb = await snapshot.val()
 
-                if ( userDataOnDb.favoriteMovies ) {
+            if ( userDataOnDb ) {
+                if ( contentType === 'movie' ) {
+                    const updatedData = userDataOnDb.favoriteMovies ? [
+                        contentId,
+                        ...userDataOnDb.favoriteMovies
+                    ] : [contentId]
+
                     await update( userRef, {
-                        favoriteMovies: [contentId, ...userDataOnDb.favoriteMovies]
+                        favoriteMovies: updatedData
                     });
-                } else {
+                };   
+    
+                if ( contentType === 'serie' ) {
+                    const updatedData = userDataOnDb.favoriteSeries ? [
+                        contentId, 
+                        ...userDataOnDb.favoriteSeries
+                    ] : [contentId]
+
                     await update( userRef, {
-                        favoriteMovies: [contentId]
+                        favoriteSeries: updatedData
                     });
                 };
-            };   
 
-            if ( contentType === 'serie' ) {
-                const snapshot = await get( userRef );
-                const userDataOnDb = snapshot.val()
-
-                if ( userDataOnDb.favoriteSeries ) {
-                    await update( userRef, {
-                        favoriteSeries: [contentId, ...userDataOnDb.favoriteSeries]
-                    });
-                } else {
-                    await update( userRef, {
-                        favoriteSeries: [contentId]
-                    });
-                };
-            };   
+            }; 
 
             getUserFavoritesOnDb();
 
@@ -735,31 +738,20 @@ export default function useFirebase() {
         const userRef = getDatabaseRef( db, `users/${user?.uid}` );
 
         try {
-            if ( contentType === 'movie' ) {
-                const snapshot = await get( userRef );
-                const userDataOnDb = snapshot.val()
+            const snapshot = await get( userRef );
+            const userDataOnDb = snapshot.val()
 
-                if ( userDataOnDb.favoriteMovies ) {
-                    await update( userRef, {
-                        favoriteMovies: userDataOnDb.favoriteMovies.filter(( id: string ) => id !== contentId )
-                    });
-                };
-            };   
-
-            if ( contentType === 'serie' ) {
-                const snapshot = await get( userRef );
-                const userDataOnDb = snapshot.val()
-
-                if ( userDataOnDb.favoriteSeries ) {
-                    await update( userRef, {
-                        favoriteSeries: userDataOnDb.favoriteSeries.filter(( id: string ) => id !== contentId )
-                    });
-                } else {
-                    await update( userRef, {
-                        favoriteSeries: [contentId]
-                    });
-                };
-            };   
+            if ( userDataOnDb ) {
+                if ( contentType === 'movie' && userDataOnDb.favoriteMovies ) {
+                    const updatedData = userDataOnDb.favoriteMovies.filter(( id: string ) => id !== contentId )
+                    await update( userRef, { favoriteMovies: updatedData });
+                };   
+    
+                if ( contentType === 'serie' && userDataOnDb.favoriteSeries ) {
+                    const updatedData = userDataOnDb.favoriteSeries.filter(( id: string ) => id !== contentId );
+                    await update( userRef, { favoriteSeries: updatedData });
+                };   
+            };
 
             getUserFavoritesOnDb();
 

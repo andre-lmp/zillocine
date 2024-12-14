@@ -43,6 +43,7 @@ export default function FavoritesPage() {
     const checkAvailability = ( data: tmdbObjProps[] ) => {
         const filtered = data.filter( item => item.poster_path || item.backdrop_path );
         setContentData( filtered );
+        setIsLoading( false );
     };
 
     // Busca os filmes e series salvos como favoritos pelo usuario
@@ -68,15 +69,15 @@ export default function FavoritesPage() {
     };
 
     useEffect(() => {
-        setIsLoading( false );
-
         if ( userData.isLoggedIn ) {
             if ( userData.favoriteMovies || userData.favoriteSeries ) {
                 fetchUserFavorites();
+                console.log('buscou');
                 return
-            } else {
-                setContentData([]);
             };
+            
+            setContentData([]);
+            setIsLoading( false );
         };
     }, [ userData.favoriteMovies, userData.favoriteSeries ]);
 
