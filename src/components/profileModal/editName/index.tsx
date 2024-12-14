@@ -1,13 +1,11 @@
-// Hooks
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import useFirebase from "@/components/hooks/firebaseHook";
 
-// Contextos
 import { UserDataContext } from "@/components/contexts/authenticationContext";
 import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
 
-// Ferramentas de validação
+// Ferramentas para validação de formulario
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
@@ -28,6 +26,7 @@ export default function EditName( props: EditNameProps ) {
 
     const userData = useContext( UserDataContext );
     const globalEvents = useContext( GlobalEventsContext )
+    const [ isUpdatingName, setIsUpdatingName ] = useState( false );
     const { updateUserData } = useFirebase();
 
     const { register, handleSubmit, formState: { errors }, setValue, watch, setError }  = useForm<EditNameSchemaProps>({
@@ -43,8 +42,10 @@ export default function EditName( props: EditNameProps ) {
     }, [ globalEvents.isProfileModalActive ]);
 
     // Recebe os dados do schema apos o formulario ser submetido
-    const handleFormSubmit = ( schemaData: EditNameSchemaProps ) => {
-        updateUserData( null, schemaData.name.trimEnd() ); 
+    const handleFormSubmit = async ( schemaData: EditNameSchemaProps ) => {
+        setIsUpdatingName( true );
+        await updateUserData( null, schemaData.name.trimEnd() ); 
+        setIsUpdatingName( false );
     };
 
     return (
@@ -88,7 +89,9 @@ export default function EditName( props: EditNameProps ) {
                             backgroundColor: formValues.name !== userData.name ? 'darkslateblue' : 'rgba(72, 61, 139, 0.4)'
                         }}
                         >
-                            Atualizar
+                            { isUpdatingName ? (
+                                <>Atualizando <span className="loading loading-bars loading-sm"></span></>
+                            ) : <>Atualizar</> }
                     </button>
                 </div>
             </form>
