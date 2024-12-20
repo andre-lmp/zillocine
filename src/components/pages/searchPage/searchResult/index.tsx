@@ -103,10 +103,10 @@ export default function ShowResults( props: componentProps ) {
                                     src={`https://image.tmdb.org/t/p/original${content.poster_path ?? content.backdrop_path}`}
                                     alt={`${content.title ?? content.name} serie/movie presentation image`}
                                     width='100%'
-                                    height={'100%'}
+                                    height='100%'
                                     effect="opacity"
                                     placeholderSrc={`https://image.tmdb.org/t/p/w92/${content.poster_path ?? content.backdrop_path}`}
-                                    className="image min-w-full object-cover bg-darkpurple rounded-md"
+                                    className="image w-full h-full object-cover bg-darkpurple rounded-md"
                                 />    
                             </div>
                         </SearchImageBox>

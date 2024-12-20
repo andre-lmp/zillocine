@@ -124,7 +124,7 @@ export default function Carousel( props: CarouselProps ) {
                                                         effect="opacity"
                                                         height={'100%'}
                                                         placeholderSrc={`https://image.tmdb.org/t/p/w92/${item.poster_path ?? item.backdrop_path}`}
-                                                        className='image w-44 object-cover bg-darkpurple rounded-md'
+                                                        className='image w-44 h-full object-cover bg-darkpurple rounded-md'
                                                     />
                                                 </div>
                                             </Style.imageBox>

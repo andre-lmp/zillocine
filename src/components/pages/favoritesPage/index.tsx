@@ -73,13 +73,16 @@ export default function FavoritesPage() {
             if ( userData.favoriteMovies || userData.favoriteSeries ) {
                 fetchUserFavorites();
                 console.log('buscou');
-                return
+                return;
             };
             
             setContentData([]);
             setIsLoading( false );
+            return;
         };
-    }, [ userData.favoriteMovies, userData.favoriteSeries ]);
+
+        setIsLoading( false );
+    }, [ userData.favoriteMovies, userData.favoriteSeries, userData.isLoggedIn ]);
 
       /*Função que obtem o ano de lançamento de um filme ou serie*/
       const getReleaseDate = ( date: string ) => {
@@ -216,7 +219,12 @@ export default function FavoritesPage() {
             ) : (
                 // Caso a lista de favoritos esteja vazia
                 <div className="px-4 md:px-6 lg:px-8 w-full h-auto absolute top-32 left-0">
-                    <h1 className="font-raleway font-bold text-xl text-white">Sua lista de favoritos está vazia</h1>
+                    <h1 className="font-raleway font-bold text-xl text-white">
+                        Sua lista de favoritos está vazia
+                    </h1>
+
+                    <div className="w-full h-0.5 rounded-3xl bg-white/10 mt-1"></div>
+                    
                     <p className="font-noto_sans font-normal text-[17px] text-neutral-400">Marque filmes e series como favoritos para que eles apareçam aqui.</p>
                 </div>
             )

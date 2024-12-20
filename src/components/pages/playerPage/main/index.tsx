@@ -24,7 +24,7 @@ export default function Main( props: ComponentProps ) {
         <div className="flex flex-col font-noto_sans px-4 md:px-6 lg:px-8">
 
                 {/* Descrição do filme/serie */}
-                <p className='text-justify w-full text-[17px] leading-loose text-neutral-300 max-w-4xl'>
+                <p className='text-justify w-full text-[17px] md:text-left leading-loose text-neutral-300 max-w-4xl'>
                     { props.contentData.overview.length > 3 ? props.contentData.overview : `Desculpe, a descrição deste conteúdo não pode ser carregada neste momento` }
                 </p>
 
