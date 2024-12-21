@@ -95,11 +95,14 @@ export default function Carousel( props: carouselProps ) {
                 slidesPerView={1}
                 spaceBetween={0}
                 autoplay={{ delay: 6000 }}
-                speed={300}
+                speed={200}
                 resistance={false}
                 loop={true}
                 direction='horizontal'
-                pagination={{ clickable: true }}
+                pagination={{ 
+                    el: '.swiper-custom-pagination', 
+                    clickable: true,
+                }}
                 navigation={{
                     prevEl: '.header-slides-prev',
                     nextEl: '.header-slides-next'
@@ -115,13 +118,15 @@ export default function Carousel( props: carouselProps ) {
                         // Container do slide
                         <SwiperSlide key={ `${props.currentPage}-${content.id}` }>
                             <div className='flex flex-row-reverse slide-container'>
-                                <div className=''>
+                                <div className='w-screen h-[660px] md:h-[400px] md:w-[50vw] xl:h-[420px]'>
                                     {/* Imagem do slide */}
                                     <LazyLoadImage
                                         src={`https://image.tmdb.org/t/p/original${content.poster_path ?? content.backdrop_path}`}
+                                        height={'100%'}
+                                        width={'100%'}
                                         alt={`${content.title ?? content.name} movie/serie presentation image`}
                                         placeholderSrc={`https://image.tmdb.org/t/p/w92/${content.poster_path ?? content.backdrop_path}`}
-                                        className='bg-darkpurple object-cover w-screen h-[660px] md:h-[400px] md:w-[50vw] xl:h-[420px]'
+                                        className='bg-darkpurple object-cover w-full h-full'
                                         effect='opacity'
                                     />
                                 </div>
@@ -177,22 +182,24 @@ export default function Carousel( props: carouselProps ) {
                     ) : null
                 ))}
 
+                <div className="swiper-controller absolute bottom-0 left-1/2 -translate-x-1/2 box-border flex items-center justify-center mb-2 z-30">
+                    {/* Botão para o slide anterior */}
+                    <div className='header-slides-prev absolute w-fit rounded-full z-30 -translate-x-20 translate-y-[1px] cursor-pointer items-center justify-center hidden md:inline'>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="size-6 text-neutral-500 hover:text-white">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                        </svg>
+                    </div>
+
+                    <div style={{position: 'static'}} className="swiper-custom-pagination"></div>
+
+                     {/* Botão para o proximo slide */}
+                     <div className='header-slides-next absolute w-fit rounded-full z-30 translate-x-20 cursor-pointer items-center justify-center translate-y-[1px] hidden md:inline'>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="size-6  text-neutral-500 hover:text-white">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                        </svg>
+                    </div>
+                </div>
             </Swiper>
-
-            {/* Botão para o slide anterior */}
-            <div className='header-slides-prev absolute left-0 top-1/2 -translate-y-1/2 z-30 w-[45px] h-[45px] rounded-full -translate-x-1/2 cursor-pointer swiper-controllers items-center justify-center'>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="size-6 text-white">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-                </svg>
-            </div>
-
-            {/* Botão para o proximo slide */}
-            <div className='header-slides-next absolute right-0 top-1/2 -translate-y-1/2 z-30 w-[45px] h-[45px] rounded-full translate-x-1/2 cursor-pointer swiper-controllers items-center justify-center'>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="size-6 text-white">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                </svg>
-            </div>
-
         </HeaderSlides>
     );
 };

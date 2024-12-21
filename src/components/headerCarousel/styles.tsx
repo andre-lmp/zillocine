@@ -22,22 +22,6 @@ export const HeaderSlides = styled.div`
         background-image: linear-gradient( to top, #020515, #020515, rgba(2, 5, 21, 0.3), transparent);
     }
 
-    & .header-slides-next {
-        display: none;
-        width: 150px;
-        height: 150px;
-        transform: translate(20px, -50%);
-        background-image: radial-gradient(circle, #020515, transparent, transparent);
-    }
-
-    & .header-slides-prev {
-        display: none;
-        width: 150px;
-        height: 150px;
-        transform: translate(-20px, -50%);
-        background-image: radial-gradient(circle, #020515, transparent, transparent);
-    }
-
     @media screen and ( width >= 768px ) {
         background-color: #16142B;
         margin-top: 80px;
@@ -58,14 +42,6 @@ export const HeaderSlides = styled.div`
             height: 100%;
             background-image: linear-gradient( to right, #16142B, transparent);
             z-index: 12;
-        }
-
-        &:hover .header-slides-next {
-            display: flex;
-        }
-
-        &:hover .header-slides-prev {
-            display: flex;
         }
     }
 
