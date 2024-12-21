@@ -28,18 +28,12 @@ export default function EditName( props: EditNameProps ) {
     const globalEvents = useContext( GlobalEventsContext )
     const [ isUpdatingName, setIsUpdatingName ] = useState( false );
     const { updateUserData } = useFirebase();
-
-    const { register, handleSubmit, formState: { errors }, setValue, watch, setError }  = useForm<EditNameSchemaProps>({
+    const { register, handleSubmit, formState: { errors }, setValue, watch, resetField }  = useForm<EditNameSchemaProps>({
         mode: 'all',
         criteriaMode: 'all',
         resolver: zodResolver( editNameSchema ),
     });
-
     const formValues = watch();
-
-    useEffect(() => {
-           userData.name && setValue( 'name', userData.name );
-    }, [ globalEvents.isProfileModalActive ]);
 
     // Recebe os dados do schema apos o formulario ser submetido
     const handleFormSubmit = async ( schemaData: EditNameSchemaProps ) => {
@@ -47,6 +41,20 @@ export default function EditName( props: EditNameProps ) {
         await updateUserData( null, schemaData.name.trimEnd() ); 
         setIsUpdatingName( false );
     };
+
+    const resetNameInput = () => {
+        resetField('name');
+        userData.name && setValue( 'name', userData.name );
+    };
+
+    const closeNameEdit = () => {
+        resetNameInput();
+        props.slideTo('prev-slide');
+    };
+
+    useEffect(() => {
+        closeNameEdit();
+    }, [ globalEvents.isProfileModalActive ]);
 
     return (
         <div className="p-7">
@@ -74,7 +82,7 @@ export default function EditName( props: EditNameProps ) {
                 <div className="flex gap-x-5 mt-5">
 
                     <button 
-                        onClick={() => props.slideTo('prev-slide')}
+                        onClick={closeNameEdit}
                         type="button" 
                         className="btn bg-white/5 hover:bg-white/5 text-white px-7 rounded-lg font-normal text-base border-none outline-none"
                     >

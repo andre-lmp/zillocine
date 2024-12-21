@@ -23,11 +23,11 @@ export const imageBox = styled.div`
     }
 
     & div:first-of-type {
-        transition: all .2s linear;
+        transition: all 0.15s linear;
     };
 
     & .play-icon {
-        transition: all .2s linear;
+        transition: all 0.15s linear;
         opacity: 0;
         position: absolute;
         top: 50%;
@@ -54,21 +54,7 @@ export const imageBox = styled.div`
         display: none;
     }
 
-    & .description {
-        position: absolute;
-        bottom: 6px;
-        padding: 0px 6px;
-        left: 0;
-        opacity: 0;
-        transform: translateY(100%);
-        transition: transform .2s ease-in-out; 
-    }
-
     @media screen and ( width >= 768px ) {
-        &:hover .description {
-            opacity: 1;
-            transform: translateY(0%);
-        } 
 
        &:hover div:first-of-type {
             transform: scale(1.5);
@@ -90,7 +76,7 @@ export const imageBox = styled.div`
 
         & button {
             transform: translateX(100%);
-            transition: all .2s linear;
+            transition: all .15s linear;
         }
 
         &:hover button {

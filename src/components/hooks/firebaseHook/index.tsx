@@ -4,16 +4,13 @@ import { useContext, useEffect } from "react";
 // Inicializador do Firebase
 import { initializeApp, FirebaseError } from "firebase/app";
 
-// Ferramentas para interação com o Firebase Realtime cloud functions;
-import { getFunctions, httpsCallable } from "firebase/functions";
-
 // Ferramentas para interação com o Firebase Realtime Database
 import { getDatabase, set, ref as getDatabaseRef, get, remove, update, onValue } from "firebase/database";
 
 import { getDownloadURL, uploadBytes, getStorage, ref as getStorageRef, deleteObject } from "firebase/storage";
 
 // Ferramentas para interação com o Firebase Authentication
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider, deleteUser, signOut, updateProfile, User as UserInterface, fetchSignInMethodsForEmail } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider, deleteUser, signOut, updateProfile, User as UserInterface, verifyBeforeUpdateEmail } from "firebase/auth";
 
 // Contextos
 import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
@@ -25,15 +22,6 @@ import { CommentProps, ReplyProps } from "@/components/pages/playerPage/main/com
 interface UserDataOnDb {
     name: string | null,
     photoUrl: string | null,
-};
-
-type RequestData = {
-    path: string;
-}; 
-
-type ResponseData = {
-    sucess: boolean;
-    updatedData?: CommentProps;
 };
 
 const firebaseErrorMessages = {
@@ -74,6 +62,7 @@ export default function useFirebase() {
         apiKey: process.env.NEXT_PUBLIC_API_KEY,
         authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
         databaseURL: process.env.NEXT_PUBLIC_DATABASE_URL,
+        // databaseURL: 'http://localhost:9001/?ns=zillocine',
         projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
         storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
         messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
@@ -82,12 +71,10 @@ export default function useFirebase() {
     };
 
     const app = initializeApp( firebaseConfig );
-    const functions = getFunctions( app );
     const auth = getAuth();
     const storage = getStorage( app );
     const googleProvider = new GoogleAuthProvider()
     const githubProvider = new GithubAuthProvider();
-    const interactAndNotify = httpsCallable<RequestData, Response>( functions, 'interactAndNotify' );
     auth.useDeviceLanguage();
 
     const getCurrentUser = async () => {
@@ -266,6 +253,11 @@ export default function useFirebase() {
 
         try {
             await remove( userRef );
+            await fetch('https://updateemailslist-6lpci3axsq-uc.a.run.app', {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+            });
+            
         } catch ( error ) {
             console.error('Erro ao deletar dados do usuário no firebase realtime database' + error);
             return false;
@@ -403,8 +395,10 @@ export default function useFirebase() {
 
         try {
             // Adiciona os dados do usuário ao Realtime DB
-            await set( userRef, {
-                email: userEmail
+            await set( userRef, { email: userEmail });
+            await fetch('https://updateemailslist-6lpci3axsq-uc.a.run.app', {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
             });
 
         } catch ( error ) {
@@ -588,20 +582,27 @@ export default function useFirebase() {
         };
     };    
 
-    const updateUserData = async ( newEmail: string | null, newName: string | null ): Promise<void> => {
+    const updateUserData = async ( newEmail: string | null, newName: string | null ) => {
         try {
             // Verifica o novo email do usuário
             if ( newEmail && newEmail !== userData.email ) {
-                const results = await fetchSignInMethodsForEmail( auth, newEmail );
-                
-                if ( results.length > 0 ) {
+                const response = await fetch('https://findonemailslist-6lpci3axsq-uc.a.run.app', {
+                    method: 'POST',
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({ emailToFind: newEmail })
+                });
+
+                if ( response.ok ) {
+                    const { isUnique } = await response.json();
                     globalEvents.setModalsController( prev => ({
                         ...prev,
-                        verificationErrorMessage: 'Já existe uma conta vinculada a este email'
+                        verificationErrorMessage: !isUnique ? 'Já existe uma conta vinculada a este email' : null
                     }));
-                } else {
-                    await verifyNewUserEmail( newEmail );
-                }
+
+                    isUnique && await verifyNewUserEmail( newEmail );
+                    return isUnique ? { success: true } 
+                    : { success: false, message: 'Já existe uma conta vinculada a este email' };
+                };
             };
     
             // Verifica se o usuario atual esta authenticado
@@ -635,32 +636,32 @@ export default function useFirebase() {
     };    
 
     const verifyNewUserEmail = async ( newEmail: string ) => {
-        // const user = auth.currentUser;
+        const user = auth.currentUser;
     
-        // if ( user ) {
-        //     try {      
-        //         await verifyBeforeUpdateEmail( user, newEmail );
+        if ( user ) {
+            try {      
+                await verifyBeforeUpdateEmail( user, newEmail );
                 
-        //         // Notifica o usuário sobre o envio do link de verificação
-        //         toast.success(`Link de verificação enviado para ${newEmail}`, {
-        //             position: 'bottom-right',
-        //             autoClose: 3000
-        //         });
+                // Notifica o usuário sobre o envio do link de verificação
+                toast.success(`Link de verificação enviado para ${newEmail}`, {
+                    position: 'bottom-right',
+                    autoClose: 3000
+                });
 
-        //     } catch ( error ) {
-        //         if ( error instanceof FirebaseError ) {
-        //             console.error(error.message);
+            } catch ( error ) {
+                if ( error instanceof FirebaseError ) {
+                    console.error(error.message);
     
-        //             // Avisa o usuário de que é preciso se autenticar novamente
-        //             globalEvents.setModalsController(prev => ({
-        //                 ...prev,
-        //                 isLoginModalActive: !prev.isLoginModalActive,
-        //                 isProfileModalActive: !prev.isProfileModalActive,
-        //                 formInstructionsMessage: 'Faça login novamente para solicitar um link de atualização de email'
-        //             }));
-        //         };
-        //     };
-        // };
+                    // Avisa o usuário de que é preciso se autenticar novamente
+                    globalEvents.setModalsController(prev => ({
+                        ...prev,
+                        isLoginModalActive: !prev.isLoginModalActive,
+                        isProfileModalActive: !prev.isProfileModalActive,
+                        formInstructionsMessage: 'Faça login novamente para solicitar um link de atualização de email'
+                    }));
+                };
+            };
+        };
     };
 
     const getUserFavoritesOnDb = async () => {
@@ -846,7 +847,7 @@ export default function useFirebase() {
         try {
             const snapshot = await get( reactionRef );
             const prevUserReaction = snapshot.val();
-
+ 
             if ( prevUserReaction && prevUserReaction.reaction === reaction ) {
                 await update( reactionRef, { reaction: null });
             };

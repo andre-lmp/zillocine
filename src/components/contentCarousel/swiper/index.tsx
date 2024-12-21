@@ -1,13 +1,13 @@
 'use client';
 
-import { useContext, MouseEvent } from 'react';
+import { useContext, MouseEvent, useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import useFirebase from "@/components/hooks/firebaseHook";
 
 import * as Style from '@/components/contentCarousel/styles';
 
 // Componentes do Swiper.js para carousel de slides
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperSlide, SwiperRef } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -38,6 +38,8 @@ export default function Carousel( props: CarouselProps ) {
     const userData = useContext( UserDataContext );
     const globalEvents = useContext( GlobalEventsContext );
     const { addUserFavoritesToDb, deleteUserFavoritesOnDb } = useFirebase();
+    const swiperRef = useRef<SwiperRef | null>( null );
+    const [ swiperState, setSwiperState ] = useState({ isBeginning: true, isEnd: false });
 
     /*Função que obtem o ano de lançamento de um filme ou serie*/
     const getReleaseDate = ( date: string ) => {
@@ -68,6 +70,19 @@ export default function Carousel( props: CarouselProps ) {
         }
     };
 
+    const updateSwiperState = ( swiperRef: SwiperRef | null ) => {
+        if ( swiperRef ) {
+            setSwiperState(() => ({
+                isBeginning: swiperRef.swiper.isBeginning,
+                isEnd: swiperRef.swiper.isEnd
+            }));
+        };
+    };
+
+    useEffect(() => {
+        updateSwiperState( swiperRef.current );
+    }, []);
+
     return (
         <div className='px-4 w-full md:px-6 lg:px-8 ease-linear duration-200'>
 
@@ -83,6 +98,7 @@ export default function Carousel( props: CarouselProps ) {
                     slidesPerGroupAuto
                     slidesPerView={'auto'}
                     spaceBetween={15}
+                    speed={200}
                     navigation={{
                         nextEl: `.${props.navigation.nextEl}`,
                         prevEl: `.${props.navigation.prevEl}`,
@@ -90,6 +106,8 @@ export default function Carousel( props: CarouselProps ) {
                     breakpoints={swiperBreakPoints}
                     modules={[ Navigation ]}
                     resistanceRatio={0.1}
+                    ref={swiperRef}
+                    onSlideChange={() => updateSwiperState(swiperRef.current)}
                 >
 
                     {/* Gerando slides a partir de um array de objetos retornados pela api do TMDB */}
@@ -157,14 +175,24 @@ export default function Carousel( props: CarouselProps ) {
                 </Swiper>
 
                 {/* Botão para o slide anterior */}
-                <div className={`absolute left-0 top-[260px] -translate-y-[140px] z-50 w-[45px] h-[45px] rounded-full -translate-x-1/2 bg-deepnight cursor-pointer swiper-controllers ${props.navigation.prevEl}`}>
+                <div className={`absolute left-0 top-[260px] -translate-y-[140px] z-50 w-[45px] h-[45px] rounded-full -translate-x-1/2 bg-deepnight cursor-pointer swiper-controllers ${props.navigation.prevEl}`}
+                style={{ 
+                    opacity: swiperState.isBeginning ? '0' : '100%', 
+                    pointerEvents: swiperState.isBeginning ? 'none' : 'auto'
+                }}
+                >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="size-6 text-white">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                     </svg>
                 </div>
 
                 {/* Botão para o proximo slide */}
-                <div className={`absolute right-0 top-[260px] -translate-y-[140px] z-50 w-[45px] h-[45px] rounded-full translate-x-1/2 bg-deepnight cursor-pointer swiper-controllers ${props.navigation.nextEl}`}>
+                <div className={`absolute right-0 top-[260px] -translate-y-[140px] z-50 w-[45px] h-[45px] rounded-full translate-x-1/2 bg-deepnight cursor-pointer swiper-controllers ${props.navigation.nextEl}`}
+                style={{ 
+                    opacity: swiperState.isEnd ? '0' : '100%',
+                    pointerEvents: swiperState.isEnd ? 'none' : 'auto'
+                }}
+                >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="size-6 text-white">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                     </svg>

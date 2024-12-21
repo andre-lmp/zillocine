@@ -1,13 +1,11 @@
-// Hooks
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import useFirebase from "@/components/hooks/firebaseHook";
 
-// Contextos
 import { UserDataContext } from "@/components/contexts/authenticationContext";
 import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
 
-// Ferramentas de validação
+// Ferramentas para validação de formulario
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
@@ -29,29 +27,62 @@ type EditEmailProps = {
     slideTo: ( slideTo: string ) => void;
 };
 
+type UpdateResponseProps = {
+    success: boolean | undefined;
+    errorMessage: string | undefined;
+};
+
 export default function EditEmail( props: EditEmailProps ) {
 
     const userData = useContext( UserDataContext );
     const globalEvents = useContext( GlobalEventsContext )
     const { updateUserData } = useFirebase();
-
-    const { register, handleSubmit, formState: { errors }, setValue, watch, setError }  = useForm<editEmailSchemaProps>({
+    const [ isUpdatingEmail, setIsUpdatingEmail ] = useState( false );
+    const [ updateResponse, setUpdateResponse ] = useState<UpdateResponseProps>({
+        success: undefined,
+        errorMessage: undefined,
+    });
+    const { register, handleSubmit, formState: { errors }, setValue, watch, setError, resetField }  = useForm<editEmailSchemaProps>({
         mode: 'all',
         criteriaMode: 'all',
         resolver: zodResolver( editEmailSchema ),
     });
-
     const formValues = watch();
 
-    useEffect(() => {
-           userData.email && setValue( 'email', userData.email );
-    }, [ globalEvents.isProfileModalActive ]);
-
-    // Recebe os dados do schema apos o formulario ser submetido
-    const handleFormSubmit = ( schemaData: editEmailSchemaProps ) => {
-        updateUserData( schemaData.email, null );        
+    const resetEmailInput = () => {
+        resetField('email');
+        userData.email && setValue( 'email', userData.email )
+        setUpdateResponse(() => ({
+            success: undefined,
+            errorMessage: undefined
+        }));
     };
 
+    const closeEmailEdit = () => {
+        resetEmailInput();
+        props.slideTo('prev-slide');
+    };
+
+    // Recebe os dados do schema apos o formulario ser submetido
+    const handleFormSubmit = async ( schemaData: editEmailSchemaProps ) => {
+
+        setIsUpdatingEmail( true );
+        const response = await updateUserData( schemaData.email, null );
+        setIsUpdatingEmail( false );
+        
+        setUpdateResponse(() => ({
+            success: response && response.success,
+            errorMessage: response && response.message
+        }));
+
+        if ( response && response.success ) {
+            closeEmailEdit();
+        };
+    };
+
+    useEffect(() => {
+        resetEmailInput();
+    }, [ globalEvents.isProfileModalActive ]);
 
     return (
         <div className="p-7">
@@ -72,28 +103,30 @@ export default function EditEmail( props: EditEmailProps ) {
                     }}
                 />
                 
+                {/* Erro de validação do formulario */}
                 { errors.email?.message ? (
                     <p className="text-orangered font-normal mt-1 text-[15px] max-[620px]:static md:text-base">{errors.email.message}</p>
-                ) : ( globalEvents.verificationErrorMessage ? (
-                        <p className="text-success font-normal mt-1 text-[15px] max-[620px]:static md:text-base">
-                            {/* mensagem de erro sobre a verificação do email */}
-                            { globalEvents.verificationErrorMessage }
-                        </p>
-                    ) : (
-                        userData.email !== formValues.email ? (
-                            <p className="text-orangered font-normal mt-1 text-[15px] max-[620px]:static md:text-base">
-                                Para registrar um novo email será necessário verificá-lo
-                            </p>
-                        ) : null
-                    )
-                    
-                )}
+                ) : null }
 
+                {/* Erro retornado pela função de atualização de email */}
+                { updateResponse.errorMessage ? (
+                    <p className="text-orangered font-normal mt-1 text-[15px] max-[620px]:static md:text-base">
+                        {/* mensagem de erro sobre a verificação do email */}
+                        { updateResponse.errorMessage }
+                    </p>
+                ) : null }
+
+                { userData.email !== formValues.email ? (
+                    <p className="text-orangered font-normal mt-1 text-[15px] max-[620px]:static md:text-base">
+                        Para registrar um novo email será necessário verificá-lo
+                    </p>
+                ) : null }
+                    
                 {/* // Confirmação da edição do email de usuario */}
                 <div className="flex gap-x-5 mt-5">
 
                     <button 
-                        onClick={() => props.slideTo('prev-slide')}
+                        onClick={closeEmailEdit}
                         type="button" 
                         className="btn bg-white/5 hover:bg-white/5 text-white px-7 rounded-lg font-normal text-base border-none outline-none"
                     >
@@ -108,7 +141,9 @@ export default function EditEmail( props: EditEmailProps ) {
                             backgroundColor: formValues.email !== userData.email ? 'darkslateblue' : 'rgba(72, 61, 139, 0.4)',
                         }}
                         >
-                            Atualizar
+                        { isUpdatingEmail ? (
+                            <>Atualizando <span className="loading loading-bars loading-sm"></span></> 
+                        ) : <>Atualizar</> }
                     </button>
                 </div>
             </form>

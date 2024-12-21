@@ -33,11 +33,9 @@ export default function SerieSeansons( props: componentProps ) {
     const [ seasonEpisodes, setSeasonEpisodes ] = useState<tmdbObjProps>();
     const [ selectedSeasonNumber, setSelectedSeasonNumber ] = useState<string>('1')
     const [ isLoading, setIsLoading ] = useState( true );
-    const swiperRef = useRef<(SwiperRef | null)>( null );
-
-    const swiperBreakPoints = {
-        1024: { spaceBetween: 20 }
-    };
+    const swiperRef = useRef<SwiperRef | null>( null );
+    const [ swiperState, setSwiperState ] = useState({ isBeginning: true, isEnd: false });
+    const swiperBreakPoints = { 1024: { spaceBetween: 20 }};
 
      // Lida com a promise retornada por uma função de busca do useTmdbFetch
     const handleFetchResponse = async ( promise: Promise<tmdbObjProps> ) => {
@@ -78,6 +76,19 @@ export default function SerieSeansons( props: componentProps ) {
         return  <p className="font-noto_sans whitespace-nowrap text-base font-normal text-neutral-300">{ hours }h { minites }m</p>
     };
 
+    const updateSwiperState = ( swiperRef: SwiperRef | null ) => {
+        if ( swiperRef ) {
+            setSwiperState(() => ({
+                isBeginning: swiperRef.swiper.isBeginning,
+                isEnd: swiperRef.swiper.isEnd
+            }));
+        };
+    };
+
+    useEffect(() => {
+        updateSwiperState( swiperRef.current );
+    }, []);
+
     return seasonEpisodes?.episodes && !isLoading ? (
         <div className='px-4 w-full pt-8 pb-6 md:px-6 lg:px-8 font-noto_sans'>
             
@@ -91,6 +102,7 @@ export default function SerieSeansons( props: componentProps ) {
             <SwiperContainer>
                 <Swiper
                     spaceBetween={15}
+                    speed={200}
                     slidesPerGroupAuto
                     slidesPerView={'auto'}
                     navigation={{
@@ -99,6 +111,7 @@ export default function SerieSeansons( props: componentProps ) {
                     }}
                     modules={[ Navigation ]}
                     ref={swiperRef}
+                    onSlideChange={() => updateSwiperState(swiperRef.current)}
                     breakpoints={swiperBreakPoints}
                 >
                     {/* Gerando slides apartir da lista de episodios retornados pela api do TMDB */}
@@ -149,14 +162,24 @@ export default function SerieSeansons( props: componentProps ) {
                 </Swiper>
                 
                 {/* Botão para voltar ao slide anterior */}
-                <div className='absolute left-0 top-1/2 -translate-y-1/2 z-50 w-[45px] h-[45px] rounded-full -translate-x-1/2 bg-deepnight cursor-pointer swiper-controllers slide-prev-button'>
+                <div className='absolute left-0 top-1/2 -translate-y-1/2 z-50 w-[45px] h-[45px] rounded-full -translate-x-1/2 bg-deepnight cursor-pointer swiper-controllers slide-prev-button'
+                 style={{ 
+                    opacity: swiperState.isBeginning ? '0' : '100%', 
+                    pointerEvents: swiperState.isBeginning ? 'none' : 'auto'
+                }}
+                >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="size-6 text-white">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                     </svg>
                 </div>
 
                 {/* Botão para ir ao proximo slide */}
-                <div className='absolute right-0 top-1/2 -translate-y-1/2 z-50 w-[45px] h-[45px] rounded-full translate-x-1/2 bg-deepnight cursor-pointer swiper-controllers slide-next-button'>
+                <div className='absolute right-0 top-1/2 -translate-y-1/2 z-50 w-[45px] h-[45px] rounded-full translate-x-1/2 bg-deepnight cursor-pointer swiper-controllers slide-next-button'
+                style={{ 
+                    opacity: swiperState.isEnd ? '0' : '100%',
+                    pointerEvents: swiperState.isEnd ? 'none' : 'auto'
+                }}
+                >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="size-6 text-white">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                     </svg>
