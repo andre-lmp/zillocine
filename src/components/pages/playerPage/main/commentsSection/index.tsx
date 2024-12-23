@@ -1,13 +1,15 @@
 'use client';
 
-import React, { useState, FormEvent, useContext, useEffect, useRef, MutableRefObject, MouseEvent } from "react";
+import React, { useState, FormEvent, useContext, useEffect, useRef } from "react";
 import useFirebase from "@/components/hooks/firebaseHook";
 import { usePathname } from "next/navigation";
 
 // Icones do React-icons
-import { FaUserLarge, FaRegComments } from "react-icons/fa6";
+import { FaUserLarge, FaRegComments, FaPencil } from "react-icons/fa6";
 import { BiDislike, BiLike, BiSolidDislike, BiSolidLike } from "react-icons/bi";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
+import { AiFillDelete } from "react-icons/ai";
+import { GoKebabHorizontal } from "react-icons/go";
 
 // Componente para carregamento preguiçoso de imagens
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -61,12 +63,30 @@ export default function UsersComments() {
     const commentsRef = useRef<{[key: string]: HTMLDivElement | null}>({});
     const overlayRef = useRef<HTMLDivElement | null>( null );
 
+    const commentOptionsMenu = (
+        <div className="dropdown dropdown-end absolute top-6 right-2">
+            <div tabIndex={0} role="button" className="mb-2">
+                <GoKebabHorizontal className="text-white rotate-90 text-xl"/>
+            </div>
+
+            <ul tabIndex={0} className="dropdown-content rounded-lg z-[1] w-fit p-2 bg-deepnight *:flex *:items-center *:gap-x-2">
+                <li key='edit-comment-btn' className="text-white bg-darkpurple rounded-md px-3 py-1 outline-none border-none font-normal text-base cursor-pointer">
+                    Editar <FaPencil className="text-base"/>
+                </li>
+
+                <li  key='delete-comment-btn' className="text-white bg-red-950 rounded-md px-3 py-1 outline-none border-none font-normal text-base mt-2 cursor-pointer">
+                    Deletar <AiFillDelete className="text-lg"/>
+                </li>
+            </ul>
+        </div>  
+    );
+
     // Gera a estrutura dos comentarios
     const generateComment = ( comment: CommentProps ) => {
         return (
             // Container do comentario
             <div  ref={(e) => {commentsRef.current[`${comment.id}`] = e}}>
-                <div className="bg-darkpurple w-fit p-3 rounded-lg flex flex-col gap-y-3">
+                <div className="bg-darkpurple w-fit pl-3 pt-3 pb-3 pr-12 rounded-lg flex flex-col gap-y-3 relative">
                     <div className="flex flex-row items-center justify-start">
                         {/* Foto de usuario */}
                         { comment.userPhoto ? (
@@ -129,6 +149,8 @@ export default function UsersComments() {
                             Responder
                         </button>
                     </CommentOptions>
+
+                    { userData.isLoggedIn && userData.uid === comment.userId ? commentOptionsMenu : null }
                 </div>
 
                 <form onSubmit={(e) => {addReply(e, comment.id)}} ref={(e) => {replyFormRef.current[`${comment.id}`] = e}} className="mt-5 rounded-lg w-fit max-w-[500px] p-3 hidden bg-darkpurple overflow-y-visible opacity-0">
@@ -513,7 +535,7 @@ export default function UsersComments() {
                         )}
                     </div>
 
-                    <form onSubmit={addComment} className="mt-7 rounded-lg w-full max-w-[500px] p-3 bg-darkpurple">
+                    <form onSubmit={addComment} className="mt-7 rounded-lg w-full max-w-[400px] p-3 bg-darkpurple">
                         <textarea name="comment" onInput={(e) => handleTextArea(e)} rows={1} className="w-full resize-y h-auto border-none outline-none rounded-lg bg-darkpurple text-white placeholder:text-neutral-400 font-normal text-[17px] overflow-y-hidden" required placeholder="Adicione um comentário"/>
                     
                         <button type="submit" className="w-full btn bg-darkslateblue hover:bg-darkslateblue rounded-lg text-white border-none outline-none mt-4 font-medium text-base">Publicar</button>

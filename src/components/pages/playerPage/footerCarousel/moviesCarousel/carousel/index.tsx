@@ -83,7 +83,7 @@ export default function Carousel( props: CarouselProps ) {
 
     return (
         // Carousel de slides
-        <div className='px-4 w-full md:px-6 lg:px-8'>
+        <div className='pt-6 px-4 w-full md:px-6 lg:px-8'>
             <p className="mb-1 text-[17px] font-semibold font-raleway xl:text-lg">
                 Recomendamos para você
             </p>

@@ -23,6 +23,7 @@ import 'swiper/css/effect-fade';
 import Link from "next/link";
 
 import { HeaderSlides } from '../styles';
+import IntroPoster from '../introPoster';
 
 type contentDataProps = Record<string, any>;
 
@@ -32,7 +33,7 @@ type carouselProps = {
 };
 
 export default function Carousel( props: carouselProps ) {
-   
+
     /*Função que obtem o ano de lançamento de um filme ou serie*/
     const getReleaseDate = ( date: string ) => {
         const newDate = [];
@@ -94,7 +95,7 @@ export default function Carousel( props: carouselProps ) {
             <Swiper
                 slidesPerView={1}
                 spaceBetween={0}
-                autoplay={{ delay: 6000 }}
+                // autoplay={{ delay: 7000 }}
                 speed={200}
                 resistance={false}
                 loop={true}
@@ -111,6 +112,12 @@ export default function Carousel( props: carouselProps ) {
                 effect='fade'
                 fadeEffect={{ crossFade: true }}
             >
+                { props.currentPage === 'home' ? (
+                    <SwiperSlide>
+                        <IntroPoster/>
+                    </SwiperSlide>
+                ) : null }
+                
                 {/* Gerando slides com base na resposta da api do TMDB */}
                 { props.contentData.map(( content ) => (
                     // Gera o slide caso tenha imagens disponiveis

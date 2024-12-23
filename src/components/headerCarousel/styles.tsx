@@ -58,3 +58,24 @@ export const HeaderSlides = styled.div`
         --swiper-pagination-bullet-inactive-color: white;
     }
 `;
+
+export const IntroPosterWrapper = styled.div`
+    width: 100vw; 
+    position: relative;
+    height: 660px;
+    overflow: hidden;
+
+    & .intro_poster {
+        transform: skew(15deg);
+        opacity: 70%;
+        filter: blur(2px);
+    }
+
+    @media (min-width: 768px) {
+        height: 400px;
+    }
+
+    @media (min-width: 1280px) {
+        height: 420px;
+    }
+`;
