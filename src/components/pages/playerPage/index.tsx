@@ -28,7 +28,7 @@ export default async function PlayerPage( props: PlayerPageProps ) {
         };
     };
 
-    if ( props.contentType === 'serie' ) {
+    if ( props.contentType === 'serie' || props.contentType === 'tv' ) {
         const serie: tmdbObjProps | undefined = await fetchSingleSerie(props.contentId);
         if ( serie ) {
             contentData.push( serie );

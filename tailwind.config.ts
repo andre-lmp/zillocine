@@ -11,10 +11,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        poppins: ['var(--font-poppins)', 'var(--font-roboto)'],
-        raleway: ['var(--font-raleway)', 'var(--font-poppins)'],
-        roboto: ['var(--font-roboto)', 'var(--font-poppins)'],
-        noto_sans: ['var(--font-noto-sans)', 'var(--font-poppins)']
+        raleway: ['var(--font-raleway)'],
+        noto_sans: ['var(--font-noto-sans)']
       },
 
       colors: {

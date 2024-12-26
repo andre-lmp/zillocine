@@ -95,7 +95,7 @@ export default function Carousel( props: carouselProps ) {
             <Swiper
                 slidesPerView={1}
                 spaceBetween={0}
-                // autoplay={{ delay: 7000 }}
+                autoplay={{ delay: 7000 }}
                 speed={200}
                 resistance={false}
                 loop={true}

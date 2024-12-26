@@ -175,7 +175,7 @@ export default function Carousel( props: CarouselProps ) {
                 </Swiper>
 
                 {/* Botão para o slide anterior */}
-                <div className={`absolute left-0 top-[260px] -translate-y-[140px] z-50 w-[45px] h-[45px] rounded-full -translate-x-1/2 bg-deepnight cursor-pointer swiper-controllers ${props.navigation.prevEl}`}
+                <div className={`absolute left-0 top-[260px] -translate-y-[140px] z-50 w-[45px] h-[45px] rounded-full -translate-x-1/2 bg-orange-800 hover:bg-orangered cursor-pointer swiper-controllers ${props.navigation.prevEl}`}
                 style={{ 
                     opacity: swiperState.isBeginning ? '0' : '100%', 
                     pointerEvents: swiperState.isBeginning ? 'none' : 'auto'
@@ -187,7 +187,7 @@ export default function Carousel( props: CarouselProps ) {
                 </div>
 
                 {/* Botão para o proximo slide */}
-                <div className={`absolute right-0 top-[260px] -translate-y-[140px] z-50 w-[45px] h-[45px] rounded-full translate-x-1/2 bg-deepnight cursor-pointer swiper-controllers ${props.navigation.nextEl}`}
+                <div className={`absolute right-0 top-[260px] -translate-y-[140px] z-50 w-[45px] h-[45px] rounded-full translate-x-1/2 bg-orange-800 hover:bg-orangered cursor-pointer swiper-controllers ${props.navigation.nextEl}`}
                 style={{ 
                     opacity: swiperState.isEnd ? '0' : '100%',
                     pointerEvents: swiperState.isEnd ? 'none' : 'auto'

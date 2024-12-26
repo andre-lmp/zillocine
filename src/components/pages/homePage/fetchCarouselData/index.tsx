@@ -7,21 +7,21 @@ import useTmdbFetch from "@/components/hooks/tmdbHook";
 import { tmdbObjProps } from "@/components/contexts/tmdbContext";
 
 type carouselProps = {
-    sectionTitle?: string
     contentType: string;
     contentGenre: string;
     pageNumber: number;
     navigation: { nextEl: string, prevEl: string };
+    children?: JSX.Element[];
 };
 
-import { ContentWrapper } from "@/components/contentCarousel/styles";
-import dynamic from "next/dynamic";
-const Carousel = dynamic(() => import('../carousel/index'), { ssr: false });
+import { ContentWrapper as CarouselWrapper } from "@/components/contentCarousel/styles";
+import MoviesCarousel from "../movieSlides";
+import TrendingCarousel from "../trendingSlides";
 
 export default async function FetchCarouselData( props: carouselProps ) {
 
     const contentData: tmdbObjProps[] = [];
-    const { fetchMovies, fetchReleasedMovies, fetchSeries, fetchReleasedSeries } = useTmdbFetch();
+    const { fetchMovies, fetchReleasedMovies, fetchTrendingContent } = useTmdbFetch();
 
      // Seleciona somente o conteudo que possuir imagens disponiveis
      const checkAvailability = async ( data: tmdbObjProps[] ) => {
@@ -44,32 +44,56 @@ export default async function FetchCarouselData( props: carouselProps ) {
         };
     };
 
+
+    const movies: tmdbObjProps[] = [];
+
     // Define qual o tipo do conteudo a ser buscado com base na pagina atual
     if ( props.contentType === 'movie' ) {
-        const movies: tmdbObjProps[] = [];
+
+        if ( props.contentGenre === 'release' ) {
+            const response = await handleFetchPromise(fetchReleasedMovies( props.pageNumber ));
+            if ( response ) movies.push( ...response );
+        }; 
 
         if ( props.contentGenre !== 'release' ) {
             const response = await handleFetchPromise(fetchMovies( props.contentGenre, props.pageNumber ));
             if ( response ) movies.push( ...response );
-        } else {
-            const response = await handleFetchPromise(fetchReleasedMovies( props.pageNumber ));
-            if ( response ) movies.push( ...response );
         };
+    };
+    
+    if ( props.contentType === 'trending' ) {
+        const response = await fetchTrendingContent();
+        if ( response ) movies.push( ...response );
+    };
 
-        if ( movies.length ) {
-            const filteredMovies = await checkAvailability( movies );
-            contentData.push( ...filteredMovies );
-        };
-    }; 
+    if ( movies.length ) {
+        const filteredMovies = await checkAvailability( movies );
+        contentData.push( ...filteredMovies );
+    };
 
     return contentData.length ? (
-        <ContentWrapper>
-            <Carousel 
-                contentData={contentData} 
-                contentType={props.contentType}
-                sectionTitle={props.sectionTitle}
-                navigation={{ prevEl: props.navigation.prevEl, nextEl: props.navigation.nextEl }}
-            />
-        </ContentWrapper>
+        <CarouselWrapper>
+            <div className='px-4 w-full md:px-6 lg:px-8'>
+                { props.children }
+
+                {/* carousel de slides com estrutura base */}
+                { props.contentType === 'movie' ? (
+                    <MoviesCarousel
+                        contentData={contentData}
+                        contentType={props.contentType}
+                        navigation={props.navigation}
+                    />
+                ) : null }
+
+                {/* carousel de slides com conteudos em 'Trending' */}
+                { props.contentType === 'trending' ? (
+                    <TrendingCarousel
+                        contentData={contentData}
+                        contentType={props.contentType}
+                        navigation={props.navigation}
+                    />
+                ) : null }
+            </div>
+        </CarouselWrapper>
     ) : null;
 };

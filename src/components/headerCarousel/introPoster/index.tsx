@@ -10,9 +10,10 @@ export default function IntroPoster() {
     return (
         <div className="w-screen h-[660px] md:h-[400px] xl:h-[420px] overflow-hidden relative">
             <LazyLoadImage
-                src={'/intro_poster.png'}
+                src={'/intro_poster_high.png'}
                 alt={'image of a list of movies from the Zillocine website'}
                 className='bg-deepnight object-cover w-[150%] h-[130%] md:h-[150%] z-[1] opacity-90 absolute -top-1/4 -rotate-12 blur-[2px] md:bur-[3px]'
+                placeholderSrc='/intro_poster_low.jpg'
                 effect='opacity'
             />
 
@@ -23,7 +24,7 @@ export default function IntroPoster() {
 
                 <div className='w-full flex flex-col-reverse gap-5 justify-center items-center mt-10'>
                     <button onClick={() => router.push('movies')} 
-                        className='btn px-16 h-12 rounded-lg border bg-transparent hover:bg-transparent border-neutral-300 text-white text-base font-medium outline-none'
+                        className='btn px-16 h-12 rounded-lg border bg-transparent hover:bg-transparent border-neutral-300 hover:border-neutral-300 text-white text-base font-medium outline-none'
                         >
                         Explorar filmes
                     </button>

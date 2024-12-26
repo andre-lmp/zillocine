@@ -240,6 +240,18 @@ export default function useTmdbFetch() {
         }
     };
 
+    const fetchTrendingContent = async () => {
+        try {
+            const response = await fetch(`https://api.themoviedb.org/3/trending/all/day?api_key=${token}&language=pt-BR`);
+            if ( response.ok ) {
+                const data = await response.json();
+                return data.results;
+            };
+        } catch (error) {
+            console.error( 'Erro ao buscar conteudo em alta' + error );  
+        };
+    };
+
     return { 
         fetchSeries, 
         fetchMovies, 
@@ -256,6 +268,7 @@ export default function useTmdbFetch() {
         fetchReleasedSeries,
         fetchSelectedIds,
         fetchMultipleMovies,
-        fetchMultipleSeries
+        fetchMultipleSeries,
+        fetchTrendingContent
     };
 };

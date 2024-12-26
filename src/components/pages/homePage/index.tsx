@@ -1,5 +1,8 @@
+import dynamic from "next/dynamic";
+
 import HeaderCarousel from "@/components/headerCarousel";
-import FetchCarouselData from "./fetchCarouselData";
+const FetchCarouselData = dynamic(() => import('./fetchCarouselData'), { ssr: false });
+const CarouselTitle = dynamic(() => import('./carouselTitle'), { ssr: false });
 
 import { Suspense } from "react";
 
@@ -26,23 +29,93 @@ export default function HomePage() {
         </div>
     );
 
-    // Gera um carousel de slides para cada genero dentro do contexto
-    const carouselsList =  Object.values( tmdbMovieGenres ).map(( movieDetails, index ) => (
-        <FetchCarouselData 
-            key={`home-${movieDetails[1]}`}
-            contentGenre={movieDetails[0]} 
-            contentType='movie' 
-            sectionTitle={movieDetails[1]} 
-            pageNumber={1}
-            navigation={{ prevEl: `button-prev-${index}`, nextEl: `button-next-${index}` }}
-        />
-    ));
-
     return (
         <section className="min-h-screen" >
             <Suspense fallback={loading}>
                 <HeaderCarousel currentPage="home"/>
-                <div className="mt-4 flex flex-col gap-y-[30px] pb-6">{ carouselsList }</div>
+                <div className="mt-4 flex flex-col gap-y-[40px] pb-6">
+
+                    {/* Seção dos filmes mais recentes e os que ainda estão por vir */}
+                    <FetchCarouselData 
+                        contentGenre={tmdbMovieGenres.release[0]} 
+                        contentType='movie' 
+                        pageNumber={1}
+                        navigation={{ prevEl: `button-prev-0`, nextEl: `button-next-0` }}
+                    >
+                        <CarouselTitle type="normal">{tmdbMovieGenres.release[1]}</CarouselTitle>  
+                        <div className='w-full h-0.5 bg-gradient-to-r mb-3 from-orangered to-transparent'></div>
+                    </FetchCarouselData> 
+
+                    {/* Seção dos filmes mais recentes e os que ainda estão por vir */}
+                    <FetchCarouselData 
+                        contentGenre={''} 
+                        contentType='trending' 
+                        pageNumber={1}
+                        navigation={{ prevEl: `button-prev-1`, nextEl: `button-next-1` }}
+                    >
+                        <CarouselTitle type="focus">Em alta</CarouselTitle>
+                        <p className="font-normal text-[17px] font-noto_sans text-neutral-400 mb-5">
+                            Top 20 filmes e séries mais assistidos hoje!
+                        </p>  
+                    </FetchCarouselData> 
+
+                    {/* Seção dos filmes mais recentes e os que ainda estão por vir */}
+                    <FetchCarouselData 
+                        contentGenre={tmdbMovieGenres.horror[0]} 
+                        contentType='movie' 
+                        pageNumber={1}
+                        navigation={{ prevEl: `button-prev-2`, nextEl: `button-next-2` }}
+                    >
+                        <CarouselTitle type="normal">{tmdbMovieGenres.horror[1]}</CarouselTitle>  
+                        <div className='w-full h-0.5 bg-gradient-to-r mb-3 from-orangered to-transparent'></div>
+                    </FetchCarouselData> 
+
+                    {/* Seção dos filmes mais recentes e os que ainda estão por vir */}
+                    <FetchCarouselData 
+                        contentGenre={tmdbMovieGenres.war[0]} 
+                        contentType='movie' 
+                        pageNumber={1}
+                        navigation={{ prevEl: `button-prev-3`, nextEl: `button-next-3` }}
+                    >
+                        <CarouselTitle type="normal">{tmdbMovieGenres.war[1]}</CarouselTitle>  
+                        <div className='w-full h-0.5 bg-gradient-to-r mb-3 from-orangered to-transparent'></div>
+                    </FetchCarouselData> 
+
+                    {/* Seção dos filmes mais recentes e os que ainda estão por vir */}
+                    <FetchCarouselData 
+                        contentGenre={''} 
+                        contentType='trending' 
+                        pageNumber={1}
+                        navigation={{ prevEl: `button-prev-4`, nextEl: `button-next-4` }}
+                    >
+                        <CarouselTitle type="focus">Em alta</CarouselTitle>
+                        <p className="font-normal text-[17px] font-noto_sans text-neutral-400 mb-5">
+                            Acompanhe os filmes e séries mais assistidos hoje!
+                        </p>  
+                    </FetchCarouselData> 
+
+                    {/* Seção dos filmes mais recentes e os que ainda estão por vir */}
+                    <FetchCarouselData 
+                        contentGenre={tmdbMovieGenres.fiction[0]} 
+                        contentType='movie' 
+                        pageNumber={1}
+                        navigation={{ prevEl: `button-prev-5`, nextEl: `button-next-5` }}
+                    >
+                        <CarouselTitle type="normal">{tmdbMovieGenres.fiction[1]}</CarouselTitle>  
+                        <div className='w-full h-0.5 bg-gradient-to-r mb-3 from-orangered to-transparent'></div>
+                    </FetchCarouselData> 
+
+                    {/* Seção dos filmes mais recentes e os que ainda estão por vir */}
+                    <FetchCarouselData 
+                        contentGenre={tmdbMovieGenres.documentary[0]} 
+                        contentType='movie' 
+                        pageNumber={1}
+                        navigation={{ prevEl: `button-prev-6`, nextEl: `button-next-6` }}
+                    >
+                        <CarouselTitle type="normal">{tmdbMovieGenres.documentary[1]}</CarouselTitle>  
+                        <div className='w-full h-0.5 bg-gradient-to-r mb-3 from-orangered to-transparent'></div>
+                    </FetchCarouselData> 
+                </div>
             </Suspense>
         </section>
     );
