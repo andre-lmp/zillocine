@@ -84,13 +84,13 @@ export default function HomePage() {
                     {/* Seção dos filmes mais recentes e os que ainda estão por vir */}
                     <FetchCarouselData 
                         contentGenre={''} 
-                        contentType='trending' 
+                        contentType='TopRatedSeries' 
                         pageNumber={1}
                         navigation={{ prevEl: `button-prev-4`, nextEl: `button-next-4` }}
                     >
-                        <CarouselTitle type="focus">Em alta</CarouselTitle>
+                        <CarouselTitle type="focus">Séries Populares</CarouselTitle>
                         <p className="font-normal text-[17px] font-noto_sans text-neutral-400 mb-5">
-                            Acompanhe os filmes e séries mais assistidos hoje!
+                            Confira as séries mais avaliadas atualmente.
                         </p>  
                     </FetchCarouselData> 
 
