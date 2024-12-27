@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Plataforma de Filmes, Séries e Animes
 
-## Getting Started
+Bem-vindo à documentação do ZilloCine. Este é um projeto web que oferece informações detalhadas sobre filmes, séries e animes, com funcionalidades intuitivas e uma interface amigável.
 
-First, run the development server:
+## **Demonstração**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Link de deploy:** https://plataforma-filmes-three.vercel.app/
+- **Captura de Tela:**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+  ![Tela Inicial](/public/Zillocine_Screenshot.png)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## **Funcionalidades**
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Exibição de filmes, séries e animes com informações detalhadas.
+- Sistema de busca e filtros por categorias.
+- Player de trailer responsivo.
+- Login e registro utilizando:
+  - E-mail e senha.
+  - Google.
+  - GitHub.
+- Gerenciamento de conta:
+  - Alteração de nome e e-mail.
+  - Alteração de foto de perfil
+  - Confirmação via e-mail
+- Design responsivo e esteticamente agradável.
 
-## Learn More
+## **Tecnologias Utilizadas**
 
-To learn more about Next.js, take a look at the following resources:
+### **Frontend**
+- **React**
+- **Next.js**
+- **TypeScript**
+- **Tailwind CSS**
+- **Styled Components**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### **Backend e Serviços**
+- **Firebase**
+  - Authentication
+  - Realtime Database
+  - Storage
+  - Functions
+- **Node.js**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### **Bibliotecas e Ferramentas**
+- **Swiper.js**: para carrosséis de conteúdo.
+- **LazyLoadImage**: carregamento otimizado de imagens.
+- **Zod & HookForm**: Validação de formulários.
+- **ReactIcons**: Inclusão de ícones ao projeto.
+- **DaisyUi**: Inclusão de componentes UI pré-construídos e estilizados. 
 
-## Deploy on Vercel
+Este projeto está licenciado sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais informações.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## **Créditos**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Desenvolvido por **Vitor Hugo**.
+- Inspiração e aprendizado: Youtube, IAs e documentações oficiais.
+
+---
+
+Sinta-se à vontade para explorar!
+
