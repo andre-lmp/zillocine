@@ -11,8 +11,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        raleway: ['var(--font-raleway)'],
-        noto_sans: ['var(--font-noto-sans)']
+        raleway: ['var(--font-raleway)', 'sans-serif'],
+        noto_sans: ['var(--font-noto-sans)', 'sans-serif'],
       },
 
       colors: {
