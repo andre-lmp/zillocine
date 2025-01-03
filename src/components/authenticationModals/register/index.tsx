@@ -3,7 +3,7 @@
 import React, { MutableRefObject, useEffect, useRef, useContext, useState } from "react";
 
 // Hook personalisado com funções de authenticação e registro
-import useFirebase from "@/components/hooks/firebaseHook";
+import useFirebase from "@/components/hooks/firebase";
 
 import { GlobalEventsContext } from "@/components/contexts/globalEventsContext";
 
