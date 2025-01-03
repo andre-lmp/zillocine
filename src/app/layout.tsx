@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-import * as Fonts from '@/app/fonts/index';
+import * as fonts from '@/app/fonts/index';
 
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import LoginModal from "@/components/authenticateUsers/loginModal";
-import RegisterModal from "@/components/authenticateUsers/registerModal";
+import LoginModal from "@/components/authenticationModals/login";
+import RegisterModal from "@/components/authenticationModals/register";
 import ProfileModal from "@/components/profileModal";
 
 // Contextos
@@ -25,7 +25,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 
   return (
     <html lang="pt-br">
-      <body className={ `${ Fonts.noto_sans.variable } ${ Fonts.raleway.variable } `}>
+      <body className={` ${ fonts.raleway.variable } ${ fonts.noto_sans.variable }`}>
         <div className="relative overflow-x-hidden max-w-[2200px] mx-auto min-h-screen flex flex-col justify-between">
           <TmdbProvider>
               <UserDataProvider>
