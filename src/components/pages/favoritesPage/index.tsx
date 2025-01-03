@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect, useContext } from "react";
-import useTmdbFetch from "@/components/hooks/tmdbHook";
-import useFirebase from "@/components/hooks/firebaseHook";
+import useTmdbFetch from "@/components/hooks/tmdb";
+import useFirebase from "@/components/hooks/firebase";
 import { useRouter } from "next/navigation";
 
 import { LazyLoadImage } from 'react-lazy-load-image-component';
@@ -18,10 +18,16 @@ import { UserDataContext } from "@/components/contexts/authenticationContext";
 
 import { FavoritesContainer } from "./style";
 
+import { checkAvailability } from "@/components/utils/tmdbApiData/availability";
+import { getReleaseDate } from "@/components/utils/tmdbApiData/releaseDate";
+import { getRunTime } from "@/components/utils/tmdbApiData/runtime";
+import { getCompanyLogo } from "@/components/utils/tmdbApiData/producerLogo";
+import { getImdbReviews } from "@/components/utils/tmdbApiData/reviews";
+
 export default function FavoritesPage() {
 
     const [ contentData, setContentData ] = useState<tmdbObjProps[]>([]);
-    const { fetchMultipleMovies, fetchMultipleSeries } = useTmdbFetch();
+    const { fetchMoviesByIdList, fetchSeriesByIdList } = useTmdbFetch();
     const userData = useContext( UserDataContext );
     const { deleteUserFavoritesOnDb } = useFirebase();
     const [ isLoading, setIsLoading ] = useState( true );
@@ -39,40 +45,30 @@ export default function FavoritesPage() {
         };
     };
 
-    // Seleciona somente o conteudo que possuir imagens disponiveis
-    const checkAvailability = ( data: tmdbObjProps[] ) => {
-        const filtered = data.filter( item => item.poster_path || item.backdrop_path );
-        setContentData( filtered );
-        setIsLoading( false );
-    };
-
     // Busca os filmes e series salvos como favoritos pelo usuario
     const fetchUserFavorites = async () => {
+        const movies = [];
+        const series = [];
 
-        if ( userData.favoriteMovies && userData.favoriteSeries ) {
-            const favoriteMovies = await fetchMultipleMovies( userData.favoriteMovies );
-            const favoriteSeries = await fetchMultipleSeries( userData.favoriteSeries );
-            const favorites = [...favoriteMovies, ...favoriteSeries];
-            checkAvailability( favorites );
-        };
-        
-        if ( !userData.favoriteMovies && userData.favoriteSeries ) {
-            const favoriteSeries = await fetchMultipleSeries( userData.favoriteSeries );
-            checkAvailability( favoriteSeries );
+        if ( userData.favoriteMovies ) {
+            const response = await fetchMoviesByIdList( userData.favoriteMovies );
+            movies.push( ...response );
         };
 
-        if ( userData.favoriteMovies && !userData.favoriteSeries ) {
-            const favoriteMovies = await fetchMultipleMovies( userData.favoriteMovies );
-            checkAvailability( favoriteMovies );
+        if ( userData.favoriteSeries ) {
+            const response = await fetchSeriesByIdList( userData.favoriteSeries );
+            series.push( ...response );
         };
-        
+
+        const filtered = await checkAvailability([ ...movies, ...series ]);
+        setContentData( filtered );
+        setIsLoading( false );
     };
 
     useEffect(() => {
         if ( userData.isLoggedIn ) {
             if ( userData.favoriteMovies || userData.favoriteSeries ) {
                 fetchUserFavorites();
-                console.log('buscou');
                 return;
             };
             
@@ -83,62 +79,6 @@ export default function FavoritesPage() {
 
         setIsLoading( false );
     }, [ userData.favoriteMovies, userData.favoriteSeries, userData.isLoggedIn ]);
-
-      /*Função que obtem o ano de lançamento de um filme ou serie*/
-      const getReleaseDate = ( date: string ) => {
-        const newDate = [];
-        for ( let i = 0; i < 4; i++ ) {
-            newDate.push( date[i] );
-        }
-        return newDate.join('');
-    };
-
-    // Carrega a imagem de logo da empresa de produção do conteudo caso esteja disponivel
-    const getCompanyLogo = ( companiesList: tmdbObjProps[] ) => {
-        for ( let company of companiesList ) {
-            if ( company.logo_path ) {
-                return (
-                    <LazyLoadImage 
-                        src={`https://image.tmdb.org/t/p/original${company.logo_path}`} 
-                        alt={`${company.name} logo image`} 
-                        height={28}
-                        effect="opacity"
-                        placeholderSrc={`https://image.tmdb.org/t/p/w92/${company.logo_path}`}
-                        className="object-cover w-fit h-7 bg-neutral-400 rounded-md"
-                    />
-                )
-            }
-        };
-    
-        return null;
-    };
-
-    // Obtem o tempo de duração do filme 
-    const getRunTime = ( runtime: number ) => {
-
-        if ( !runtime || runtime === 0 ) {
-            return
-        };
-
-        if ( runtime < 60 ) {
-            return <p className="hidden sm:inline font-noto_sans whitespace-nowrap text-base font-normal text-neutral-400">{ runtime }m</p>
-        };
-
-        const hours = ( runtime / 60 ).toFixed(0);
-        const minites = runtime % 60;
-
-        return  <p className="hidden sm:inline font-noto_sans whitespace-nowrap text-base font-normal text-neutral-300">{ hours }h { minites }m</p>
-    };
-
-    // Obtem a nota do publico sobre o conteudo
-    const getImdbReviews = ( vote_average: number, vote_count: number ) => {
-        return (
-            <p className='px-4 h-7 bg-darkslateblue whitespace-nowrap text-base font-normal font-noto_sans rounded flex items-center'>
-                Imdb: { vote_average.toFixed(0) } 
-                <span className='hidden md:inline ml-1'>({ vote_count })</span>
-            </p>
-        );
-    };
 
     const deleteFavorite = ( content: tmdbObjProps ) => {
         const contentObjKeys = Object.keys( content );
@@ -232,6 +172,9 @@ export default function FavoritesPage() {
             // Caso o usuario nao esteja authenticado
             <div className="px-4 md:px-6 lg:px-8 w-full h-auto absolute top-32 left-0">
                 <h1 className="font-raleway font-bold text-xl text-white">Usuário não registrado</h1>
+
+                <div className="w-full h-0.5 rounded-3xl bg-white/10 mt-1"></div>
+
                 <p className="font-noto_sans font-normal text-[17px] text-neutral-400">Faça login ou crie uma conta para ver seus favoritos.</p>
             </div>
         )

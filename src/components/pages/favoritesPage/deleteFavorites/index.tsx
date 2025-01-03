@@ -5,7 +5,7 @@ import { tmdbObjProps } from "@/components/contexts/tmdbContext";
 import { AiFillDelete } from "react-icons/ai";
 
 // Fornece funções para interação com serviços do firebase
-import useFirebase from "@/components/hooks/firebaseHook";
+import useFirebase from "@/components/hooks/firebase";
 
 type DeleteFavoriteProps = {
     content: tmdbObjProps;
