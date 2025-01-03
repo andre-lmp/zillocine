@@ -1,7 +1,13 @@
 import dynamic from "next/dynamic";
 
-import HeaderCarousel from "@/components/headerCarousel";
-const FetchCarouselData = dynamic(() => import('./fetchCarouselData'), { ssr: false });
+import HeaderCarousel from "@/components/headerSlides";
+import ReleaseCarousel from "./recentMovies";
+import TrendingCarousel from "./trending";
+import HorrorCarousel from "./horrorMovies";
+import WarCarousel from "./warMovies";
+import PopularCarousel from "./popularSeries";
+import FictionCarousel from "./fictionMovies";
+import DocumentaryCarousel from "./documentary";
 const CarouselTitle = dynamic(() => import('./carouselTitle'), { ssr: false });
 
 import { Suspense } from "react";
@@ -33,88 +39,74 @@ export default function HomePage() {
         <section className="min-h-screen" >
             <Suspense fallback={loading}>
                 <HeaderCarousel currentPage="home"/>
-                <div className="mt-4 flex flex-col gap-y-[40px] pb-6">
 
-                    {/* Seção dos filmes mais recentes e os que ainda estão por vir */}
-                    <FetchCarouselData 
-                        contentGenre={tmdbMovieGenres.release[0]} 
-                        contentType='movie' 
-                        pageNumber={1}
-                        navigation={{ prevEl: `button-prev-0`, nextEl: `button-next-0` }}
-                    >
-                        <CarouselTitle type="normal">{tmdbMovieGenres.release[1]}</CarouselTitle>  
-                        <div className='w-full h-0.5 bg-gradient-to-r mb-3 from-orangered to-transparent'></div>
-                    </FetchCarouselData> 
+                <div className="mt-4 flex flex-col gap-y-[40px] pb-6 px-4 md:px-6 lg:px-8">
+                    {/* Carousel com os filmes mais recentes */}
+                    <div>
+                        <CarouselTitle type="normal">
+                            <h2 className="normal-title">{tmdbMovieGenres.release[1]}</h2>
+                            <div className='w-full h-0.5 bg-gradient-to-r mb-3 from-orangered to-transparent'/>
+                        </CarouselTitle>
+                        <ReleaseCarousel/>
+                    </div>
 
-                    {/* Seção dos filmes mais recentes e os que ainda estão por vir */}
-                    <FetchCarouselData 
-                        contentGenre={''} 
-                        contentType='trending' 
-                        pageNumber={1}
-                        navigation={{ prevEl: `button-prev-1`, nextEl: `button-next-1` }}
-                    >
-                        <CarouselTitle type="focus">Em alta</CarouselTitle>
-                        <p className="font-normal text-[17px] font-noto_sans text-neutral-400 mb-5">
-                            Top 20 filmes e séries mais assistidos hoje!
-                        </p>  
-                    </FetchCarouselData> 
+                    {/* Carousel com filmes/series em alta no momento */}
+                    <div>
+                        <CarouselTitle type="focus">
+                            <h2 className="focus-title mb-1">Em alta</h2>
+                        </CarouselTitle>
+                        <TrendingCarousel/>
+                    </div>
 
-                    {/* Seção dos filmes mais recentes e os que ainda estão por vir */}
-                    <FetchCarouselData 
-                        contentGenre={tmdbMovieGenres.horror[0]} 
-                        contentType='movie' 
-                        pageNumber={1}
-                        navigation={{ prevEl: `button-prev-2`, nextEl: `button-next-2` }}
-                    >
-                        <CarouselTitle type="normal">{tmdbMovieGenres.horror[1]}</CarouselTitle>  
-                        <div className='w-full h-0.5 bg-gradient-to-r mb-3 from-orangered to-transparent'></div>
-                    </FetchCarouselData> 
+                    {/* Carousel com filmes de terror */}
+                    <div>
+                        <CarouselTitle type="normal">
+                            <h2 className="normal-title">{tmdbMovieGenres.horror[1]}</h2>
+                            <div className='w-full h-0.5 bg-gradient-to-r mb-3 from-orangered to-transparent'/>
+                        </CarouselTitle>
+                        <HorrorCarousel/>
+                    </div>
 
-                    {/* Seção dos filmes mais recentes e os que ainda estão por vir */}
-                    <FetchCarouselData 
-                        contentGenre={tmdbMovieGenres.war[0]} 
-                        contentType='movie' 
-                        pageNumber={1}
-                        navigation={{ prevEl: `button-prev-3`, nextEl: `button-next-3` }}
-                    >
-                        <CarouselTitle type="normal">{tmdbMovieGenres.war[1]}</CarouselTitle>  
-                        <div className='w-full h-0.5 bg-gradient-to-r mb-3 from-orangered to-transparent'></div>
-                    </FetchCarouselData> 
+                    {/* Carousel com filmes de guerra */}
+                    <div>
+                        <CarouselTitle type="normal">
+                            <h2 className="normal-title">{tmdbMovieGenres.war[1]}</h2>
+                            <div className='w-full h-0.5 bg-gradient-to-r mb-3 from-orangered to-transparent'/>
+                        </CarouselTitle>
+                        <WarCarousel/>
+                    </div>
 
-                    {/* Seção dos filmes mais recentes e os que ainda estão por vir */}
-                    <FetchCarouselData 
-                        contentGenre={''} 
-                        contentType='TopRatedSeries' 
-                        pageNumber={1}
-                        navigation={{ prevEl: `button-prev-4`, nextEl: `button-next-4` }}
-                    >
-                        <CarouselTitle type="focus">Séries Populares</CarouselTitle>
-                        <p className="font-normal text-[17px] font-noto_sans text-neutral-400 mb-5">
-                            Confira as séries mais avaliadas atualmente.
-                        </p>  
-                    </FetchCarouselData> 
+                    <div>
+                        <CarouselTitle type="focus">
+                            <h2 className="focus-title">Séries Populares</h2>
+                            <p className="subtitle">
+                                Confira as séries mais avaliadas.
+                            </p>  
+                        </CarouselTitle>
+                        <PopularCarousel/>
+                    </div>
 
-                    {/* Seção dos filmes mais recentes e os que ainda estão por vir */}
-                    <FetchCarouselData 
-                        contentGenre={tmdbMovieGenres.fiction[0]} 
-                        contentType='movie' 
-                        pageNumber={1}
-                        navigation={{ prevEl: `button-prev-5`, nextEl: `button-next-5` }}
-                    >
-                        <CarouselTitle type="normal">{tmdbMovieGenres.fiction[1]}</CarouselTitle>  
-                        <div className='w-full h-0.5 bg-gradient-to-r mb-3 from-orangered to-transparent'></div>
-                    </FetchCarouselData> 
+                    {/* Carousel com filmes de ficção */}
+                    <div>
+                        <CarouselTitle type="normal">
+                            <h2 className="normal-title">
+                                {tmdbMovieGenres.fiction[1]}
+                            </h2>
+                            <div className='w-full h-0.5 bg-gradient-to-r mb-3 from-orangered to-transparent'/>
+                        </CarouselTitle>
+                        <FictionCarousel/>
+                    </div>
 
-                    {/* Seção dos filmes mais recentes e os que ainda estão por vir */}
-                    <FetchCarouselData 
-                        contentGenre={tmdbMovieGenres.documentary[0]} 
-                        contentType='movie' 
-                        pageNumber={1}
-                        navigation={{ prevEl: `button-prev-6`, nextEl: `button-next-6` }}
-                    >
-                        <CarouselTitle type="normal">{tmdbMovieGenres.documentary[1]}</CarouselTitle>  
-                        <div className='w-full h-0.5 bg-gradient-to-r mb-3 from-orangered to-transparent'></div>
-                    </FetchCarouselData> 
+                    {/* Carousel com documentarios */}
+                    <div>
+                        <CarouselTitle type="normal">
+                            <h2 className="normal-title">
+                                {tmdbMovieGenres.documentary[1]}
+                            </h2>
+                            <div className='w-full h-0.5 bg-gradient-to-r mb-3 from-orangered to-transparent'/>
+                        </CarouselTitle>
+                        <DocumentaryCarousel/>
+                    </div>
                 </div>
             </Suspense>
         </section>

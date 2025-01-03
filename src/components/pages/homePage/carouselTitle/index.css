@@ -1,0 +1,32 @@
+.title-container .normal-title, .title-container .focus-title {
+    font-family: var(--font-raleway), 'sans-serif';
+}
+
+.title-container .normal-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.title-container .focus-title {
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 40px;
+    text-transform: uppercase;
+}
+
+.title-container .subtitle {
+    font: 400 17px var(--font-noto-sans), 'serif';
+    color: #a3a3a3;
+    margin-bottom: 20px;
+};
+
+@media screen and ( width >= 1024 ) {
+    .title-container .normal-title {
+        font-size: 20px;
+    }
+
+    .title-container .focus-title {
+        font-size: 40px;
+    }
+}
