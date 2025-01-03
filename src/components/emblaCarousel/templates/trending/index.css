@@ -1,0 +1,29 @@
+.trending-wrapper .embla__container {
+    column-gap: 15px;
+}
+
+.trending-wrapper .slide-container {
+    position: relative;
+}
+
+.trending-wrapper .slide-container .favorited {
+    display: none;
+}
+
+.trending-wrapper .slide-container .not-favorited {
+    display: inline;
+}
+
+.trending-wrapper .slide-container .favorite-button .favorited {
+    display: inline;
+}
+
+.trending-wrapper .slide-container .favorite-button .not-favorited {
+    display: none;
+}
+
+@media screen and ( width >= 1024px ) {
+    .trending-wrapper .embla__container {
+        column-gap: 20px;
+    }
+}

@@ -1,0 +1,40 @@
+.embla {
+    position: relative;
+    box-sizing: border-box;
+}
+
+.embla__container {
+    display: flex;
+    flex-direction: row;
+}
+
+.embla .embla__viewport {
+    overflow: hidden;
+}
+
+.embla__container .embla__slide {
+    flex: 0 0 auto;
+    overflow: hidden;
+    visibility: hidden;
+}
+
+.embla .embla__container .is-in-view {
+    visibility: visible;
+}
+
+.embla .embla-navigation {
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.embla .base-slides, .embla .trending-slides {
+    position: relative;
+    overflow: hidden;
+}
+
+@media screen and ( width >= 768px ) {
+    .embla:hover .embla-navigation {
+        display: flex;
+    }
+}

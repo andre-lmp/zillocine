@@ -1,0 +1,31 @@
+.popular-series-wrapper .embla__container {
+    column-gap: 15px;
+}
+
+.popular-series-wrapper .slide-container {
+    position: relative;
+    max-width: calc(100vw - 32px);
+    width: 376px;
+}
+
+.popular-series-wrapper .slide-container .favorited {
+    display: none;
+}
+
+.popular-series-wrapper .slide-container .not-favorited {
+    display: inline;
+}
+
+.popular-series-wrapper .slide-container .favorite-button .favorited {
+    display: inline;
+}
+
+.popular-series-wrapper .slide-container .favorite-button .not-favorited {
+    display: none;
+}
+
+@media screen and ( width >= 1024px ) {
+    .popular-series-wrapper .embla__container {
+        column-gap: 20px;
+    }
+}
