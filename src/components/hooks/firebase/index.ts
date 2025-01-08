@@ -891,7 +891,6 @@ export default function useFirebase() {
 
             if ( response.ok ) {
                 const { updatedComment } = await response.json();
-                console.log(updatedComment);
                 return updatedComment;
             };
 
