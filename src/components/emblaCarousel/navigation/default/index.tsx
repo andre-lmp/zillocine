@@ -1,19 +1,17 @@
-type EmblaNavigationProps = {
-    emblaState: { isBeginning: boolean, isOver: boolean };
-    scrollToPrev: () => void;
-    scrollToNext: () => void;
-}
+import { memo } from "react";
 
-export default function EmblaNavigation( props: EmblaNavigationProps ) {
+import { UsePrevNextButtonsType } from "../controller";
+
+const  EmblaNavigation = memo(( props: UsePrevNextButtonsType ) => {
     return (
         <>
             {/* Botão para o slide anterior */ }
             <button 
-                onClick={props.scrollToPrev}
+                onClick={props.onPrevButtonClick}
                 className={`absolute left-0 top-[260px] -translate-y-[140px] z-50 w-[45px] h-[45px] rounded-full -translate-x-1/2 bg-orange-800 hover:bg-orangered cursor-pointer embla-navigation`}
                 style={{ 
-                    opacity: props.emblaState.isBeginning ? '0' : '100%', 
-                    pointerEvents: props.emblaState.isBeginning ? 'none' : 'auto'
+                    opacity: props.prevBtnDisabled ? '0' : '100%', 
+                    pointerEvents: props.prevBtnDisabled ? 'none' : 'auto'
                 }}
                 >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="size-6 text-white">
@@ -23,11 +21,11 @@ export default function EmblaNavigation( props: EmblaNavigationProps ) {
 
             {/* Botão para o proximo slide */ }
             <button 
-                onClick={props.scrollToNext}
+                onClick={props.onNextButtonClick}
                 className={`absolute right-0 top-[260px] -translate-y-[140px] z-50 w-[45px] h-[45px] rounded-full translate-x-1/2 bg-orange-800 hover:bg-orangered cursor-pointer embla-navigation`}
                 style={{ 
-                    opacity: props.emblaState.isOver ? '0' : '100%',
-                    pointerEvents: props.emblaState.isOver ? 'none' : 'auto'
+                    opacity: props.nextBtnDisabled ? '0' : '100%',
+                    pointerEvents: props.nextBtnDisabled ? 'none' : 'auto'
                 }}
                 >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="size-6 text-white">
@@ -36,4 +34,6 @@ export default function EmblaNavigation( props: EmblaNavigationProps ) {
             </button>
         </>
     );
-};
+});
+
+export default EmblaNavigation;

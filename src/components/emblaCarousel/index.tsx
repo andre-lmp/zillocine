@@ -1,10 +1,16 @@
-import { ReactNode, useCallback, useEffect, useState } from "react";
+import { ReactNode, useCallback, useEffect, memo } from "react";
+
+import { useInView } from 'react-intersection-observer';
 
 import useEmblaCarousel from "embla-carousel-react";
 import EmblaNavigation from "./navigation/default";
 import HeaderNavigation from "./navigation/header";
-import classNames  from 'embla-carousel-class-names';
+
+import { useDotButton } from './navigation/bullets/index';
+
 import autoplay from 'embla-carousel-autoplay';
+
+import { usePrevNextButtons } from './navigation/controller/index';
 
 import './index.css';
 
@@ -23,106 +29,71 @@ export type EmblaStateProps = {
     numberOfSlides: number;
     activeIndex: number;
 };
+const EmblaCarousel = memo(( props: EmblaCarouselProps ) => {
 
-export default function EmblaCarousel( props: EmblaCarouselProps ) {
-
-    const [ emblaState, setEmblaState ] = useState<EmblaStateProps>({ 
-        isBeginning: true, 
-        isOver: false,
-        numberOfSlides: 0,
-        activeIndex: 0 
-    });
     const emblaConfig = { 
         loop: props.loop, 
         slidesToScroll: props.slidesPerView, 
-        duration: props.duration ? props.duration : 20,
+        duration: 0,
     };
-    const [emblaRef, emblaApi] = useEmblaCarousel( emblaConfig, [ classNames() ]);
-    let isChangeListenerAdded = false;
 
-    // const reInitCarousel = ( viewportWidth: number ) => {
-    //     if ( viewportWidth >= 768 && emblaApi ) {
-    //         emblaApi.reInit({}, [ 
-    //             autoplay({ delay: 7000, stopOnFocusIn: false, stopOnInteraction: false }), 
-    //             classNames(), 
-    //         ]);
-    //     };
+    const [emblaRef, emblaApi] = useEmblaCarousel( emblaConfig );
+    const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi)
 
-    //     if ( viewportWidth < 768 && emblaApi ) {
-    //         emblaApi.reInit({}, [ 
-    //             autoplay({ delay: 7000, stopOnFocusIn: false, stopOnInteraction: false }), 
-    //             classNames(), 
-    //         ]);
-    //     };
+    const { inView, ref } = useInView({
+        threshold: 0,
+        rootMargin: '600px 0px'
+    });
 
-    //     console.log(viewportWidth, emblaApi);
-    // };
+    const {
+        prevBtnDisabled,
+        nextBtnDisabled,
+        onPrevButtonClick,
+        onNextButtonClick
+    } = usePrevNextButtons(emblaApi);
 
     useEffect(() => {
-        // if ( window !== undefined && props.autoplay && emblaApi && !isResizeListenerAdded ) {
-        //     reInitCarousel(window.innerWidth);
-        //     window.addEventListener('resize', () => reInitCarousel(window.innerWidth));
-        //     isResizeListenerAdded = true;
-        // }
-    }, [emblaApi]);
-
-    useEffect(() => {
-        if ( emblaApi && !isChangeListenerAdded ) {
-            emblaApi.on('scroll', updateEmblaState);
-
-            setEmblaState( prev => ({
-                ...prev,
-                numberOfSlides: emblaApi.slideNodes().length,
-                activeIndex: emblaApi.slidesInView()[0],
-            }));
-
-            isChangeListenerAdded = true;
+        if ( emblaApi ) {
+            props.autoplay && emblaApi.reInit({}, [autoplay({delay: 7000, stopOnInteraction: false})]);
+            emblaApi.on('slidesChanged', () => scrollToIndex( 0 ));
         };
-    }, [ emblaApi ]);
-
-    const scrollPrev = useCallback(() => {
-        if ( emblaApi ) emblaApi.scrollPrev();
-    }, [ emblaApi ]);
-
-    const scrollNext = useCallback(() => {
-        if ( emblaApi ) emblaApi.scrollNext();
     }, [ emblaApi ]);
 
     const scrollToIndex = useCallback(( index: number ) => {
         if ( emblaApi ) {
             emblaApi.scrollTo( index )
-        }
-    }, [ emblaApi ]);
-
-    const updateEmblaState = useCallback(() => {
-        if ( emblaApi ) {
-            setEmblaState( prev => ({
-                ...prev,
-                activeIndex: emblaApi.slidesInView()[0],
-                isBeginning: !emblaApi.canScrollPrev(),
-                isOver: !emblaApi.canScrollNext()
-            }));
-        }
+        };
     }, [ emblaApi ]);
 
     return (
-        <div className="embla">
-            <div className="embla__viewport" ref={emblaRef}>
-                <div className="embla__container">
-                    { props.children }
+        <div ref={ref}>
+            <div className="embla" style={{ visibility: inView ? 'visible' : 'hidden' }}>
+                <div className="embla__viewport" ref={emblaRef}>
+                    <div className="embla__container">
+                        { props.children }
+                    </div>
                 </div>
-            </div>
 
-            { props.navigationType === 'default' ? (
-                <EmblaNavigation emblaState={emblaState} scrollToPrev={scrollPrev} scrollToNext={scrollNext}/>
-            ) : (
-                <HeaderNavigation 
-                    emblaState={emblaState} 
-                    scrollToPrev={scrollPrev} 
-                    scrollToNext={scrollNext}
-                    scrollTo={scrollToIndex}
-                /> 
-            )}
+                { props.navigationType === 'default' ? (
+                    <EmblaNavigation 
+                        onNextButtonClick={onNextButtonClick}
+                        onPrevButtonClick={onPrevButtonClick}
+                        prevBtnDisabled={prevBtnDisabled}
+                        nextBtnDisabled={nextBtnDisabled}
+                    />
+                ) : (
+                    <HeaderNavigation
+                    selectedIndex={selectedIndex}
+                    scrollSnaps={scrollSnaps}
+                    onDotButtonClick={onDotButtonClick}  
+                    onNextButtonClick={onNextButtonClick}
+                    onPrevButtonClick={onPrevButtonClick}
+                    />
+                )}
+
+            </div>
         </div>
     );
-};
+});
+
+export default EmblaCarousel;

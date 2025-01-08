@@ -1,6 +1,7 @@
 .embla {
     position: relative;
     box-sizing: border-box;
+    z-index: 2;
 }
 
 .embla__container {
@@ -15,12 +16,12 @@
 .embla__container .embla__slide {
     flex: 0 0 auto;
     overflow: hidden;
-    visibility: hidden;
+    z-index: 3;
+    background-color: #020515;
 }
 
-.embla .embla__container .is-in-view {
-    visibility: visible;
-}
+/* .embla .embla__container .is-in-view {
+} */
 
 .embla .embla-navigation {
     display: none;

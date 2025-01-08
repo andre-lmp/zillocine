@@ -35,11 +35,11 @@ export default function Carousel( props: carouselProps ) {
                 autoplay={true}
                 loop={true}>
 
-                { props.currentPage === 'home' ? (
+                {/* { props.currentPage === 'home' ? (
                     <div className='embla__slide'>
                         <IntroPoster/>
                     </div>
-                ) : null }
+                ) : null } */}
             
                 {/* Gerando slides com base na resposta da api do TMDB */}
                 { props.contentData.map(( content ) => (

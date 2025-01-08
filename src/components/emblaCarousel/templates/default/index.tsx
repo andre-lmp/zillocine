@@ -59,53 +59,51 @@ export default function DefaultCarousel( props: ComponentProps ) {
             <EmblaCarousel navigationType='default'>
                 {/* Gerando slides a partir de um array de objetos retornados pela api do TMDB */}
                 {props.contentData.map((item) => (
-                    <div className='embla__slide' key={`main-slides-${item.id}`}>
-                        {
-                            item.poster_path || item.backdrop_path ? (
-                                <>
-                                    <div className='base-slides'>
-                                        {/* Opção para adicionar o filme/serie aos favoritos */}
-                                        <button
-                                            onClick={(e) => toggleFavoriteButton(e, item.id)}
-                                            className={`${userData.favoriteMovies?.includes(item.id) || userData.favoriteSeries?.includes(item.id) ? 'favorite-button' : ''} absolute right-0 top-0 w-fit h-fit z-30`}
-                                        >
-                                            <FaRegHeart className="not-favorited text-white absolute top-3 right-3 text-[22px]" />
-                                            <FaHeart className="favorited text-orangered absolute top-3 right-3 text-[22px]" />
-                                        </button>
-                                        <FaPlay className="play-icon" onClick={() => router.push(`/player/${props.contentType}/${item.id}`, {scroll: true})} />
-                                        {/* Imagem do conteudo a ser exibido */}
-                                        <div className="scale-animation" onClick={() => router.push(`/player/${props.contentType}/${item.id}`, {scroll: true})}>
-                                            <LazyLoadImage
-                                                src={`https://image.tmdb.org/t/p/original${item.poster_path ?? item.backdrop_path}`}
-                                                alt={`${item.title ?? item.name} movie/serie presentation image`}
-                                                width={176}
-                                                effect="opacity"
-                                                height={'100%'}
-                                                placeholderSrc={`https://image.tmdb.org/t/p/w92/${item.poster_path ?? item.backdrop_path}`}
-                                                className='image w-44 h-full object-cover bg-darkpurple rounded-md'
-                                            />
-                                        </div>
-                                    </div>
-            
-                                    {/* Container de informações sobre o conteudo */}
-                                    <div className="mt-2 relative pr-2 max-w-44">      
-                                        {/* Titulo */}
-                                        <p className="font-raleway font-bold text-[15px] text-white line-clamp-1">{item.title ?? item.name}</p>
-                                        <div className="flex items-center gap-x-3 font-normal font-noto_sans text-neutral-400">
-                                            {/* Data de lançamento */}
-                                            <p className="text-[15px]">
-                                                {getReleaseDate(item.release_date ?? item.first_air_date)}
-                                            </p>
-                                            {/* Nota do publico ao conteudo */}
-                                            <p className="text-[15px] flex items-center gap-x-1">
-                                                <FaStar className="" />
-                                                {(item.vote_average).toFixed(0)}/10
-                                            </p>
-                                        </div>
-                                    </div>
-                                </>
-                            ) : null
-                        }
+                    <div className='embla__slide' key={`main-slides-${item.id}`}>  
+                        <>
+                            <div className='base-slides'>
+                                {/* Opção para adicionar o filme/serie aos favoritos */}
+                                <button
+                                    onClick={(e) => toggleFavoriteButton(e, item.id)}
+                                    className={`${userData.favoriteMovies?.includes(item.id) || userData.favoriteSeries?.includes(item.id) ? 'favorite-button' : ''} absolute right-0 top-0 w-fit h-fit z-30`}
+                                >
+                                    <FaRegHeart className="not-favorited text-white absolute top-3 right-3 text-[22px]" />
+                                    <FaHeart className="favorited text-orangered absolute top-3 right-3 text-[22px]" />
+                                </button>
+                                
+                                <FaPlay className="play-icon" onClick={() => router.push(`/player/${props.contentType}/${item.id}`, {scroll: true})} />
+                                {/* Imagem do conteudo a ser exibido */}
+                                <div className="scale-animation" onClick={() => router.push(`/player/${props.contentType}/${item.id}`, {scroll: true})}>
+                                    <LazyLoadImage
+                                        src={`https://image.tmdb.org/t/p/original${item.poster_path ?? item.backdrop_path}`}
+                                        alt={`${item.title ?? item.name} movie/serie presentation image`}
+                                        width={176}
+                                        effect="opacity"
+                                        loading='lazy'
+                                        height={'100%'}
+                                        placeholderSrc={`https://image.tmdb.org/t/p/w92/${item.poster_path ?? item.backdrop_path}`}
+                                        className='image w-44 h-full object-cover bg-darkpurple rounded-md'
+                                    />
+                                </div>
+                            </div>
+    
+                            {/* Container de informações sobre o conteudo */}
+                            <div className="mt-2 relative pr-2 max-w-44">      
+                                {/* Titulo */}
+                                <p className="font-raleway font-bold text-[15px] text-white line-clamp-1">{item.title ?? item.name}</p>
+                                <div className="flex items-center gap-x-3 font-normal font-noto_sans text-neutral-400">
+                                    {/* Data de lançamento */}
+                                    <p className="text-[15px]">
+                                        {getReleaseDate(item.release_date ?? item.first_air_date)}
+                                    </p>
+                                    {/* Nota do publico ao conteudo */}
+                                    <p className="text-[15px] flex items-center gap-x-1">
+                                        <FaStar className="" />
+                                        {(item.vote_average).toFixed(0)}/10
+                                    </p>
+                                </div>
+                            </div>
+                        </>
                     </div>
                 ))}
             </EmblaCarousel>
