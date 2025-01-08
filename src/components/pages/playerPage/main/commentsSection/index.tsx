@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, FormEvent, useContext, useEffect, useRef } from "react";
-import useFirebase from "@/components/hooks/firebaseHook";
+import useFirebase from "@/components/hooks/firebase";
 import { usePathname } from "next/navigation";
 
 // Icones do React-icons
@@ -254,7 +254,7 @@ export default function UsersComments() {
             };
 
         } catch ( error ) {
-            console.log( error );
+            console.error( error );
         };
 
     };

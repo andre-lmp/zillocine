@@ -12,6 +12,6 @@ export const fetchSeriebyId = async ( serieId: string ): Promise<tmdbObjProps | 
             return fetchData;
         };
     } catch (error) {
-        console.log(error);
+        console.error(error);
     };
 };

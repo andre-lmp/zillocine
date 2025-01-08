@@ -91,16 +91,16 @@ export default function ContentDetails( props: ComponentProps ) {
     const getContentCreator = ( creators: tmdbObjProps[] ) => {
         const creatorsName: string[] = []
 
-        if ( creators.length > 0 ) {
-            creators.forEach( creator => {
-                creatorsName.push( creator.name );
-            });
-
-            if ( creatorsName.length >= 2 ) return creatorsName.join(', ');
-            return creatorsName[0];
+        if ( !creators || creators.length === 0 ) {
+            return 'Informação não disponivel';
         };
 
-        return 'Informação não disponivel';
+        creators.forEach( creator => {
+            creatorsName.push( creator.name );
+        });
+
+        if ( creatorsName.length >= 2 ) return creatorsName.join(', ');
+        return creatorsName[0];
     };
 
 
@@ -121,7 +121,7 @@ export default function ContentDetails( props: ComponentProps ) {
                     </span>
                 </p>
 
-                {/* Criador do filme/serie */}
+                {/* Criador da serie */}
                 { props.contentType === 'serie' ? (
                     <p className="content-detail text-[17px] font-medium rounded">
                         <span className="mr-[6px]">Criado por:</span>

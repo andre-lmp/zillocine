@@ -1,7 +1,7 @@
-import SimilarMovies from './footerCarousel/moviesCarousel';
+import SimilarMovies from './footer/moviesCarousel';
 
 // Hook personalizado com funções para busca de conteudo no TMDB
-import useTmdbFetch from '@/components/hooks/tmdbHook';
+import useTmdbFetch from '@/components/hooks/tmdb';
 
 // Interface de tipos para objetos retornados pela api do TMDB
 import { tmdbObjProps } from '../../contexts/tmdbContext';
@@ -13,23 +13,23 @@ type PlayerPageProps = {
 };
 
 const Header = dynamic(() => import('./header/index'), { ssr: false });
-const SerieSeasons = dynamic(() => import('./footerCarousel/seasonsCarousel'), { ssr: false });
-import Main from './main/index';
+const SerieSeasons = dynamic(() => import('./footer/seasonsCarousel'), { ssr: false });
+const Main = dynamic(() => import('./main/index'));
 
 export default async function PlayerPage( props: PlayerPageProps ) {
 
-    const { fetchSingleMovie, fetchSingleSerie } = useTmdbFetch();
+    const { fetchSeriebyId, fetchMovieById } = useTmdbFetch();
     const contentData: tmdbObjProps[] = [];
 
     if ( props.contentType === 'movie' ) {
-        const movie: tmdbObjProps | undefined = await fetchSingleMovie(props.contentId);
+        const movie: tmdbObjProps | undefined = await fetchMovieById(props.contentId);
         if ( movie ) {
             contentData.push( movie );
         };
     };
 
     if ( props.contentType === 'serie' || props.contentType === 'tv' ) {
-        const serie: tmdbObjProps | undefined = await fetchSingleSerie(props.contentId);
+        const serie: tmdbObjProps | undefined = await fetchSeriebyId(props.contentId);
         if ( serie ) {
             contentData.push( serie );
         };

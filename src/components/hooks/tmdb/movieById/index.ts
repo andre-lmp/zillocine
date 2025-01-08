@@ -12,6 +12,6 @@ export const fetchMovieById = async ( movieId: string ): Promise<tmdbObjProps | 
       };
 
     } catch (error) {
-      console.log(error);
+      console.error(error);
     };
 };
