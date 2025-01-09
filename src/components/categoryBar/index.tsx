@@ -35,16 +35,14 @@ export default function CategoryBar( props: categoryBarProps ) {
     },[]);
 
     // Gera uma lista de categorias que o usuario pode selecionar
-    const categoriesList = Object.keys( props.genresList ).map(( key, index ) => (
-       key !== 'allGenres' 
-            && 
-                <li 
-                    ref={(e) => { categoryElementsRef.current[index] = e }} 
-                    id={ key }
-                    key={ `${currentPathName}-${key}` } 
-                    onClick={ (e) => changeCategoryStyle(e) }>
-                    { props.genresList[key][2] }
-                </li>
+    const categoriesList = Object.values( props.genresList ).map(( value, index ) => (
+        <li 
+            ref={(e) => { categoryElementsRef.current[index] = e }} 
+            id={ value[0] }
+            key={ `${currentPathName}-${value[0]}` } 
+            onClick={ (e) => changeCategoryStyle(e) }>
+            { value[2] }
+        </li>
     ));
 
     return (

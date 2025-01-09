@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+
 import "./globals.css";
 
 import * as fonts from '@/app/fonts/index';
@@ -9,7 +10,6 @@ import LoginModal from "@/components/authenticationModals/login";
 import RegisterModal from "@/components/authenticationModals/register";
 import ProfileModal from "@/components/profileModal";
 
-// Contextos
 import { TmdbProvider } from "@/components/contexts/tmdbContext";
 import { GlobalEventsProvider } from "@/components/contexts/globalEventsContext";
 import { UserDataProvider } from "@/components/contexts/authenticationContext";
@@ -19,6 +19,10 @@ import 'react-toastify/ReactToastify.css';
 
 export const metadata: Metadata = {
   title: "ZiloCine Filmes e Series",
+};
+
+export const viewport: Viewport = {
+  themeColor: '#020515'
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
