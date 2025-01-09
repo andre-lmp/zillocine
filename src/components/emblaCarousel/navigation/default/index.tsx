@@ -2,7 +2,7 @@ import { memo } from "react";
 
 import { UsePrevNextButtonsType } from "../controller";
 
-const  EmblaNavigation = memo(( props: UsePrevNextButtonsType ) => {
+const EmblaNavigation = memo(( props: UsePrevNextButtonsType ) => {
     return (
         <>
             {/* Botão para o slide anterior */ }
@@ -36,4 +36,5 @@ const  EmblaNavigation = memo(( props: UsePrevNextButtonsType ) => {
     );
 });
 
+EmblaNavigation.displayName = 'EmblaNavigation';
 export default EmblaNavigation;

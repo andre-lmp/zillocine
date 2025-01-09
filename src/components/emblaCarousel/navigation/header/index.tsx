@@ -10,7 +10,6 @@ type PrevNextButtonsType = {
 type HeaderNavigationProps = UseDotButtonType & PrevNextButtonsType;
 
 const HeaderNavigation = memo(( props: HeaderNavigationProps ) => {
-
     
     return (
         <div className="absolute bottom-1 md:bottom-3 left-1/2 -translate-x-1/2 box-border flex items-center justify-center mb-2 z-30">
@@ -47,4 +46,5 @@ const HeaderNavigation = memo(( props: HeaderNavigationProps ) => {
     )
 });
 
+HeaderNavigation.displayName = 'HeaderNavigation';
 export default HeaderNavigation;
