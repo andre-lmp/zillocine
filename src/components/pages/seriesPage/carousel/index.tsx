@@ -1,45 +1,75 @@
 'use client';
 
-import ContentCarousel from '@/components/contentCarousel';
+import { useEffect } from 'react';
+
+import DefaultCarousel from '@/components/emblaCarousel/templates/default';
+import CarouselTitle from '../../homePage/carouselTitle';
+
 // Barra com alguns generos de filmes/series
 import CategoryBar from '@/components/categoryBar';
 
-import { useContext, useState, Suspense } from 'react';
+import { useContext, useState } from 'react';
 
-import { TmdbContext } from '@/components/contexts/tmdbContext';
+import { TmdbContext, tmdbObjProps } from '@/components/contexts/tmdbContext';
 
-export default function SeriesCarousel() {
+export default function Carousel() {
 
     const tmdb = useContext( TmdbContext );
-    const [ selectedGenre, setSelectedGenre ] = useState( tmdb.serieGenres.release[0] );
+    const [ seriesData, setSeriesData ] = useState<Array<tmdbObjProps[]>>([]);
+    const [ genre, setGenre ] = useState( tmdb.movieGenres.release[0] );
+
+    useEffect(() => {
+        ( async () => {
+            try {
+                const data: Array<tmdbObjProps[]> = await new Promise(( resolve, reject ) => {
+                    Promise.all(Array.from({length: 5}).map( async (_, index) => {
+                        const response = await fetch(`/api/series/${genre}?page=${index + 1}`);
+                        if ( !response.ok ) {
+                            throw new Error(`Error: ${response.status}`);
+                        };
+                        const data = await response.json();
+                        return data.series;
+                    })).then( result => {
+                        resolve( result );
+                    }).catch(( error ) => {
+                        console.error( error );
+                        reject( error );
+                    });
+                });
+
+                setSeriesData([ ...data ]);
+            } catch ( error ) {
+                console.error( error );  
+            };         
+        })();
+    },[ genre ]);
 
     // Gera um carousel de slides para cada genero dentro do contexto
-    const carouselsList =  Object.keys( tmdb.serieGenres ).map(( key, index ) => (
-        <ContentCarousel 
-            key={`movies-${key}`} 
-            contentGenre={ tmdb.serieGenres[selectedGenre][0] } 
-            contentType='serie' 
-            sectionTitle={ index === 0 ? tmdb.serieGenres[ selectedGenre][1] : undefined } 
-            pageNumber={ index + 1 }
-            navigation={{ prevEl: `button-prev-${index}`, nextEl: `button-next-${index}` }}
-        />
+    const carouselsList =  seriesData.map(( seriesArray, index) => (
+        <div key={`series-page-carousel-${index}`}>
+            { index === 0 ? (
+                <CarouselTitle type='focus'>
+                    <h2 className='normal-title'>{ tmdb.serieGenres.release[1] }</h2>
+                    <div className='w-full h-0.5 bg-gradient-to-r mb-3 from-orangered to-transparent'/>
+                </CarouselTitle>
+            ) : null }
+            <DefaultCarousel contentType='serie' contentData={seriesArray}/>
+        </div>
     ));
 
     // Animação de carregamento da pagina
-    const loading = (
-        <div className='w-full h-screen fixed z-[400] flex justify-center items-center'>
+    const loadingAnimation = (
+        <div className='w-full h-96 absolute top-0 left-0 z-[400] flex justify-center items-center'>
             <span className="loading loading-spinner loading-lg text-neutral-400"></span>
         </div>
     );
 
     return (
         <div className='w-full min-h-screen'>
-            <CategoryBar genresList={tmdb.serieGenres} selectGenre={setSelectedGenre}/>
+            <CategoryBar genresList={tmdb.serieGenres} selectGenre={setGenre}/>
 
-            <div className='flex flex-col gap-y-[30px] pb-6 mt-2'>
-                <Suspense fallback={loading}>
-                    { carouselsList }
-                </Suspense>
+            <div className='flex flex-col gap-y-[30px] pb-6 mt-2 px-4 md:px-6 lg:px-8 relative'>
+                { seriesData.length ? carouselsList : loadingAnimation }
             </div>
         </div>
     );

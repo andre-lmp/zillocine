@@ -1,7 +1,5 @@
 // Carouseis de conteudo
-import HeaderCarousel from '@/components/headerCarousel';
-
-import { Suspense } from 'react';
+import HeaderCarousel from '@/components/headerSlides/index';
 
 import dynamic from 'next/dynamic';
 
@@ -9,19 +7,9 @@ const SeriesCarousel = dynamic(() => import('./carousel/index'), { ssr: false })
 
 export default function MoviesPage() {
 
-    // Animação de carregamento da pagina
-    const loading = (
-        <div className='w-full h-screen fixed z-[400] flex justify-center items-center'>
-            <span className="loading loading-spinner loading-lg text-neutral-400"></span>
-        </div>
-    );
-
     return (
         <div className='w-full min-h-screen'>
-            <Suspense fallback={loading}>
-                <HeaderCarousel currentPage='series'/>
-            </Suspense>
-
+            <HeaderCarousel currentPage='series'/>
             <SeriesCarousel />
         </div>
     );

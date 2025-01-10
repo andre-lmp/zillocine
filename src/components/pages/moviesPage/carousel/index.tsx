@@ -46,7 +46,7 @@ export default function Carousel() {
 
     // Gera um carousel de slides para cada genero dentro do contexto
     const carouselsList =  moviesData.map(( moviesArray, index) => (
-        <div>
+        <div key={`movies-page-carousel-${index}`}>
             { index === 0 ? (
                 <CarouselTitle type='focus'>
                     <h2 className='normal-title'>{ tmdb.movieGenres.release[1] }</h2>
