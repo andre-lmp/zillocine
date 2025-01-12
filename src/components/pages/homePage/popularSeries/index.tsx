@@ -3,20 +3,22 @@ import { tmdbObjProps } from "@/components/contexts/tmdbContext";
 import TopSeriesCarousel from "@/components/emblaCarousel/templates/popular";
 
 import useTmdbFetch from "@/components/hooks/tmdb";
+import { checkAvailability } from "@/components/utils/tmdbApiData/availability";
 
 import { getContentId } from "@/components/utils/tmdbApiData/id";
 
 export default async function PopularCarousel() {
 
-    const movies: tmdbObjProps[] = [];
+    const seriesList: tmdbObjProps[] = [];
     const { fetchPopularSeries, fetchSeriesByIdList } = useTmdbFetch();
 
     const popularSeries = await fetchPopularSeries();
     const idList = await getContentId( popularSeries );
     const series = await fetchSeriesByIdList( idList );
-    series && movies.push( ...series );
+    const filtered = await checkAvailability( series );
+    seriesList.push( ...filtered );
 
-    return movies.length ? ( 
-        <TopSeriesCarousel contentData={movies}/>
+    return seriesList.length ? ( 
+        <TopSeriesCarousel contentData={seriesList}/>
     ) : null;
 };

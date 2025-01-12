@@ -1,3 +1,4 @@
+
 import { MouseEvent, SetStateAction, Dispatch, useRef, MutableRefObject, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
@@ -15,6 +16,7 @@ export default function CategoryBar( props: categoryBarProps ) {
 
     const currentPathName = usePathname();
     const categoryElementsRef: MutableRefObject<(HTMLLIElement | null)[]> = useRef([]);
+    const [ isVisible, setIsVisible ] = useState( false );
 
     /*Muda a cor do botão quando o usuario seleciona alguma categoria*/
     const changeCategoryStyle = ( e: MouseEvent<any> ) => {
@@ -31,7 +33,9 @@ export default function CategoryBar( props: categoryBarProps ) {
     useEffect(() => {
         if (  categoryElementsRef.current && categoryElementsRef.current[0]?.style ) {
             Object.assign( categoryElementsRef.current[0]?.style, { backgroundColor: '#ff4500' });
-        }
+        };
+
+        setIsVisible( true );
     },[]);
 
     // Gera uma lista de categorias que o usuario pode selecionar
@@ -47,7 +51,9 @@ export default function CategoryBar( props: categoryBarProps ) {
 
     return (
         <Style.CategoriesWrapper>
-            <ul className='font-noto_sans font-medium text-[15px] lg:text-base *:cursor-pointer text-neutral-200 ease-linear duration-200'
+            <ul 
+                style={{ opacity: isVisible ? 1 : 0 }} 
+                className='font-noto_sans font-medium text-[15px] lg:text-base *:cursor-pointer text-neutral-200 ease-linear duration-200'
             >
                 { categoriesList }
             </ul>

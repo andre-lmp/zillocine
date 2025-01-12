@@ -12,9 +12,9 @@ type PlayerPageProps = {
     contentType: string;
 };
 
-const Header = dynamic(() => import('./header/index'), { ssr: false });
-const SerieSeasons = dynamic(() => import('./footer/seasonsCarousel'), { ssr: false });
-const Main = dynamic(() => import('./main/index'));
+import Header from './header/index';
+import SeasonsCarousel from './footer/seasonsCarousel';
+import Main from './main/index'
 
 export default async function PlayerPage( props: PlayerPageProps ) {
 
@@ -43,7 +43,7 @@ export default async function PlayerPage( props: PlayerPageProps ) {
             
             { props.contentType === 'movie' ? 
                 <SimilarMovies movieId={props.contentId}/> :
-                <SerieSeasons serieName={contentData[0].name} serieId={props.contentId} seasons={contentData[0].seasons}/>    
+                <SeasonsCarousel serieName={contentData[0].name} serieId={props.contentId} seasons={contentData[0].seasons}/>    
             }
         </section>
     ) : null;

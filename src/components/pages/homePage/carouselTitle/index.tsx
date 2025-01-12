@@ -1,4 +1,6 @@
-import { ReactNode } from 'react';
+'use client';
+
+import { ReactNode, useEffect, useState } from 'react';
 
 import './index.css';
 
@@ -8,8 +10,14 @@ type CarouselTitleProps = {
 };
 
 export default function CarouselTitle( props: CarouselTitleProps ) {
+    const [ isVisible, setIsVisible ] = useState( false );
+
+    useEffect(() => {
+        setIsVisible( true );
+    }, []);
+
     return (
-        <div className="title-container">
+        <div style={{ opacity: isVisible ? 1 : 0 }}  className="title-container">
             { props.children }
         </div>
     );

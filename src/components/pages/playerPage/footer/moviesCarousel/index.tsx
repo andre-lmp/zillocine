@@ -7,7 +7,7 @@ import { tmdbObjProps } from "@/components/contexts/tmdbContext";
 import DefaultCarousel from "@/components/emblaCarousel/templates/default";
 import '@/components/emblaCarousel/templates/default/index.css';
 
-const CarouselTitle = dynamic(() => import('@/components/pages/homePage/carouselTitle'), { ssr: false });
+import CarouselTitle from '@/components/pages/homePage/carouselTitle';
 
 type carouselProps = {
     movieId: string;

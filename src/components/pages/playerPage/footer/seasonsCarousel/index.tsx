@@ -42,7 +42,7 @@ export default function SerieSeansons( props: ComponentProps ) {
             {/* Seletor de temporada */}
             <SelectSeason selectedSeason={setSelectedSeasonNumber} seasonsList={props.seasons}/>
 
-            {/* Titulo da seção */}
+            {/* Titulo do carousel */}
             <p className="mb-1 text-[17px] font-medium xl:text-lg whitespace-nowrap max-w-full overflow-hidden text-ellipsis">{props.serieName} - {seasonData?.name}</p>
             <div className='w-full h-0.5 bg-gradient-to-r mb-3 from-orangered to-transparent'></div>
 

@@ -1,9 +1,7 @@
 // Carouseis de conteudo
 import HeaderCarousel from '@/components/headerSlides/index';
 
-import dynamic from 'next/dynamic';
-
-const SeriesCarousel = dynamic(() => import('./carousel/index'), { ssr: false });
+import SeriesCarousel from './carousel/index';
 
 export default function MoviesPage() {
 

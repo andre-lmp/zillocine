@@ -8,8 +8,7 @@ import React from 'react';
 // Interface de tipos para objetos retornados pela api do TMDB
 import { tmdbObjProps } from '@/components/contexts/tmdbContext/index';
 
-import dynamic from 'next/dynamic';
-const Carousel = dynamic(() => import('@/components/emblaCarousel/templates/header'), { ssr: false });
+import Carousel from '@/components/emblaCarousel/templates/header';
 
 import { handlePromise } from '@/components/utils/tmdbApiData/promise/index';
 import { checkAvailability } from '@/components/utils/tmdbApiData/availability';

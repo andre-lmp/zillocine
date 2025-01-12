@@ -1,6 +1,5 @@
 'use client';
 
-// Hooks
 import { useEffect, useState } from 'react';
 
 // Componente para carregamento preguiçoso de imagens

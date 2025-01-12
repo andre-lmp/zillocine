@@ -1,17 +1,15 @@
 // Interface de tipos para objetos retornados pela api do TMDB
 import { tmdbObjProps } from "@/components/contexts/tmdbContext";
 
-import dynamic from "next/dynamic";
+import ContentDetails from "./contentDetails/index";
 
-const ContentDetails = dynamic(() => import('./contentDetails/index'), { ssr: false });
-
-const ContentImage = dynamic(() => import('./contentImage/index'), { ssr: false });
+import ContentImage from "./contentImage/index";
 
 // Carousel com os atores principais do filme/serie
-const MainActors = dynamic(() => import('./actorsCarousel/index'), { ssr: false });
+import ActorsCarousel from "./actorsCarousel/index";
 
 // Seção de comentarios e avaliações de usuarios sobre o filme/serie
-const CommentsSection = dynamic(() => import('./commentsSection/index'), { ssr: false });
+import UsersComments from "./commentsSection/index";
 
 type ComponentProps = {
     contentData: tmdbObjProps;   
@@ -51,11 +49,11 @@ export default function Main( props: ComponentProps ) {
                         </div>
                     </div>
 
-                    <MainActors actorsData={props.contentData.credits.cast ?? []}/>
+                    <ActorsCarousel actorsData={props.contentData.credits.cast ?? []}/>
 
                 </div>
 
-                <CommentsSection/>
+                <UsersComments/>
         </div>
     );
 };

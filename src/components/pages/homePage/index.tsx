@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 
 import HeaderCarousel from "@/components/headerSlides";
 import ReleaseCarousel from "./recentMovies";
@@ -8,7 +7,7 @@ import WarCarousel from "./warMovies";
 import PopularCarousel from "./popularSeries";
 import FictionCarousel from "./fictionMovies";
 import DocumentaryCarousel from "./documentary";
-const CarouselTitle = dynamic(() => import('./carouselTitle'), { ssr: false });
+import CarouselTitle from "./carouselTitle";
 
 import { Suspense } from "react";
 
@@ -41,19 +40,22 @@ export default function HomePage() {
                 <HeaderCarousel currentPage="home"/>
 
                 <div className="mt-4 flex flex-col gap-y-[40px] pb-6 px-4 md:px-6 lg:px-8">
-                    {/* Carousel com os filmes mais recentes */}
+                    {/* Carousel com filmes de ficção */}
                     <div>
                         <CarouselTitle type="normal">
-                            <h2 className="normal-title">{tmdbMovieGenres.release[1]}</h2>
+                            <h2 className="normal-title">
+                                {tmdbMovieGenres.fiction[1]}
+                            </h2>
                             <div className='w-full h-0.5 bg-gradient-to-r mb-3 from-orangered to-transparent'/>
                         </CarouselTitle>
-                        <ReleaseCarousel/>
+                        <FictionCarousel/>
                     </div>
 
                     {/* Carousel com filmes/series em alta no momento */}
                     <div>
                         <CarouselTitle type="focus">
                             <h2 className="focus-title mb-1">Em alta</h2>
+                            <p className="subtitle">Top 20 filmes e séries mais assistidos hoje!</p>
                         </CarouselTitle>
                         <TrendingCarousel/>
                     </div>
@@ -86,15 +88,13 @@ export default function HomePage() {
                         <PopularCarousel/>
                     </div>
 
-                    {/* Carousel com filmes de ficção */}
+                    {/* Carousel com os filmes mais recentes */}
                     <div>
                         <CarouselTitle type="normal">
-                            <h2 className="normal-title">
-                                {tmdbMovieGenres.fiction[1]}
-                            </h2>
+                            <h2 className="normal-title">{tmdbMovieGenres.release[1]}</h2>
                             <div className='w-full h-0.5 bg-gradient-to-r mb-3 from-orangered to-transparent'/>
                         </CarouselTitle>
-                        <FictionCarousel/>
+                        <ReleaseCarousel/>
                     </div>
 
                     {/* Carousel com documentarios */}
