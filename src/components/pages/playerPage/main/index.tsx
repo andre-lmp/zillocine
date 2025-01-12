@@ -1,3 +1,7 @@
+'use client';
+
+import { useState, useEffect } from "react";
+
 // Interface de tipos para objetos retornados pela api do TMDB
 import { tmdbObjProps } from "@/components/contexts/tmdbContext";
 
@@ -17,9 +21,16 @@ type ComponentProps = {
 };
 
 export default function Main( props: ComponentProps ) {
+    const [ isVisible, setIsVisible ] = useState( false );
+
+    useEffect(() => {
+        setIsVisible( true );
+    }, []);;
 
     return (
-        <div className="flex flex-col font-noto_sans px-4 md:px-6 lg:px-8">
+        <div
+            className="flex flex-col font-noto_sans px-4 md:px-6 lg:px-8"
+            style={{ visibility: isVisible ? 'visible' : 'hidden' }}>
 
                 {/* Descrição do filme/serie */}
                 <p className='text-justify w-full text-[17px] md:text-left leading-loose text-neutral-300 max-w-4xl'>

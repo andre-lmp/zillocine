@@ -13,6 +13,7 @@ import WatchTrailer from '@/components/pages/playerPage/header/trailerPlayback';
 import { tmdbObjProps } from "@/components/contexts/tmdbContext";
 
 import * as Style from '@/components/pages/playerPage/styles';
+import './index.css';
 
 type headerProps = {
     playerData: tmdbObjProps[];   
@@ -76,7 +77,7 @@ export default function Header( props: headerProps ) {
 
     
     return (
-        <Style.HeaderWrapper>
+        <div className='header-wrapper'>
             <div style={{ opacity: isLoading ? 0 : 1 }} className='w-full ease-linear duration-200'>
                 { props.playerData?.map( item =>  (
                     <div key={item.id} className="w-full relative">
@@ -125,6 +126,6 @@ export default function Header( props: headerProps ) {
                 ))}
 
             </div>
-        </Style.HeaderWrapper>
+        </div>
     );
 };

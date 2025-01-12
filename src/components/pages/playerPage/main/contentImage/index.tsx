@@ -17,7 +17,7 @@ export default function ContentImage( props: ImageProps ) {
             height={'100%'}
             effect="opacity"
             placeholderSrc={`https://image.tmdb.org/t/p/w92/${props.url}`}
-            className='w-40 sm:w-60 h-full object-cover bg-darkpurple image rounded'
+            className='w-40 sm:w-60 h-full object-cover bg-darkpurple image rounded-md'
         />
     );
 };
